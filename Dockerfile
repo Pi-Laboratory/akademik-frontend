@@ -6,3 +6,5 @@ COPY package.json ./
 COPY package-lock.json ./
 RUN npm ci --silent
 COPY . ./
+
+CMD ["npm", "start"]
