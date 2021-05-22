@@ -1,4 +1,4 @@
-import { Button, Classes, Icon, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { Box, Navbar } from "components";
 
