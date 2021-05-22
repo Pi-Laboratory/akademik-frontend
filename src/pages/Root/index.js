@@ -9,8 +9,9 @@ const Navigation = [
     "title": "Nama Servis",
     "text": "Dashboard",
     "component": Dashboard,
-    "path": "/dashboard",
-    "icon": "blank"
+    "path": "/",
+    "icon": "blank",
+    "exact": true
   },
   {
     "title": "Nama Servis",

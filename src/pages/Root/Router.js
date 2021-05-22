@@ -11,7 +11,12 @@ const Router = () => {
     <Switch>
       {
         navigation.items.map((item) => (
-          <Route key={item.path} path={`${item.path}`} component={item.component} />
+          <Route
+            exact={item.exact}
+            key={item.path}
+            path={`${item.path}`}
+            component={item.component}
+          />
         ))
       }
       <Route path="/" component={FourOFour} />
