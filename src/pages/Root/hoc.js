@@ -1,14 +1,14 @@
 import { createContext, useCallback, useContext, useMemo } from "react";
 import { useHistory, useLocation } from "react-router";
 
-export const AdminContext = createContext(null);
+export const RootContext = createContext(null);
 
-export const AdminProvider = ({ children, navigation }) => {
+export const RootProvider = ({ children, navigation }) => {
   const history = useHistory();
   const location = useLocation();
   const currentNav = useMemo(() => {
     const current = navigation.find(item => {
-      return (`/admin${item.path}` === location.pathname);
+      return (`${item.path}` === location.pathname);
     });
     return current;
   }, [location, navigation]);
@@ -23,15 +23,15 @@ export const AdminProvider = ({ children, navigation }) => {
     go: navGoTo
   }
   return (
-    <AdminContext.Provider value={{
+    <RootContext.Provider value={{
       navigation: nav
     }}>
       {children}
-    </AdminContext.Provider>
+    </RootContext.Provider>
   )
 }
 
 export const useNav = () => {
-  const admin = useContext(AdminContext);
-  return admin.navigation;
+  const root = useContext(RootContext);
+  return root.navigation;
 }

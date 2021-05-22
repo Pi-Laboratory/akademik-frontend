@@ -1,4 +1,3 @@
-import Admin from "./pages/Admin";
 import {
   BrowserRouter,
   Switch,

@@ -1,5 +1,4 @@
 import { Box, Flex } from "components";
-import Headers from "./Headers";
 import List from "./List";
 
 const Users = () => {
@@ -10,9 +9,6 @@ const Users = () => {
       width: "100%",
       height: "100%",
     }}>
-      <Box>
-        <Headers />
-      </Box>
       <Box sx={{
         overflowX: "hidden",
         overflowY: "auto"

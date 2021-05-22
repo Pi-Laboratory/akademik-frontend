@@ -1,13 +1,20 @@
+import FourOFour from "pages/404";
 import {
   Switch,
   Route
 } from "react-router-dom";
-import Dashboard from "pages/Dashboard";
+import { useNav } from "./hoc";
 
 const Router = () => {
+  const navigation = useNav();
   return (
     <Switch>
-      <Route path="/" component={Dashboard} />
+      {
+        navigation.items.map((item) => (
+          <Route key={item.path} path={`${item.path}`} component={item.component} />
+        ))
+      }
+      <Route path="/" component={FourOFour} />
     </Switch>
   )
 }

@@ -1,8 +1,10 @@
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { AspectRatio, Box, Divider } from "components";
 import ScrollArea from "react-scrollbar";
+import { useNav } from "./hoc";
 
 const Sidemenu = () => {
+  const navigation = useNav();
   return (
     <Box
       sx={{
@@ -38,14 +40,20 @@ const Sidemenu = () => {
           <Divider />
           <Menu>
             <MenuDivider title="Main Menu" />
-            <MenuItem active={true} text="Dashboard" />
-            <MenuItem text="Mata Kuliah" />
-            <MenuItem text="Perkuliahan" />
-            <MenuItem text="Wisuda" />
-            <MenuItem text="Wisuda" />
-            <MenuItem text="Wisuda" />
-            <MenuItem text="Wisuda" />
-            <MenuItem text="Wisuda" />
+            {navigation.items.map((item) => (
+              <MenuItem
+                key={item.path}
+                active={navigation.current && item.path === navigation.current.path}
+                text={item.text}
+                title={item.title}
+                icon={item.icon}
+                href={item.path}
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigation.go(item.path);
+                }}
+              />
+            ))}
           </Menu>
           <Divider />
           <Box sx={{ color: "gray.5" }}>
