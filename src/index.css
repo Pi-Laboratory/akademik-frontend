@@ -14,6 +14,10 @@ body {
   min-height: 100%;
 }
 
+body.bp3-dark {
+  background-color: #24292e;
+}
+
 .scrollarea .scrollbar-container.scrollbar-container.scrollbar-container {
   opacity: 0.02;
 }
