@@ -4,15 +4,16 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import Login from "./pages/Login";
-import FourOFour from "./404";
+import Login from "pages/Login";
+import FourOFour from "pages/404";
+import Root from "pages/Root";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/login" component={Login} />
-        <Route path="/admin" component={Admin} />
+        <Route path="/" component={Root} />
         <Route path="/" component={FourOFour} />
       </Switch>
     </BrowserRouter>
