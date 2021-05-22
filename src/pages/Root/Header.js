@@ -1,4 +1,4 @@
-import { Button, Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Button, Classes, Icon, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { Box, Navbar } from "components";
 
@@ -10,8 +10,16 @@ const Header = () => {
           <Navbar.Heading style={{ margin: 0 }}>Akademik</Navbar.Heading>
         </Box>
         <Navbar.Divider />
+        <Box sx={{mr: 2}}>
+          <InputGroup
+            placeholder="Cari"
+            rightElement={<Button outlined={true} icon="slash" />}
+          />
+        </Box>
         <Button minimal={true} text="Profile" />
         <Button minimal={true} text="Contact Center" />
+      </Navbar.Group>
+      <Navbar.Group>
       </Navbar.Group>
       <Navbar.Group align="right">
         <Box sx={{ ml: 2 }}>
