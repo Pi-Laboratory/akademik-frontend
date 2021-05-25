@@ -1,5 +1,4 @@
 import { Classes, NavbarDivider, NavbarGroup, NavbarHeading } from "@blueprintjs/core";
-import { useTheme } from "@emotion/react";
 import { forwardRef } from "react";
 import { Container } from "./Container";
 import { Box } from "./Grid";
