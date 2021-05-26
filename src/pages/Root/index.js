@@ -1,6 +1,7 @@
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
+import Kurikulum from "pages/Kurikulum";
 import { RootProvider } from "./hoc";
 import Layout from "./Layout";
 
@@ -19,6 +20,13 @@ const Navigation = [
     "component": Users,
     "path": "/users",
     "icon": "blank"
+  },
+  {
+    "title": "Nama Servis",
+    "text": "Kurikulum",
+    "component": Kurikulum,
+    "path": "/kurikulum",
+    "icon": ""
   },
   {
     "title": "Nama Servis",
