@@ -1,6 +1,7 @@
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
+import ProgramStudi from "pages/ProgramStudi"
 import { RootProvider } from "./hoc";
 import Layout from "./Layout";
 
@@ -19,6 +20,13 @@ const Navigation = [
     "component": Users,
     "path": "/users",
     "icon": "blank"
+  },
+  {
+    "title": "Program Studi",
+    "text": "Program Studi",
+    "component": ProgramStudi,
+    "path": "/program-studi",
+    "icon": "bring-data"
   },
   {
     "title": "Nama Servis",
