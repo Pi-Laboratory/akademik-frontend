@@ -8,13 +8,18 @@ const List = () => {
       <Box as={HTMLTable} interactive={true} sx={{ width: "100%" }}>
         <thead>
           <tr>
-            <th><Checkbox /></th>
-            <th>No</th>
-            <th>Nama Program Studi</th>
-            <th>Jenjang Studi</th>
-            <th>Nama Jurusan</th>
-            <th>Akreditasi</th>
-            <th>Aksi</th>
+            <th rowspan="2"><Checkbox /></th>
+            <th rowspan="2">No</th>
+            <th rowspan="2">Nama Dokumen</th>
+            <th rowspan="2">Tipe Dokumen</th>
+            <th colspan="4" >Pejabatan Pengesah</th>
+            <th rowspan="2" >Aksi</th>
+          </tr>
+          <tr>
+            <th>Nama</th>
+            <th>Jabatan</th>
+            <th>Program Studi</th>
+            <th>Urutan</th>
           </tr>
         </thead>
         <tbody>
@@ -22,10 +27,11 @@ const List = () => {
             <tr key={idx}>
               <td><Checkbox /></td>
               <td>{idx}</td>
-              <td>Nama Program Studi-{idx}</td>
-              <td>Jenjang Studi-{idx}</td>
-              <td>Nama Jurusan-{idx}</td>
-              <td> A -{idx}</td>
+              <td>0000000000000-{idx}</td>
+              <td>Nama-{idx}</td>
+              <td>Jabatan-{idx}</td>
+              <td>Jabatan Asing-{idx}</td>
+              <td>Jabatan Studi-{idx}</td>
               <td> <Button>Detail</Button> <Button>Ubah</Button></td>
             </tr>
           ))}

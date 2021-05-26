@@ -9,11 +9,9 @@ const List = () => {
         <thead>
           <tr>
             <th><Checkbox /></th>
-            <th>No</th>
-            <th>Nama Program Studi</th>
-            <th>Jenjang Studi</th>
-            <th>Nama Jurusan</th>
-            <th>Akreditasi</th>
+            <th>Jam Ke</th>
+            <th>Mulai</th>
+            <th>Selesai</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -21,11 +19,9 @@ const List = () => {
           {Array(25).fill(0).map((_, idx) => (
             <tr key={idx}>
               <td><Checkbox /></td>
-              <td>{idx}</td>
-              <td>Nama Program Studi-{idx}</td>
-              <td>Jenjang Studi-{idx}</td>
-              <td>Nama Jurusan-{idx}</td>
-              <td> A -{idx}</td>
+              <td>Jam Ke{idx}</td>
+              <td>Mulai-{idx}</td>
+              <td>Selesai-{idx}</td>
               <td> <Button>Detail</Button> <Button>Ubah</Button></td>
             </tr>
           ))}

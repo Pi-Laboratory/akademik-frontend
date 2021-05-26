@@ -10,10 +10,12 @@ const List = () => {
           <tr>
             <th><Checkbox /></th>
             <th>No</th>
-            <th>Nama Program Studi</th>
-            <th>Jenjang Studi</th>
-            <th>Nama Jurusan</th>
-            <th>Akreditasi</th>
+            <th>Kode Nilai</th>
+            <th>Bobot</th>
+            <th>Kelompok Nilai</th>
+            <th>Bobot Kelompok</th>
+            <th>Rentang Nilai</th>
+            <th>Label Asing</th>
             <th>Aksi</th>
           </tr>
         </thead>
@@ -22,10 +24,12 @@ const List = () => {
             <tr key={idx}>
               <td><Checkbox /></td>
               <td>{idx}</td>
-              <td>Nama Program Studi-{idx}</td>
-              <td>Jenjang Studi-{idx}</td>
-              <td>Nama Jurusan-{idx}</td>
-              <td> A -{idx}</td>
+              <td>Kode Nilai-{idx}</td>
+              <td>Bobot-{idx}</td>
+              <td>Kelompok Nilai-{idx}</td>
+              <td>Bobot Kelompok-{idx}</td>
+              <td>Rentang Nilai -{idx}</td>
+              <td>Label Asing-{idx}</td>
               <td> <Button>Detail</Button> <Button>Ubah</Button></td>
             </tr>
           ))}
