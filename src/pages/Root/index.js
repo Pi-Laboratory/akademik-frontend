@@ -2,6 +2,7 @@ import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
+import Kurikulum from "pages/Kurikulum";
 import ProgramStudi from "pages/ProgramStudi";
 import JenisNilai from "pages/JenisNilai";
 import PredikatKelulusan from "pages/PredikatKelulusan";
@@ -30,6 +31,13 @@ const Navigation = [
     "icon": "blank"
   },
   {
+    "title": "Nama Servis",
+    "text": "Kurikulum",
+    "component": Kurikulum,
+    "path": "/kurikulum",
+    "icon": ""
+  },
+  
     "title": "Program Studi",
     "text": "Program Studi",
     "component": ProgramStudi,
