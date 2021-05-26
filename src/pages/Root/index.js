@@ -1,3 +1,4 @@
+import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
@@ -83,6 +84,13 @@ const Navigation = [
     "component": Settings,
     "path": "/settings",
     "icon": "cog"
+  },
+  {
+    "title": "Akademik Kemahasiswaan",
+    "text": "Kemahasiswaan",
+    "component": AkademikMahasiswa,
+    "path": "/akademik-mahasiswa",
+    "icon": "user"
   }
 ]
 
