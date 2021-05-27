@@ -1,4 +1,4 @@
-import { Checkbox, HTMLTable, Button, Colors, } from "@blueprintjs/core";
+import { Checkbox, HTMLTable, Button } from "@blueprintjs/core";
 
 import { Box, Container } from "components";
 
