@@ -18,7 +18,6 @@ const Filter = () => {
           <Button text="Gelar Belakang" />
           <Button text="Prodi" />
           <Button text="Status" />
-
         </ButtonGroup>
       </Box>
     </Flex>

@@ -1,5 +1,6 @@
-import { Box, Flex } from "components";
-import Filter from "./Filter";
+import { Box, Divider, Flex } from "components";
+import DosenDetail from "pages/Dosen.Details";
+import { Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import List from "./List";
 
@@ -10,14 +11,13 @@ const Layout = () => {
       mr: 3,
       flexDirection: "column",
     }}>
-      <Box sx={{ mb: 3 }}>
-        <Header />
-      </Box>
-      <Box sx={{ mx: 3 }}>
-        <Filter />
-      </Box>
+      <Header />
+      <Divider />
       <Box>
-        <List />
+        <Switch>
+          <Route path="/dosen/:nip" component={DosenDetail} />
+          <Route path="/dosen" component={List} />
+        </Switch>
       </Box>
     </Flex>
   );
