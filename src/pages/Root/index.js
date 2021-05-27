@@ -37,7 +37,7 @@ const Navigation = [
     "path": "/kurikulum",
     "icon": ""
   },
-  
+  {
     "title": "Program Studi",
     "text": "Program Studi",
     "component": ProgramStudi,
