@@ -3,6 +3,9 @@ import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
 import Kurikulum from "pages/Kurikulum";
+import Semester from "pages/Semester";
+import ManajemenRuang from "pages/ManejemenRuang";
+import Dosen from "pages/Dosen";
 import ProgramStudi from "pages/ProgramStudi";
 import JenisNilai from "pages/JenisNilai";
 import PredikatKelulusan from "pages/PredikatKelulusan";
@@ -35,6 +38,27 @@ const Navigation = [
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum",
+    "icon": ""
+  },
+  {
+    "title": "Nama Servis",
+    "text": "Semester",
+    "component": Semester,
+    "path": "/semester",
+    "icon": ""
+  },
+  {
+    "title": "Nama Servis",
+    "text": "Manajemen Ruang",
+    "component": ManajemenRuang,
+    "path": "/manajemen-ruang",
+    "icon": ""
+  },
+  {
+    "title": "Nama Servis",
+    "text": "Dosen",
+    "component": Dosen,
+    "path": "/dosen",
     "icon": ""
   },
   {
