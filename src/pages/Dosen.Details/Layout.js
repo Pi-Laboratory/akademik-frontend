@@ -1,10 +1,10 @@
 import { Classes, H3 } from "@blueprintjs/core";
-import { AspectRatio, Box, Flex } from "components";
+import { AspectRatio, Box, Divider, Flex } from "components";
 
 const Layout = () => {
   return (
     <Flex sx={{ px: 3 }}>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ py: 4, flexGrow: 1 }}>
         <Box as={H3}>Informasi Umum</Box>
         {[
           ["Nomot KTP", "72239503948503"],
@@ -43,14 +43,22 @@ const Layout = () => {
         ))}
         <Box as={H3} sx={{ mt: 4 }}>Artikel Ilmiah</Box>
         {[
-          ["2015", "Rancang Bangun Sistem Bertenaga Surya"],
-          ["2015", "Rancang Bangun Sistem Bertenaga Surya"],
-          ["2015", "Rancang Bangun Sistem Bertenaga Surya"],
-          ["2015", "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
+          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
         ].map((item, idx) => (
           <Flex key={idx} sx={{ mt: 3 }}>
             <Box sx={{ width: "30%", flexShrink: 0 }}>
-              <span>{item[0]}</span>
+              <span>{item[0] + idx}</span>
             </Box>
             <Box sx={{ flexGrow: 1 }}>
               <span>{item[1]}</span>
@@ -58,7 +66,8 @@ const Layout = () => {
           </Flex>
         ))}
       </Box>
-      <Box sx={{ width: 350, flexShrink: 0 }}>
+      <Divider vertical={true} />
+      <Box sx={{ pt: 4, width: 350, flexShrink: 0 }}>
         <Box className={`${Classes.CARD}`} sx={{ p: 2, mb: 2, width: 250 }}>
           <AspectRatio ratio="1:1">
             <Box

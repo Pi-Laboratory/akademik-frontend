@@ -12,7 +12,7 @@ const Layout = () => {
       flexDirection: "column",
     }}>
       <Header />
-      <Divider />
+      <Divider sx={{ mb: 0 }} />
       <Box>
         <Switch>
           <Route path="/dosen/:nip" component={DosenDetail} />
