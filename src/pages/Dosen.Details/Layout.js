@@ -66,8 +66,8 @@ const Layout = () => {
           </Flex>
         ))}
       </Box>
-      <Divider vertical={true} />
-      <Box sx={{ pt: 4, width: 350, flexShrink: 0 }}>
+      <Divider vertical={true}/>
+      <Box sx={{ pt: 4, px: 2, width: 350, flexShrink: 0 }}>
         <Box className={`${Classes.CARD}`} sx={{ p: 2, mb: 2, width: 250 }}>
           <AspectRatio ratio="1:1">
             <Box

@@ -1,25 +1,23 @@
 import { Button, ButtonGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex } from "components";
+import { Box, Divider, Flex } from "components";
 
 const Filter = () => {
   return (
     <Flex>
       <Box>
-        <InputGroup large={true} leftIcon="search" placeholder="Filter by name" />
+        <InputGroup leftIcon="search" placeholder="Filter by name" />
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      <Box>
-        <ButtonGroup large={true}>
+      <Flex>
+        <ButtonGroup>
           <Button text="Id" />
           <Button text="Nama" />
           <Button active={true} text="NIP" />
           <Button text="NIDN" />
-          <Button text="Gelar Depan" />
-          <Button text="Gelar Belakang" />
-          <Button text="Prodi" />
-          <Button text="Status" />
         </ButtonGroup>
-      </Box>
+        <Divider vertical={true} sx={{ my: 1 }} />
+        <Button intent="primary" text="Dosen Baru" />
+      </Flex>
     </Flex>
   )
 }
