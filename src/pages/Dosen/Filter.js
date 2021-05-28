@@ -1,9 +1,9 @@
-import { Button, ButtonGroup, ControlGroup, Dialog, InputGroup } from "@blueprintjs/core";
+import { Alert, Button, ButtonGroup, ControlGroup, Dialog, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
 import DialogDosenBaru from "./Dialog.DosenBaru";
 
-const Filter = () => {
+const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
   return (
     <Flex>
@@ -22,7 +22,14 @@ const Filter = () => {
       </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Flex>
-        <Button minimal={true} intent="danger" text="Delete selected" />
+        {selectedItem.length > 0 &&
+          <Button
+            minimal={true}
+            intent="danger"
+            text={`Delete ${selectedItem.length} selected`}
+            onClick={() => setDialogOpen("delete")}
+          />
+        }
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
@@ -30,6 +37,20 @@ const Filter = () => {
           onClick={() => setDialogOpen("add")}
         />
       </Flex>
+      <Alert
+        isOpen={dialogOpen === "delete"}
+        icon="trash"
+        intent="danger"
+        minimal={true}
+        cancelButtonText="Tidak"
+        confirmButtonText="Hapus"
+        onClose={() => setDialogOpen(null)}
+      >
+        <p>
+          <span>Anda yakin ingin menghapus {selectedItem.length} data dosen ini?</span>
+          <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
+        </p>
+      </Alert>
       <DialogDosenBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}

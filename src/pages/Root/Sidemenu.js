@@ -45,7 +45,7 @@ const Sidemenu = () => {
             if (item.exact) {
               active = location.pathname === item.path;
             } else {
-              active = location.pathname.indexOf(item.path) !== -1;
+              active = location.pathname.indexOf(item.path) === 0;
             }
             return (
               <MenuItem

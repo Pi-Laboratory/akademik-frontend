@@ -1,15 +1,40 @@
-import { Checkbox, Classes, Dialog } from "@blueprintjs/core";
+import { Button, ButtonGroup, Checkbox, Classes, Dialog } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useReducer, useState } from "react";
+
+function selectedItemReducer(state, action) {
+  switch (action.type) {
+    case "toggle":
+      console.log(state);
+      if (action.data.value) {
+        return selectedItemReducer(state, {
+          type: "add",
+          data: action.data
+        });
+      } else {
+        return selectedItemReducer(state, {
+          type: "remove",
+          data: action.data
+        });
+      }
+      break;
+    case "add":
+      return [...state, action.data.name];
+    case "remove":
+      return [...state.filter(item => item !== action.data.name)];
+    default: return state;
+  }
+}
 
 const List = () => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
-        <Filter />
+        <Filter selectedItem={selectedItem} />
       </Box>
       <ListGroup sx={{
         width: "100%",
@@ -20,7 +45,11 @@ const List = () => {
         <ListGroup.Header>
           <Flex sx={{ alignItems: "center" }}>
             <Box sx={{ width: 40, flexShrink: 0, }}>
-              <Checkbox />
+              <Checkbox
+                onChange={(e) => {
+                  console.log(e);
+                }}
+              />
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
@@ -48,10 +77,19 @@ const List = () => {
           </Flex>
         </ListGroup.Header>
         {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item>
+          <ListGroup.Item key={idx}>
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox />
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      name: idx,
+                      value: e.target.checked
+                    }
+                  })
+                }} />
               </Box>
               <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
                 {Math.round(Math.random() * 12093)}
@@ -73,6 +111,15 @@ const List = () => {
           </ListGroup.Item>
         ))}
       </ListGroup>
+      <Flex sx={{ my: 3, justifyContent: "center" }}>
+        <Button minimal={true} icon="chevron-left" text="Previous" />
+        <ButtonGroup>
+          <Button text="1" active={true} />
+          <Button text="2" />
+          <Button text="3" />
+        </ButtonGroup>
+        <Button minimal={true} text="Next" rightIcon="chevron-right" />
+      </Flex>
     </Box >
   )
 }
