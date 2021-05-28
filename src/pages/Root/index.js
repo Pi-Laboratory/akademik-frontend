@@ -38,28 +38,28 @@ const Navigation = [
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum",
-    "icon": ""
+    "icon": "blank"
   },
   {
     "title": "Nama Servis",
     "text": "Semester",
     "component": Semester,
     "path": "/semester",
-    "icon": ""
+    "icon": "blank"
   },
   {
     "title": "Nama Servis",
     "text": "Manajemen Ruang",
     "component": ManajemenRuang,
     "path": "/manajemen-ruang",
-    "icon": ""
+    "icon": "blank"
   },
   {
     "title": "Nama Servis",
     "text": "Dosen",
     "component": Dosen,
     "path": "/dosen",
-    "icon": ""
+    "icon": "blank"
   },
   {
     "title": "Program Studi",

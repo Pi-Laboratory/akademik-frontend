@@ -1,9 +1,11 @@
-import { Checkbox, Classes } from "@blueprintjs/core";
+import { Checkbox, Classes, Dialog } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const List = () => {
+  const [dialogOpen, setDialogOpen] = useState(null);
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
