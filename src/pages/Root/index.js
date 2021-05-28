@@ -111,19 +111,19 @@ const Navigation = [
     "icon": "blank"
   },
   {
+    "title": "Akademik Kemahasiswaan",
+    "text": "Kemahasiswaan",
+    "component": AkademikMahasiswa,
+    "path": "/akademik-mahasiswa",
+    "icon": "user"
+  },
+  {
     "title": "Settings",
     "text": "Settings",
     "component": Settings,
     "path": "/settings",
     "icon": "cog"
   },
-  {
-    "title": "Akademik Kemahasiswaan",
-    "text": "Kemahasiswaan",
-    "component": AkademikMahasiswa,
-    "path": "/akademik-mahasiswa",
-    "icon": "user"
-  }
 ]
 
 const Root = () => {

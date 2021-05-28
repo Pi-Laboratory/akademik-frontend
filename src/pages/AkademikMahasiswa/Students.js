@@ -1,7 +1,9 @@
-import { Button, H4, MenuItem } from '@blueprintjs/core'
-import { Select } from '@blueprintjs/select'
-import { Box } from 'components'
-import React from 'react'
+import { H4 } from '@blueprintjs/core'
+import { Box, Divider as Div } from 'components'
+import React, { useState } from 'react'
+import AdvancedSearch from './AdvancedSearch';
+import { SimpleSearch } from './SimpleSearch';
+import StudentList from './StudentList';
 
 const currentYear = new Date().getFullYear();
 
@@ -11,20 +13,20 @@ export const programs = Array.apply(null, { length: 10 }).map((program, i) => ({
   year: currentYear - i % 2
 }));
 
-const StudentSelect = Select.ofType();
-
 const Students = () => {
+  const [mode, setMode] = useState('simple')
+
   return (
     <Box sx={{ px: 3 }}>
       <H4>Mahasiswa</H4>
-      <StudentSelect items={programs} itemRenderer={program =>
-      (<MenuItem
-        text={program.title}
-        key={program.id}
-      />)
-      }>
-        <Button text="Pilih Prodi" rightIcon="caret-down" />
-      </StudentSelect>
+      {
+        mode === 'simple' ?
+        <SimpleSearch onSwitchMode={setMode} />
+        :
+        <AdvancedSearch onSwitchMode={setMode} />
+      }
+      <Div />
+      <StudentList />
     </Box>
   )
 }
