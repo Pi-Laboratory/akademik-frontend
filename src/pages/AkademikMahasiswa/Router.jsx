@@ -1,15 +1,15 @@
 import { useNav } from 'pages/Root/hoc'
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router'
+import { Switch, Route } from 'react-router'
 
 const Router = () => {
   const navigation = useNav();
 
   return (
     <Switch>
-      <Route exact path={'/akademik-mahasiswa'}>
+      {/* <Route exact path={'/akademik-mahasiswa'}>
         <Redirect to={'/akademik-mahasiswa/mahasiswa'} />
-      </Route>
+      </Route> */}
       {navigation.items.map((item) => (
         <Route
           exact={item.exact}

@@ -9,6 +9,14 @@ export const AkademikMahasiswa = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {
+      "title": "Halaman Utama",
+      "text": "Halaman Utama",
+      "component": Curriculums,
+      "path": `${path}`,
+      exact: true,
+      icon: 'home'
+    },
+    {
       "title": "Mahasiswa",
       "text": "Mahasiswa",
       "component": Students,
