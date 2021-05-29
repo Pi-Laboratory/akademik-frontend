@@ -1,5 +1,6 @@
-import { Box, Flex } from "components";
-import Filter from "./Filter";
+import { Box, Divider, Flex } from "components";
+import Matakuliah from "pages/Kurikulum.MataKuliah";
+import { Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import List from "./List";
 
@@ -10,14 +11,13 @@ const Layout = () => {
       mr: 3,
       flexDirection: "column",
     }}>
-      <Box sx={{ mb: 3 }}>
-        <Header />
-      </Box>
-      <Box sx={{ mx: 3 }}>
-        <Filter />
-      </Box>
+      <Header />
+      <Divider sx={{ mb: 0 }} />
       <Box>
-        <List />
+        <Switch>
+          <Route path="/kurikulum/:nip" component={Matakuliah} />
+          <Route path="/kurikulum" component={List} />
+        </Switch>
       </Box>
     </Flex>
   );

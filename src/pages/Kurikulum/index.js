@@ -1,6 +1,6 @@
 import Layout from "./Layout";
 
-const Kurikulum = () => {
+const Kurikulum= () => {
   return (
     <Layout />
   )

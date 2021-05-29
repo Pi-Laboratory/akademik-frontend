@@ -94,46 +94,21 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    TL-D4-2020
+                 35000
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Nama Kurikulum
+                 Kode
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  2
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  min
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                    3
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Min.Percobaan
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                    3
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Maks Nilai D
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  <Link to={`kurikulum/${idx}`}>
-                    24
-                  </Link>
+                Matematika
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Mata Kuliah
                 </Box>
               </Box>
+             
               <Box sx={{ flexGrow: 1 }}>
                 Teknik Elektro
               </Box>
