@@ -87,18 +87,6 @@ const List = () => {
                 <Box>
                   Imanuel Pundoko
                 </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Nama Lengkap
-                </Box>
-              </Box>
-
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  Jl. A.A. Maramis KM. 8, Paniki Bawah, Kec. Mapanget
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Alamat
-                </Box>
               </Box>
 
               <Box sx={{ flexGrow: 1, mr: 3 }}>
