@@ -92,26 +92,44 @@ const List = () => {
                 }} />
               </Box>
              
+           
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 35000
+                3500
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Kode
+                  Matematika
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                Matematika
+                1
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Mata Kuliah
+                Semester
                 </Box>
               </Box>
-             
+              
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  SKS
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                Jam
+                </Box>
+              </Box>
               <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
+                Teori
               </Box>
+
             </Flex>
           </ListGroup.Item>
         ))}
