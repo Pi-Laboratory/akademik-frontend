@@ -6,11 +6,11 @@ import { useHistory } from 'react-router'
 import Router from './Router'
 
 export const Layout = () => {
-  const { push, location: {pathname} } = useHistory();
+  const { push, location: { pathname } } = useHistory();
   const navigation = useNav();
 
   return (
-    <Flex sx={{ py: 2, pt: 4, flexDirection: 'column' }}>
+    <Flex sx={{ py: 2, flexDirection: 'column', height: '100%' }}>
       <Box sx={{ px: 3 }}>
         <Box as={H2} sx={{ m: 0 }}>Akademik Kemahasiswaan</Box>
         <Box sx={{ mb: 3 }} as="p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur soluta similique id vel quae dolorem recusandae blanditiis, aliquid quidem deserunt, voluptas animi dicta laborum ex odio doloribus. Pariatur, ad deleniti.</Box>
@@ -22,7 +22,7 @@ export const Layout = () => {
           }
         </Tabs>
       </Box>
-      <Divider sx={{ mt: 0 }} />
+      <Divider sx={{ mt: 0, mb: pathname.includes('detail') ? 0 : `8px` }} />
       <Router />
     </Flex>
   )

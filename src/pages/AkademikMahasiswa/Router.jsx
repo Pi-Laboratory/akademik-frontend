@@ -1,9 +1,12 @@
 import { useNav } from 'pages/Root/hoc'
 import React from 'react'
-import { Switch, Route } from 'react-router'
+import { Switch, Route, useRouteMatch } from 'react-router'
+import DaftarMahasiswa from './DaftarMahasiswa';
+import DetailMahasiswa from './DaftarMahasiswa/Detail';
 
 const Router = () => {
   const navigation = useNav();
+  const {path} = useRouteMatch();
 
   return (
     <Switch>
@@ -18,6 +21,8 @@ const Router = () => {
           component={item.component}
         />
       ))}
+      <Route path={`${path}/angkatan/1`} exact component={DaftarMahasiswa} />
+      <Route path={`${path}/angkatan/1/detail/1`} exact component={DetailMahasiswa} />
     </Switch>
   )
 }

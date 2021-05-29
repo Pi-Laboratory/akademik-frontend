@@ -1,11 +1,15 @@
 import { Button, HTMLTable } from '@blueprintjs/core'
 import { Box } from 'components'
 import React from 'react'
+import { useHistory, useRouteMatch } from 'react-router';
 import { programs } from './Students'
 
 const currentYear = new Date().getFullYear();
 
 const StudentList = () => {
+  const { push } = useHistory();
+  const {path} = useRouteMatch();
+
   return (
     <Box as={HTMLTable} interactive={true} sx={{ width: "100%" }}>
       <Box as="thead" sx={{
@@ -41,7 +45,7 @@ const StudentList = () => {
             <td>{Math.round(Math.random() * 1000)}</td>
             <td>{Math.round(Math.random() * 1000)}</td>
             <td>{Math.round(Math.random() * 1000)}</td>
-            <td><Button icon="eye-open" /></td>
+            <td><Button onClick={() => push(`${path}/angkatan/1`)} icon="eye-open" /></td>
           </tr>
         ))}
       </tbody>
