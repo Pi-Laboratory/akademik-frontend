@@ -1,6 +1,6 @@
 import { Callout, H4 } from '@blueprintjs/core'
 import { Box, Divider as Div } from 'components'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import AdvancedSearch from './AdvancedSearch';
 import List from './DaftarMahasiswa/List';
 import { SimpleSearch } from './SimpleSearch';
