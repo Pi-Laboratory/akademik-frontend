@@ -7,44 +7,6 @@ import { Link } from 'react-router-dom';
 const StudentList = () => {
   const { path } = useRouteMatch();
   return (
-<<<<<<< HEAD
-    <Box as={HTMLTable} interactive={true} sx={{ width: "100%" }}>
-      <Box as="thead" sx={{
-        "th": {
-          verticalAlign: 'middle !important',
-        }
-      }}>
-        <tr>
-          <th rowSpan={2}>No</th>
-          <th rowSpan={2}>Angkatan</th>
-          <Box as="th" sx={{ textAlign: 'center !important' }} colSpan={7}>Jumlah Mahasiswa</Box>
-          <th rowSpan={2}>Aksi</th>
-        </tr>
-        <tr>
-          <th>Aktif</th>
-          <th>Lulus</th>
-          <th>Cuti</th>
-          <th>Drop Out</th>
-          <th>Keluar</th>
-          <th>Non-aktif</th>
-          <th>Total</th>
-        </tr>
-      </Box>
-      <tbody>
-        {programs.map((program, i) => (
-          <tr key={i}>
-            <td>{i + 1}</td>
-            <td>{`${(currentYear - i) - 1}/${(currentYear - i)}`}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td>{Math.round(Math.random() * 1000)}</td>
-            <td><Button onClick={() => push(`${path}/angkatan/1`)} icon="eye-open" /></td>
-          </tr>
-=======
     <>
       <ListGroup>
         {Array(20).fill(0).map((_, idx) => (
@@ -119,7 +81,6 @@ const StudentList = () => {
               </Flex>
             </Flex>
           </ListGroup.Item>
->>>>>>> 9626e5e8d25333b178efebea36e3538921bcdb97
         ))}
       </ListGroup>
       <Flex sx={{ my: 3, justifyContent: "center" }}>
