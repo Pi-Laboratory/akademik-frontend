@@ -1,8 +1,8 @@
 import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
+import { Kurikulum } from "pages/Kurikulum";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
-import Kurikulum from "pages/Kurikulum";
 import Semester from "pages/Semester";
 import ManajemenRuang from "pages/ManejemenRuang";
 import Dosen from "pages/Dosen";

@@ -126,7 +126,7 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kurikulum/${idx}`}>
+                  <Link to={`kurikulum/mata-kuliah`}>
                     24
                   </Link>
                 </Box>

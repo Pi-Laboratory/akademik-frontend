@@ -92,7 +92,6 @@ const List = () => {
                 }} />
               </Box>
              
-           
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
                 3500
