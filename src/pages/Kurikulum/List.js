@@ -53,14 +53,19 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-              <Select
+            <Select
                 minimal={true}
-                label="Status"
+                label="Tahun"
                 options={[
-                  { label: "Aktif", value: true },
-                  { label: "Tidak Aktif", value: false }
+                  { label: "2020", value: 0 },
+                  { label: "2019", value: 0 },
+                  { label: "2018", value: 1 },
+                  { label: "2017", value: 2 },
+                  { label: "2016", value: 3 },
+                  { label: "2015", value: 3 },
                 ]}
               />
+           
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -94,11 +99,11 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    TL-D4-2020
+                  <Link to={`kurikulum/mata-kuliah`}>
+                  TL-D4-2020
+                  </Link>
                 </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Nama Kurikulum
-                </Box>
+                
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
@@ -126,9 +131,7 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kurikulum/mata-kuliah`}>
                     24
-                  </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Mata Kuliah

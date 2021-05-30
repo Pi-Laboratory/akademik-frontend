@@ -53,14 +53,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-              <Select
-                minimal={true}
-                label="Status"
-                options={[
-                  { label: "Aktif", value: true },
-                  { label: "Tidak Aktif", value: false }
-                ]}
-              />
+             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -94,10 +87,10 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                3500
+                Matematika
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Matematika
+                 3500
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
