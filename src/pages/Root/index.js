@@ -14,10 +14,11 @@ import Pejabat from "pages/Pejabat";
 import PejabatPengesah from "pages/Pejabat.Pengesah";
 import Presensi from "pages/Presensi"
 
-import { RootProvider } from "./hoc";
+import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
+import { useRouteMatch } from "react-router";
 
-const Navigation = [
+const navigation = [
   {
     "title": "Nama Servis",
     "text": "Dashboard",
@@ -127,9 +128,12 @@ const Navigation = [
 ]
 
 const Root = () => {
+  const { path } = useRouteMatch();
   return (
-    <RootProvider navigation={Navigation}>
-      <Layout />
+    <RootProvider>
+      <Navigation base={path} navigation={navigation}>
+        <Layout />
+      </Navigation>
     </RootProvider>
   )
 }
