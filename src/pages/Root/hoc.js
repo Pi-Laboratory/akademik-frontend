@@ -75,7 +75,6 @@ export const useNav = (base) => {
     return its || null;
   }, [navigation.path, base]);
 
-  console.log(items);
   return {
     items: items,
     go: navigation.go

@@ -9,7 +9,6 @@ export const Layout = () => {
   const { location: { pathname } } = useHistory();
   const { path } = useRouteMatch();
   const navigation = useNav(path);
-  console.log(path, navigation);
   return (
     <Flex sx={{ py: 2, flexDirection: 'column', height: '100%' }}>
       <Box sx={{ px: 3 }}>
