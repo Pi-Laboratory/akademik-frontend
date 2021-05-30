@@ -16,9 +16,10 @@ const Layout = () => {
           ["Nomot KTP", "72239503948503"],
           ["Alamat", "Tikala, Manado"],
           ["Golongan Darah", "O"],
-          ["Agama", "Kristen Protestan"],
+          ["Agama", "-"],
           ["Status Nikah", "Belum Menikah"],
-          ["Program Studi", "Teknik Elektro"]
+          ["Jurusan", "Teknik Elektro"],
+          ["Program Studi", "Teknik Komputer"]
         ].map((item, idx) => (
           <Flex key={idx} sx={{ mt: 3 }}>
             <Box sx={{ width: "40%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
