@@ -85,7 +85,18 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
+                <Link to={`akun-sementara/${idx}`}>
                   Imanuel Pundoko
+                </Link>                
+                </Box>
+              </Box>
+
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                  Mandiri
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jalur Pendaftaran
                 </Box>
               </Box>
 

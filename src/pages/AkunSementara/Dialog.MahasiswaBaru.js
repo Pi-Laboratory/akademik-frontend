@@ -1,4 +1,5 @@
-import { Button, Classes, Dialog, FormGroup, InputGroup ,FileInput ,} from "@blueprintjs/core";
+import { Button, Classes, Dialog, FormGroup, InputGroup, FileInput, Sele } from "@blueprintjs/core";
+import { Select } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -29,6 +30,21 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
+              <FormGroup
+                label="Jalur Pendaftaran"
+                labelFor="f-jalur-pendaftaran"
+                helperText={errors["jalur-pendaftaran"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>Jalur Pilihan</option>
+                    <option value="1">Mandiri</option>
+                    <option value="2">Bidikmisi</option>
+                    <option value="3">SNMPTN</option>
+                  </select>
+                </div>
+              </FormGroup>
               <FormGroup
                 label="NIK"
                 labelFor="f-nik"
