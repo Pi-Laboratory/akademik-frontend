@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
-import { useHistory, useLocation } from "react-router";
+import { useHistory } from "react-router";
 
 export const RootContext = createContext(null);
 
@@ -10,23 +10,14 @@ function navigationReducer(state, action) {
   }
   return {
     ...ret,
-    [action.base]: [
-      ...ret[action.base],
-      action.data
-    ],
+    [action.base]: action.data,
   }
 }
 
 export const RootProvider = ({ children }) => {
   const history = useHistory();
-  const location = useLocation();
   const [items, dispatchItems] = useReducer(navigationReducer, {});
-  const currentNav = useMemo(() => {
-    // const current = navigation.find(item => {
-    //   return (`${item.path}` === location.pathname);
-    // });
-    return null;
-  }, [location, items]);
+  const currentNav = null;
 
   const navGoTo = useCallback((path) => {
     history.push(path);
@@ -59,13 +50,11 @@ export const Navigation = ({ base, navigation, children }) => {
   const root = useRoot();
   const { __internal } = root;
   useEffect(() => {
-    for (const item of navigation) {
-      __internal.dispatchNavigation({
-        base: base,
-        data: item
-      });
-    }
-  }, []);
+    __internal.dispatchNavigation({
+      base: base,
+      data: navigation
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return children;
 }
 
@@ -74,11 +63,19 @@ export const useNav = (base) => {
   const items = useMemo(() => {
     let its = navigation.path[base] || [];
     its = its.map((itm) => {
-      itm.path = itm.path.replace("/", base);
+      if (itm.path.indexOf(base) === 0) return itm;
+      let path = base;
+
+      if (base.slice(-1) !== "/")
+        path = path.concat("/");
+
+      itm.path = itm.path.replace("/", path);
       return itm;
     });
     return its || null;
-  }, [navigation.path]);
+  }, [navigation.path, base]);
+
+  console.log(items);
   return {
     items: items,
     go: navigation.go

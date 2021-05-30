@@ -17,6 +17,7 @@ import Presensi from "pages/Presensi"
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
 import { useRouteMatch } from "react-router";
+import Helmet from "react-helmet";
 
 const navigation = [
   {
@@ -131,6 +132,9 @@ const Root = () => {
   const { path } = useRouteMatch();
   return (
     <RootProvider>
+      <Helmet>
+        <title>Dashboard - Portal Akademik</title>
+      </Helmet>
       <Navigation base={path} navigation={navigation}>
         <Layout />
       </Navigation>

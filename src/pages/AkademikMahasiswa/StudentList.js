@@ -15,7 +15,7 @@ const StudentList = () => {
               <Box sx={{ flexGrow: 1, mr: 3, fontSize: 2 }}>
                 <Box sx={{ fontSize: 0 }}>Angkatan</Box>
                 <div>
-                  <Link to={`${path}/angkatan/1`}>
+                  <Link to={`${path}angkatan/1`}>
                     {2000 + idx}/{2000 + idx - 1}
                   </Link>
                 </div>

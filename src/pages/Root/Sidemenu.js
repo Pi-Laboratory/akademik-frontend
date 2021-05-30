@@ -43,7 +43,6 @@ const Sidemenu = () => {
           {
             navigation.items
             && navigation.items.map((item) => {
-              console.log(item)
               let active = false;
               if (item.exact) {
                 active = location.pathname === item.path;
