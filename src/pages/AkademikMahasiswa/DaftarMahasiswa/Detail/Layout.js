@@ -1,11 +1,17 @@
-import { Classes, H3 } from "@blueprintjs/core";
+import { Button, Classes, H3 } from "@blueprintjs/core";
 import { AspectRatio, Box, Divider, Flex } from "components";
+import { useHistory } from "react-router";
 
 const Layout = () => {
+  const { push } = useHistory();
   return (
     <Flex sx={{ px: 3, mb: '-8px', height: '100%' }}>
-      <Box sx={{ py: 4, flexGrow: 1 }}>
-        <Box as={H3}>Informasi Umum</Box>
+      <Box sx={{ py: 2, flexGrow: 1 }}>
+        <Flex>
+          <Button text="Kembali" icon="chevron-left" onClick={() => push('/akademik-mahasiswa/mahasiswa')} />
+          <Divider sx={{ mx: 2 }} />
+          <Box as={H3}>Informasi Umum</Box>
+        </Flex>
         {[
           ["Nomot KTP", "72239503948503"],
           ["Alamat", "Tikala, Manado"],
@@ -42,7 +48,7 @@ const Layout = () => {
           </Flex>
         ))}
       </Box>
-      <Divider vertical={true}/>
+      <Divider vertical={true} />
       <Box sx={{ pt: 4, px: 2, width: 350, flexShrink: 0 }}>
         <Box className={`${Classes.CARD}`} sx={{ p: 2, mb: 2, width: 250 }}>
           <AspectRatio ratio="1:1">

@@ -35,7 +35,7 @@ const StudentList = () => {
       </Box>
       <tbody>
         {programs.map((program, i) => (
-          <tr>
+          <tr key={i}>
             <td>{i + 1}</td>
             <td>{`${(currentYear - i) - 1}/${(currentYear - i)}`}</td>
             <td>{Math.round(Math.random() * 1000)}</td>

@@ -1,6 +1,6 @@
 import { Callout, H4 } from '@blueprintjs/core'
 import { Box, Divider as Div } from 'components'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import AdvancedSearch from './AdvancedSearch';
 import List from './DaftarMahasiswa/List';
 import { SimpleSearch } from './SimpleSearch';
@@ -27,15 +27,19 @@ const Students = () => {
           <AdvancedSearch onSwitchMode={setMode} onSearch={() => toggleFound(true)} />
       }
       <Div />
-      { found &&
+      { found ?
         <>
           <Callout intent="primary">
             Ditemukan 4 data yang cocok
           </Callout>
           <Box sx={{ mt: 2 }}>
-          <List length={4} />
+            <List length={4} />
           </Box>
         </>
+        :
+        <Box sx={{ mt: 2 }}>
+          <List length={150} />
+        </Box>
       }
     </Box>
   )

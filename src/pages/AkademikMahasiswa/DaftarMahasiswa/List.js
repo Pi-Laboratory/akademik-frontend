@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 
 const List = ({ length }) => {
   return (
-    <ListGroup>
+    <>
+    <ListGroup sx={{ mb: 3 }}>
       {Array.apply(null, { length: typeof length === 'undefined' ? 150 : length }).map(() => (
         <ListGroup.Item>
           <Flex sx={{ justifyContent: 'space-between' }}>
@@ -21,6 +22,8 @@ const List = ({ length }) => {
         </ListGroup.Item>
       ))}
     </ListGroup>
+    <p className="bp3-text-muted">{length} data mahasiswa</p>
+    </>
   )
 }
 
