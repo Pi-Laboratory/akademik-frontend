@@ -38,7 +38,7 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
               >
                 <div class="bp3-select .modifier">
                   <select>
-                    <option selected>Jalur Pilihan</option>
+                    <option selected>Jalur Pendaftaran</option>
                     <option value="1">Mandiri</option>
                     <option value="2">Bidikmisi</option>
                     <option value="3">SNMPTN</option>

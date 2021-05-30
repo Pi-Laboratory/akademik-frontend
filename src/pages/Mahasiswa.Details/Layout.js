@@ -7,7 +7,7 @@ const Layout = () => {
       <Box sx={{ py: 4, flexGrow: 1 }}>
         <Box as={H3}>Informasi Umum</Box>
         {[
-          ["Jalur Pendaftaran", "Jalur 1"],
+          ["Jalur Pendaftaran", "Mandiri"],
           ["Nomot KTP", "72239503948503"],
           ["Alamat", "Tikala, Manado"],
           ["Golongan Darah", "O"],

@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <Box sx={{ ml: 3 }}>
       <Box as="h2" className={`${Classes.HEADING}`}>
-        <span>Mahasiswa</span>
+        <span>Akun Sementara</span>
         {params.nip && <Tag>{params.nip}</Tag>}
       </Box>
     </Box >
