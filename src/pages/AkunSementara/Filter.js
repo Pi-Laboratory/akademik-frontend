@@ -2,6 +2,7 @@ import { Alert, Button, ButtonGroup, ControlGroup, Dialog, InputGroup } from "@b
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
 import DialogMahasiswaBaru from "./Dialog.MahasiswaBaru";
+import DialogGenerateAkun from "./Dialog.GenerateAkun";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
@@ -30,12 +31,18 @@ const Filter = ({ selectedItem }) => {
             onClick={() => setDialogOpen("delete")}
           />
         }
+        <Button
+          intent="primary"
+          text="Generate Akun"
+          onClick={() => setDialogOpen("generate")}
+        />
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
           text="Mahasiswa Baru"
           onClick={() => setDialogOpen("add")}
         />
+        
       </Flex>
       <Alert
         isOpen={dialogOpen === "delete"}
@@ -53,6 +60,10 @@ const Filter = ({ selectedItem }) => {
       </Alert>
       <DialogMahasiswaBaru
         isOpen={dialogOpen === "add"}
+        onClose={() => { setDialogOpen(null) }}
+      />
+       <DialogGenerateAkun
+        isOpen={dialogOpen === "generate"}
         onClose={() => { setDialogOpen(null) }}
       />
     </Flex>

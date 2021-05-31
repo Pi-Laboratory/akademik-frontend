@@ -1,5 +1,6 @@
-import { Button, Classes, Dialog, FormGroup, InputGroup, FileInput, Sele } from "@blueprintjs/core";
-import { Select } from "components";
+import { Button, Classes, Dialog, FormGroup, InputGroup, FileInput, RadioGroup, Radio, } from "@blueprintjs/core";
+import { DateInput } from "@blueprintjs/datetime";
+import { Select, } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -10,7 +11,8 @@ const Schema = Yup.object().shape({
   "tempat lahir": Yup.string().required(),
 })
 
-const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
+
+const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
@@ -38,10 +40,20 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
               >
                 <div class="bp3-select .modifier">
                   <select>
-                    <option selected>Jalur Pendaftaran</option>
-                    <option value="1">Mandiri</option>
-                    <option value="2">Bidikmisi</option>
-                    <option value="3">SNMPTN</option>
+                    <option selected>-- PILIH ---</option>
+                    <option value="1">MAN (Mandiri)</option>
+                    <option value="2">KIP (Kartu Indonesia Pintar)</option>
+                    <option value="3">PLN (Kerjasama PT.PLN)</option>
+                    <option value="4">PSB (Penelusuran Siswa Berpotensi)</option>
+                    <option value="5">REG (Reguler)</option>
+                    <option value="6">SBMPN (Seleksi Barsama Masuk Politeknik Negeri(D3))</option>
+                    <option value="7">SBMPTN (Seleksi Barsama Masuk Perguruan Tinggi Negeri(S.tr))</option>
+                    <option value="8">SEM (Semua)</option>
+                    <option value="9">SMK (Kelas Khusus SMK)</option>
+                    <option value="10">SNMPN (Seleksi Nasional Masuk Politeknik Negeri(D3))</option>
+                    <option value="11">SNMPTN (Seleksi Nasional Masuk Perguruan Tinggi Negeri )</option>
+                    <option value="12">SPA (Seleksi Potensi Akademik)</option>
+                    <option value="13">UMPN  (UMPN Politeknik Negeri Manado)</option>
                   </select>
                 </div>
               </FormGroup>
@@ -74,18 +86,30 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
                 />
               </FormGroup>
               <FormGroup
+                label="Gender"
+                labelFor="f-gender"
+                helperText={errors["gender"]}
+                intent={"danger"}
+              >
+                <Radio inline={true} name="gender" label="Laki-Laki" value="one" />
+                <Radio inline={true} name="gender" label="Perempuan" value="two" />
+              </FormGroup>
+
+              <FormGroup
                 label="Tanggal Lahir"
                 labelFor="f-tanggal-lahir"
                 helperText={errors["tanggal-lahir"]}
                 intent={"danger"}
               >
                 <InputGroup
+                  type="date"
                   id="f-tanggal-lahir"
                   name="tanggal-lahir"
                   value={values["tanggal-lahir"]}
                   onChange={handleChange}
                   intent={errors["tanggal-lahir"] ? "danger" : "none"}
                 />
+            
               </FormGroup>
               <FormGroup
                 label="Tempat Lahir"
@@ -143,4 +167,4 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogDosenBaru;
+export default DialogMahasiswaBaru;
