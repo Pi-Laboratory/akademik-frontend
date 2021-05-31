@@ -5,19 +5,17 @@ import Users from "pages/Users";
 import Kurikulum from "pages/Kurikulum";
 import Semester from "pages/Semester";
 import ManajemenRuang from "pages/ManejemenRuang";
-import Dosen from "pages/Dosen";
 import ProgramStudi from "pages/ProgramStudi";
 import JenisNilai from "pages/JenisNilai";
 import PredikatKelulusan from "pages/PredikatKelulusan";
 import Jadwal from "pages/Jadwal";
-import Pejabat from "pages/Pejabat";
-import PejabatPengesah from "pages/Pejabat.Pengesah";
 import Presensi from "pages/Presensi"
 
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
 import { useRouteMatch } from "react-router";
 import Helmet from "react-helmet";
+import DosenPejabat from "pages/DosenPejabat";
 
 const navigation = [
   {
@@ -57,10 +55,10 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Nama Servis",
-    "text": "Dosen",
-    "component": Dosen,
-    "path": "/dosen",
+    "title": "Dosen dan Pejabat",
+    "text": "Dosen dan Pejabat",
+    "component": DosenPejabat,
+    "path": "/dosen-pejabat",
     "icon": "blank"
   },
   {
@@ -89,20 +87,6 @@ const navigation = [
     "text": "Jadwal",
     "component": Jadwal,
     "path": "/jadwal",
-    "icon": "blank"
-  },
-  {
-    "title": "Pejabat",
-    "text": "Pejabat",
-    "component": Pejabat,
-    "path": "/pejabat",
-    "icon": "blank"
-  },
-  {
-    "title": "Pejabat Pengesah",
-    "text": "Pejabat Pengesah",
-    "component": PejabatPengesah,
-    "path": "/pejabat-pengesah",
     "icon": "blank"
   },
   {

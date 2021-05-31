@@ -3,6 +3,7 @@ import { Box } from "components";
 const ListGroupItem = ({ children, sx, ...props }) => {
   return (
     <Box
+      className="list-group-item"
       sx={{
         padding: 3,
         borderBottomWidth: "1px",
