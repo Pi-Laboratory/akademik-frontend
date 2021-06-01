@@ -1,9 +1,11 @@
 import { Layout } from './Layout'
 import React, { useMemo } from 'react'
-import { RootProvider } from 'pages/Root/hoc'
+import Helmet from "react-helmet";
+import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import Students from './Students'
 import Curriculums from './Curriculums'
+import Generations from './Generations'
 
 export const AkademikMahasiswa = () => {
   const { path } = useRouteMatch();
@@ -13,21 +15,26 @@ export const AkademikMahasiswa = () => {
       "title": "Mahasiswa",
       "text": "Mahasiswa",
       "component": Students,
-      "path": `${path}/mahasiswa`,
+      "path": `/mahasiswa`,
       exact: true
     },
     {
       "title": "Kurikulum",
       "text": "Kurikulum",
       "component": Curriculums,
-      "path": `${path}/kurikulum`,
+      "path": `/kurikulum`,
       exact: true
     },
-  ]), [path]);
+  ]), []);
 
   return (
-    <RootProvider navigation={navigation}>
-      <Layout />
-    </RootProvider>
+    <>
+      <Helmet>
+        <title>Dashboard - Akademik Kemahasiswaan</title>
+      </Helmet>
+      <Navigation base={path} navigation={navigation}>
+        <Layout />
+      </Navigation>
+    </>
   )
 }

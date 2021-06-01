@@ -7,7 +7,6 @@ import { useReducer } from "react";
 function selectedItemReducer(state, action) {
   switch (action.type) {
     case "toggle":
-      console.log(state);
       if (action.data.value) {
         return selectedItemReducer(state, {
           type: "add",
@@ -53,10 +52,10 @@ const List = () => {
             <Box sx={{ flexShrink: 0 }}>
               <Select
                 minimal={true}
-                label="Status"
+                label="Jabatan"
                 options={[
-                  { label: "Aktif", value: true },
-                  { label: "Tidak Aktif", value: false }
+                  { label: "Direktur", value: true },
+                  { label: "Wakil Direktur", value: false }
                 ]}
               />
               <Select
@@ -79,7 +78,6 @@ const List = () => {
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {
@@ -89,18 +87,18 @@ const List = () => {
                   })
                 }} />
               </Box>
-              <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
-                {Math.round(Math.random() * 12093)}
-              </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`dosen/${idx}`}>
+                  <Link to={`pejabat/${idx}`}>
                     Prof. Dr. Imanuel Pundoko, S.Th.
                   </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                   {`74398734${Math.round(Math.random() * 8364872343)}`}
                 </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1 }}>
+                Direktur
               </Box>
               <Box sx={{ flexGrow: 1 }}>
                 Teknik Elektro

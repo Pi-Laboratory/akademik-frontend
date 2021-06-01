@@ -1,8 +1,19 @@
 import { Box } from "components";
 
-const ListGroupHeader = ({ children, ...props }) => {
+const ListGroupHeader = ({ children, sx, ...props }) => {
   return (
-    <Box className="list-group-item list-group-header" {...props}>{children}</Box>
+    <Box
+      className="list-group-item list-group-header"
+      sx={{
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        bg: "white",
+        ...sx
+      }}
+      {...props}
+    >
+      {children}
+    </Box>
   )
 }
 
