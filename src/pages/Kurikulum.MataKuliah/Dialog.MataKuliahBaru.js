@@ -3,53 +3,53 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "nama-lengkap": Yup.string().required(),
-  "nip": Yup.string().required(),
+  "nama-matakuliah": Yup.string().required(),
+  "kode-matakuliah": Yup.string().required(),
 })
 
-const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogMataKuliahBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Dosen Baru"
+      title="Tambah Mata Kuliah Baru"
     >
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "nama-lengkap": "",
-          "nip": "",
+          "nama-matakuliah": "",
+          "kode-matakuliah": "",
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
-                label="NIP"
-                labelFor="f-nip"
-                helperText={errors["nip"]}
+                label="Kode Mata Kuliah"
+                labelFor="f-kode-matakuliah"
+                helperText={errors["kode-matakuliah"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nip"
-                  name="nip"
-                  value={values["nip"]}
+                  id="f-kode-matakuliah"
+                  name="kode-matakuliah"
+                  value={values["kode-matakuliah"]}
                   onChange={handleChange}
-                  intent={errors["nip"] ? "danger" : "none"}
+                  intent={errors["kode-matakuliah"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
-                label="Nama Lengkap"
-                labelFor="f-nama-lengkap"
-                helperText={errors["nama-lengkap"]}
+                label="Nama Mata Kuliah"
+                labelFor="f-nama-matakuliah"
+                helperText={errors["nama-matakuliah"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama-lengkap"
-                  name="nama-lengkap"
-                  value={values["nama-lengkap"]}
+                  id="f-nama-matakuliah"
+                  name="nama-matakuliah"
+                  value={values["nama-matakuliah"]}
                   onChange={handleChange}
-                  intent={errors["nama-lengkap"] ? "danger" : "none"}
+                  intent={errors["nama-matakuliah"] ? "danger" : "none"}
                 />
               </FormGroup>
             </div>
@@ -66,4 +66,4 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogDosenBaru;
+export default DialogMataKuliahBaru;

@@ -3,21 +3,21 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "ipk-min": Yup.string().required(),
-  "nip": Yup.string().required(),
+  "semester": Yup.string().required(),
+  "tahun": Yup.string().required(),
 })
 
-const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Kurikulum Baru"
+      title="Tambah Dosen Baru"
     >
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "ipk-min": "",
+          "semester": "",
           "tahun": "",
         }}
       >
@@ -39,31 +39,17 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
                 />
               </FormGroup>
               <FormGroup
-                label="IPK Min"
-                labelFor="f-ipk-min"
-                helperText={errors["ipk-min"]}
+                label="Semester"
+                labelFor="f-semester"
+                helperText={errors["semester"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-ipk-min"
-                  name="ipk-min"
-                  value={values["ipk-min"]}
+                  id="f-semester"
+                  name="semester"
+                  value={values["semester"]}
                   onChange={handleChange}
-                  intent={errors["ipk-min"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="IPK Min Percobaan"
-                labelFor="f-ipk-min-p"
-                helperText={errors["ipk-min-p"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-ipk-min-p"
-                  name="ipk-min-p"
-                  value={values["ipk-min-p"]}
-                  onChange={handleChange}
-                  intent={errors["ipk-min-p"] ? "danger" : "none"}
+                  intent={errors["semester"] ? "danger" : "none"}
                 />
               </FormGroup>
             </div>
@@ -80,4 +66,4 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogKurikulumBaru;
+export default DialogDosenBaru;

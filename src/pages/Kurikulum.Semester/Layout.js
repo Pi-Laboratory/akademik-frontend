@@ -56,6 +56,22 @@ const List = () => {
              
               <Select
                 minimal={true}
+                label="Tahun"
+                options={[
+                  { label: "2020", value: 0 },
+                  { label: "2019", value: 0 },
+                  { label: "2018", value: 1 },
+                  { label: "2017", value: 2 },
+                  { label: "2016", value: 3 },
+                  { label: "2015", value: 3 },
+                ]}
+              />
+            </Box>
+            
+            <Box sx={{ flexShrink: 0 }}>
+             
+              <Select
+                minimal={true}
                 label="Program Studi"
                 options={[
                   { label: "Teologi", value: 0 },
@@ -87,42 +103,27 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                Matematika
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                 3500
+                2021
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                <Link to={`semester`}>
                 1
-                </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                 Semester
                 </Box>
               </Box>
-              
+            
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                3
+                Aktif
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  SKS
+                Status
                 </Box>
               </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                3
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Jam
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teori
-              </Box>
+           
 
             </Flex>
           </ListGroup.Item>
