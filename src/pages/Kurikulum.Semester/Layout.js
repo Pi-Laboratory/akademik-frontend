@@ -1,8 +1,7 @@
-import { Button, ButtonGroup, Checkbox, Classes, Dialog } from "@blueprintjs/core";
+import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
-import { Link } from "react-router-dom";
-import { useReducer, useState } from "react";
+import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
   switch (action.type) {
@@ -19,7 +18,6 @@ function selectedItemReducer(state, action) {
           data: action.data
         });
       }
-      break;
     case "add":
       return [...state, action.data.name];
     case "remove":
@@ -29,7 +27,6 @@ function selectedItemReducer(state, action) {
 }
 
 const List = () => {
-  const [dialogOpen, setDialogOpen] = useState(null);
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
   return (
     <Box sx={{ mt: 3, px: 3 }}>
