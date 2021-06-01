@@ -13,6 +13,8 @@ import Jadwal from "pages/Jadwal";
 import Pejabat from "pages/Pejabat";
 import PejabatPengesah from "pages/Pejabat.Pengesah";
 import Presensi from "pages/Presensi"
+import AkunSementara from "pages/AkunSementara";
+
 
 import { RootProvider } from "./hoc";
 import Layout from "./Layout";
@@ -31,6 +33,13 @@ const Navigation = [
     "text": "Users",
     "component": Users,
     "path": "/users",
+    "icon": "blank"
+  },
+  {
+    "title": "Akun Sementara",
+    "text": "Akun Sementara",
+    "component": AkunSementara,
+    "path": "/akun-sementara",
     "icon": "blank"
   },
   {
