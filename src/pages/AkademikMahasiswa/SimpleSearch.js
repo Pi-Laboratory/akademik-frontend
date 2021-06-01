@@ -7,7 +7,7 @@ import { programs } from './Students';
 
 const StudentSelect = Select.ofType();
 
-export const SimpleSearch = ({ onSwitchMode }) => {
+export const SimpleSearch = ({ onSwitchMode, onSearch }) => {
   const [category, setCategory] = React.useState(null);
 
   return (
@@ -26,7 +26,7 @@ export const SimpleSearch = ({ onSwitchMode }) => {
         <HTMLSelect placeholder="Pilih Kategori" value={category} onChange={ev => setCategory(ev.target.value)} options={['NIM', 'Nama', 'Angkatan', 'Kelas']} />
       </ControlGroup>
       <Divider />
-      <Button icon="search"></Button>
+      <Button onClick={onSearch} icon="search"></Button>
       <Divider />
       <Button onClick={() => onSwitchMode('advanced')} text="Pencarian Lanjutan" />
     </Flex>

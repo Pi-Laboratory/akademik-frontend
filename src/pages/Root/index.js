@@ -15,10 +15,12 @@ import Presensi from "pages/Presensi"
 import AkunSementara from "pages/AkunSementara";
 
 
-import { RootProvider } from "./hoc";
+import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
+import { useRouteMatch } from "react-router";
+import Helmet from "react-helmet";
 
-const Navigation = [
+const navigation = [
   {
     "title": "Nama Servis",
     "text": "Dashboard",
@@ -128,9 +130,15 @@ const Navigation = [
 ]
 
 const Root = () => {
+  const { path } = useRouteMatch();
   return (
-    <RootProvider navigation={Navigation}>
-      <Layout />
+    <RootProvider>
+      <Helmet>
+        <title>Dashboard - Portal Akademik</title>
+      </Helmet>
+      <Navigation base={path} navigation={navigation}>
+        <Layout />
+      </Navigation>
     </RootProvider>
   )
 }

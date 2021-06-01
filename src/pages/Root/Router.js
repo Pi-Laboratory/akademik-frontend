@@ -6,10 +6,11 @@ import {
 import { useNav } from "./hoc";
 
 const Router = () => {
-  const navigation = useNav();
+  const navigation = useNav("/");
   return (
     <Switch>
       {
+        navigation.items &&
         navigation.items.map((item) => (
           <Route
             exact={item.exact}

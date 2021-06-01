@@ -2,9 +2,21 @@ import { Box } from "components";
 import ListGroupHeader from "./ListGroup.Header";
 import ListGroupItem from "./ListGroup.Item";
 
-export const ListGroup = ({ children, ...props }) => {
+export const ListGroup = ({ children, sx, ...props }) => {
   return (
-    <Box className="list-group" {...props}>{children}</Box>
+    <Box
+      sx={{
+        borderRadius: 8,
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderColor: "gray.3",
+        // bg: "white",
+        ...sx
+      }}
+      {...props}
+    >
+      {children}
+    </Box>
   )
 }
 
