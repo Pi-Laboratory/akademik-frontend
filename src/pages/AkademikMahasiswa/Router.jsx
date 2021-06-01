@@ -1,8 +1,8 @@
 import { useNav } from 'pages/Root/hoc'
 import React from 'react'
-import { Switch, Route, useRouteMatch } from 'react-router'
-import DaftarMahasiswa from './DaftarMahasiswa';
-import DetailMahasiswa from './DaftarMahasiswa/Detail';
+import { Switch, Route, useRouteMatch, Redirect } from 'react-router'
+import DaftarMahasiswa from '../Akademik.DaftarMahasiswa';
+import DetailMahasiswa from '../AkademikMahasiswa.Mahasiswa.Detail';
 
 const Router = () => {
   const navigation = useNav();
@@ -10,9 +10,9 @@ const Router = () => {
 
   return (
     <Switch>
-      {/* <Route exact path={'/akademik-mahasiswa'}>
+      <Route exact path={'/akademik-mahasiswa'}>
         <Redirect to={'/akademik-mahasiswa/mahasiswa'} />
-      </Route> */}
+      </Route>
       {navigation.items.map((item) => (
         <Route
           exact={item.exact}

@@ -2,7 +2,7 @@ import { Callout, H4 } from '@blueprintjs/core'
 import { Box, Divider as Div } from 'components'
 import React, { useState } from 'react'
 import AdvancedSearch from './AdvancedSearch';
-import List from './DaftarMahasiswa/List';
+import List from '../Akademik.DaftarMahasiswa/List';
 import { SimpleSearch } from './SimpleSearch';
 
 const currentYear = new Date().getFullYear();
