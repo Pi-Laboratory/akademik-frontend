@@ -3,7 +3,6 @@ import { Kurikulum } from "pages/Kurikulum";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
-import Semester from "pages/Semester";
 import ManajemenRuang from "pages/ManejemenRuang";
 import Dosen from "pages/Dosen";
 import ProgramStudi from "pages/ProgramStudi";
@@ -38,13 +37,6 @@ const Navigation = [
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum",
-    "icon": "blank"
-  },
-  {
-    "title": "Nama Servis",
-    "text": "Semester",
-    "component": Semester,
-    "path": "/semester",
     "icon": "blank"
   },
   {
