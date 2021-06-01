@@ -1,8 +1,8 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
+import { Button, ButtonGroup, Checkbox, Classes, Dialog } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
 import { Link } from "react-router-dom";
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 
 function selectedItemReducer(state, action) {
   switch (action.type) {
@@ -19,6 +19,7 @@ function selectedItemReducer(state, action) {
           data: action.data
         });
       }
+      break;
     case "add":
       return [...state, action.data.name];
     case "remove":
@@ -28,6 +29,7 @@ function selectedItemReducer(state, action) {
 }
 
 const List = () => {
+  const [dialogOpen, setDialogOpen] = useState(null);
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
   return (
     <Box sx={{ mt: 3, px: 3 }}>
@@ -51,22 +53,9 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-            <Select
-                minimal={true}
-                label="Tahun"
-                options={[
-                  { label: "2020", value: 0 },
-                  { label: "2019", value: 0 },
-                  { label: "2018", value: 1 },
-                  { label: "2017", value: 2 },
-                  { label: "2016", value: 3 },
-                  { label: "2015", value: 3 },
-                ]}
-              />
-           
               <Select
                 minimal={true}
-                label="Program Studi"
+                label="Prodi Pilihan"
                 options={[
                   { label: "Teologi", value: 0 },
                   { label: "Teknik Elektro", value: 0 },
@@ -94,49 +83,48 @@ const List = () => {
                   })
                 }} />
               </Box>
-             
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kurikulum/mata-kuliah`}>
-                  TL-D4-2020
-                  </Link>
+                <Link to={`akun-sementara/${idx}`}>
+                  Imanuel Pundoko
+                </Link>                
                 </Box>
-                
               </Box>
+
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  2
+                  Mandiri
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  min
+                  Jalur Pendaftaran
                 </Box>
               </Box>
+
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    3
+                  Teknik Komputer
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Min.Percobaan
+                  Prodi Pilihan 1
                 </Box>
               </Box>
+
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    3
+                  Teknik Informatika
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Maks Nilai D
+                  Prodi Pilihan 2
                 </Box>
               </Box>
+
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    24
+                    Teknik Mesin
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Mata Kuliah
+                  Prodi Pilihan 3
                 </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
               </Box>
             </Flex>
           </ListGroup.Item>

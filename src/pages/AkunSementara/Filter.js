@@ -1,7 +1,8 @@
-import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Alert, Button, ButtonGroup, ControlGroup, Dialog, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
-import DialogKurikulumBaru from "./Dialog.KurikulumBaru";
+import DialogMahasiswaBaru from "./Dialog.MahasiswaBaru";
+import DialogGenerateAkun from "./Dialog.GenerateAkun";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
@@ -12,9 +13,9 @@ const Filter = ({ selectedItem }) => {
           <Select
             label="Filter"
             options={[
-              { label: "ID", value: 0 },
-              { label: "Nama", value: 1 },
-              { label: "NIDN", value: 2 },
+              { label: "Nama", value: 0 },
+              { label: "Prodi Pilihan", value: 1 },
+              // { label: "NIDN", value: 2 },
             ]}
           />
           <InputGroup leftIcon="search" placeholder="Filter by name" />
@@ -30,12 +31,18 @@ const Filter = ({ selectedItem }) => {
             onClick={() => setDialogOpen("delete")}
           />
         }
+        <Button
+          intent="primary"
+          text="Generate Akun"
+          onClick={() => setDialogOpen("generate")}
+        />
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
-          text="Kurikulum Baru"
+          text="Mahasiswa Baru"
           onClick={() => setDialogOpen("add")}
         />
+        
       </Flex>
       <Alert
         isOpen={dialogOpen === "delete"}
@@ -51,8 +58,12 @@ const Filter = ({ selectedItem }) => {
           <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
         </p>
       </Alert>
-      <DialogKurikulumBaru
+      <DialogMahasiswaBaru
         isOpen={dialogOpen === "add"}
+        onClose={() => { setDialogOpen(null) }}
+      />
+       <DialogGenerateAkun
+        isOpen={dialogOpen === "generate"}
         onClose={() => { setDialogOpen(null) }}
       />
     </Flex>

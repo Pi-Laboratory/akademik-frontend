@@ -51,19 +51,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-            <Select
-                minimal={true}
-                label="Tahun"
-                options={[
-                  { label: "2020", value: 0 },
-                  { label: "2019", value: 0 },
-                  { label: "2018", value: 1 },
-                  { label: "2017", value: 2 },
-                  { label: "2016", value: 3 },
-                  { label: "2015", value: 3 },
-                ]}
-              />
-           
+             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -97,47 +85,43 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kurikulum/mata-kuliah`}>
-                  TL-D4-2020
-                  </Link>
-                </Box>
-                
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  2
+                Matematika
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  min
+                 3500
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    3
+                <Link to={`semester`}>
+                1
+                </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Min.Percobaan
+                Semester
+                </Box>
+              </Box>
+              
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  SKS
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    3
+                3
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Maks Nilai D
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                    24
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Mata Kuliah
+                Jam
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
+                Teori
               </Box>
+
             </Flex>
           </ListGroup.Item>
         ))}

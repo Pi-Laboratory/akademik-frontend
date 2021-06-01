@@ -1,9 +1,8 @@
 import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
+import { Kurikulum } from "pages/Kurikulum";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
-import Kurikulum from "pages/Kurikulum";
-import Semester from "pages/Semester";
 import ManajemenRuang from "pages/ManejemenRuang";
 import Dosen from "pages/Dosen";
 import ProgramStudi from "pages/ProgramStudi";
@@ -13,6 +12,8 @@ import Jadwal from "pages/Jadwal";
 import Pejabat from "pages/Pejabat";
 import PejabatPengesah from "pages/Pejabat.Pengesah";
 import Presensi from "pages/Presensi"
+import AkunSementara from "pages/AkunSementara";
+
 
 import { RootProvider } from "./hoc";
 import Layout from "./Layout";
@@ -34,17 +35,17 @@ const Navigation = [
     "icon": "blank"
   },
   {
-    "title": "Nama Servis",
-    "text": "Kurikulum",
-    "component": Kurikulum,
-    "path": "/kurikulum",
+    "title": "Akun Sementara",
+    "text": "Akun Sementara",
+    "component": AkunSementara,
+    "path": "/akun-sementara",
     "icon": "blank"
   },
   {
     "title": "Nama Servis",
-    "text": "Semester",
-    "component": Semester,
-    "path": "/semester",
+    "text": "Kurikulum",
+    "component": Kurikulum,
+    "path": "/kurikulum",
     "icon": "blank"
   },
   {

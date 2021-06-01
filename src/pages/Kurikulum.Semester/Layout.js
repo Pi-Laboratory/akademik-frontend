@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
-import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -51,7 +50,8 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-            <Select
+             
+              <Select
                 minimal={true}
                 label="Tahun"
                 options={[
@@ -63,7 +63,10 @@ const List = () => {
                   { label: "2015", value: 3 },
                 ]}
               />
-           
+            </Box>
+            
+            <Box sx={{ flexShrink: 0 }}>
+             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -97,47 +100,28 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kurikulum/mata-kuliah`}>
-                  TL-D4-2020
-                  </Link>
-                </Box>
-                
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  2
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  min
+                2021
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    3
+                1
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  Min.Percobaan
+                Semester
                 </Box>
               </Box>
+            
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                    3
+                Aktif
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Maks Nilai D
+                Status
                 </Box>
               </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                    24
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Mata Kuliah
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
-              </Box>
+           
+
             </Flex>
           </ListGroup.Item>
         ))}
