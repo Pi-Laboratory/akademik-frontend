@@ -1,9 +1,9 @@
 import Layout from "./Layout";
 
-const DosenDetail = () => {
+const Matakuliah = () => {
   return (
     <Layout />
   )
 }
 
-export default DosenDetail;
+export default Matakuliah;

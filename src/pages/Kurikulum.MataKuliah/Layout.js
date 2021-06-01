@@ -51,14 +51,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-              <Select
-                minimal={true}
-                label="Status"
-                options={[
-                  { label: "Aktif", value: true },
-                  { label: "Tidak Aktif", value: false }
-                ]}
-              />
+             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -89,22 +82,46 @@ const List = () => {
                   })
                 }} />
               </Box>
-              <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
-                {Math.round(Math.random() * 12093)}
+             
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                Matematika
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                 3500
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`dosen/${idx}`}>
-                    Prof. Dr. Imanuel Pundoko, S.Th.
-                  </Link>
+                <Link to={`semester`}>
+                1
+                </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  {`74398734${Math.round(Math.random() * 8364872343)}`}
+                Semester
+                </Box>
+              </Box>
+              
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  SKS
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                Jam
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
+                Teori
               </Box>
+
             </Flex>
           </ListGroup.Item>
         ))}

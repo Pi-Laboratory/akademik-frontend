@@ -1,49 +1,157 @@
-import { Checkbox, HTMLTable } from "@blueprintjs/core";
-import { Box, Container } from "components";
+import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Select } from "components";
+import Filter from "./Filter";
+import { Link } from "react-router-dom";
+import { useReducer } from "react";
+
+function selectedItemReducer(state, action) {
+  switch (action.type) {
+    case "toggle":
+      console.log(state);
+      if (action.data.value) {
+        return selectedItemReducer(state, {
+          type: "add",
+          data: action.data
+        });
+      } else {
+        return selectedItemReducer(state, {
+          type: "remove",
+          data: action.data
+        });
+      }
+    case "add":
+      return [...state, action.data.name];
+    case "remove":
+      return [...state.filter(item => item !== action.data.name)];
+    default: return state;
+  }
+}
 
 const List = () => {
+  const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
   return (
-    <Container sx={{ mt: 3, px: 2 }}>
-      <Box as={HTMLTable} interactive={true} sx={{ width: "100%" }}>
-        <thead>
-          <tr>
-            <th rowspan="2"><Checkbox /></th>
-            <th rowspan="2">Id</th>
-            <th rowspan="2">Nama Kurikulum</th>
-            <th rowspan="2">Tahun</th>
-            <th colspan="2" style={{textAlign: "center"}} >Masa Studi (Semester)</th>
-            <th colspan="3" style={{textAlign: "center"}} >Evaluasi</th>
-            <th>Mata Kuliah</th>
-            <th rowspan="2">Aksi</th>
-          </tr>
-          <tr>
-            <th>Ideal</th>
-            <th>Maks</th>
-            <th>IPK min</th>
-            <th>IPK min percobaan</th>
-            <th>Maks Nilai D</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array(25).fill(0).map((_, idx) => (
-            <tr key={idx}>
-              <td><Checkbox /></td>
-              <td>{idx}</td>
-              <td>nama-{idx}</td>
-              <td>tahun-{idx}</td>
-              <td>ideal-{idx}</td>
-              <td>maks-{idx}</td>
-              <td>ipkmin-{idx}</td>
-              <td>ipkminc-{idx}</td>
-              <td>maksnilaid-{idx}</td>
-              <td>matakuliah-{idx}</td>
-              <td><button>Detail</button><button>Ubah</button><button>Hapus</button></td>
-
-            </tr>
-          ))}
-        </tbody>
+    <Box sx={{ mt: 3, px: 3 }}>
+      <Box sx={{ mb: 3 }}>
+        <Filter selectedItem={selectedItem} />
       </Box>
-    </Container>
+      <ListGroup sx={{
+        width: "100%",
+        [`.${Classes.CHECKBOX}`]: {
+          m: 0
+        }
+      }}>
+        <ListGroup.Header>
+          <Flex sx={{ alignItems: "center" }}>
+            <Box sx={{ width: 40, flexShrink: 0, }}>
+              <Checkbox
+                onChange={(e) => {
+                  console.log(e);
+                }}
+              />
+            </Box>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ flexShrink: 0 }}>
+            <Select
+                minimal={true}
+                label="Tahun"
+                options={[
+                  { label: "2020", value: 0 },
+                  { label: "2019", value: 0 },
+                  { label: "2018", value: 1 },
+                  { label: "2017", value: 2 },
+                  { label: "2016", value: 3 },
+                  { label: "2015", value: 3 },
+                ]}
+              />
+           
+              <Select
+                minimal={true}
+                label="Program Studi"
+                options={[
+                  { label: "Teologi", value: 0 },
+                  { label: "Teknik Elektro", value: 0 },
+                  { label: "Teknik Arsitektur", value: 1 },
+                  { label: "Akuntansi", value: 2 },
+                  { label: "Teknik Sipil", value: 3 },
+                  { label: "Bahasa Inggris", value: 3 },
+                ]}
+              />
+            </Box>
+          </Flex>
+        </ListGroup.Header>
+        {Array(25).fill(0).map((_, idx) => (
+          <ListGroup.Item key={idx}>
+            <Flex>
+              <Box sx={{ width: 40, flexShrink: 0 }}>
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      name: idx,
+                      value: e.target.checked
+                    }
+                  })
+                }} />
+              </Box>
+             
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                  <Link to={`kurikulum/mata-kuliah`}>
+                  TL-D4-2020
+                  </Link>
+                </Box>
+                
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                  2
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  min
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                    3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Min.Percobaan
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                    3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                Maks Nilai D
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                    24
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Mata Kuliah
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1 }}>
+                Teknik Elektro
+              </Box>
+            </Flex>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
+      <Flex sx={{ my: 3, justifyContent: "center" }}>
+        <Button minimal={true} icon="chevron-left" text="Previous" />
+        <ButtonGroup>
+          <Button text="1" active={true} />
+          <Button text="2" />
+          <Button text="3" />
+        </ButtonGroup>
+        <Button minimal={true} text="Next" rightIcon="chevron-right" />
+      </Flex>
+    </Box >
   )
 }
 

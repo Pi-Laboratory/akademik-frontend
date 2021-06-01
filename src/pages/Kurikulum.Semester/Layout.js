@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
-import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -51,14 +50,23 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
+             
               <Select
                 minimal={true}
-                label="Status"
+                label="Tahun"
                 options={[
-                  { label: "Aktif", value: true },
-                  { label: "Tidak Aktif", value: false }
+                  { label: "2020", value: 0 },
+                  { label: "2019", value: 0 },
+                  { label: "2018", value: 1 },
+                  { label: "2017", value: 2 },
+                  { label: "2016", value: 3 },
+                  { label: "2015", value: 3 },
                 ]}
               />
+            </Box>
+            
+            <Box sx={{ flexShrink: 0 }}>
+             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -89,22 +97,31 @@ const List = () => {
                   })
                 }} />
               </Box>
-              <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
-                {Math.round(Math.random() * 12093)}
+             
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                2021
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`dosen/${idx}`}>
-                    Prof. Dr. Imanuel Pundoko, S.Th.
-                  </Link>
+                1
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  {`74398734${Math.round(Math.random() * 8364872343)}`}
+                Semester
                 </Box>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
+            
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                Aktif
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                Status
+                </Box>
               </Box>
+           
+
             </Flex>
           </ListGroup.Item>
         ))}
