@@ -1,14 +1,18 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup, FileInput, RadioGroup, Radio, } from "@blueprintjs/core";
-import { DateInput } from "@blueprintjs/datetime";
+import { DateInput, } from "@blueprintjs/datetime";
 import { Select, } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "nama-lengkap": Yup.string().required(),
+  "jalur pendaftaran": Yup.string().required(),
+  "nama lengkap": Yup.string().required(),
   "nik": Yup.string().required(),
+  "gender": Yup.string().required(),
   "tanggal lahir": Yup.string().required(),
   "tempat lahir": Yup.string().required(),
+  "asal sekolah": Yup.string().required(),
+  "ijazah": Yup.string().required(),
 })
 
 
@@ -22,11 +26,14 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
+          "jalur-pendaftaran": "",
           "nik": "",
           "nama-lengkap": "",
           "tanggal-lahir": "",
           "tempat-lahir": "",
           "alamat": "",
+          "asal-sekolah":"",
+          "ijazah": ""
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -35,10 +42,10 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
               <FormGroup
                 label="Jalur Pendaftaran"
                 labelFor="f-jalur-pendaftaran"
-                helperText={errors["jalur-pendaftaran"]}
+                helperText={errors["jalur pendaftaran"]}
                 intent={"danger"}
               >
-                <div class="bp3-select .modifier">
+                <div class="bp3-select" >
                   <select>
                     <option selected>-- PILIH ---</option>
                     <option value="1">MAN (Mandiri)</option>
@@ -64,17 +71,17 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nip"
-                  name="nip"
-                  value={values["nip"]}
+                  id="f-nik"
+                  name="nik"
+                  value={values["nik"]}
                   onChange={handleChange}
-                  intent={errors["nip"] ? "danger" : "none"}
+                  intent={errors["nik"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
                 label="Nama Lengkap"
                 labelFor="f-nama-lengkap"
-                helperText={errors["nama-lengkap"]}
+                helperText={errors["nama lengkap"]}
                 intent={"danger"}
               >
                 <InputGroup
@@ -82,7 +89,7 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
                   name="nama-lengkap"
                   value={values["nama-lengkap"]}
                   onChange={handleChange}
-                  intent={errors["nama-lengkap"] ? "danger" : "none"}
+                  intent={errors["nama lengkap"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
@@ -98,7 +105,7 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
               <FormGroup
                 label="Tanggal Lahir"
                 labelFor="f-tanggal-lahir"
-                helperText={errors["tanggal-lahir"]}
+                helperText={errors["tanggal lahir"]}
                 intent={"danger"}
               >
                 <InputGroup
@@ -107,14 +114,14 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
                   name="tanggal-lahir"
                   value={values["tanggal-lahir"]}
                   onChange={handleChange}
-                  intent={errors["tanggal-lahir"] ? "danger" : "none"}
+                  intent={errors["tanggal lahir"] ? "danger" : "none"}
                 />
             
               </FormGroup>
               <FormGroup
                 label="Tempat Lahir"
                 labelFor="f-tempat-lahir"
-                helperText={errors["tempat-lahir"]}
+                helperText={errors["tempat lahir"]}
                 intent={"danger"}
               >
                 <InputGroup
@@ -122,13 +129,13 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
                   name="tempat-lahir"
                   value={values["tempat-lahir"]}
                   onChange={handleChange}
-                  intent={errors["tempat-lahir"] ? "danger" : "none"}
+                  intent={errors["tempat lahir"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
                 label="Asal Sekolah"
                 labelFor="f-asal-sekolah"
-                helperText={errors["asal-sekolah"]}
+                helperText={errors["asal sekolah"]}
                 intent={"danger"}
               >
                 <InputGroup
@@ -136,7 +143,7 @@ const DialogMahasiswaBaru = ({ isOpen, onClose = () => { } }) => {
                   name="asal-sekolah"
                   value={values["asal-sekolah"]}
                   onChange={handleChange}
-                  intent={errors["asal-sekolah"] ? "danger" : "none"}
+                  intent={errors["asal sekolah"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
