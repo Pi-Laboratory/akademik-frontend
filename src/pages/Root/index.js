@@ -45,7 +45,7 @@ const navigation = [
     "title": "Nama Servis",
     "text": "Kurikulum",
     "component": Kurikulum,
-    "path": "/kurikulum",
+    "path": "/kurikulum/",
     "icon": "blank"
   },
   {

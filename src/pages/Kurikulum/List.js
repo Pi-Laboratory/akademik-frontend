@@ -97,7 +97,7 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kurikulum/mata-kuliah`}>
+                  <Link to={`mata-kuliah`}>
                   TL-D4-2020
                   </Link>
                 </Box>
