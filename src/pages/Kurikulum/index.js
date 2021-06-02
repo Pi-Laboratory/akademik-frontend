@@ -1,6 +1,7 @@
 import { Layout } from './Layout'
 import React, { useMemo } from 'react'
-import { RootProvider } from 'pages/Root/hoc'
+import Helmet from "react-helmet";
+import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import List from './List'
 import MataKuliah from 'pages/Kurikulum.MataKuliah'
@@ -13,7 +14,7 @@ export const Kurikulum = () => {
       "title": "Halaman Utama",
       "text": "Halaman Utama",
       "component": List,
-      "path": `${path}`,
+      "path": `/`,
       exact: true,
       icon: 'home'
     },
@@ -21,22 +22,27 @@ export const Kurikulum = () => {
       "title": "MataKuliah",
       "text": "Mata Kuliah",
       "component": MataKuliah,
-      "path": `${path}/mata-kuliah`,
+      "path": `/mata-kuliah`,
       exact: true
     },
     {
       "title": "Semester",
       "text": "Semester",
       "component": Semester,
-      "path": `${path}/semester`,
+      "path": `/semester`,
       exact: true
     },
    
-  ]), [path]);
+  ]), []);
 
   return (
-    <RootProvider navigation={navigation}>
-      <Layout />
-    </RootProvider>
+    <>
+      <Helmet>
+        <title>Dashboard - Kurikulum</title>
+      </Helmet>
+      <Navigation base={path} navigation={navigation}>
+        <Layout />
+      </Navigation>
+    </>
   )
 }
