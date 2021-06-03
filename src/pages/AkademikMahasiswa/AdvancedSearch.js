@@ -2,16 +2,21 @@ import { Button, FormGroup, InputGroup, MenuItem } from '@blueprintjs/core'
 import { Select } from '@blueprintjs/select'
 import { Box } from 'components'
 import React from 'react'
+import { useLocation } from 'react-router';
 import { programs } from './Students';
+import queryString from 'query-string'
 
 const ProgramSelect = Select.ofType();
 const currentYear = new Date().getFullYear();
 const generationArray = Array(10).fill(10).map((val, i) => (i));
 
 const AdvancedSearch = ({ onSwitchMode, onSearch }) => {
+  const { search } = useLocation();
+  const {angkatan} = queryString.parse(search);
+
   return (
     <Box>
-      <Button text="Pencarian Sederhana" onClick={() => onSwitchMode('simple')} />
+      <Button icon="search-text" text="Pencarian Sederhana" onClick={() => onSwitchMode('simple')} />
       <FormGroup label="Nama" labelFor="name">
         <InputGroup id="name" placeholder="Nama Lengkap" />
       </FormGroup>
@@ -35,7 +40,7 @@ const AdvancedSearch = ({ onSwitchMode, onSearch }) => {
             key={i}
           />
         )}>
-          <Button rightIcon="caret-down" id="angkatan" text="Pilih Angkatan" />
+          <Button rightIcon="caret-down" id="angkatan" text={typeof angkatan !== 'undefined' ? `Angkatan ${angkatan}` : "Pilih Angkatan"} />
         </ProgramSelect>
       </FormGroup>
       <FormGroup label="Kelas" labelFor="kelas">
@@ -45,7 +50,7 @@ const AdvancedSearch = ({ onSwitchMode, onSearch }) => {
             key={i}
           />
         )}>
-          <Button id="kelas" rightIcon="caret-down" text="Pilih Angkatan" />
+          <Button id="kelas" rightIcon="caret-down" text="Pilih Kelas" />
         </ProgramSelect>
       </FormGroup>
       <FormGroup>
