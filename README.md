@@ -3,7 +3,7 @@
 Project ini di mulai dari Template [Create React App](https://github.com/facebook/create-react-app).
 ## Tool
 
-Di usahakan dengan hanya menggunakan beberapa komponen yang di tetapkan untuk membentuk sinkornisasi dengan pengembang yang lainnya.\
+Di usahakan dengan hanya menggunakan beberapa komponen yang di tetapkan untuk membentuk sinkornisasi dengan pengembang yang lainnya.
 
 Komponen yang di gunakan yaitu:\
 [BlueprintJS](https://blueprintjs.com/docs/) untuk elemen-elemen dasar komponen UI.\
