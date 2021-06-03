@@ -9,15 +9,8 @@ import Generations from './Generations'
 
 export const AkademikMahasiswa = () => {
   const { path } = useRouteMatch();
+  document.title = "Dashboard - Akademik Kemahasiswaan"
   const navigation = useMemo(() => ([
-    {
-      "title": "Halaman Utama",
-      "text": "Halaman Utama",
-      "component": Generations,
-      "path": `/`,
-      exact: true,
-      icon: 'home'
-    },
     {
       "title": "Mahasiswa",
       "text": "Mahasiswa",
