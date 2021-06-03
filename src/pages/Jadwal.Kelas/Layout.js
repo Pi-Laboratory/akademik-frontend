@@ -51,33 +51,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-            <Select
-                minimal={true}
-                label="Kelas"
-                options={[
-                  { label: "TL1", value: 0 },
-                  { label: "TL2", value: 0 },
-                  { label: "TL3", value: 1 },
-                  { label: "TK1", value: 2 },
-                  { label: "TK2", value: 3 },
-                  { label: "TK3", value: 3 },
-                ]}
-              />
-            <Select
-                minimal={true}
-                label="Semester"
-                options={[
-                  { label: "1", value: 0 },
-                  { label: "2", value: 0 },
-                  { label: "3", value: 1 },
-                  { label: "4", value: 2 },
-                  { label: "5", value: 3 },
-                  { label: "6", value: 3 },
-                  { label: "7", value: 3 },
-                  { label: "8", value: 3 },
-
-                ]}
-              />
+             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -111,52 +85,32 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`kelas`}>
-                  TL1
-                  </Link>
-                </Box>
-                
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                ELIEZER MANGOTING RONGRE, S.SI M.SI, ,
+                TL1
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  Matematika
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                 34000
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                    3
+                1
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                 Semester
                 </Box>
               </Box>
+              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                Lab Komputer
+                23
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Ruangan
+                Jumlah Mahasiswa
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                10:45 - 13:45	
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Kamis
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
                 Teknik Elektro
+                </Box>
               </Box>
+
             </Flex>
           </ListGroup.Item>
         ))}
