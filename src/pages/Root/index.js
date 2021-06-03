@@ -24,18 +24,18 @@ const navigation = [
     "exact": true
   },
   {
-    "title": "Akun Sementara",
-    "text": "Akun Sementara",
-    "component": AkunSementara,
-    "path": "/akun-sementara",
-    "icon": "blank"
+    "title": "Akademik Kemahasiswaan",
+    "text": "Kemahasiswaan",
+    "component": AkademikMahasiswa,
+    "path": "/akademik-mahasiswa",
+    "icon": "user"
   },
   {
     "title": "Nama Servis",
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum/",
-    "icon": "blank"
+    "icon": "book"
   },
   {
     "title": "Nama Servis",
@@ -63,7 +63,7 @@ const navigation = [
     "text": "Program Studi",
     "component": ProgramStudi,
     "path": "/program-studi",
-    "icon": "book"
+    "icon": "blank"
   },
   {
     "title": "Presensi",
@@ -73,11 +73,11 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Akademik Kemahasiswaan",
-    "text": "Kemahasiswaan",
-    "component": AkademikMahasiswa,
-    "path": "/akademik-mahasiswa",
-    "icon": "user"
+    "title": "Akun Sementara",
+    "text": "Akun Sementara",
+    "component": AkunSementara,
+    "path": "/akun-sementara",
+    "icon": "blank"
   },
   {
     "title": "Settings",

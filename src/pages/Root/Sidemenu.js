@@ -80,27 +80,6 @@ const Sidemenu = () => {
             <Box as={H6}>Telp</Box>
             <Box>+62 852-9948-2331</Box>
           </Box>
-          <Box className={`${Classes.CARD}`} sx={{ p: 0, mx: 2 }}>
-            <Box sx={{ p: 2 }}>
-              <Box as={H6}>Total SKS</Box>
-              <Box sx={{ fontSize: 4, textAlign: "right" }}>144</Box>
-            </Box>
-            <Divider sx={{ m: 0 }} />
-            <Box sx={{ p: 2 }}>
-              <Box as={H6}>IPK</Box>
-              <Box sx={{ fontSize: 4, textAlign: "right" }}>3.57</Box>
-            </Box>
-            <Divider sx={{ m: 0 }} />
-            <Box sx={{ p: 2 }}>
-              <Box as={H6}>Total Matakuliah</Box>
-              <Box sx={{ fontSize: 4, textAlign: "right" }}>24</Box>
-            </Box>
-            <Divider sx={{ m: 0 }} />
-            <Box sx={{ p: 2 }}>
-              <Box as={H6}>Semester</Box>
-              <Box sx={{ fontSize: 4, textAlign: "right" }}>13</Box>
-            </Box>
-          </Box>
         </Box>
       </Box>
     </Box>
