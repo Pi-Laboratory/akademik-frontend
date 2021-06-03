@@ -4,10 +4,6 @@ import Helmet from "react-helmet";
 import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import Students from './Students'
-<<<<<<< HEAD
-=======
-import Curriculums from './Curriculums'
->>>>>>> 1a2f1a62ed0287d6acabbe721f3e0447b2b1eae9
 import Generations from './Generations'
 
 export const AkademikMahasiswa = () => {
@@ -28,18 +24,7 @@ export const AkademikMahasiswa = () => {
       "path": `/mahasiswa`,
       exact: true
     },
-<<<<<<< HEAD
   ]), [path]);
-=======
-    {
-      "title": "Kurikulum",
-      "text": "Kurikulum",
-      "component": Curriculums,
-      "path": `/kurikulum`,
-      exact: true
-    },
-  ]), []);
->>>>>>> 1a2f1a62ed0287d6acabbe721f3e0447b2b1eae9
 
   return (
     <>
