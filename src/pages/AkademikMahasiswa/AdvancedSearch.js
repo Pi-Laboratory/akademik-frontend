@@ -7,6 +7,7 @@ import { programs } from './Students';
 const ProgramSelect = Select.ofType();
 const currentYear = new Date().getFullYear();
 const generationArray = Array(10).fill(10).map((val, i) => (i));
+
 const AdvancedSearch = ({ onSwitchMode, onSearch }) => {
   return (
     <Box>
