@@ -9,9 +9,9 @@ const Router = () => {
   const navigation = useNav(path);
   return (
     <Switch>
-      <Route exact path={'/akademik-mahasiswa'}>
+      {/* <Route exact path={'/akademik-mahasiswa'}>
         <Redirect to={'/akademik-mahasiswa/mahasiswa'} />
-      </Route>
+      </Route> */}
       {navigation.items.map((item) => (
         <Route
           exact={item.exact}
