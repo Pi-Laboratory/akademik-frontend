@@ -3,11 +3,8 @@ import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
-import Users from "pages/Users";
 import ManajemenRuang from "pages/ManejemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
-import JenisNilai from "pages/JenisNilai";
-import PredikatKelulusan from "pages/PredikatKelulusan";
 import Presensi from "pages/Presensi"
 import AkunSementara from "pages/AkunSementara";
 
@@ -27,25 +24,18 @@ const navigation = [
     "exact": true
   },
   {
-    "title": "Nama Servis",
-    "text": "Users",
-    "component": Users,
-    "path": "/users",
-    "icon": "blank"
-  },
-  {
-    "title": "Akun Sementara",
-    "text": "Akun Sementara",
-    "component": AkunSementara,
-    "path": "/akun-sementara",
-    "icon": "blank"
+    "title": "Akademik Kemahasiswaan",
+    "text": "Kemahasiswaan",
+    "component": AkademikMahasiswa,
+    "path": "/akademik-mahasiswa",
+    "icon": "user"
   },
   {
     "title": "Nama Servis",
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum/",
-    "icon": "blank"
+    "icon": "book"
   },
   {
     "title": "Nama Servis",
@@ -73,23 +63,8 @@ const navigation = [
     "text": "Program Studi",
     "component": ProgramStudi,
     "path": "/program-studi",
-    "icon": "book"
-  },
-  {
-    "title": "Jenis Nilai",
-    "text": "Jenis Nilai",
-    "component": JenisNilai,
-    "path": "/jenis-nilai",
     "icon": "blank"
   },
-  {
-    "title": "Predikat Kelulusan",
-    "text": "Predikat Kelulusan",
-    "component": PredikatKelulusan,
-    "path": "/predikat-kelulusan",
-    "icon": "blank"
-  },
-  
   {
     "title": "Presensi",
     "text": "Presensi",
@@ -98,11 +73,11 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Akademik Kemahasiswaan",
-    "text": "Kemahasiswaan",
-    "component": AkademikMahasiswa,
-    "path": "/akademik-mahasiswa",
-    "icon": "user"
+    "title": "Akun Sementara",
+    "text": "Akun Sementara",
+    "component": AkunSementara,
+    "path": "/akun-sementara",
+    "icon": "blank"
   },
   {
     "title": "Settings",
