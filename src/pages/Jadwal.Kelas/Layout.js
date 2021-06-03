@@ -85,17 +85,12 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                Matematika
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                 3500
+                TL1
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                <Link to={`semester`}>
                 1
-                </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                 Semester
@@ -104,22 +99,16 @@ const List = () => {
               
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                3
+                23
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  SKS
+                Jumlah Mahasiswa
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                3
+                Teknik Elektro
                 </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Jam
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teori
               </Box>
 
             </Flex>
