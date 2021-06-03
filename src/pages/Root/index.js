@@ -3,11 +3,8 @@ import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
-import Users from "pages/Users";
 import ManajemenRuang from "pages/ManejemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
-import JenisNilai from "pages/JenisNilai";
-import PredikatKelulusan from "pages/PredikatKelulusan";
 import Presensi from "pages/Presensi"
 import AkunSementara from "pages/AkunSementara";
 
@@ -25,13 +22,6 @@ const navigation = [
     "path": "/",
     "icon": "blank",
     "exact": true
-  },
-  {
-    "title": "Nama Servis",
-    "text": "Users",
-    "component": Users,
-    "path": "/users",
-    "icon": "blank"
   },
   {
     "title": "Akun Sementara",
@@ -75,21 +65,6 @@ const navigation = [
     "path": "/program-studi",
     "icon": "book"
   },
-  {
-    "title": "Jenis Nilai",
-    "text": "Jenis Nilai",
-    "component": JenisNilai,
-    "path": "/jenis-nilai",
-    "icon": "blank"
-  },
-  {
-    "title": "Predikat Kelulusan",
-    "text": "Predikat Kelulusan",
-    "component": PredikatKelulusan,
-    "path": "/predikat-kelulusan",
-    "icon": "blank"
-  },
-  
   {
     "title": "Presensi",
     "text": "Presensi",
