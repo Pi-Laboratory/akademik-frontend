@@ -4,7 +4,7 @@ import { Box, Divider, Flex, ListGroup, Select } from 'components'
 import { Button } from '@blueprintjs/core'
 
 const List = ({ length }) => {
-  const [filtered, toggleFiltered] = useState(false);
+  const [filtered, toggleFiltered] = useState(null);
 
   return (
     <>
@@ -12,9 +12,9 @@ const List = ({ length }) => {
         <ListGroup.Header>
           <Flex sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
             <Box as={Flex}>
-              <Button minimal onClick={() => toggleFiltered(!filtered)} intent={filtered ? 'primary' : undefined} icon="disable" text="Cuti" />
+              <Button minimal onClick={() => toggleFiltered("cuti")} intent={filtered === "cuti" ? 'warning' : undefined} icon="disable" text="Cuti" />
               <Divider sx={{ mx: 2 }} />
-              <Button minimal onClick={() => toggleFiltered(!filtered)} intent={filtered ? 'primary' : undefined} icon="export" text="Drop Out" />
+              <Button minimal onClick={() => toggleFiltered("drop-out")} intent={filtered === "drop-out" ? 'danger' : undefined} icon="export" text="Drop Out" />
             </Box>
             <Flex>
               <Select
@@ -50,9 +50,13 @@ const List = ({ length }) => {
                   <p className="bp3-text-muted">2100666</p>
                 </Box>
               </Box>
-              <Box sx={{ display: 'flex', flex: 1, flexDirection: 'row !important', justifyContent: 'center', alignItems: 'center' }}>
+              <Box sx={{ width: "15%" }}>
                 <Box as="p" sx={{ mx: 1 }}>Teknik Komputer</Box>
-                <Box as="p" sx={{ mx: 1 }} className="bp3-text-muted">1TK2</Box>
+                <Box as="p" sx={{ mx: 1 }} className="bp3-text-muted">Program Studi</Box>
+              </Box>
+              <Box sx={{ width: "15%" }}>
+                <Box as="p" sx={{ mx: 1 }}>TK1</Box>
+                <Box as="p" sx={{ mx: 1 }} className="bp3-text-muted">Kelas</Box>
               </Box>
               <Box sx={{ display: 'flex', flex: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
                 <p>Angkatan 2021</p>
