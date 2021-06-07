@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select as BPSelect } from "@blueprintjs/select";
+import { Select as BPSelect, MultiSelect } from "@blueprintjs/select";
 
 export const Select = ({
   id,
   intent,
   minimal,
   label,
+  fill,
 
   allowCreateItem,
   options,
@@ -17,6 +18,8 @@ export const Select = ({
   onOpening,
   value,
   loading,
+  multiple,
+  removeItem
 }) => {
   const items = useMemo(() => {
     return options;
@@ -60,42 +63,80 @@ export const Select = ({
   }
 
   return (
-    <BPSelect
-      filterable={true}
-      items={items}
-      activeItem={activeItem}
-      itemRenderer={optionRenderer || itemRenderer}
-      itemPredicate={itemPredicate}
-      onItemSelect={onChange}
-      createNewItemPosition="first"
-      createNewItemRenderer={allowCreateItem ? createNewItemRenderer : null}
-      createNewItemFromQuery={allowCreateItem ? () => null : null}
-      inputProps={{
-        onKeyDown: (e) => {
-          if (e.code === "Enter") {
-            e.stopPropagation();
-            onCreateNew(e.target.value);
+    multiple ?
+      <MultiSelect
+        filterable={true}
+        items={items}
+        activeItem={activeItem}
+        tagRenderer={optionRenderer}
+        itemRenderer={itemRenderer}
+        itemPredicate={itemPredicate}
+        fill={fill}
+        placeholder={label}
+        onItemSelect={onChange}
+        createNewItemPosition="first"
+        createNewItemRenderer={allowCreateItem ? createNewItemRenderer : null}
+        createNewItemFromQuery={allowCreateItem ? () => null : null}
+        inputProps={{
+          onKeyDown: (e) => {
+            if (e.code === "Enter") {
+              e.stopPropagation();
+              onCreateNew(e.target.value);
+            }
           }
-        }
-      }}
+        }}
+        r
+        popoverProps={{
+          onOpening: onOpening,
+          minimal: true
+        }}
+        tagInputProps={{
+          onRemove: removeItem
+        }}
+        noResults={(
+          <MenuItem text={loading ? "Loading..." : "No Item"} />
+        )}
+        selectedItems={value}
+      >
+      </MultiSelect >
+      :
+      <BPSelect
+        filterable={true}
+        items={items}
+        activeItem={activeItem}
+        itemRenderer={optionRenderer || itemRenderer}
+        itemPredicate={itemPredicate}
+        onItemSelect={onChange}
+        createNewItemPosition="first"
+        createNewItemRenderer={allowCreateItem ? createNewItemRenderer : null}
+        createNewItemFromQuery={allowCreateItem ? () => null : null}
+        inputProps={{
+          onKeyDown: (e) => {
+            if (e.code === "Enter") {
+              e.stopPropagation();
+              onCreateNew(e.target.value);
+            }
+          }
+        }}
 
-      popoverProps={{
-        onOpening: onOpening,
-        minimal: true
-      }} go
-      noResults={(
-        <MenuItem text={loading ? "Loading..." : "No Item"} />
-      )}
-    >
-      <Button
-        id={id}
-        minimal={minimal}
-        intent={intent}
-        loading={loading}
-        text={activeItem ? activeItem.label : (label || "Select")}
-        rightIcon="caret-down"
-        onClick={onClick}
-      />
-    </BPSelect >
+        popoverProps={{
+          onOpening: onOpening,
+          minimal: true
+        }} go
+        noResults={(
+          <MenuItem text={loading ? "Loading..." : "No Item"} />
+        )}
+      >
+        <Button
+          id={id}
+          minimal={minimal}
+          intent={intent}
+          loading={loading}
+          text={activeItem ? activeItem.label : (label || "Select")}
+          rightIcon="caret-down"
+          onClick={onClick}
+          fill={fill}
+        />
+      </BPSelect >
   )
 }
