@@ -148,10 +148,10 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                10:45 - 13:45	
+                Kamis
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Kamis
+                10:45 - 13:45	
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1 }}>

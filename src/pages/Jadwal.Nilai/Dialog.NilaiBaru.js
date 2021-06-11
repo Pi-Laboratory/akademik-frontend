@@ -7,7 +7,7 @@ const Schema = Yup.object().shape({
   "kode-matakuliah": Yup.string().required(),
 })
 
-const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogNilaiBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
@@ -66,4 +66,4 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogKelasBaru;
+export default DialogNilaiBaru;
