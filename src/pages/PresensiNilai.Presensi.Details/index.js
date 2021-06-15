@@ -1,9 +1,9 @@
 import Layout from "./Layout";
 
-const Nilai = () => {
+const PresensiDetail = () => {
   return (
     <Layout />
   )
 }
 
-export default Nilai;
+export default PresensiDetail;

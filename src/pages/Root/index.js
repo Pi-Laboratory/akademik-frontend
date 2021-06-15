@@ -1,6 +1,7 @@
 import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
+import Presensi  from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import Users from "pages/Users";
@@ -8,7 +9,6 @@ import ManajemenRuang from "pages/ManejemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
 import JenisNilai from "pages/JenisNilai";
 import PredikatKelulusan from "pages/PredikatKelulusan";
-import Presensi from "pages/Presensi"
 import AkunSementara from "pages/AkunSementara";
 
 import { Navigation, RootProvider } from "./hoc";
@@ -49,7 +49,7 @@ const navigation = [
   },
   {
     "title": "Nama Servis",
-    "text": "Jadwal Kelas",
+    "text": "Jadwal dan Kelas",
     "component": Jadwal,
     "path": "/jadwal/",
     "icon": "blank"
@@ -92,9 +92,9 @@ const navigation = [
   
   {
     "title": "Presensi",
-    "text": "Presensi",
+    "text": "Presensi dan Nilai",
     "component": Presensi,
-    "path": "/presensi",
+    "path": "/presensi-nilai",
     "icon": "blank"
   },
   {
