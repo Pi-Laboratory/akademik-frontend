@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select as BPSelect } from "@blueprintjs/select";
+import { Select as BPSelect, MultiSelect } from "@blueprintjs/select";
 
 export const Select = ({
   id,
   intent,
   minimal,
   label,
+  fill,
 
   filterable,
   allowCreateItem,
@@ -18,6 +19,8 @@ export const Select = ({
   onOpening,
   value,
   loading,
+  multiple,
+  removeItem
 }) => {
   const items = useMemo(() => {
     return options;
@@ -79,14 +82,17 @@ export const Select = ({
           }
         }
       }}
-
       popoverProps={{
         onOpening: onOpening,
         minimal: true
-      }} go
+      }}
+      tagInputProps={{
+        onRemove: removeItem
+      }}
       noResults={(
         <MenuItem text={loading ? "Loading..." : "No Item"} />
       )}
+      selectedItems={value}
     >
       <Button
         id={id}
@@ -96,6 +102,7 @@ export const Select = ({
         text={activeItem ? activeItem.label : (label || "Select")}
         rightIcon="caret-down"
         onClick={onClick}
+        fill={fill}
       />
     </BPSelect >
   )

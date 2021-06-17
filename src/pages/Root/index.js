@@ -1,10 +1,9 @@
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
-import Presensi  from "pages/PresensiNilai"
+import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
-import Users from "pages/Users";
 import ManajemenRuang from "pages/ManejemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
 import JenisNilai from "pages/JenisNilai";
@@ -28,24 +27,10 @@ const navigation = [
   },
   {
     "title": "Nama Servis",
-    "text": "Users",
-    "component": Users,
-    "path": "/users",
-    "icon": "blank"
-  },
-  {
-    "title": "Akun Sementara",
-    "text": "Akun Sementara",
-    "component": AkunSementara,
-    "path": "/akun-sementara",
-    "icon": "blank"
-  },
-  {
-    "title": "Nama Servis",
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum/",
-    "icon": "blank"
+    "icon": "book"
   },
   {
     "title": "Nama Servis",
@@ -73,25 +58,10 @@ const navigation = [
     "text": "Program Studi",
     "component": ProgramStudi,
     "path": "/program-studi",
-    "icon": "book"
-  },
-  {
-    "title": "Jenis Nilai",
-    "text": "Jenis Nilai",
-    "component": JenisNilai,
-    "path": "/jenis-nilai",
     "icon": "blank"
   },
   {
-    "title": "Predikat Kelulusan",
-    "text": "Predikat Kelulusan",
-    "component": PredikatKelulusan,
-    "path": "/predikat-kelulusan",
-    "icon": "blank"
-  },
-  
-  {
-    "title": "Presensi",  
+    "title": "Presensi",
     "text": "Presensi dan Nilai",
     "component": Presensi,
     "path": "/presensi-nilai",
@@ -103,6 +73,13 @@ const navigation = [
     "component": Mahasiswa,
     "path": "/mahasiswa",
     "icon": "user"
+  },
+  {
+    "title": "Akun Sementara",
+    "text": "Akun Sementara",
+    "component": AkunSementara,
+    "path": "/akun-sementara",
+    "icon": "blank"
   },
   {
     "title": "Settings",
