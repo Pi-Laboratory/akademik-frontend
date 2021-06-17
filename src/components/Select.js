@@ -8,6 +8,7 @@ export const Select = ({
   minimal,
   label,
 
+  filterable,
   allowCreateItem,
   options,
   optionRenderer,
@@ -61,7 +62,7 @@ export const Select = ({
 
   return (
     <BPSelect
-      filterable={true}
+      filterable={filterable}
       items={items}
       activeItem={activeItem}
       itemRenderer={optionRenderer || itemRenderer}

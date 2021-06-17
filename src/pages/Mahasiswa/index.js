@@ -7,7 +7,7 @@ import Students from './Students'
 import Curriculums from './Curriculums'
 import Generations from './Generations'
 
-export const AkademikMahasiswa = () => {
+export const Mahasiswa = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {

@@ -1,4 +1,4 @@
-import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
+import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
 import Presensi  from "pages/PresensiNilai"
@@ -91,7 +91,7 @@ const navigation = [
   },
   
   {
-    "title": "Presensi",
+    "title": "Presensi",  
     "text": "Presensi dan Nilai",
     "component": Presensi,
     "path": "/presensi-nilai",
@@ -99,9 +99,9 @@ const navigation = [
   },
   {
     "title": "Akademik Kemahasiswaan",
-    "text": "Kemahasiswaan",
-    "component": AkademikMahasiswa,
-    "path": "/akademik-mahasiswa",
+    "text": "Mahasiswa",
+    "component": Mahasiswa,
+    "path": "/mahasiswa",
     "icon": "user"
   },
   {
