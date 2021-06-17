@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
+import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -81,37 +82,21 @@ const List = () => {
                   })
                 }} />
               </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                Uzumaki Naruto
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                16022062
+                </Box>
+              </Box>
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                TL1
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                TL-D4-2020
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                1
+              <Box>
+                Hadir Alpa Sakit Izin 
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Semester
-                </Box>
-              </Box>
-              
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                23
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Jumlah Mahasiswa
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                Teknik Elektro
+                Status
                 </Box>
               </Box>
 

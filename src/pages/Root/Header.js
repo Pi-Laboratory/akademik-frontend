@@ -18,6 +18,7 @@ const Header = () => {
         </Box>
         <Button minimal={true} text="Profile" />
         <Button minimal={true} text="Contact Center" />
+        <Button minimal={true} text="Configuration" />
       </Navbar.Group>
       <Navbar.Group>
       </Navbar.Group>

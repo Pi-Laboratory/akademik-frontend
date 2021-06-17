@@ -1,11 +1,13 @@
-import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
+import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
+import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManejemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
-import Presensi from "pages/Presensi"
+import JenisNilai from "pages/JenisNilai";
+import PredikatKelulusan from "pages/PredikatKelulusan";
 import AkunSementara from "pages/AkunSementara";
 
 import { Navigation, RootProvider } from "./hoc";
@@ -24,13 +26,6 @@ const navigation = [
     "exact": true
   },
   {
-    "title": "Akademik Kemahasiswaan",
-    "text": "Kemahasiswaan",
-    "component": AkademikMahasiswa,
-    "path": "/akademik-mahasiswa",
-    "icon": "user"
-  },
-  {
     "title": "Nama Servis",
     "text": "Kurikulum",
     "component": Kurikulum,
@@ -39,7 +34,7 @@ const navigation = [
   },
   {
     "title": "Nama Servis",
-    "text": "Jadwal Kelas",
+    "text": "Jadwal dan Kelas",
     "component": Jadwal,
     "path": "/jadwal/",
     "icon": "blank"
@@ -67,10 +62,17 @@ const navigation = [
   },
   {
     "title": "Presensi",
-    "text": "Presensi",
+    "text": "Presensi dan Nilai",
     "component": Presensi,
-    "path": "/presensi",
+    "path": "/presensi-nilai",
     "icon": "blank"
+  },
+  {
+    "title": "Akademik Kemahasiswaan",
+    "text": "Mahasiswa",
+    "component": Mahasiswa,
+    "path": "/mahasiswa",
+    "icon": "user"
   },
   {
     "title": "Akun Sementara",

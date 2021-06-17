@@ -13,6 +13,10 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "d3": "^6.7.0",
+    "d3-scale": "^4.0.0",
+    "d3-time": "^3.0.0",
+    "d3-time-format": "^4.0.0",
     "formik": "^2.2.6",
     "moment": "^2.29.1",
     "query-string": "^7.0.0",
@@ -22,6 +26,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "react-scrollbar": "^0.5.6",
+    "recharts": "^2.0.9",
     "styled-system": "^5.1.5",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.9"

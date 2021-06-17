@@ -6,7 +6,7 @@ import { useRouteMatch } from 'react-router'
 import Students from './Students'
 import Generations from './Generations'
 
-export const AkademikMahasiswa = () => {
+export const Mahasiswa = () => {
   const { path } = useRouteMatch();
   document.title = "Dashboard - Akademik Kemahasiswaan"
   const navigation = useMemo(() => ([

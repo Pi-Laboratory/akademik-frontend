@@ -25,19 +25,6 @@ const Sidemenu = () => {
       <Box sx={{
         py: 4,
       }}>
-        <Box sx={{ px: 2 }}>
-          <Box className={`${Classes.CARD}`} sx={{ p: 2 }}>
-            <AspectRatio ratio="1:1">
-              <Box
-                as="img"
-                sx={{ width: "100%", height: "100%", display: "block" }}
-                src="https://source.unsplash.com/random/180x180"
-              />
-            </AspectRatio>
-          </Box>
-          <Box sx={{ mt: 3, textAlign: "center", fontWeight: "bold" }}>I. Pundoko</Box>
-        </Box>
-        <Divider />
         <Menu>
           <MenuDivider title="Main Menu" />
           {

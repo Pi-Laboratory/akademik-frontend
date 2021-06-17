@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
 import { useHistory } from "react-router";
 
 export const RootContext = createContext(null);
@@ -60,6 +60,8 @@ export const Navigation = ({ base, navigation, children }) => {
 
 export const useNav = (base) => {
   const { navigation } = useContext(RootContext);
+  const [breadcrumb, setBreadcrumb] = useState([]);
+
   const items = useMemo(() => {
     let its = navigation.path[base] || [];
     its = its.map((itm) => {
@@ -75,8 +77,16 @@ export const useNav = (base) => {
     return its || null;
   }, [navigation.path, base]);
 
+  const push = useCallback((path) => {
+    // navigation.go(path);
+    console.log(path);
+    // setBreadcrumb(crumbs => [...crumbs, path]);
+  }, [navigation]);
+
   return {
+    breadcrumb: breadcrumb,
     items: items,
-    go: navigation.go
+    go: navigation.go,
+    push: push
   };
 }

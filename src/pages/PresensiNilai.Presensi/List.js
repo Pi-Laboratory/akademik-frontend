@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
+import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -50,7 +51,33 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-             
+            <Select
+                minimal={true}
+                label="Kelas"
+                options={[
+                  { label: "TL1", value: 0 },
+                  { label: "TL2", value: 0 },
+                  { label: "TL3", value: 1 },
+                  { label: "TK1", value: 2 },
+                  { label: "TK2", value: 3 },
+                  { label: "TK3", value: 3 },
+                ]}
+              />
+            <Select
+                minimal={true}
+                label="Semester"
+                options={[
+                  { label: "1", value: 0 },
+                  { label: "2", value: 0 },
+                  { label: "3", value: 1 },
+                  { label: "4", value: 2 },
+                  { label: "5", value: 3 },
+                  { label: "6", value: 3 },
+                  { label: "7", value: 3 },
+                  { label: "8", value: 3 },
+
+                ]}
+              />
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -84,12 +111,15 @@ const List = () => {
              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                TL1
+                Matematika
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                3500
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                TL-D4-2020
+                TL1
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
@@ -103,12 +133,15 @@ const List = () => {
               
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                23
+                <Link to={`/presensi-nilai/presensi/${idx}`}>
+                30
+                </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Jumlah Mahasiswa
+                Jumlah peserta
                 </Box>
               </Box>
+              
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
                 Teknik Elektro
