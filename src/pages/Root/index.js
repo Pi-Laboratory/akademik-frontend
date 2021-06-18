@@ -10,6 +10,7 @@ import PredikatKelulusan from "pages/PredikatKelulusan";
 import Jadwal from "pages/Jadwal";
 import Presensi from "pages/Presensi"
 import AkunSementara from "pages/AkunSementara";
+import DivisiPendidikan from "pages/DivisiPendidikan";
 
 
 import { Navigation, RootProvider } from "./hoc";
@@ -103,6 +104,13 @@ const navigation = [
     "component": AkademikMahasiswa,
     "path": "/akademik-mahasiswa",
     "icon": "user"
+  },
+  {
+    "title": "Divisi Pendidikan",
+    "text": "Divisi Pendidikan",
+    "component": DivisiPendidikan,
+    "path": "/divisi-pendidikan",
+    "icon": "blank"
   },
   {
     "title": "Settings",
