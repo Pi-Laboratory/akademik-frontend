@@ -60,7 +60,7 @@ export const Navigation = ({ base, navigation, children }) => {
 
 export const useNav = (base) => {
   const { navigation } = useContext(RootContext);
-  const [breadcrumb, setBreadcrumb] = useState([]);
+  const [breadcrumb ] = useState([]);
 
   const items = useMemo(() => {
     let its = navigation.path[base] || [];
@@ -81,7 +81,7 @@ export const useNav = (base) => {
     // navigation.go(path);
     console.log(path);
     // setBreadcrumb(crumbs => [...crumbs, path]);
-  }, [navigation]);
+  }, []);
 
   return {
     breadcrumb: breadcrumb,

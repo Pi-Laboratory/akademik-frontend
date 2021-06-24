@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Button, MenuItem } from "@blueprintjs/core";
-import { Select as BPSelect, MultiSelect } from "@blueprintjs/select";
+import { Select as BPSelect } from "@blueprintjs/select";
 
 export const Select = ({
   id,
