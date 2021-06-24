@@ -6,8 +6,6 @@ import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManejemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
-import JenisNilai from "pages/JenisNilai";
-import PredikatKelulusan from "pages/PredikatKelulusan";
 import AkunSementara from "pages/AkunSementara";
 
 import { Navigation, RootProvider } from "./hoc";
@@ -75,10 +73,10 @@ const navigation = [
     "icon": "user"
   },
   {
-    "title": "Akun Sementara",
-    "text": "Akun Sementara",
+    "title": "Penerimaan mahasiswa baru",
+    "text": "Penerimaan",
     "component": AkunSementara,
-    "path": "/akun-sementara",
+    "path": "/penerimaan",
     "icon": "blank"
   },
   {

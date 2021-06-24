@@ -82,7 +82,7 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                <Link to={`akun-sementara/${idx}`}>
+                <Link to={`penerimaan/${idx}`}>
                   Imanuel Pundoko
                 </Link>                
                 </Box>

@@ -15,8 +15,8 @@ const Layout = () => {
       <Divider sx={{ mb: 0 }} />
       <Box>
         <Switch>
-          <Route path="/akun-sementara/:nip" component={MahasiswaDetail} />
-          <Route path="/akun-sementara" component={List} />
+          <Route path="/penerimaan/:nip" component={MahasiswaDetail} />
+          <Route path="/penerimaan" component={List} />
         </Switch>
       </Box>
     </Flex>

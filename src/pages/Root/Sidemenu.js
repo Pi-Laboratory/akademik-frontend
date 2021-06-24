@@ -1,6 +1,6 @@
 import ScrollArea from "react-scrollbar";
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { AspectRatio, Box, Divider } from "components";
+import { Box, Divider } from "components";
 import { useNav } from "./hoc";
 import { useLocation } from "react-router";
 
