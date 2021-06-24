@@ -1,5 +1,4 @@
 import { Box, Divider, Flex } from "components";
-import MahasiswaDetail from "pages/Mahasiswa.Details";
 import { Route, Switch } from "react-router-dom";
 import Header from "./Header";
 import List from "./List";
