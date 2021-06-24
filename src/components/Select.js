@@ -7,7 +7,9 @@ export const Select = ({
   intent,
   minimal,
   label,
+  fill,
 
+  filterable,
   allowCreateItem,
   options,
   optionRenderer,
@@ -17,6 +19,8 @@ export const Select = ({
   onOpening,
   value,
   loading,
+  multiple,
+  removeItem
 }) => {
   const items = useMemo(() => {
     return options;
@@ -61,7 +65,7 @@ export const Select = ({
 
   return (
     <BPSelect
-      filterable={true}
+      filterable={filterable}
       items={items}
       activeItem={activeItem}
       itemRenderer={optionRenderer || itemRenderer}
@@ -78,14 +82,17 @@ export const Select = ({
           }
         }
       }}
-
       popoverProps={{
         onOpening: onOpening,
         minimal: true
-      }} go
+      }}
+      tagInputProps={{
+        onRemove: removeItem
+      }}
       noResults={(
         <MenuItem text={loading ? "Loading..." : "No Item"} />
       )}
+      selectedItems={value}
     >
       <Button
         id={id}
@@ -95,6 +102,7 @@ export const Select = ({
         text={activeItem ? activeItem.label : (label || "Select")}
         rightIcon="caret-down"
         onClick={onClick}
+        fill={fill}
       />
     </BPSelect >
   )
