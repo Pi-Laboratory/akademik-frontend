@@ -1,21 +1,71 @@
-import { Button, ButtonGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex } from "components";
-import { useState } from "react"
+import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Box, Divider, Flex, Select } from "components";
+import { useState } from "react";
+import DialogJadwalBaru from "./Dialog.JadwalBaru";
+import DialogChart from "./Dialog.Chart";
 
-const Filter = () => {
-  const [state, setstate] = useState(false)
+const Filter = ({ selectedItem }) => {
+  const [dialogOpen, setDialogOpen] = useState(null);
   return (
     <Flex>
       <Box>
-        <InputGroup large={true} leftIcon="search" placeholder="Filter by user" />
+        <ControlGroup>
+          <Select
+            label="Filter"
+            options={[
+              { label: "ID", value: 0 },
+              { label: "Nama", value: 1 },
+              { label: "NIDN", value: 2 },
+            ]}
+          />
+          <InputGroup leftIcon="search" placeholder="Filter by name" />
+        </ControlGroup>
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      <Box>
-        <ButtonGroup large={true}>
-          <Button active={state === 1 ? true : false} text="No" onClick={() => setstate(1)} />
-          <Button active={state === 2 ? true : false} text="Jam" onClick={() => setstate(2)} />
-        </ButtonGroup>
-      </Box>
+      <Flex>
+        {selectedItem.length > 0 &&
+          <Button
+            minimal={true}
+            intent="danger"
+            text={`Delete ${selectedItem.length} selected`}
+            onClick={() => setDialogOpen("delete")}
+          />
+        }
+        <Divider vertical={true} sx={{ my: 2 }} />
+        <Button
+          intent="primary"
+          text="Chart"
+          onClick={() => setDialogOpen("chart")}
+        />
+        <Button
+          intent="primary"
+          text="Jadwal Baru"
+          onClick={() => setDialogOpen("add")}
+        />
+       
+      </Flex>
+      <Alert
+        isOpen={dialogOpen === "delete"}
+        icon="trash"
+        intent="danger"
+        minimal={true}
+        cancelButtonText="Tidak"
+        confirmButtonText="Hapus"
+        onClose={() => setDialogOpen(null)}
+      >
+        <p>
+          <span>Anda yakin ingin menghapus {selectedItem.length} data jadwal ini?</span>
+          <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
+        </p>
+      </Alert>
+      <DialogJadwalBaru
+        isOpen={dialogOpen === "add"}
+        onClose={() => { setDialogOpen(null) }}
+      />
+       <DialogChart
+        isOpen={dialogOpen === "chart"}
+        onClose={() => { setDialogOpen(null) }}
+      />
     </Flex>
   )
 }

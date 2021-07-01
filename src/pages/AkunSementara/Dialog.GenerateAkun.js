@@ -1,5 +1,4 @@
-import { Button, Classes, Dialog, FormGroup, InputGroup, SpanGroup, } from "@blueprintjs/core";
-import { Select } from "components";
+import { Button, Classes, Dialog, FormGroup, InputGroup } from "@blueprintjs/core";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -30,16 +29,16 @@ const DialogGenerateAkun = ({ isOpen, onClose = () => { } }) => {
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
-              
+
               <FormGroup
                 label="Prefix"
                 labelFor="f-prefix"
                 helperText={errors["prefix"]}
                 intent={"danger"}
               >
-                
+
                 <InputGroup
-                span="sksk"
+                  span="sksk"
                   id="f-prefix"
                   name="prefix"
                   value={values["prefix"]}

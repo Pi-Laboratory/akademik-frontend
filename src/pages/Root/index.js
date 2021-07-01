@@ -1,17 +1,12 @@
-import { AkademikMahasiswa } from "pages/AkademikMahasiswa";
+import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
+import { Jadwal } from "pages/Jadwal";
+import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
-import Users from "pages/Users";
 import ManajemenRuang from "pages/ManejemenRuang";
-import ProgramStudi from "pages/ProgramStudi";
-import JenisNilai from "pages/JenisNilai";
-import PredikatKelulusan from "pages/PredikatKelulusan";
-import Jadwal from "pages/Jadwal";
-import Presensi from "pages/Presensi"
 import AkunSementara from "pages/AkunSementara";
 import DivisiPendidikan from "pages/DivisiPendidikan";
-
 
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
@@ -30,23 +25,16 @@ const navigation = [
   },
   {
     "title": "Nama Servis",
-    "text": "Users",
-    "component": Users,
-    "path": "/users",
-    "icon": "blank"
-  },
-  {
-    "title": "Akun Sementara",
-    "text": "Akun Sementara",
-    "component": AkunSementara,
-    "path": "/akun-sementara",
-    "icon": "blank"
-  },
-  {
-    "title": "Nama Servis",
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum/",
+    "icon": "book"
+  },
+  {
+    "title": "Nama Servis",
+    "text": "Jadwal dan Kelas",
+    "component": Jadwal,
+    "path": "/jadwal/",
     "icon": "blank"
   },
   {
@@ -64,45 +52,17 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Program Studi",
-    "text": "Program Studi",
-    "component": ProgramStudi,
-    "path": "/program-studi",
-    "icon": "book"
-  },
-  {
-    "title": "Jenis Nilai",
-    "text": "Jenis Nilai",
-    "component": JenisNilai,
-    "path": "/jenis-nilai",
-    "icon": "blank"
-  },
-  {
-    "title": "Predikat Kelulusan",
-    "text": "Predikat Kelulusan",
-    "component": PredikatKelulusan,
-    "path": "/predikat-kelulusan",
-    "icon": "blank"
-  },
-  {
-    "title": "Jadwal",
-    "text": "Jadwal",
-    "component": Jadwal,
-    "path": "/jadwal",
-    "icon": "blank"
-  },
-  {
     "title": "Presensi",
-    "text": "Presensi",
+    "text": "Presensi dan Nilai",
     "component": Presensi,
-    "path": "/presensi",
+    "path": "/presensi-nilai",
     "icon": "blank"
   },
   {
     "title": "Akademik Kemahasiswaan",
-    "text": "Kemahasiswaan",
-    "component": AkademikMahasiswa,
-    "path": "/akademik-mahasiswa",
+    "text": "Mahasiswa",
+    "component": Mahasiswa,
+    "path": "/mahasiswa",
     "icon": "user"
   },
   {
@@ -110,6 +70,13 @@ const navigation = [
     "text": "Divisi Pendidikan",
     "component": DivisiPendidikan,
     "path": "/divisi-pendidikan",
+    "icon": "blank"
+  }, 
+  {
+    "title": "Penerimaan mahasiswa baru",
+    "text": "Penerimaan",
+    "component": AkunSementara,
+    "path": "/penerimaan",
     "icon": "blank"
   },
   {
