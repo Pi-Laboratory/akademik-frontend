@@ -4,7 +4,7 @@ import { Jadwal } from "pages/Jadwal";
 import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
-import ManajemenRuang from "pages/ManejemenRuang";
+import { ManajemenRuang } from "pages/ManajemenRuang";
 import ProgramStudi from "pages/ProgramStudi";
 import AkunSementara from "pages/AkunSementara";
 
@@ -41,7 +41,7 @@ const navigation = [
     "title": "Nama Servis",
     "text": "Manajemen Ruang",
     "component": ManajemenRuang,
-    "path": "/manajemen-ruang",
+    "path": "/manajemen-ruang/",
     "icon": "blank"
   },
   {
