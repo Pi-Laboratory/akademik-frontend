@@ -86,8 +86,7 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
+          <ListGroup.Item >
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
@@ -95,15 +94,69 @@ const List = () => {
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {
-                      name: idx,
                       value: e.target.checked
                     }
                   })
                 }} />
               </Box>
 
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                  Teknik Sipil
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jurusan
+                </Box>
+              </Box>
 
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                  Teknik Sipil 
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Konstruksi Bangunan
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-IV
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+              </Box>
+              
+            </Flex>
+
+            {/* Pembatas Teknik Elektro */}
+
+            <Flex sx={{mt:20}}>  
+              <Box sx={{ width: 40, flexShrink: 0 }}>
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      value: e.target.checked
+                    }
+                  })
+                }} />
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3,}}>
                 <Box>
                   Teknik Elektro
                 </Box>
@@ -112,26 +165,289 @@ const List = () => {
                 </Box>
               </Box>
 
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
+              <Box sx={{ width: 295, mr: 3 }}>
                 <Box>
+                  Teknik Informatika
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
                   Teknik Komputer
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Teknik Listrik
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Teknik Listrik
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Program Studi
                 </Box>
               </Box>
 
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
+              <Box sx={{ width: 295, mr: 3 }}>
                 <Box>
-                  D3
+                 D-IV
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-IV
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-III
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Jenjang Studi
                 </Box>
               </Box>
+              
             </Flex>
+
+            {/* Pembatas Teknik Mesin */}
+
+            <Flex sx={{mt:20}}>  
+              <Box sx={{ width: 40, flexShrink: 0 }}>
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      value: e.target.checked
+                    }
+                  })
+                }} />
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3,}}>
+                <Box>
+                  Teknik Mesin
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jurusan
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                  Teknik Mesin
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+              </Box>
+              
+            </Flex>
+            
+            {/* Pembatas akuntansi */}
+
+            <Flex sx={{mt:20}}>  
+              <Box sx={{ width: 40, flexShrink: 0 }}>
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      value: e.target.checked
+                    }
+                  })
+                }} />
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3,}}>
+                <Box>
+                  Akuntansi
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jurusan
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                  Perpajakan
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Akuntansi
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                 D-IV
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+              </Box>
+              
+            </Flex>
+
+            {/* pembatas Administrasi Bisnis */}
+
+            <Flex sx={{mt:20}}>  
+              <Box sx={{ width: 40, flexShrink: 0 }}>
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      value: e.target.checked
+                    }
+                  })
+                }} />
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3,}}>
+                <Box>
+                  Administrasi Bisnis
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jurusan
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                  Administrasi Bisnis
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Manajemen Bisnis
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-IV
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+              </Box>
+              
+            </Flex>
+
+            {/* pembatas pariwisata */}
+
+            <Flex sx={{mt:20}}>  
+              <Box sx={{ width: 40, flexShrink: 0 }}>
+                <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      value: e.target.checked
+                    }
+                  })
+                }} />
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3,}}>
+                <Box>
+                  Pariwisata
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jurusan
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                  Perhotelan
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Usaha Perjalan Wisata
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box  sx={{ width: 295, mr: 3, mt:10, }}>
+                  Ekowisata Bawah Laut
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+              </Box>
+
+              <Box sx={{ width: 295, mr: 3 }}>
+                <Box>
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+                <Box sx={{ width: 295, mr: 3, mt:10, }} >
+                 D-III
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jenjang Studi
+                </Box>
+              </Box>
+              
+            </Flex>
+            
+
           </ListGroup.Item>
-        ))}
+   
       </ListGroup>
       <Flex sx={{ my: 3, justifyContent: "center" }}>
         <Button minimal={true} icon="chevron-left" text="Previous" />
