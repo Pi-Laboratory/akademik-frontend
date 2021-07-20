@@ -5,7 +5,6 @@ import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManejemenRuang";
-import ProgramStudi from "pages/ProgramStudi";
 import AkunSementara from "pages/AkunSementara";
 import DivisiPendidikan from "pages/DivisiPendidikan";
 
@@ -50,13 +49,6 @@ const navigation = [
     "text": "Dosen dan Pejabat",
     "component": DosenPejabat,
     "path": "/dosen-pejabat",
-    "icon": "blank"
-  },
-  {
-    "title": "Program Studi",
-    "text": "Program Studi",
-    "component": ProgramStudi,
-    "path": "/program-studi",
     "icon": "blank"
   },
   {
