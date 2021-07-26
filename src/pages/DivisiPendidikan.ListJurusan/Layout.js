@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
-import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -62,34 +61,7 @@ const List = () => {
                   { label: "Administrasi Bisnis", value: 4 },
                   { label: "Pariwisata", value: 5 },
                 ]}
-              />
-            <Select
-                minimal={true}
-                label="Program Studi"
-                options={[
-                  { label: "Teknik Sipil (D3)", value: 0 },
-                  { label: "Konstruksi Bangunan (D4)", value: 1 },
-                  { label: "Teknik Informatika (D4)", value: 2 },
-                  { label: "Teknik Komputer (D3)", value: 3 },
-                  { label: "Teknik Listrik (D3)", value: 4 },
-                  { label: "Teknik Listrik (D4)", value: 5 },
-                  { label: "Teknik Mesin (D3)", value: 6 },
-                  { label: "Perpajakan (D4)", value: 7 },
-                  { label: "Akuntansi (D3)", value: 8 },
-                  { label: "Manajemen Bisnis (D4)", value: 9 },
-                  { label: "Perhotelan (D3)", value: 10 },
-                  { label: "Usaha Perjalanan Wisata (D3)", value: 11 },
-                  { label: "Ekowisata Bawah Laut (D3)", value: 12 },
-                ]}
-              />
-               <Select
-                minimal={true}
-                label="Jenjang Studi"
-                options={[
-                  { label: "D-III", value: 0 },
-                  { label: "D-IV", value: 1 },
-                ]}
-              />                        
+              />         
             </Box>
           </Flex>
         </ListGroup.Header>
@@ -114,22 +86,6 @@ const List = () => {
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                  Jurusan
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                Teknik Komputer
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Program Studi
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                D-III
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Jenjang Studi
                 </Box>
               </Box>
             </Flex>

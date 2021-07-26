@@ -6,7 +6,7 @@ import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManejemenRuang";
 import AkunSementara from "pages/AkunSementara";
-import DivisiPendidikan from "pages/DivisiPendidikan";
+import { DivisiPendidikan } from "pages/DivisiPendidikan";
 
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
