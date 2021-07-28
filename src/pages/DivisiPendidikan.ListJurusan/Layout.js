@@ -88,6 +88,14 @@ const List = () => {
                  Jurusan
                 </Box>
               </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                 3
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                 Program Studi
+                </Box>
+              </Box>
             </Flex>
           </ListGroup.Item>
         ))}
