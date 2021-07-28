@@ -5,8 +5,8 @@ import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManejemenRuang";
-import ProgramStudi from "pages/ProgramStudi";
 import AkunSementara from "pages/AkunSementara";
+import { DivisiPendidikan } from "pages/DivisiPendidikan";
 
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
@@ -52,13 +52,6 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Program Studi",
-    "text": "Program Studi",
-    "component": ProgramStudi,
-    "path": "/program-studi",
-    "icon": "blank"
-  },
-  {
     "title": "Presensi",
     "text": "Presensi dan Nilai",
     "component": Presensi,
@@ -72,6 +65,13 @@ const navigation = [
     "path": "/mahasiswa",
     "icon": "user"
   },
+  {
+    "title": "Divisi Pendidikan",
+    "text": "Divisi Pendidikan",
+    "component": DivisiPendidikan,
+    "path": "/divisi-pendidikan",
+    "icon": "blank"
+  }, 
   {
     "title": "Penerimaan mahasiswa baru",
     "text": "Penerimaan",
