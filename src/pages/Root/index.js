@@ -41,7 +41,7 @@ const navigation = [
     "title": "Nama Servis",
     "text": "Manajemen Ruang",
     "component": ManajemenRuang,
-    "path": "/manajemen-ruang/",
+    "path": "/manajemen-ruang/ruang",
     "icon": "blank"
   },
   {
