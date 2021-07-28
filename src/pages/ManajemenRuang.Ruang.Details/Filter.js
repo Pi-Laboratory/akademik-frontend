@@ -1,7 +1,7 @@
 import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
-import DialogManajemenRuangBaru from "./Dialog.ManajemenRuangBaru";
+import DialogNilaiBaru from "./Dialog.NilaiBaru";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
@@ -33,7 +33,7 @@ const Filter = ({ selectedItem }) => {
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
-          text="Tambah Ruang Baru"
+          text="Nilai Baru"
           onClick={() => setDialogOpen("add")}
         />
       </Flex>
@@ -51,7 +51,7 @@ const Filter = ({ selectedItem }) => {
           <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
         </p>
       </Alert>
-      <DialogManajemenRuangBaru
+      <DialogNilaiBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
       />

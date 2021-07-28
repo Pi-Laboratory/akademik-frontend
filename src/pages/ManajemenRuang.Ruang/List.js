@@ -109,12 +109,12 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`mata-kuliah`}>
-                  KELAS TK1
+                  <Link to={`/manajemen-ruang/ruang/${idx}`}>
+                  Lab Komputer
                   </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  01TK
+                  LBKM01
                 </Box>
                 
               </Box>

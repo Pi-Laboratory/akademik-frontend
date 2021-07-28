@@ -1,46 +1,36 @@
-import { Layout } from './Layout'
-import React, { useMemo } from 'react'
-import Helmet from "react-helmet";
-import { Navigation } from 'pages/Root/hoc'
-import { useRouteMatch } from 'react-router'
-import List from './List'
+import ManajemenRuangRuang from "pages/ManajemenRuang.Ruang";
+import { Navigation } from "pages/Root/hoc";
+import { Helmet } from "react-helmet";
+import { useRouteMatch } from "react-router";
+import { Layout } from "./Layout";
 
-export const ManajemenRuang = () => {
+const navigation = [
+  {
+    "title": "Manajemen Ruang",
+    "text": "Manajemen Ruang",
+    "component": ManajemenRuangRuang,
+    "path": "/manajemen-ruang/ruang",
+    "icon": "blank"
+  },
+  // {
+  //   "title": "Nilai",
+  //   "text": "Nilai",
+  //   "component": PresensiNilaiNilai,
+  //   "path": "/nilai",
+  //   "icon": "blank"
+  // }
+]
+
+const DosenPejabat = () => {
   const { path } = useRouteMatch();
-  const navigation = useMemo(() => ([
-    {
-      "title": "Halaman Utama",
-      "text": "Halaman Utama",
-      "component": List,
-      "path": `/`,
-      exact: true,
-      icon: 'home'
-    },
-    // {
-    //   "title": "MataKuliah",
-    //   "text": "Mata Kuliah",
-    //   "component": MataKuliah,
-    //   "path": `/mata-kuliah`,
-    //   exact: true
-    // },
-    // {
-    //   "title": "Semester",
-    //   "text": "Semester",
-    //   "component": Semester,
-    //   "path": `/semester`,
-    //   exact: true
-    // },
-   
-  ]), []);
-
   return (
-    <>
+    <Navigation base={path} navigation={navigation}>
       <Helmet>
-        <title>Dashboard - Manajemen Ruang</title>
+        <title>Manajemen Ruang</title>
       </Helmet>
-      <Navigation base={path} navigation={navigation}>
-        <Layout />
-      </Navigation>
-    </>
+      <Layout />
+    </Navigation>
   )
 }
+
+export default DosenPejabat;
