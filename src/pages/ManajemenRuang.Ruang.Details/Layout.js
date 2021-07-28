@@ -11,7 +11,7 @@ const Layout = () => {
           ["Status Kelayakan", "Layak"],
           ["Tipe Ruang", "Lab"],
           ["Kode Gedung", "LBKM01"],
-          ["Penanggung jawab", "Roby Lumbu"],
+          ["Penanggung jawab", "Hery Langi"],
         ].map((item, idx) => (
           <Flex key={idx} sx={{ mt: 3 }}>
             <Box sx={{ width: "40%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>

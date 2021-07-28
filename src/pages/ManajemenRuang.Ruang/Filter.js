@@ -34,7 +34,7 @@ const Filter = ({ selectedItem }) => {
     
         <Button
           intent="primary"
-          text="Presensi Baru"
+          text="Manajemen Ruang Baru"
           onClick={() => setDialogOpen("add")}
         />
        
