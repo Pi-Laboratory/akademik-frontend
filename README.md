@@ -9,6 +9,7 @@ Komponen yang di gunakan yaitu:\
 [BlueprintJS](https://blueprintjs.com/docs/) untuk elemen-elemen dasar komponen UI.\
 [Styled System](https://styled-system.com/) untuk kemudahan memanipulasi tampilan dengan nilai-nilai yang telah di tetapkan.\
 [Formik](https://formik.org/docs/overview) untuk memanajemen input formulir.
+[Feathers JS](https://feathersjs.com/) untuk komunikasi client server.
 
 ## Directory Structure
 
