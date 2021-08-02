@@ -50,12 +50,13 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
+        
               <Select
                 minimal={true}
                 label="Jabatan"
                 options={[
-                  { label: "Direktur", value: true },
-                  { label: "Wakil Direktur", value: false }
+                  { label: "Pengajar", value: 0 },
+                  { label: "Staff", value: 0 },
                 ]}
               />
               <Select
@@ -87,9 +88,12 @@ const List = () => {
                   })
                 }} />
               </Box>
+              <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
+                {Math.round(Math.random() * 12093)}
+              </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`pejabat/${idx}`}>
+                  <Link to={`list/${idx}`}>
                     Prof. Dr. Imanuel Pundoko, S.Th.
                   </Link>
                 </Box>
@@ -97,11 +101,21 @@ const List = () => {
                   {`74398734${Math.round(Math.random() * 8364872343)}`}
                 </Box>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Direktur
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                 Jabatan
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                 Pengajar
+                </Box>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                 Teknik Elektro
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                 Jurusan
+                </Box>
               </Box>
             </Flex>
           </ListGroup.Item>

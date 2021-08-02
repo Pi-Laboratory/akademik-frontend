@@ -7,12 +7,11 @@ import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManejemenRuang";
 import AkunSementara from "pages/AkunSementara";
 import { DivisiPendidikan } from "pages/DivisiPendidikan";
-
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
 import { useRouteMatch } from "react-router";
 import Helmet from "react-helmet";
-import DosenPejabat from "pages/DosenPejabat";
+import StaffPengajar from "pages/StaffPengajar";
 
 const navigation = [
   {
@@ -45,10 +44,10 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Dosen dan Pejabat",
-    "text": "Dosen dan Pejabat",
-    "component": DosenPejabat,
-    "path": "/dosen-pejabat",
+    "title": "Staff Dan Pengajar",
+    "text": "Staff Dan Pengajar",
+    "component": StaffPengajar,
+    "path": "/staff-dan-pengajar",
     "icon": "blank"
   },
   {
@@ -71,7 +70,7 @@ const navigation = [
     "component": DivisiPendidikan,
     "path": "/divisi-pendidikan",
     "icon": "blank"
-  }, 
+  },
   {
     "title": "Penerimaan mahasiswa baru",
     "text": "Penerimaan",

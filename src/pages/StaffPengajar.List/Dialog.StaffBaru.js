@@ -7,12 +7,12 @@ const Schema = Yup.object().shape({
   "nip": Yup.string().required(),
 })
 
-const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogStaffBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Dosen Baru"
+      title="Tambah Staff Baru"
     >
       <Formik
         validationSchema={Schema}
@@ -66,4 +66,4 @@ const DialogDosenBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogDosenBaru;
+export default DialogStaffBaru;
