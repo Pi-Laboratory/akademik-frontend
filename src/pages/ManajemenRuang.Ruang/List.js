@@ -1,6 +1,7 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
+import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -52,16 +53,34 @@ const List = () => {
             <Box sx={{ flexShrink: 0 }}>
             <Select
                 minimal={true}
-                label="Jurusan"
+                label="Pengelola"
                 options={[
+                  { label: "Politeknik Negeri Manado", value: 0 },
                   { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Sipil", value: 1 },
-                  { label: "Teknik Mesin", value: 2 },
-                  { label: "Akuntansi", value: 3 },
-                  { label: "Administrasi Bisnis", value: 4 },
-                  { label: "Pariwisata", value: 5 },
+                  { label: "Teknik Mesin", value: 1 },
+                  { label: "Teknik Sipil", value: 2 },
+                  { label: "PLN", value: 3 },
+                  { label: "Teknik LIstrik", value: 3 },
                 ]}
-              />         
+              />
+           
+              <Select
+                minimal={true}
+                label="Tipe Gedung"
+                options={[
+                  { label: "Lab", value: 0 },
+                  { label: "Bengkel", value: 0 },
+                  { label: "Gedung", value: 1 },
+                ]}
+              />
+               <Select
+                minimal={true}
+                label="Status Kelayakan"
+                options={[
+                  { label: "Layak", value: 0 },
+                  { label: "Tidak Layak", value: 0 },
+                ]}
+              />
             </Box>
           </Flex>
         </ListGroup.Header>
@@ -82,19 +101,41 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 Teknik Elektro
+                  Lab
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Jurusan
+                  Tipe Gedung
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 3
+                  <Link to={`/manajemen-ruang/ruang/${idx}`}>
+                  Lab Komputer
+                  </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Program Studi
+                  LBKM01
                 </Box>
+                
+              </Box>
+             
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                100 orang
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                 Kapasitas
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                    Layak
+                </Box>
+               
+              </Box>
+            
+              <Box sx={{ flexGrow: 1 }}>
+                Teknik Elektro
               </Box>
             </Flex>
           </ListGroup.Item>
