@@ -1,6 +1,6 @@
 import { Spinner } from "@blueprintjs/core";
 import { useEffect, useState } from "react";
-import { Redirect, Route, useHistory } from "react-router-dom"
+import { Route } from "react-router-dom"
 import { useClient } from "./client"
 
 export const PrivateRoute = ({ ...props }) => {
