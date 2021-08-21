@@ -13,6 +13,7 @@ import Layout from "./Layout";
 import { useRouteMatch } from "react-router";
 import Helmet from "react-helmet";
 import DosenPejabat from "pages/DosenPejabat";
+import Users from "pages/Users";
 
 const navigation = [
   {
@@ -71,7 +72,7 @@ const navigation = [
     "component": DivisiPendidikan,
     "path": "/divisi-pendidikan",
     "icon": "blank"
-  }, 
+  },
   {
     "title": "Penerimaan mahasiswa baru",
     "text": "Penerimaan",
@@ -86,6 +87,14 @@ const navigation = [
     "path": "/settings",
     "icon": "cog"
   },
+  {
+    "title": "Users",
+    "text": "Users",
+    "component": Users,
+    "path": "/users",
+    "icon": "blank",
+    "permission": "admin"
+  }
 ]
 
 const Root = () => {
