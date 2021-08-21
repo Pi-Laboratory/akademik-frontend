@@ -5,6 +5,8 @@ import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import List from './List'
 import ListJurusan from 'pages/DivisiPendidikan.ListJurusan'
+import Peminatan from 'pages/DivisiPendidikan.Peminatan'
+
 export const DivisiPendidikan = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
@@ -21,6 +23,13 @@ export const DivisiPendidikan = () => {
       "text": "Jurusan",
       "component": ListJurusan,
       "path": `/list-jurusan`,
+      exact: true
+    },
+    {
+      "title": "Peminatan",
+      "text": "Peminatan",
+      "component": Peminatan,
+      "path": `/peminatan`,
       exact: true
     },
   ]), []);

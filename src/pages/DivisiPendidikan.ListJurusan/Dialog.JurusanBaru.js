@@ -6,7 +6,7 @@ const Schema = Yup.object().shape({
   "nama-jurusan": Yup.string().required(),
 })
 
-const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogJurusanBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
@@ -37,6 +37,20 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
                   intent={errors["nama-jurusan"] ? "danger" : "none"}
                 />
               </FormGroup>
+              <FormGroup
+                label="Kode"
+                labelFor="f-kode"
+                helperText={errors["kode"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-kode"
+                  name="kode"
+                  value={values["kode"]}
+                  onChange={handleChange}
+                  intent={errors["kode"] ? "danger" : "none"}
+                />
+              </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -51,4 +65,4 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogKelasBaru;
+export default DialogJurusanBaru;
