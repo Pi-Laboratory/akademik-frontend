@@ -1,7 +1,7 @@
-import { Button, Checkbox, FormGroup, H2, InputGroup } from "@blueprintjs/core";
+import { Button, FormGroup, H2, InputGroup } from "@blueprintjs/core";
 import { Box, useClient } from "components";
 import { Formik } from "formik";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
@@ -13,10 +13,6 @@ const Schema = Yup.object().shape({
 const Login = () => {
   const client = useClient();
   const history = useHistory();
-
-  useEffect(() => {
-    console.log(client);
-  }, [client]);
 
   const onSubmit = useCallback(async (values, { setIsSubmitting, setErrors }) => {
     if (!client.__connected) return;
@@ -35,7 +31,7 @@ const Login = () => {
     }
     setIsSubmitting(false);
     console.log(values);
-  }, [client]);
+  }, [client, history]);
 
   return (
     <Box sx={{

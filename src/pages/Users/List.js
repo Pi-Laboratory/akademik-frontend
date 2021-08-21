@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
+import { Checkbox, Classes, NonIdealState } from "@blueprintjs/core";
 import { Box, Container, Flex, ListGroup, useClient } from "components";
 import { useEffect, useMemo, useState } from "react";
 
@@ -32,7 +32,7 @@ const List = () => {
       }
     }
     fetch();
-  }, []);
+  }, [client]);
   return (
     <Container sx={{ px: 3 }}>
       <ListGroup
@@ -55,6 +55,13 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
+        {items.length === 0 && (
+          <Box sx={{ my: 3 }}>
+            <NonIdealState
+              title="No user available"
+            />
+          </Box>
+        )}
         {items.map((item) => (
           <ListGroup.Item key={item["id"]}>
             <Flex>

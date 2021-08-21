@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex } from "components";
+import { Box, Flex } from "components";
 
 const Filter = () => {
   return (
