@@ -7,9 +7,8 @@ import { Layout } from "./Layout";
 const navigation = [
   {
     "title": "Staff dan Pengajar",
-    "text": "Staff dan Pengajar",
     "component": StaffPengajarList,
-    "path": "/list",
+    "path": "/staff-dan-pengajar",
     "icon": "blank"
   },
 ]

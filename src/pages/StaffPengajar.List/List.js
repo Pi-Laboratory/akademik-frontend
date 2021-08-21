@@ -50,7 +50,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-        
+
               <Select
                 minimal={true}
                 label="Jabatan"
@@ -93,7 +93,7 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`list/${idx}`}>
+                  <Link to={`staff-dan-pengajar/${idx}`}>
                     Prof. Dr. Imanuel Pundoko, S.Th.
                   </Link>
                 </Box>
@@ -103,18 +103,26 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 Jabatan
+                  NIP
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Pengajar
+                  197807102008121003
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 Teknik Elektro
+                  KTP
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Jurusan
+                  -
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                  Teknik Elektro
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jurusan
                 </Box>
               </Box>
             </Flex>

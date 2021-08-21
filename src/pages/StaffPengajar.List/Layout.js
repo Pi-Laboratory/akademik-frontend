@@ -10,8 +10,8 @@ const Layout = () => {
     }}>
       <Box>
         <Switch>
-          <Route path="/staff-dan-pengajar/list/:nip" component={ListDetail} />
-          <Route path="/staff-dan-pengajar/list" component={List} />
+          <Route path="/staff-dan-pengajar/:nip" component={ListDetail} />
+          <Route path="/staff-dan-pengajar/" component={List} />
         </Switch>
       </Box>
     </Flex>

@@ -5,14 +5,29 @@ const Layout = () => {
   return (
     <Flex sx={{ px: 3 }}>
       <Box sx={{ py: 4, flexGrow: 1 }}>
-        <Box as={H3}>Informasi Umum</Box>
+        <Box as={H3}>Informasi Staff</Box>
         {[
-          ["Nomot KTP", "72239503948503"],
-          ["Alamat", "Tikala, Manado"],
+          ["NIP", "197807102008121003"],
+          ["NIDN", "197807102008121003"],
+          ["Nama Lengkap", "ADRIYAN WAROKKA"],
+          ["Gelar Depan", "-"],
+          ["Gelar Belakang", "ST.,M.ENG"],
+          ["NIK", "72239503948503"],
+          ["Tempat Lahir", "Banjarmasin"],
+          ["Tanggal Lahir", "21 Juni 1968"],
+          ["Kartu Pegawai", "-"],
+          ["Jenis Kelamin", "Perempuan"],
           ["Golongan Darah", "O"],
-          ["Agama", "Kristen Protestan"],
-          ["Status Nikah", "Belum Menikah"],
-          ["Program Studi", "Teknik Elektro"]
+          ["Agama", "-"],
+          ["Status Nikah", "-"],
+          ["Alamat"],
+          ["Negara", "Indonesia"],
+          ["Provinsi", "Sulawesi Utara"],
+          ["Kabupaten/Kota", "Manado"],
+          ["Desa/Kelurahan", "-"],
+          ["Nomor Telepon", "-"],
+          ["Email", "-"],
+          ["Jenis Pegawai", "Pengajar"],
         ].map((item, idx) => (
           <Flex key={idx} sx={{ mt: 3 }}>
             <Box sx={{ width: "40%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
@@ -23,42 +38,14 @@ const Layout = () => {
             </Box>
           </Flex>
         ))}
-        <Box as={H3} sx={{ mt: 4 }}>Riwayat Pendidikan</Box>
+        <Box as={H3} sx={{ mt: 4 }}>Informasi Pejabat</Box>
         {[
-          ["Sarjana", "Teknik Elektro", "Universitas Sam Ratulangi"],
-          ["Doktor", "Teknik Elektro", "Institut Teknologi Bandung"],
-          ["Profesor", "Teknik Elektro", "Politeknik Nnegeri Manado"],
+          ["Jabatan", "-"],
+          ["Program Studi", "-"],
         ].map((item, idx) => (
           <Flex key={idx} sx={{ mt: 3 }}>
-            <Box sx={{ width: "30%", flexShrink: 0 }}>
+            <Box sx={{ width: "40%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
               <span>{item[0]}</span>
-            </Box>
-            <Box sx={{ width: "30%", flexShrink: 0 }}>
-              <span>{item[1]}</span>
-            </Box>
-            <Box sx={{ flexGrow: 1 }}>
-              <span>{item[2]}</span>
-            </Box>
-          </Flex>
-        ))}
-        <Box as={H3} sx={{ mt: 4 }}>Artikel Ilmiah</Box>
-        {[
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-          [2010, "Rancang Bangun Sistem Bertenaga Surya"],
-        ].map((item, idx) => (
-          <Flex key={idx} sx={{ mt: 3 }}>
-            <Box sx={{ width: "30%", flexShrink: 0 }}>
-              <span>{item[0] + idx}</span>
             </Box>
             <Box sx={{ flexGrow: 1 }}>
               <span>{item[1]}</span>
@@ -83,22 +70,6 @@ const Layout = () => {
         <Box sx={{ fontWeight: "bold", color: "gray.6" }}>
           197807102008121003
         </Box>
-        {[
-          ["Tanggal Lahir", "21 Juni 1968"],
-          ["Kota Tempat Lahir", "Banjarmasin"],
-          ["Jenis Kelamin", "Laki-laki"],
-          ["Telepon", "0852-9948-2331"],
-          ["Status", "Aktif"],
-        ].map((item, idx) => (
-          <Flex key={idx} sx={{ mt: 3 }}>
-            <Box sx={{ width: "50%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
-              <span>{item[0]}</span>
-            </Box>
-            <Box sx={{ flexGrow: 1 }}>
-              <span>{item[1]}</span>
-            </Box>
-          </Flex>
-        ))}
       </Box>
     </Flex>
   )
