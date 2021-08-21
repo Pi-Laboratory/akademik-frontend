@@ -30,6 +30,7 @@
     "react-scripts": "4.0.3",
     "react-scrollbar": "^0.5.6",
     "recharts": "^2.0.9",
+    "socket.io-client": "^2.4.0",
     "styled-system": "^5.1.5",
     "web-vitals": "^1.0.1",
     "yup": "^0.32.9"
