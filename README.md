@@ -1,4 +1,3 @@
-<img width="1440" alt="Screen Shot 2021-08-22 at 00 52 28" src="https://user-images.githubusercontent.com/20113627/130329287-7fcb3f6c-4c35-437b-877d-da79b88843e8.png">
 # Memulai dengan standard collaboration project
 
 Project ini di mulai dari Template [Create React App](https://github.com/facebook/create-react-app).
