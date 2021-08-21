@@ -9,8 +9,8 @@ export const DivisiPendidikan = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {
-      "title": "Divisi Pendidikan",
-      "text": "Divisi Pendidikan",
+      "title": "List Program Studi",
+      "text": "Program Studi",
       "component": List,
       "path": `/`,
       exact: true,
@@ -18,7 +18,7 @@ export const DivisiPendidikan = () => {
     },
     {
       "title": "List Jurusan",
-      "text": "List Jurusan",
+      "text": "Jurusan",
       "component": ListJurusan,
       "path": `/list-jurusan`,
       exact: true

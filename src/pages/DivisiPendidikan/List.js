@@ -1,7 +1,6 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
-// import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
@@ -51,7 +50,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-            <Select
+              <Select
                 minimal={true}
                 label="Jurusan"
                 options={[
@@ -63,7 +62,7 @@ const List = () => {
                   { label: "Pariwisata", value: 5 },
                 ]}
               />
-            <Select
+              <Select
                 minimal={true}
                 label="Program Studi"
                 options={[
@@ -82,14 +81,14 @@ const List = () => {
                   { label: "Ekowisata Bawah Laut (D3)", value: 12 },
                 ]}
               />
-               <Select
+              <Select
                 minimal={true}
                 label="Jenjang Studi"
                 options={[
                   { label: "D-III", value: 0 },
                   { label: "D-IV", value: 1 },
                 ]}
-              />                        
+              />
             </Box>
           </Flex>
         </ListGroup.Header>
@@ -110,26 +109,26 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 Teknik Elektro
+                  Teknik Komputer
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Jurusan
+                  Program Studi
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                Teknik Komputer
+                  D-III
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Program Studi
+                  Jenjang Studi
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                D-III
+                  Teknik Elektro
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Jenjang Studi
+                  Jurusan
                 </Box>
               </Box>
             </Flex>
