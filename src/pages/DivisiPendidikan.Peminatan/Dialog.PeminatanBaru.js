@@ -3,20 +3,20 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "nama-jurusan": Yup.string().required(),
+  "nama-peminatan": Yup.string().required(),
 })
 
-const DialogJurusanBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogPeminatanBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Jurusan"
+      title="Tambah Peminatan"
     >
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "nama-jurusan": "",
+          "nama-peminatan": "",
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -24,17 +24,17 @@ const DialogJurusanBaru = ({ isOpen, onClose = () => { } }) => {
             <div className={Classes.DIALOG_BODY}>
               
               <FormGroup
-                label="Nama Jurusan"
-                labelFor="f-nama-jurusan"
-                helperText={errors["nama-jurusan"]}
+                label="Nama Peminatan"
+                labelFor="f-nama-peminatan"
+                helperText={errors["nama-peminatan"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama-jurusan"
-                  name="nama-jurusan"
-                  value={values["nama-jurusan"]}
+                  id="f-nama-peminatan"
+                  name="nama-peminatan"
+                  value={values["nama-peminatan"]}
                   onChange={handleChange}
-                  intent={errors["nama-jurusan"] ? "danger" : "none"}
+                  intent={errors["nama-peminatan"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
@@ -51,25 +51,6 @@ const DialogJurusanBaru = ({ isOpen, onClose = () => { } }) => {
                   intent={errors["kode"] ? "danger" : "none"}
                 />
               </FormGroup>
-              <FormGroup
-                label="Jurusan"
-                labelFor="jurusan"
-                helperText={errors["jurusan"]}
-                intent={"danger"}
-              >
-                <div class="bp3-select .modifier">
-                  <select>
-                    <option selected>-- PILIH ---</option>
-                    <option value="1">Teknik Sipil</option>
-                    <option value="2">Teknik Mesin</option>
-                    <option value="3">Teknik Elektro</option>
-                    <option value="4">Akademi Pariwisata</option>
-                    <option value="5">Akuntansi</option>
-                    <option value="6">Administrasi Bisnis</option>
-                    
-                  </select>
-                </div>
-              </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -84,4 +65,4 @@ const DialogJurusanBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogJurusanBaru;
+export default DialogPeminatanBaru;

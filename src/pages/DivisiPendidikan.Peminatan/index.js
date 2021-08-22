@@ -1,9 +1,9 @@
 import Layout from "./Layout";
 
-const ListJurusan = () => {
+const Peminatan = () => {
   return (
     <Layout />
   )
 }
 
-export default ListJurusan;
+export default Peminatan;
