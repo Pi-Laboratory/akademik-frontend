@@ -1,12 +1,12 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
 import Filter from "./Filter";
-import { Link } from "react-router-dom";
 import { useReducer } from "react";
 
 function selectedItemReducer(state, action) {
   switch (action.type) {
     case "toggle":
+      console.log(state);
       if (action.data.value) {
         return selectedItemReducer(state, {
           type: "add",
@@ -52,22 +52,14 @@ const List = () => {
             <Box sx={{ flexShrink: 0 }}>
               <Select
                 minimal={true}
-                label="Status"
+                label="Jurusan"
                 options={[
-                  { label: "Aktif", value: true },
-                  { label: "Tidak Aktif", value: false }
-                ]}
-              />
-              <Select
-                minimal={true}
-                label="Program Studi"
-                options={[
-                  { label: "Teologi", value: 0 },
                   { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Arsitektur", value: 1 },
-                  { label: "Akuntansi", value: 2 },
-                  { label: "Teknik Sipil", value: 3 },
-                  { label: "Bahasa Inggris", value: 3 },
+                  { label: "Teknik Sipil", value: 1 },
+                  { label: "Teknik Mesin", value: 2 },
+                  { label: "Akuntansi", value: 3 },
+                  { label: "Administrasi Bisnis", value: 4 },
+                  { label: "Pariwisata", value: 5 },
                 ]}
               />
             </Box>
@@ -78,6 +70,7 @@ const List = () => {
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
+                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {
@@ -87,21 +80,29 @@ const List = () => {
                   })
                 }} />
               </Box>
-              <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
-                {Math.round(Math.random() * 12093)}
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                  Kode
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  -
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  <Link to={`dosen/${idx}`}>
-                    Prof. Dr. Imanuel Pundoko, S.Th.
-                  </Link>
+                  Program Studi
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  {`74398734${Math.round(Math.random() * 8364872343)}`}
+                  Teknik Informatika
                 </Box>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                Teknik Elektro
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
+                  Jurusan
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Teknik Elektro 
+                </Box>
               </Box>
             </Flex>
           </ListGroup.Item>

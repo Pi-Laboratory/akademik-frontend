@@ -1,5 +1,5 @@
 import { Box, Flex } from "components";
-import DosenPejabatPejabatDetail from "pages/DosenPejabat.Pejabat.Details";
+import ListDetail from "pages/StaffPengajar.List.Details";
 import { Route, Switch } from "react-router-dom";
 import List from "./List";
 
@@ -10,8 +10,8 @@ const Layout = () => {
     }}>
       <Box>
         <Switch>
-          <Route path="/dosen-pejabat/pejabat/:nip" component={DosenPejabatPejabatDetail} />
-          <Route path="/dosen-pejabat/pejabat" component={List} />
+          <Route path="/staff-dan-pengajar/:nip" component={ListDetail} />
+          <Route path="/staff-dan-pengajar/" component={List} />
         </Switch>
       </Box>
     </Flex>

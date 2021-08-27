@@ -31,18 +31,18 @@ const Filter = ({ selectedItem }) => {
             onClick={() => setDialogOpen("delete")}
           />
         }
-        <Divider vertical={true} sx={{ my: 2 }} />
         <Button
           intent="primary"
           text="Chart"
           onClick={() => setDialogOpen("chart")}
         />
+        <Divider vertical={true} sx={{ my: 2 }} />
         <Button
           intent="primary"
           text="Jadwal Baru"
           onClick={() => setDialogOpen("add")}
         />
-       
+
       </Flex>
       <Alert
         isOpen={dialogOpen === "delete"}
@@ -62,7 +62,7 @@ const Filter = ({ selectedItem }) => {
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
       />
-       <DialogChart
+      <DialogChart
         isOpen={dialogOpen === "chart"}
         onClose={() => { setDialogOpen(null) }}
       />

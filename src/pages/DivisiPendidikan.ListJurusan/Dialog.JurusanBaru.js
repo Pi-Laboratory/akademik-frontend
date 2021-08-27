@@ -6,7 +6,7 @@ const Schema = Yup.object().shape({
   "nama-jurusan": Yup.string().required(),
 })
 
-const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogJurusanBaru = ({ isOpen, onClose = () => { } }) => {
   return (
     <Dialog
       isOpen={isOpen}
@@ -37,6 +37,39 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
                   intent={errors["nama-jurusan"] ? "danger" : "none"}
                 />
               </FormGroup>
+              <FormGroup
+                label="Kode"
+                labelFor="f-kode"
+                helperText={errors["kode"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-kode"
+                  name="kode"
+                  value={values["kode"]}
+                  onChange={handleChange}
+                  intent={errors["kode"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Jurusan"
+                labelFor="jurusan"
+                helperText={errors["jurusan"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>-- PILIH ---</option>
+                    <option value="1">Teknik Sipil</option>
+                    <option value="2">Teknik Mesin</option>
+                    <option value="3">Teknik Elektro</option>
+                    <option value="4">Akademi Pariwisata</option>
+                    <option value="5">Akuntansi</option>
+                    <option value="6">Administrasi Bisnis</option>
+                    
+                  </select>
+                </div>
+              </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
@@ -51,4 +84,4 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
   )
 }
 
-export default DialogKelasBaru;
+export default DialogJurusanBaru;
