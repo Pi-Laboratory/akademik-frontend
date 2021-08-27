@@ -25,31 +25,59 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
-                label="Kode Mata Kuliah"
-                labelFor="f-kode-matakuliah"
-                helperText={errors["kode-matakuliah"]}
+                label="Nama Kelas"
+                labelFor="f-nama-kelas"
+                helperText={errors["nama-kelas"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-kode-matakuliah"
-                  name="kode-matakuliah"
-                  value={values["kode-matakuliah"]}
+                  id="f-nama-kelas"
+                  name="nama-kelas"
+                  value={values["nama-kelas"]}
                   onChange={handleChange}
-                  intent={errors["kode-matakuliah"] ? "danger" : "none"}
+                  intent={errors["nama-kelas"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
-                label="Nama Mata Kuliah"
-                labelFor="f-nama-matakuliah"
-                helperText={errors["nama-matakuliah"]}
+                label="Kode kelas"
+                labelFor="f-kode-kelas"
+                helperText={errors["kode-kelas"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama-matakuliah"
-                  name="nama-matakuliah"
-                  value={values["nama-matakuliah"]}
+                  id="f-kode-kelas"
+                  name="kode-kelas"
+                  value={values["kode-kelas"]}
                   onChange={handleChange}
-                  intent={errors["nama-matakuliah"] ? "danger" : "none"}
+                  intent={errors["kode-kelas"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Dosen Penanggung Jawab"
+                labelFor="f-dosen-penanggung-jawab"
+                helperText={errors["dosen-penanggung-jawab"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-dosen-penanggung-jawab"
+                  name="dosen-penanggung-jawab"
+                  value={values["dosen-penanggung-jawab"]}
+                  onChange={handleChange}
+                  intent={errors["dosen-penanggung-jawab"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Mahasiswa"
+                labelFor="f-mahasiswa"
+                helperText={errors["mahasiswa"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-mahasiswa"
+                  name="mahasiswa"
+                  value={values["mahasiswa"]}
+                  onChange={handleChange}
+                  intent={errors["mahasiswa"] ? "danger" : "none"}
                 />
               </FormGroup>
             </div>

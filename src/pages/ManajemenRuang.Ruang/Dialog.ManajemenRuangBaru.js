@@ -12,7 +12,7 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
     <Dialog
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Jadwal Baru"
+      title="Tambah Ruangan"
     >
       <Formik
         validationSchema={Schema}
@@ -25,46 +25,120 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
-                label="Tahun"
-                labelFor="f-tahun"
-                helperText={errors["tahun"]}
+                label="Tipe"
+                labelFor="f-tipe"
+                helperText={errors["tipe"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>-- PILIH --</option>
+                    <option value="1">Ruangan</option>
+                    <option value="2">Gedung</option>
+                    <option value="3">Laboratorium</option>
+                  </select>
+                </div>
+              </FormGroup>
+              <FormGroup
+                label="Nama"
+                labelFor="f-nama"
+                helperText={errors["nama"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-tahun"
-                  name="tahun"
-                  value={values["tahun"]}
+                  id="f-nama"
+                  name="nama"
+                  value={values["nama"]}
                   onChange={handleChange}
-                  intent={errors["tahun"] ? "danger" : "none"}
+                  intent={errors["nama"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
-                label="IPK Min"
-                labelFor="f-ipk-min"
-                helperText={errors["ipk-min"]}
+                label="kode"
+                labelFor="kode"
+                helperText={errors["kode"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-ipk-min"
-                  name="ipk-min"
-                  value={values["ipk-min"]}
+                  id="f-kode"
+                  name="kode"
+                  value={values["kode"]}
                   onChange={handleChange}
-                  intent={errors["ipk-min"] ? "danger" : "none"}
+                  intent={errors["kode"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
-                label="IPK Min Percobaan"
-                labelFor="f-ipk-min-p"
-                helperText={errors["ipk-min-p"]}
+                label="Status"
+                labelFor="f-status"
+                helperText={errors["status"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>-- PILIH --</option>
+                    <option value="1">Layak</option>
+                    <option value="2">Tidak Layak</option>
+                  </select>
+                </div>
+              </FormGroup>
+              <FormGroup
+                label="Kapasitas"
+                labelFor="kapasitas"
+                helperText={errors["kapasitas"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-ipk-min-p"
-                  name="ipk-min-p"
-                  value={values["ipk-min-p"]}
+                  id="f-kapasitas"
+                  name="kapasitas"
+                  value={values["kapasitas"]}
                   onChange={handleChange}
-                  intent={errors["ipk-min-p"] ? "danger" : "none"}
+                  intent={errors["kapasitas"] ? "danger" : "none"}
                 />
+              </FormGroup>
+              <h6 className={Classes.HEADING}>Pengelolah</h6>
+              <FormGroup
+                label="Jurusan"
+                labelFor="jurusan"
+                helperText={errors["jurusan"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>-- PILIH --</option>
+                    <option value="1">Teknik Sipil</option>
+                    <option value="2">Teknik Mesin</option>
+                    <option value="3">Teknik Elektro</option>
+                    <option value="4">Akademi Pariwisata</option>
+                    <option value="5">Akuntansi</option>
+                    <option value="6">Administrasi Bisnis</option>
+                    
+                  </select>
+                </div>
+              </FormGroup>
+              <FormGroup
+                label="Program Studi"
+                labelFor="program-studi"
+                helperText={errors["program-studi"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>-- PILIH --</option>
+                    <option value="1">Teknik Sipil (D3)</option>
+                    <option value="2">Konstruksi Bangunan (D4)</option>
+                    <option value="3">Teknik Informatika (D4)</option>
+                    <option value="4">Teknik Komputer (D3)</option>
+                    <option value="5">Teknik Listrik (D3)</option>
+                    <option value="6">Teknik Listrik (D4)</option>
+                    <option value="7">Teknik Mesin (D3)</option>
+                    <option value="8">Perpajakan (D4)</option>
+                    <option value="9">Akuntansi (D3)</option>
+                    <option value="10">Manajemen Bisnis (D4)</option>
+                    <option value="11">Perhotelan (D3)</option>
+                    <option value="12">Usaha Perjalanan Wisata (D3)</option>
+                    <option value="13">Ekowisata Bawah Laut (D3)</option>
+                  </select>
+                </div>
               </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>

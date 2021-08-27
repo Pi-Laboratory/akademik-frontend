@@ -1,5 +1,6 @@
 import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select } from "components";
+import { Link } from "react-router-dom";
 import Filter from "./Filter";
 import { useReducer } from "react";
 
@@ -50,7 +51,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-             
+
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -81,37 +82,39 @@ const List = () => {
                   })
                 }} />
               </Box>
-             
+
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                TL1
+                  <Link to={`/manajemen-ruang/`}>
+                    TL1
+                  </Link>
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                TL-D4-2020
+                  TL-D4-2020
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                1
+                  1
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Semester
+                  Semester
                 </Box>
               </Box>
-              
+
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                23
+                  23
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                Jumlah Mahasiswa
+                  Jumlah Mahasiswa
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                Teknik Elektro
+                  Teknik Elektro
                 </Box>
               </Box>
 
