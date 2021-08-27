@@ -3,8 +3,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "nama-matakuliah": Yup.string().required(),
-  "kode-matakuliah": Yup.string().required(),
+  "nama-kelas": Yup.string().required(),
+  "kode-kelas": Yup.string().required(),
 })
 
 const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
