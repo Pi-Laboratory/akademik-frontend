@@ -7,7 +7,11 @@ const Schema = Yup.object().shape({
   "name": Yup.string().required(),
 })
 
-const DialogJurusanBaru = ({ isOpen, onClose = () => { }, onSubmitted = () => { } }) => {
+const DialogJurusanBaru = ({
+  isOpen,
+  onClose = () => { },
+  onSubmitted = () => { }
+}) => {
   const client = useClient();
   return (
     <Dialog
@@ -22,7 +26,7 @@ const DialogJurusanBaru = ({ isOpen, onClose = () => { }, onSubmitted = () => { 
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
-            const res = await client.majors.create({
+            const res = await client["majors"].create({
               "name": values["name"]
             });
             onClose();

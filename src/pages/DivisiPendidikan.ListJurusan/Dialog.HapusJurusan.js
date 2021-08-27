@@ -25,7 +25,7 @@ const DialogHapusJurusan = ({ isOpen, onClose = () => { }, onSubmitted = () => {
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           console.log(values, data);
           try {
-            const res = await client.majors.remove(data);
+            const res = await client["majors"].remove(data);
             console.log(res);
             onClose();
             onSubmitted(res);

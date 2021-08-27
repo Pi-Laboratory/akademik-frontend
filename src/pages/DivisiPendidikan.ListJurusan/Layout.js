@@ -1,5 +1,5 @@
-import { Button, ButtonGroup, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select, useClient } from "components";
+import { Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, useClient } from "components";
 import Filter from "./Filter";
 import { useEffect, useReducer, useState } from "react";
 import { Pagination } from "components/Pagination";
@@ -41,7 +41,7 @@ const List = () => {
     const fetch = async () => {
       setList(null);
       try {
-        const res = await client.majors.find({
+        const res = await client["majors"].find({
           query: {
             $select: ["id", "name", "createdAt"],
             $skip: paging.skip
@@ -59,7 +59,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [paging.skip]);
+  }, [client, paging.skip]);
 
   return (
     <Box sx={{ mt: 3, px: 3 }}>
@@ -129,7 +129,6 @@ const List = () => {
         limit={paging.limit}
         skip={paging.skip}
         onClick={({ page, skip }) => {
-          console.log(page, skip);
           setPaging(paging => ({ ...paging, skip: skip }));
         }}
       />
