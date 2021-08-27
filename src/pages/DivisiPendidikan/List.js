@@ -6,7 +6,6 @@ import { useReducer } from "react";
 function selectedItemReducer(state, action) {
   switch (action.type) {
     case "toggle":
-      console.log(state);
       if (action.data.value) {
         return selectedItemReducer(state, {
           type: "add",

@@ -11,9 +11,9 @@ export const Layout = () => {
   const navigation = useNav(path);
 
   return (
-    <Flex sx={{ py: 2, flexDirection: 'column', height: '100%' }}>
+    <Flex sx={{ py: 4, flexDirection: 'column', height: '100%' }}>
       <Box sx={{ px: 3 }}>
-        <Box as={H2} sx={{ m: 0 }}>Kurikulum</Box>
+        <Box as={H2} sx={{ m: 0, mb: 2 }}>Kurikulum</Box>
         <Box sx={{ mb: 3 }} as="p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur soluta similique id vel quae dolorem recusandae blanditiis, aliquid quidem deserunt, voluptas animi dicta laborum ex odio doloribus. Pariatur, ad deleniti.</Box>
         <Tabs selectedTabId={pathname} onChange={tab => navigation.go(tab)}>
           {

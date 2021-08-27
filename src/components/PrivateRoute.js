@@ -1,6 +1,6 @@
 import { Spinner } from "@blueprintjs/core";
 import { useEffect, useState } from "react";
-import { Route } from "react-router-dom"
+import { Redirect, Route } from "react-router-dom"
 import { useClient } from "./client"
 
 export const PrivateRoute = ({ ...props }) => {
@@ -20,6 +20,6 @@ export const PrivateRoute = ({ ...props }) => {
   }, [client, client.account]);
 
   if (isAuth === null) return (<Spinner />)
-  // if (isAuth === false) return (<Redirect to="/login" />)
+  if (isAuth === false) return (<Redirect to="/login" />)
   return (<Route {...props} />)
 }

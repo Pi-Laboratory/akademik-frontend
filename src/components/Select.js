@@ -8,6 +8,7 @@ export const Select = ({
   minimal,
   label,
   fill,
+  placeholder,
 
   filterable,
   allowCreateItem,
@@ -99,7 +100,7 @@ export const Select = ({
         minimal={minimal}
         intent={intent}
         loading={loading}
-        text={activeItem ? activeItem.label : (label || "Select")}
+        text={activeItem ? activeItem.label : (label || placeholder || "Select")}
         rightIcon="caret-down"
         onClick={onClick}
         fill={fill}

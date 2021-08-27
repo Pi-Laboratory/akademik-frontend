@@ -1,7 +1,8 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select } from "components";
+import { Button, ButtonGroup, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Select, useClient } from "components";
 import Filter from "./Filter";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { Pagination } from "components/Pagination";
 
 function selectedItemReducer(state, action) {
   switch (action.type) {
@@ -27,7 +28,39 @@ function selectedItemReducer(state, action) {
 }
 
 const List = () => {
+  const client = useClient();
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
+  const [list, setList] = useState(null);
+  const [paging, setPaging] = useState({
+    total: null,
+    limit: null,
+    skip: 0,
+  });
+
+  useEffect(() => {
+    const fetch = async () => {
+      setList(null);
+      try {
+        const res = await client.majors.find({
+          query: {
+            $select: ["id", "name", "createdAt"],
+            $skip: paging.skip
+          }
+        });
+        setList(res.data);
+        setPaging({
+          total: res.total,
+          limit: res.limit,
+          skip: res.skip
+        });
+      } catch (err) {
+        console.error(err);
+        setList([]);
+      }
+    }
+    fetch();
+  }, [paging.skip]);
+
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -49,24 +82,20 @@ const List = () => {
               />
             </Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Box sx={{ flexShrink: 0 }}>
-            <Select
-                minimal={true}
-                label="Jurusan"
-                options={[
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Sipil", value: 1 },
-                  { label: "Teknik Mesin", value: 2 },
-                  { label: "Akuntansi", value: 3 },
-                  { label: "Administrasi Bisnis", value: 4 },
-                  { label: "Pariwisata", value: 5 },
-                ]}
-              />         
-            </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
+        {list === null &&
+          <Box sx={{ p: 2 }}>
+            <Spinner size={50} />
+          </Box>
+        }
+        {list && list.length === 0 &&
+          <NonIdealState
+            title="Empty"
+          />
+        }
+        {list && list.map((value) => (
+          <ListGroup.Item key={value["id"]}>
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
@@ -74,41 +103,34 @@ const List = () => {
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {
-                      name: idx,
+                      name: value["id"],
                       value: e.target.checked
                     }
                   })
                 }} />
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                 Teknik Elektro
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
-                 Jurusan
+                  Jurusan
                 </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                 3
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                 Program Studi
+                  {value["name"]}
                 </Box>
               </Box>
             </Flex>
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <Flex sx={{ my: 3, justifyContent: "center" }}>
-        <Button minimal={true} icon="chevron-left" text="Previous" />
-        <ButtonGroup>
-          <Button text="1" active={true} />
-          <Button text="2" />
-          <Button text="3" />
-        </ButtonGroup>
-        <Button minimal={true} text="Next" rightIcon="chevron-right" />
-      </Flex>
+      <Pagination
+        loading={list === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          console.log(page, skip);
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Box >
   )
 }

@@ -24,6 +24,12 @@ export const ClientProvider = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const role = useMemo(() => {
+    if (account === null) return null;
+    const { lecturerId, studentId } = account;
+    return !studentId ? !lecturerId ? "Admin" : "Lecture" : "Student";
+  }, [account]);
+
   useEffect(() => {
     const listener = [
       () => { setIsConnected(true); },
@@ -40,7 +46,6 @@ export const ClientProvider = ({ children }) => {
   async function authenticate(data, params) {
     try {
       const res = await feathers.authenticate(data, params);
-      console.log(res);
       setAccount(res.user);
       setIsAuthenticated(true);
     } catch (err) {
@@ -51,7 +56,8 @@ export const ClientProvider = ({ children }) => {
   async function reAuthenticate(force) {
     try {
       const ret = await feathers.reAuthenticate(force);
-      console.log(ret);
+      // console.log(ret);
+      setAccount(ret.user);
       setIsAuthenticated(true);
       return ret;
     } catch (err) {
@@ -70,6 +76,7 @@ export const ClientProvider = ({ children }) => {
     return {
       feathers,
       account,
+      role,
 
       authenticate,
       logout,
@@ -96,7 +103,7 @@ export const ClientProvider = ({ children }) => {
       get "classes"() { return feathers.service("classes") },
       get "curriculums"() { return feathers.service("curriculums") },
     }
-  }, [isConnected, isAuthenticated, account]);
+  }, [isConnected, isAuthenticated, account, role]);
 
   return (
     <ClientContext.Provider value={client}>

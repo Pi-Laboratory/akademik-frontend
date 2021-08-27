@@ -5,33 +5,28 @@ import * as Yup from "yup";
 import _get from "lodash/get";
 
 const Schema = Yup.object().shape({
-  "nama": Yup.string().required(),
-  "tahun": Yup
+  "name": Yup.string().required(),
+  "year": Yup
     .number().typeError(`Harus angka (contoh: ${new Date().getFullYear() - 10})`)
     .min(new Date().getFullYear() - 50)
     .max(new Date().getFullYear() + 50)
     .required(),
-  "masa-studi": Yup
+  "ideal_study_period": Yup
     .number().typeError("Harus angka (contoh: 8)")
     .min(0).max(10).required(),
-  "masa-studi-max": Yup
+  "maximum_study_period": Yup
     .number().typeError("Harus angka (contoh: 14)")
     .min(0).max(20)
     .required(),
-  "keterangan": Yup.string(),
-  "keputusan-direktur": Yup.object().shape({
-    "nomor": Yup.string().required(),
-    "tanggal": Yup.string().required()
-  }),
-  "waktu-disetujui": Yup.object().shape({
-    "pihak-yang-menyetujui": Yup.string().required(),
-    "tanggal": Yup.string().required()
-  }),
-  "max-nilai-d": Yup
+  "description": Yup.string(),
+  "publish_date": Yup.string().required(),
+  "approving_party": Yup.string().required(),
+  "approving_date": Yup.string().required(),
+  "maximum_d_score": Yup
     .number().typeError("Harus angka (contoh: 5)")
     .min(0).max(255)
     .required(),
-  "ipk-min": Yup
+  "minimal_score": Yup
     .number().typeError("Harus angka (contoh: 3.51)")
     .min(0, "Tidak kurang dari 0")
     .max(4, "Tidak lebih dari 4")
@@ -41,6 +36,10 @@ const Schema = Yup.object().shape({
     .min(0, "Tidak kurang dari 0")
     .max(4, "Tidak lebih dari 4")
     .required(),
+  "keputusan-direktur": Yup.object().shape({
+    "nomor": Yup.string().required(),
+    "tanggal": Yup.string().required()
+  }),
 })
 
 const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
@@ -53,8 +52,8 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "nama": `TL-D4-${new Date().getFullYear()}`,
-          "tahun": new Date().getFullYear(),
+          "name": `TL-D4-${new Date().getFullYear()}`,
+          "year": new Date().getFullYear(),
           "masa-studi": 9,
           "masa-studi-max": 14,
           "keputusan-direktur": {

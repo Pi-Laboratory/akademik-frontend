@@ -1,8 +1,9 @@
 import { Button, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
-import { Box, Navbar } from "components";
+import { Box, Navbar, useClient } from "components";
 
 const Header = () => {
+  const { account, role, logout } = useClient();
   return (
     <Navbar>
       <Navbar.Group>
@@ -10,7 +11,7 @@ const Header = () => {
           <Navbar.Heading style={{ margin: 0 }}>Akademik</Navbar.Heading>
         </Box>
         <Navbar.Divider />
-        <Box sx={{mr: 2}}>
+        <Box sx={{ mr: 2 }}>
           <InputGroup
             placeholder="Cari"
             rightElement={<Button outlined={true} icon="slash" />}
@@ -40,12 +41,21 @@ const Header = () => {
             placement="bottom-end"
             content={(
               <Menu>
-                <MenuItem text="Signed in as Admin" />
+                <MenuItem text={
+                  <span>Signed as <Box as="span" sx={{ fontWeight: "bold" }}>{account && role}</Box></span>
+                } />
                 <MenuDivider />
                 <MenuItem text="Settings" />
                 <MenuItem text="Help" />
                 <MenuDivider />
-                <MenuItem intent="danger" icon="log-out" text="Logout" />
+                <MenuItem
+                  intent="danger"
+                  icon="log-out"
+                  text="Logout"
+                  onClick={() => {
+                    logout();
+                  }}
+                />
               </Menu>
             )}
           >
