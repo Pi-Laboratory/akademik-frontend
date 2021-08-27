@@ -1,10 +1,13 @@
-import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import DialogHapusProdi from "./Dialog.HapusProdi";
 import DialogTambahProdi from "./Dialog.TambahProdi";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
   return (
     <Flex>
       <Box>
@@ -36,25 +39,22 @@ const Filter = ({ selectedItem }) => {
           text="Tambah Prodi"
           onClick={() => setDialogOpen("add")}
         />
-       
+
       </Flex>
-      <Alert
-        isOpen={dialogOpen === "delete"}
-        icon="trash"
-        intent="danger"
-        minimal={true}
-        cancelButtonText="Tidak"
-        confirmButtonText="Hapus"
-        onClose={() => setDialogOpen(null)}
-      >
-        <p>
-          <span>Anda yakin ingin menghapus {selectedItem.length} data jadwal ini?</span>
-          <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
-        </p>
-      </Alert>
       <DialogTambahProdi
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
+      />
+      <DialogHapusProdi
+        data={selectedItem}
+        isOpen={dialogOpen === "delete"}
+        onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
       />
     </Flex>
   )
