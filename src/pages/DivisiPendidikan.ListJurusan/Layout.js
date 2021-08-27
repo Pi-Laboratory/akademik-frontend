@@ -77,7 +77,7 @@ const List = () => {
             <Box sx={{ width: 40, flexShrink: 0, }}>
               <Checkbox
                 onChange={(e) => {
-                  console.log(e);
+                  // console.log(e);
                 }}
               />
             </Box>
@@ -90,16 +90,18 @@ const List = () => {
           </Box>
         }
         {list && list.length === 0 &&
-          <NonIdealState
-            title="Empty"
-          />
+          <Box sx={{ p: 3 }}>
+            <NonIdealState
+              title="Kosong"
+              description="Belum ada data"
+            />
+          </Box>
         }
         {list && list.map((value) => (
           <ListGroup.Item key={value["id"]}>
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {

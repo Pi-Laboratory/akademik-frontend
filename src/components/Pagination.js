@@ -8,7 +8,7 @@ export const Pagination = ({ loading, disabled, total, skip, limit, onClick = ()
       || skip === null
       || limit === null)
       return null;
-    const count = Math.floor(total / limit);
+    const count = Math.floor(total / limit) + 1;
     const active = Math.floor(skip / limit) + 1;
     return { count, active };
   }, [total, limit, skip]);

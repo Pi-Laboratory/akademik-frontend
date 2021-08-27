@@ -21,7 +21,6 @@ const DialogJurusanBaru = ({ isOpen, onClose = () => { }, onSubmitted = () => { 
           "name": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values);
           try {
             const res = await client.majors.create({
               "name": values["name"]
