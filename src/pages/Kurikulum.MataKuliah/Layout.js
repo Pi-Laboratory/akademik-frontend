@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient } from "components";
 import Filter from "./Filter";
 import { Link } from "react-router-dom";
@@ -62,7 +62,7 @@ const List = () => {
       value: id
     })));
     setLoading(loading => ({ ...loading, major: false }));
-  }, [client, majors]);
+  }, [client]);
 
   const fetchStudyPrograms = useCallback(async (major) => {
     setLoading(loading => ({ ...loading, studyProgram: true }));
@@ -77,7 +77,7 @@ const List = () => {
       value: id
     })));
     setLoading(loading => ({ ...loading, studyProgram: false }));
-  }, [client, majors]);
+  }, [client]);
 
   useEffect(() => {
     const fetch = async () => {

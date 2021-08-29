@@ -1,4 +1,4 @@
-import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup, RadioGroup } from "@blueprintjs/core";
+import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
 import { Divider, Select, useClient } from "components";
 import { Formik } from "formik";
 import { useCallback, useEffect, useState } from "react";
@@ -51,7 +51,7 @@ const DialogMataKuliahBaru = ({
       value: id
     })));
     setLoading(loading => ({ ...loading, majors: false }));
-  }, [client, majors]);
+  }, [client]);
 
   const fetchStudyPrograms = useCallback(async (major) => {
     setLoading(loading => ({ ...loading, studyPrograms: true }));
@@ -66,7 +66,7 @@ const DialogMataKuliahBaru = ({
       value: id
     })));
     setLoading(loading => ({ ...loading, studyPrograms: false }));
-  }, [client, majors]);
+  }, [client]);
 
   useEffect(() => {
     const fetch = async () => {
