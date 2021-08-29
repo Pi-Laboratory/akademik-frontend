@@ -1,6 +1,6 @@
 import { Button, Classes, Dialog, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { useClient } from "components";
+import { Box, Flex, useClient } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
@@ -83,86 +83,112 @@ const DialogDosenBaru = ({
                   options={["Gasal", "Genap"]}
                 />
               </FormGroup>
-              <FormGroup
-                label="Rencana Mulai Studi"
-                labelFor="f-start_date"
-                helperText={errors["start_date"]}
-                intent={"danger"}
-              >
-                <DateInput
-                  fill={true}
-                  id="f-start_date"
-                  name="start_date"
-                  maxDate={values["end_date"]}
-                  value={values["start_date"]}
-                  formatDate={date => moment(date).format("DD MMMM YYYY")}
-                  parseDate={(str) => new Date(str)}
-                  onChange={(v) => {
-                    setFieldValue("start_date", v);
-                  }}
-                  intent={errors["start_date"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Rencana Selesai Studi"
-                labelFor="f-end_date"
-                helperText={errors["end_date"]}
-                intent={"danger"}
-              >
-                <DateInput
-                  fill={true}
-                  id="f-end_date"
-                  name="end_date"
-                  minDate={values["start_date"]}
-                  value={values["end_date"]}
-                  formatDate={date => moment(date).format("DD MMMM YYYY")}
-                  parseDate={(str) => new Date(str)}
-                  onChange={(v) => {
-                    setFieldValue("end_date", v);
-                  }}
-                  intent={errors["end_date"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Rencana Selesai Studi"
-                labelFor="f-start_input_period"
-                helperText={errors["start_input_period"]}
-                intent={"danger"}
-              >
-                <DateInput
-                  fill={true}
-                  id="f-start_input_period"
-                  name="start_input_period"
-                  maxDate={values["end_input_period"]}
-                  value={values["start_input_period"]}
-                  formatDate={date => moment(date).format("DD MMMM YYYY")}
-                  parseDate={(str) => new Date(str)}
-                  onChange={(v) => {
-                    setFieldValue("start_input_period", v);
-                  }}
-                  intent={errors["start_input_period"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Rencana Selesai Studi"
-                labelFor="f-end_input_period"
-                helperText={errors["end_input_period"]}
-                intent={"danger"}
-              >
-                <DateInput
-                  fill={true}
-                  id="f-end_input_period"
-                  name="end_input_period"
-                  minDate={values["start_input_period"]}
-                  value={values["end_input_period"]}
-                  formatDate={date => moment(date).format("DD MMMM YYYY")}
-                  parseDate={(str) => new Date(str)}
-                  onChange={(v) => {
-                    setFieldValue("end_input_period", v);
-                  }}
-                  intent={errors["end_input_period"] ? "danger" : "none"}
-                />
-              </FormGroup>
+              <Flex sx={{
+                mx: -2,
+                ">div": {
+                  width: "50%",
+                  flexGrow: 1,
+                  px: 2
+                }
+              }}>
+                <Box>
+                  <FormGroup
+                    label="Waktu Mulai Studi"
+                    labelFor="f-start_date"
+                    helperText={errors["start_date"]}
+                    intent={"danger"}
+                  >
+                    <DateInput
+                      fill={true}
+                      id="f-start_date"
+                      name="start_date"
+                      maxDate={values["end_date"]}
+                      value={values["start_date"]}
+                      formatDate={date => moment(date).format("DD MMMM YYYY")}
+                      parseDate={(str) => new Date(str)}
+                      onChange={(v) => {
+                        setFieldValue("start_date", v);
+                      }}
+                      intent={errors["start_date"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box>
+                  <FormGroup
+                    label="Waktu Selesai Studi"
+                    labelFor="f-end_date"
+                    helperText={errors["end_date"]}
+                    intent={"danger"}
+                  >
+                    <DateInput
+                      fill={true}
+                      id="f-end_date"
+                      name="end_date"
+                      minDate={values["start_date"]}
+                      value={values["end_date"]}
+                      formatDate={date => moment(date).format("DD MMMM YYYY")}
+                      parseDate={(str) => new Date(str)}
+                      onChange={(v) => {
+                        setFieldValue("end_date", v);
+                      }}
+                      intent={errors["end_date"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
+              <Flex sx={{
+                mx: -2,
+                ">div": {
+                  width: "50%",
+                  flexGrow: 1,
+                  px: 2
+                }
+              }}>
+                <Box>
+                  <FormGroup
+                    label="Waktu Mulai Input Nilai"
+                    labelFor="f-start_input_period"
+                    helperText={errors["start_input_period"]}
+                    intent={"danger"}
+                  >
+                    <DateInput
+                      fill={true}
+                      id="f-start_input_period"
+                      name="start_input_period"
+                      maxDate={values["end_input_period"]}
+                      value={values["start_input_period"]}
+                      formatDate={date => moment(date).format("DD MMMM YYYY")}
+                      parseDate={(str) => new Date(str)}
+                      onChange={(v) => {
+                        setFieldValue("start_input_period", v);
+                      }}
+                      intent={errors["start_input_period"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box>
+                  <FormGroup
+                    label="Waktu Selesai Input Nilai"
+                    labelFor="f-end_input_period"
+                    helperText={errors["end_input_period"]}
+                    intent={"danger"}
+                  >
+                    <DateInput
+                      fill={true}
+                      id="f-end_input_period"
+                      name="end_input_period"
+                      minDate={values["start_input_period"]}
+                      value={values["end_input_period"]}
+                      formatDate={date => moment(date).format("DD MMMM YYYY")}
+                      parseDate={(str) => new Date(str)}
+                      onChange={(v) => {
+                        setFieldValue("end_input_period", v);
+                      }}
+                      intent={errors["end_input_period"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>

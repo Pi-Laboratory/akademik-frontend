@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import _get from "lodash/get";
 import { useEffect, useState } from "react";
 import { DateInput } from "@blueprintjs/datetime";
+import moment from "moment";
 
 const Schema = Yup.object().shape({
   "study_program_id": Yup.number().required(),
@@ -71,9 +72,9 @@ const DialogKurikulumBaru = ({
         initialValues={{
           "name": "",
           "year": new Date().getFullYear(),
-          "publish_date": "",
+          "publish_date": new Date(),
           "approving_party": "",
-          "approving_date": "",
+          "approving_date": new Date(),
           "ideal_study_period": "",
           "maximum_study_period": "",
           "description": "",
@@ -218,7 +219,7 @@ const DialogKurikulumBaru = ({
                   id="f-publish_date"
                   name="publish_date"
                   value={values["publish_date"]}
-                  formatDate={date => date.toLocaleDateString()}
+                  formatDate={date => moment(date).format("DD MMMM YYYY")}
                   parseDate={(str) => new Date(str)}
                   onChange={(v) => {
                     setFieldValue("publish_date", v);
@@ -253,7 +254,7 @@ const DialogKurikulumBaru = ({
                   id="f-approving_date"
                   name="approving_date"
                   value={values["approving_date"]}
-                  formatDate={date => date.toLocaleDateString()}
+                  formatDate={date => moment(date).format("DD MMMM YYYY")}
                   parseDate={(str) => new Date(str)}
                   onChange={(v) => {
                     setFieldValue("approving_date", v);
