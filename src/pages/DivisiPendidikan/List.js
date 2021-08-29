@@ -36,17 +36,34 @@ const List = () => {
     skip: 0,
   });
 
+  const [majors, setMajors] = useState([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await client["majors"].find({
+          query: {
+            $select: ["id", "name"]
+          }
+        });
+        setMajors(res.data.map(({ id, name }) => ({ label: name, value: id })));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetch();
+  }, [client,]);
+
   useEffect(() => {
     const fetch = async () => {
       setList(null);
       try {
         const res = await client["study-programs"].find({
           query: {
-            // $select: ["id", "name", "major_id", "createdAt"],
+            $select: ["id", "name", "majorId", "createdAt"],
             $skip: paging.skip
           }
         });
-        console.log(res);
         setList(res.data);
         setPaging({
           total: res.total,
@@ -86,33 +103,7 @@ const List = () => {
               <Select
                 minimal={true}
                 label="Jurusan"
-                options={[
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Sipil", value: 1 },
-                  { label: "Teknik Mesin", value: 2 },
-                  { label: "Akuntansi", value: 3 },
-                  { label: "Administrasi Bisnis", value: 4 },
-                  { label: "Pariwisata", value: 5 },
-                ]}
-              />
-              <Select
-                minimal={true}
-                label="Program Studi"
-                options={[
-                  { label: "Teknik Sipil (D3)", value: 0 },
-                  { label: "Konstruksi Bangunan (D4)", value: 1 },
-                  { label: "Teknik Informatika (D4)", value: 2 },
-                  { label: "Teknik Komputer (D3)", value: 3 },
-                  { label: "Teknik Listrik (D3)", value: 4 },
-                  { label: "Teknik Listrik (D4)", value: 5 },
-                  { label: "Teknik Mesin (D3)", value: 6 },
-                  { label: "Perpajakan (D4)", value: 7 },
-                  { label: "Akuntansi (D3)", value: 8 },
-                  { label: "Manajemen Bisnis (D4)", value: 9 },
-                  { label: "Perhotelan (D3)", value: 10 },
-                  { label: "Usaha Perjalanan Wisata (D3)", value: 11 },
-                  { label: "Ekowisata Bawah Laut (D3)", value: 12 },
-                ]}
+                options={majors}
               />
               <Select
                 minimal={true}
@@ -154,27 +145,27 @@ const List = () => {
                 }} />
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  {value["name"]}
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Program Studi
                 </Box>
+                <Box>
+                  {value["name"]}
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  D-III
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Jenjang Studi
                 </Box>
+                <Box>
+                  D-III
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  Teknik Elektro
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Jurusan
+                </Box>
+                <Box>
+                  Teknik Elektro
                 </Box>
               </Box>
             </Flex>

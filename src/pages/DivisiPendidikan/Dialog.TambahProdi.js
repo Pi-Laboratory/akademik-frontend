@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
   "name": Yup.string().required(),
-  "major_id": Yup.string().required(),
+  "majorId": Yup.string().required(),
 });
 
 const DialogTambahBaru = ({
@@ -41,7 +41,7 @@ const DialogTambahBaru = ({
         validationSchema={Schema}
         initialValues={{
           "name": "",
-          "major_id": "",
+          "majorId": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -74,18 +74,18 @@ const DialogTambahBaru = ({
               </FormGroup>
               <FormGroup
                 label="Jurusan"
-                labelFor="f-major_id"
-                helperText={errors["major_id"]}
+                labelFor="f-majorId"
+                helperText={errors["majorId"]}
                 intent={"danger"}
               >
                 <Select
-                  id="f-major_id"
-                  name="major_id"
-                  value={values["major_id"]}
+                  id="f-majorId"
+                  name="majorId"
+                  value={values["majorId"]}
                   onChange={(e) => {
-                    setFieldValue("major_id", e.value);
+                    setFieldValue("majorId", e.value);
                   }}
-                  intent={errors["major_id"] ? "danger" : "none"}
+                  intent={errors["majorId"] ? "danger" : "none"}
                   options={majors.map((major) => (
                     { label: major["name"], value: major["id"] }
                   ))}
