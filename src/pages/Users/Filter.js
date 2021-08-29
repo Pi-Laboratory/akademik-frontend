@@ -1,7 +1,12 @@
 import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Flex } from "components";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import DialogTambah from "./Dialog.Tambah";
 
 const Filter = () => {
+  const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
   return (
     <Flex
       sx={{
@@ -36,8 +41,16 @@ const Filter = () => {
           intent="primary"
           icon="plus"
           text="User Baru"
+          onClick={() => setDialogOpen("add")}
         />
       </Box>
+      <DialogTambah
+        isOpen={dialogOpen === "add"}
+        onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
+      />
     </Flex>
   )
 }

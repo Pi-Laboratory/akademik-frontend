@@ -1,15 +1,22 @@
 import { Checkbox, Classes, NonIdealState } from "@blueprintjs/core";
 import { Box, Container, Flex, ListGroup, useClient } from "components";
+import { Pagination } from "components/Pagination";
 import { useEffect, useMemo, useState } from "react";
 
 const List = () => {
   const client = useClient();
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(null);
+  const [paging, setPaging] = useState({
+    total: null,
+    limit: null,
+    skip: 0,
+  });
   const items = useMemo(() => {
+    if (list === null) return [];
     return list.map((item) => {
       let role = "Admin";
-      if (item["lecturerId"] !== null) role = "Dosen";
-      if (item["studentId"] !== null) role = "Mahasiswa";
+      if (item["lecturer_id"] !== null) role = "Dosen";
+      if (item["student_id"] !== null) role = "Mahasiswa"
       return {
         id: item["id"],
         username: item["username"],
@@ -19,14 +26,18 @@ const List = () => {
   }, [list]);
   useEffect(() => {
     const fetch = async () => {
-      console.log(client["users"])
       try {
-        const ret = await client["users"].find({
+        const res = await client["users"].find({
           query: {
             $limit: 50
           }
         });
-        setList(ret.data);
+        setList(res.data);
+        setPaging({
+          total: res.total,
+          limit: res.limit,
+          skip: res.skip
+        });
       } catch (err) {
         console.error(err.message);
       }
@@ -89,6 +100,15 @@ const List = () => {
             </Flex>
           </ListGroup.Item>))}
       </ListGroup>
+      <Pagination
+        loading={list === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Container>
   )
 }
