@@ -1,10 +1,13 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex } from "components";
+import { Box, Divider, Flex, Select, useClient } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import _get from "lodash/get";
+import { useEffect, useState } from "react";
+import { DateInput } from "@blueprintjs/datetime";
 
 const Schema = Yup.object().shape({
+  "study_program_id": Yup.number().required(),
   "name": Yup.string().required(),
   "year": Yup
     .number().typeError(`Harus angka (contoh: ${new Date().getFullYear() - 10})`)
@@ -13,7 +16,7 @@ const Schema = Yup.object().shape({
     .required(),
   "ideal_study_period": Yup
     .number().typeError("Harus angka (contoh: 8)")
-    .min(0).max(10).required(),
+    .min(0).max(20).required(),
   "maximum_study_period": Yup
     .number().typeError("Harus angka (contoh: 14)")
     .min(0).max(20)
@@ -30,21 +33,35 @@ const Schema = Yup.object().shape({
     .number().typeError("Harus angka (contoh: 3.51)")
     .min(0, "Tidak kurang dari 0")
     .max(4, "Tidak lebih dari 4")
-    .required(),
-  "ipk-min-p": Yup
-    .number().typeError("Harus angka (contoh: 3.51)")
-    .min(0, "Tidak kurang dari 0")
-    .max(4, "Tidak lebih dari 4")
-    .required(),
-  "keputusan-direktur": Yup.object().shape({
-    "nomor": Yup.string().required(),
-    "tanggal": Yup.string().required()
-  }),
+    .required()
 })
 
-const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogKurikulumBaru = ({
+  isOpen,
+  onClose = () => { },
+  onSubmitted = () => { }
+}) => {
+  const client = useClient();
+  const [studyPrograms, setStudyPrograms] = useState([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await client["study-programs"].find({
+          query: {
+            $select: ["id", "name"]
+          }
+        })
+        setStudyPrograms(res.data.map(({ name, id }) => ({ label: name, value: id })));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetch();
+  }, [client]);
   return (
     <Dialog
+      enforceFocus={false}
       isOpen={isOpen}
       onClose={() => { onClose() }}
       title="Tambah Kurikulum Baru"
@@ -52,54 +69,82 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "name": `TL-D4-${new Date().getFullYear()}`,
+          "name": "",
           "year": new Date().getFullYear(),
-          "masa-studi": 9,
-          "masa-studi-max": 14,
-          "keputusan-direktur": {
-            "nomor": "",
-            "tanggal": "",
-          },
-          "waktu-disetujui": {
-            "pihak-yang-menyetujui": "",
-            "tanggal": "",
-          },
-          "keterangan": "",
-          "ipk-min": 1.5,
-          "ipk-min-p": 2.65,
-          "max-nilai-d": 5,
+          "publish_date": "",
+          "approving_party": "",
+          "approving_date": "",
+          "ideal_study_period": "",
+          "maximum_study_period": "",
+          "description": "",
+          "minimal_score": "",
+          "maximum_d_score": "",
+          "study_program_id": "",
+        }}
+        onSubmit={async (values, { setErrors, setSubmitting }) => {
+          try {
+            const res = await client["curriculums"].create(values);
+            console.log(res);
+            onClose();
+            onSubmitted(res);
+          } catch (err) {
+            console.error(err);
+            setErrors({ submit: err.message });
+            setSubmitting(false);
+          }
         }}
       >
-        {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
+        {({ values, errors, isSubmitting, handleSubmit, handleChange, setFieldValue }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
+              <FormGroup
+                label="Program Studi"
+                labelFor="f-study_program_id"
+                helperText={errors["study_program_id"]}
+                intent={"danger"}
+              >
+                <Select
+                  id="f-study_program_id"
+                  name="study_program_id"
+                  value={values["study_program_id"]}
+                  onChange={async ({ value, label }) => {
+                    if (values["name"] === "") {
+                      const Abb = label.split(" ").map((word) => word[0]).join("");
+                      await setFieldValue("name", `${Abb}-${new Date().getFullYear()}`);
+                    }
+                    await setFieldValue("study_program_id", value);
+                  }}
+                  intent={errors["study_program_id"] ? "danger" : "none"}
+                  options={studyPrograms}
+                />
+              </FormGroup>
               <h4 className={Classes.HEADING}>Informasi Kurikulum</h4>
               <FormGroup
                 label="Nama Kurikulum"
-                labelFor="f-nama"
-                helperText={errors["nama"]}
+                labelFor="f-name"
+                helperText={errors["name"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama"
-                  name="nama"
-                  value={values["nama"]}
+                  id="f-name"
+                  name="name"
+                  value={values["name"]}
                   onChange={handleChange}
-                  intent={errors["nama"] ? "danger" : "none"}
+                  intent={errors["name"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
                 label="Tahun"
-                labelFor="f-tahun"
-                helperText={errors["tahun"]}
+                labelFor="f-year"
+                helperText={errors["year"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-tahun"
-                  name="tahun"
-                  value={values["tahun"]}
+                  id="f-year"
+                  name="year"
+                  value={values["year"]}
                   onChange={handleChange}
-                  intent={errors["tahun"] ? "danger" : "none"}
+                  intent={errors["year"] ? "danger" : "none"}
                 />
               </FormGroup>
               <Flex sx={{
@@ -112,17 +157,17 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
                 <Box>
                   <FormGroup
                     label="Masa Studi Ideal"
-                    labelFor="f-masa-studi"
-                    helperText={errors["masa-studi"]}
+                    labelFor="f-ideal_study_period"
+                    helperText={errors["ideal_study_period"]}
                     intent={"danger"}
                   >
                     <InputGroup
                       fill={true}
-                      id="f-masa-studi"
-                      name="masa-studi"
-                      value={values["masa-studi"]}
+                      id="f-ideal_study_period"
+                      name="ideal_study_period"
+                      value={values["ideal_study_period"]}
                       onChange={handleChange}
-                      intent={errors["masa-studi"] ? "danger" : "none"}
+                      intent={errors["ideal_study_period"] ? "danger" : "none"}
                       rightElement={<Box sx={{ lineHeight: "30px", px: 2 }}>semester</Box>}
                     />
                   </FormGroup>
@@ -130,17 +175,17 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
                 <Box>
                   <FormGroup
                     label="Masa Studi Maximum"
-                    labelFor="f-masa-studi-max"
-                    helperText={errors["masa-studi-max"]}
+                    labelFor="f-maximum_study_period"
+                    helperText={errors["maximum_study_period"]}
                     intent={"danger"}
                   >
                     <InputGroup
                       fill={true}
-                      id="f-masa-studi-max"
-                      name="masa-studi-max"
-                      value={values["masa-studi-max"]}
+                      id="f-maximum_study_period"
+                      name="maximum_study_period"
+                      value={values["maximum_study_period"]}
                       onChange={handleChange}
-                      intent={errors["masa-studi-max"] ? "danger" : "none"}
+                      intent={errors["maximum_study_period"] ? "danger" : "none"}
                       rightElement={<Box sx={{ lineHeight: "30px", px: 2 }}>semester</Box>}
                     />
                   </FormGroup>
@@ -149,139 +194,101 @@ const DialogKurikulumBaru = ({ isOpen, onClose = () => { } }) => {
               <FormGroup
                 label="Catatan"
                 labelInfo="(opsional)"
-                labelFor="f-keterangan"
-                helperText={errors["keterangan"]}
+                labelFor="f-description"
+                helperText={errors["description"]}
                 intent={"danger"}
               >
                 <InputGroup
                   fill={true}
-                  id="f-keterangan"
-                  name="keterangan"
-                  value={values["keterangan"]}
+                  id="f-description"
+                  name="description"
+                  value={values["description"]}
                   onChange={handleChange}
-                  intent={errors["keterangan"] ? "danger" : "none"}
-                />
-              </FormGroup>
-
-              <h5 className={Classes.HEADING}>Keputusan Direktur</h5>
-              <FormGroup
-                label="Nomor"
-                labelFor="f-keputusan-direktur.nomor"
-                helperText={_get(errors, "keputusan-direktur.nomor")}
-                intent={"danger"}
-              >
-                <InputGroup
-                  fill={true}
-                  id="f-keputusan-direktur.nomor"
-                  name="keputusan-direktur.nomor"
-                  value={_get(values, "keputusan-direktur.nomor")}
-                  onChange={handleChange}
-                  intent={_get(errors, "keputusan-direktur.nomor") ? "danger" : "none"}
+                  intent={errors["description"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
-                label="Tanggal"
-                labelFor="f-keputusan-direktur.tanggal"
-                helperText={_get(errors, "keputusan-direktur.tanggal")}
+                label="Tanggal Keputusan"
+                labelFor="f-publish_date"
+                helperText={_get(errors, "publish_date")}
                 intent={"danger"}
               >
-                <InputGroup
+                <DateInput
                   fill={true}
-                  id="f-keputusan-direktur.tanggal"
-                  name="keputusan-direktur.tanggal"
-                  value={_get(values, "keputusan-direktur.tanggal")}
-                  onChange={handleChange}
-                  intent={_get(errors, "keputusan-direktur.tanggal") ? "danger" : "none"}
+                  id="f-publish_date"
+                  name="publish_date"
+                  value={values["publish_date"]}
+                  formatDate={date => date.toLocaleDateString()}
+                  parseDate={(str) => new Date(str)}
+                  onChange={(v) => {
+                    setFieldValue("publish_date", v);
+                  }}
+                  intent={_get(errors, "publish_date") ? "danger" : "none"}
                 />
               </FormGroup>
-
               <h5 className={Classes.HEADING}>Waktu disetujui</h5>
               <FormGroup
                 label="Pihak yang menyetujui"
-                labelFor="f-waktu-disetujui.pihak-yang-menyetujui"
-                helperText={_get(errors, "waktu-disetujui.pihak-yang-menyetujui")}
+                labelFor="f-approving_party"
+                helperText={_get(errors, "approving_party")}
                 intent={"danger"}
               >
                 <InputGroup
                   fill={true}
-                  id="f-waktu-disetujui.pihak-yang-menyetujui"
-                  name="waktu-disetujui.pihak-yang-menyetujui"
-                  value={_get(values, "waktu-disetujui.pihak-yang-menyetujui")}
+                  id="f-approving_party"
+                  name="approving_party"
+                  value={values["approving_party"]}
                   onChange={handleChange}
-                  intent={_get(errors, "waktu-disetujui.pihak-yang-menyetujui") ? "danger" : "none"}
+                  intent={_get(errors, "approving_party") ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
                 label="Tanggal"
-                labelFor="f-waktu-disetujui.tanggal"
-                helperText={_get(errors, "waktu-disetujui.tanggal")}
+                labelFor="f-approving_date"
+                helperText={_get(errors, "approving_date")}
                 intent={"danger"}
               >
-                <InputGroup
+                <DateInput
                   fill={true}
-                  id="f-waktu-disetujui.tanggal"
-                  name="waktu-disetujui.tanggal"
-                  value={_get(values, "waktu-disetujui.tanggal")}
-                  onChange={handleChange}
-                  intent={_get(errors, "waktu-disetujui.tanggal") ? "danger" : "none"}
+                  id="f-approving_date"
+                  name="approving_date"
+                  value={values["approving_date"]}
+                  formatDate={date => date.toLocaleDateString()}
+                  parseDate={(str) => new Date(str)}
+                  onChange={(v) => {
+                    setFieldValue("approving_date", v);
+                  }}
+                  intent={_get(errors, "approving_date") ? "danger" : "none"}
                 />
               </FormGroup>
-
-
               <Divider />
               <h4 className={Classes.HEADING}>Evaluasi per Semester</h4>
-              <Flex sx={{
-                mx: -2,
-                "> div": {
-                  width: `${100 / 2}%`,
-                  px: 2
-                }
-              }}>
-                <Box>
-                  <FormGroup
-                    label="IPK Min"
-                    labelFor="f-ipk-min"
-                    helperText={errors["ipk-min"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      id="f-ipk-min"
-                      name="ipk-min"
-                      value={values["ipk-min"]}
-                      onChange={handleChange}
-                      intent={errors["ipk-min"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                </Box>
-                <Box>
-                  <FormGroup
-                    label="IPK Min Percobaan"
-                    labelFor="f-ipk-min-p"
-                    helperText={errors["ipk-min-p"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      id="f-ipk-min-p"
-                      name="ipk-min-p"
-                      value={values["ipk-min-p"]}
-                      onChange={handleChange}
-                      intent={errors["ipk-min-p"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                </Box>
-              </Flex>
               <FormGroup
-                label="Jumlah maximum nilai D"
-                labelFor="f-max-nilai-d"
-                helperText={errors["max-nilai-d"]}
+                label="Minimal Indeks Prestasi Kumulatif (IPK)"
+                labelFor="f-minimal_score"
+                helperText={errors["minimal_score"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-max-nilai-d"
-                  name="max-nilai-d"
-                  value={values["max-nilai-d"]}
+                  id="f-minimal_score"
+                  name="minimal_score"
+                  value={values["minimal_score"]}
                   onChange={handleChange}
-                  intent={errors["max-nilai-d"] ? "danger" : "none"}
+                  intent={errors["minimal_score"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Jumlah maximum nilai D"
+                labelFor="f-maximum_d_score"
+                helperText={errors["maximum_d_score"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-maximum_d_score"
+                  name="maximum_d_score"
+                  value={values["maximum_d_score"]}
+                  onChange={handleChange}
+                  intent={errors["maximum_d_score"] ? "danger" : "none"}
                 />
               </FormGroup>
             </div>

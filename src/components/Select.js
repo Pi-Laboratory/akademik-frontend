@@ -10,6 +10,7 @@ export const Select = ({
   fill,
   placeholder,
 
+  disabled,
   filterable,
   allowCreateItem,
   options,
@@ -97,6 +98,7 @@ export const Select = ({
     >
       <Button
         id={id}
+        disabled={disabled}
         minimal={minimal}
         intent={intent}
         loading={loading}

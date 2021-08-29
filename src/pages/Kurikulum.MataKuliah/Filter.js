@@ -1,10 +1,15 @@
-import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select } from "components";
-import { useState } from "react";
+import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Box, Divider, Flex, Select, useClient } from "components";
+import { useCallback, useState } from "react";
+import { useHistory } from "react-router-dom";
+import DialogHapusMataKuliah from "./Dialog.HapusMataKuliah";
 import DialogMataKuliahBaru from "./Dialog.MataKuliahBaru";
 
 const Filter = ({ selectedItem }) => {
+  const client = useClient();
   const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
+
   return (
     <Flex>
       <Box>
@@ -37,23 +42,20 @@ const Filter = ({ selectedItem }) => {
           onClick={() => setDialogOpen("add")}
         />
       </Flex>
-      <Alert
-        isOpen={dialogOpen === "delete"}
-        icon="trash"
-        intent="danger"
-        minimal={true}
-        cancelButtonText="Tidak"
-        confirmButtonText="Hapus"
-        onClose={() => setDialogOpen(null)}
-      >
-        <p>
-          <span>Anda yakin ingin menghapus {selectedItem.length} data dosen ini?</span>
-          <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
-        </p>
-      </Alert>
       <DialogMataKuliahBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
+      />
+      <DialogHapusMataKuliah
+        data={selectedItem}
+        isOpen={dialogOpen === "delete"}
+        onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
       />
     </Flex>
   )

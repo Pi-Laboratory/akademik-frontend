@@ -60,10 +60,11 @@ const List = () => {
       try {
         const res = await client["study-programs"].find({
           query: {
-            $select: ["id", "name", "majorId", "createdAt"],
+            $select: ["id", "name", "major_id", "createdAt"],
             $skip: paging.skip
           }
         });
+        console.log(res);
         setList(res.data);
         setPaging({
           total: res.total,

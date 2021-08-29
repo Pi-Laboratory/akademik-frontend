@@ -1,10 +1,13 @@
 import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import DialogHapusKurikulum from "./Dialog.HapusKurikulum";
 import DialogKurikulumBaru from "./Dialog.KurikulumBaru";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
   return (
     <Flex>
       <Box>
@@ -54,6 +57,17 @@ const Filter = ({ selectedItem }) => {
       <DialogKurikulumBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
+      />
+      <DialogHapusKurikulum
+        data={selectedItem}
+        isOpen={dialogOpen === "delete"}
+        onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
       />
     </Flex>
   )
