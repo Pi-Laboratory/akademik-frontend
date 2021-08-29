@@ -60,8 +60,12 @@ const List = () => {
       try {
         const res = await client["study-programs"].find({
           query: {
-            $select: ["id", "name", "major_id", "createdAt"],
-            $skip: paging.skip
+            $select: ["id", "name"],
+            $skip: paging.skip,
+            $include: [{
+              model: "majors",
+              $select: ["name"]
+            }]
           }
         });
         console.log(res);
@@ -166,7 +170,7 @@ const List = () => {
                   Jurusan
                 </Box>
                 <Box>
-                  Teknik Elektro
+                  {value["major"]["name"]}
                 </Box>
               </Box>
             </Flex>

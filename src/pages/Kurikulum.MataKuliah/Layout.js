@@ -85,7 +85,7 @@ const List = () => {
       try {
         const res = await client["subjects"].find({
           query: {
-            $select: ["id", "code", "name", "major_id", "createdAt"],
+            $select: ["id", "code", "name", "major_id", "created_at"],
             $skip: paging.skip
           }
         });

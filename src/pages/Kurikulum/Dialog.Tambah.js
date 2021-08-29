@@ -50,10 +50,20 @@ const DialogKurikulumBaru = ({
       try {
         const res = await client["study-programs"].find({
           query: {
-            $select: ["id", "name"]
+            $select: ["id", "name"],
+            $include: [{
+              model: "majors",
+              $select: ["name"]
+            }]
           }
-        })
-        setStudyPrograms(res.data.map(({ name, id }) => ({ label: name, value: id })));
+        });
+        console.log(res);
+        setStudyPrograms(res.data
+          .map(({ name, id, major }) => ({
+            label: name,
+            info: major.name,
+            value: id
+          })));
       } catch (err) {
         console.error(err);
       }
@@ -98,6 +108,7 @@ const DialogKurikulumBaru = ({
         {({ values, errors, isSubmitting, handleSubmit, handleChange, setFieldValue }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
+              <h4 className={Classes.HEADING}>Informasi Kurikulum</h4>
               <FormGroup
                 label="Program Studi"
                 labelFor="f-study_program_id"
@@ -119,7 +130,6 @@ const DialogKurikulumBaru = ({
                   options={studyPrograms}
                 />
               </FormGroup>
-              <h4 className={Classes.HEADING}>Informasi Kurikulum</h4>
               <FormGroup
                 label="Nama Kurikulum"
                 labelFor="f-name"

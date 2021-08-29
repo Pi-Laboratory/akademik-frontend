@@ -2,8 +2,8 @@ import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import DialogHapusProdi from "./Dialog.HapusProdi";
-import DialogTambahProdi from "./Dialog.TambahProdi";
+import DialogHapusProdi from "./Dialog.Hapus";
+import DialogTambahProdi from "./Dialog.Tambah";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);

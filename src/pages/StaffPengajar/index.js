@@ -3,8 +3,15 @@ import { Navigation } from "pages/Root/hoc";
 import { Helmet } from "react-helmet";
 import { useRouteMatch } from "react-router";
 import { Layout } from "./Layout";
+import StaffPengajarDetail from "pages/StaffPengajar.Details";
 
 const navigation = [
+  {
+    "title": "Staff dan Pengajar",
+    "component": StaffPengajarDetail,
+    "path": "/staff-dan-pengajar/:nip",
+    "icon": "blank"
+  },
   {
     "title": "Staff dan Pengajar",
     "component": StaffPengajarList,

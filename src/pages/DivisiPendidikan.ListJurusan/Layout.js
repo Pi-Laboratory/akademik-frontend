@@ -43,7 +43,7 @@ const List = () => {
       try {
         const res = await client["majors"].find({
           query: {
-            $select: ["id", "name", "createdAt"],
+            $select: ["id", "name", "created_at"],
             $skip: paging.skip
           }
         });

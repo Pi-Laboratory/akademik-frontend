@@ -1,7 +1,7 @@
 import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
-import DialogTambahBaru from "./Dialog.TambahBaru";
+import DialogTambahBaru from "./Dialog.Tambah";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);

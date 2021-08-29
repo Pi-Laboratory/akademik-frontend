@@ -60,7 +60,7 @@ const List = () => {
       try {
         const res = await client["curriculums"].find({
           query: {
-            $select: ["id", "name", "ideal_study_period", "maximum_study_period", "createdAt"]
+            $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"]
           }
         });
         console.log(res);
