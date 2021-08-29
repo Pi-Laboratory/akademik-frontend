@@ -1,4 +1,4 @@
-import { Button, Classes, ControlGroup, Dialog, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
+import { Button, Classes, ControlGroup, Dialog, FormGroup, HTMLSelect, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import { Box, Flex, useClient } from "components";
 import { Formik } from "formik";
@@ -18,14 +18,14 @@ const Schema = Yup.object().shape({
   "gender": Yup.string().required(),
   "religion": Yup.string().required(),
   "blood_type": Yup.string().required(),
-  "married_status": Yup.string().required(),
+  "married_status": Yup.boolean().required(),
   "home_address": Yup.string().required(),
   "city": Yup.string().required(),
   "country": Yup.string().required(),
   "postal_code": Yup.string().required(),
   "cellular_phone": Yup.string().required(),
   "type": Yup.string().required(),
-  "status": Yup.string().required(),
+  "status": Yup.boolean().required(),
 })
 
 const DialogTambahBaru = ({
@@ -55,19 +55,19 @@ const DialogTambahBaru = ({
           "gender": "",
           "religion": "",
           "blood_type": "O",
-          "married_status": "Belum Menikah",
+          "married_status": false,
           "home_address": "",
           "city": "",
           "country": "",
           "postal_code": "",
           "celular_phone": "",
           "type": "Dosen",
-          "status": "Aktif",
+          "status": true,
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           console.log(values);
           try {
-            const res = await client["curriculums"].create(values);
+            const res = await client["lecturers"].create(values);
             console.log(res);
             onClose();
             onSubmitted(res);
@@ -365,18 +365,16 @@ const DialogTambahBaru = ({
                 helperText={errors["married_status"]}
                 intent={"danger"}
               >
-                <HTMLSelect
+                <RadioGroup
                   id="f-married_status"
                   name="married_status"
-                  value={values["married_status"]}
+                  selectedValue={values["married_status"]}
                   onChange={handleChange}
                   intent={errors["married_status"] ? "danger" : "none"}
-                  options={[
-                    "Belum Menikah",
-                    "Menikah",
-                    "Cerai",
-                  ]}
-                />
+                >
+                  <Radio label="Menikah" value={true} />
+                  <Radio label="Belum Menikah" value={false} />
+                </RadioGroup>
               </FormGroup>
               <FormGroup
                 label="Nomor Hanphone"
@@ -417,17 +415,16 @@ const DialogTambahBaru = ({
                 helperText={errors["status"]}
                 intent={"danger"}
               >
-                <HTMLSelect
+                <RadioGroup
                   id="f-status"
                   name="status"
-                  value={values["status"]}
+                  selectedValue={values["status"]}
                   onChange={handleChange}
                   intent={errors["status"] ? "danger" : "none"}
-                  options={[
-                    "Aktif",
-                    "Tidak Aktif"
-                  ]}
-                />
+                >
+                  <Radio label="Aktif" value={true} />
+                  <Radio label="Tidak Aktif" value={false} />
+                </RadioGroup>
               </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>

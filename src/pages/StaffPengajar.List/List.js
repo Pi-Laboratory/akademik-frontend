@@ -1,8 +1,9 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select } from "components";
+import { Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Select, useClient } from "components";
 import Filter from "./Filter";
 import { Link } from "react-router-dom";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { Pagination } from "components/Pagination";
 
 function selectedItemReducer(state, action) {
   switch (action.type) {
@@ -27,7 +28,37 @@ function selectedItemReducer(state, action) {
 }
 
 const List = () => {
+  const client = useClient();
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
+  const [list, setList] = useState(null);
+  const [paging, setPaging] = useState({
+    total: null,
+    limit: null,
+    skip: 0,
+  });
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await client["lecturers"].find({
+          query: {
+            $select: ["id", "name", "front_degree", "back_degree", "nip", "nidn", "id_number"]
+          }
+        });
+        console.log(res);
+        setList(res.data);
+        setPaging({
+          total: res.total,
+          limit: res.limit,
+          skip: res.skip
+        });
+      } catch (err) {
+        console.error(err);
+        setList([]);
+      }
+    }
+    fetch();
+  }, [client]);
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -74,70 +105,72 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
+        {list === null &&
+          <Box sx={{ p: 2 }}>
+            <Spinner size={50} />
+          </Box>
+        }
+        {list && list.length === 0 &&
+          <Box sx={{ p: 3 }}>
+            <NonIdealState
+              title="Kosong"
+              description="Belum ada data"
+            />
+          </Box>
+        }
+        {list && list.map((value) => (
+          <ListGroup.Item key={value["id"]}>
             <Flex>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
+              <Box sx={{ width: 24, px: 0, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {
-                      name: idx,
+                      name: value["id"],
                       value: e.target.checked
                     }
                   })
                 }} />
               </Box>
-              <Box sx={{ fontWeight: "bold", width: "15%", flexShrink: 0 }}>
-                {Math.round(Math.random() * 12093)}
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
+              <Box sx={{ flexGrow: 1, px: 2, mr: 3 }}>
                 <Box>
-                  <Link to={`staff-dan-pengajar/${idx}`}>
-                    Prof. Dr. Imanuel Pundoko, S.Th.
+                  <Link to={`staff-dan-pengajar/${value["nip"]}`}>
+                    {`${value["front_degree"]} ${value["name"]} ${value["back_degree"]}`}
                   </Link>
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  {`74398734${Math.round(Math.random() * 8364872343)}`}
+                  {value["nip"]}
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  NIP
+                  NIDN
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  197807102008121003
+                  {value["id_number"]}
                 </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
-                  KTP
+                  NIK
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
-                  -
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  Teknik Elektro
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Jurusan
+                  {value["id_number"]}
                 </Box>
               </Box>
             </Flex>
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <Flex sx={{ my: 3, justifyContent: "center" }}>
-        <Button minimal={true} icon="chevron-left" text="Previous" />
-        <ButtonGroup>
-          <Button text="1" active={true} />
-          <Button text="2" />
-          <Button text="3" />
-        </ButtonGroup>
-        <Button minimal={true} text="Next" rightIcon="chevron-right" />
-      </Flex>
+      <Pagination
+        loading={list === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Box >
   )
 }
