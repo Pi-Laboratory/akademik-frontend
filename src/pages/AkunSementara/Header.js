@@ -8,7 +8,7 @@ const Header = () => {
   const location = useLocation();
   console.log(params, location, match);
   return (
-    <Box sx={{ ml: 3 }}>
+    <Box sx={{ ml: 3, mb: 3 }}>
       <Box as="h2" className={`${Classes.HEADING}`}>
         <span>Akun Sementara</span>
         {params.nip && <Tag>{params.nip}</Tag>}
