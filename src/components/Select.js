@@ -55,6 +55,7 @@ export const Select = ({
         disabled={modifiers.disabled}
         onClick={handleClick}
         text={item.label}
+        label={item.info}
       />
     )
   }
@@ -62,7 +63,9 @@ export const Select = ({
   const itemPredicate = (query, item) => {
     const normalizeLabel = item.label.toLowerCase();
     const normalizeQuery = query.toLowerCase();
-    return `${item.value} ${normalizeLabel}`.indexOf(normalizeQuery) >= 0;
+    let normalizeInfo = "";
+    if (item.info) normalizeInfo = item.info.toLowerCase();
+    return `${item.value} ${normalizeLabel} ${normalizeInfo}`.indexOf(normalizeQuery) >= 0;
   }
 
   return (
