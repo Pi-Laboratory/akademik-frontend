@@ -53,7 +53,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client,]);
+  }, [client]);
 
   useEffect(() => {
     const fetch = async () => {

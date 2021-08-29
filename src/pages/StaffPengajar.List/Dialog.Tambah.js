@@ -55,14 +55,14 @@ const DialogTambahBaru = ({
           "gender": "",
           "religion": "",
           "blood_type": "O",
-          "married_status": false,
+          "married_status": "false",
           "home_address": "",
           "city": "",
           "country": "",
           "postal_code": "",
           "celular_phone": "",
           "type": "Dosen",
-          "status": true,
+          "status": "true",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           console.log(values);
@@ -372,8 +372,8 @@ const DialogTambahBaru = ({
                   onChange={handleChange}
                   intent={errors["married_status"] ? "danger" : "none"}
                 >
-                  <Radio label="Menikah" value={true} />
-                  <Radio label="Belum Menikah" value={false} />
+                  <Radio label="Menikah" value={"true"} />
+                  <Radio label="Belum Menikah" value={"false"} />
                 </RadioGroup>
               </FormGroup>
               <FormGroup
@@ -422,8 +422,8 @@ const DialogTambahBaru = ({
                   onChange={handleChange}
                   intent={errors["status"] ? "danger" : "none"}
                 >
-                  <Radio label="Aktif" value={true} />
-                  <Radio label="Tidak Aktif" value={false} />
+                  <Radio label="Aktif" value={"true"} />
+                  <Radio label="Tidak Aktif" value={"false"} />
                 </RadioGroup>
               </FormGroup>
             </div>

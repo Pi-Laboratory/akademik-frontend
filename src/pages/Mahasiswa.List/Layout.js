@@ -1,41 +1,17 @@
-import { Button, ButtonGroup, Checkbox, Classes, ControlGroup, H2, InputGroup } from '@blueprintjs/core'
-import { Box, Flex, ListGroup, Select, Divider } from 'components'
+import { Box, Divider, Flex, ListGroup, Select } from 'components'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import List from './List'
+import Header from './Header'
+import { Button, ButtonGroup, Checkbox, Classes } from '@blueprintjs/core'
+import Filter from './Filter'
 
-const List = () => {
+export const Layout = () => {
   return (
-    <>
-      <Box sx={{ px: 3, mb: 3 }}>
-        <Box as={H2} sx={{ m: 0 }}>Mahasiswa</Box>
-      </Box>
+    <Box>
+      <Header />
       <Divider />
-      <Box sx={{ width: "100%", pt: 3, pl: 3 }}>
-        <Flex
-          sx={{
-            mb: 3,
-            mr: -3,
-            "> div": {
-              mr: 3
-            }
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }}>
-            <ControlGroup>
-              <Button text="Filter" />
-              <InputGroup fill={true} />
-            </ControlGroup>
-          </Box>
-          <Box>
-            <ButtonGroup>
-              <Button text="Alumni" />
-              <Button text="Drop out" />
-            </ButtonGroup>
-          </Box>
-          <Box>
-            <Button intent="primary" text="Mahasiswa Baru" />
-          </Box>
-        </Flex>
+      <Box sx={{ px: 3, pt: 3 }}>
+        <Filter />
         <ListGroup
           sx={{
             [`.${Classes.CHECKBOX}`]: {
@@ -94,30 +70,7 @@ const List = () => {
               </Box>
             </Flex>
           </ListGroup.Header>
-          {Array(25).fill(0).map((_, idx) => (
-            <ListGroup.Item key={idx}>
-              <Flex>
-                <Box sx={{ width: 40, flexShrink: 0 }}>
-                  <Checkbox onChange={(e) => {
-                    console.log(e);
-                  }} />
-                </Box>
-                <Box sx={{ width: "15%", flexShrink: 0 }}>
-                  {Math.round(Math.random() * 12093)}
-                </Box>
-                <Box sx={{ flexGrow: 1, mr: 3 }}>
-                  <Box>
-                    <Link to={`mahasiswa/${idx}`}>
-                      Prof. Dr. Imanuel Pundoko, S.Th.
-                    </Link>
-                  </Box>
-                </Box>
-                <Box sx={{ flexGrow: 1 }}>
-                  Teknik Elektro
-                </Box>
-              </Flex>
-            </ListGroup.Item>
-          ))}
+          <List />
         </ListGroup>
         <Flex sx={{ my: 3, justifyContent: "center" }}>
           <Button minimal={true} icon="chevron-left" text="Previous" />
@@ -129,8 +82,6 @@ const List = () => {
           <Button minimal={true} text="Next" rightIcon="chevron-right" />
         </Flex>
       </Box>
-    </>
+    </Box>
   )
 }
-
-export default List

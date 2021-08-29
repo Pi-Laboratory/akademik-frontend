@@ -3,7 +3,7 @@ import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import DialogHapusJurusan from "./Dialog.Hapus";
-import DialogJurusanBaru from "./Dialog.Jurusan";
+import DialogJurusanBaru from "./Dialog.Tambah";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);

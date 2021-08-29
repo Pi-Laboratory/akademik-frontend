@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router'
-import { Detail } from './Detail';
-import List from './List';
+import List from 'pages/Mahasiswa.List';
+import Detail from 'pages/Mahasiswa.Details';
 
 const Router = () => {
   const { path } = useRouteMatch();
