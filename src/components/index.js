@@ -1,4 +1,5 @@
 export { AspectRatio } from "./AspectRatio";
+export { ImageDropzone } from "./ImageDropzone";
 
 export { Box } from "./Grid";
 export { Flex } from "./Grid";
