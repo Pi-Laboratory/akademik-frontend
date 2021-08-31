@@ -144,7 +144,9 @@ function DialogTambahStepOne(props) {
               name="birth_date"
               minDate={moment().subtract(50, "year").toDate()}
               value={values["birth_date"]}
-              intent={errors["birth_date"] ? "danger" : "none"}
+              inputProps={{
+                intent: errors["birth_date"] ? "danger" : "none"
+              }}
               formatDate={date => moment(date).format("DD MMMM YYYY")}
               parseDate={(str) => new Date(str)}
               onChange={(v) => {
@@ -296,7 +298,9 @@ function DialogTambahStepOne(props) {
           id="f-registration_date"
           name="registration_date"
           value={values["registration_date"]}
-          intent={errors["registration_date"] ? "danger" : "none"}
+          inputProps={{
+            intent: errors["registration_date"] ? "danger" : "none"
+          }}
           formatDate={date => moment(date).format("DD MMMM YYYY")}
           parseDate={(str) => new Date(str)}
           onChange={(v) => {

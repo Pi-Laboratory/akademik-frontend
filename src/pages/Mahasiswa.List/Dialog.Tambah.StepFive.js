@@ -32,7 +32,7 @@ const Schema = Yup.object().shape({
   "father_status": Yup.boolean().required(),
   "father_death_date": Yup.date()
     .when("father_status", {
-      is: "true",
+      is: "false",
       then: Yup.date().required()
     }),
   "father_education": Yup.string()
@@ -60,7 +60,7 @@ const Schema = Yup.object().shape({
   "mother_status": Yup.string().required(),
   "mother_death_date": Yup.date()
     .when("mother_status", {
-      is: "true",
+      is: "false",
       then: Yup.date().required()
     }),
   "mother_education": Yup.string()
@@ -88,7 +88,7 @@ const Schema = Yup.object().shape({
   "trustee_status": Yup.string().required(),
   "trustee_death_date": Yup.date()
     .when("trustee_status", {
-      is: "true",
+      is: "false",
       then: Yup.date().required()
     }),
   "trustee_education": Yup.string()
@@ -152,11 +152,11 @@ function DialogTambahStepFive() {
           <h5>Identitas Ayah</h5>
           {[
             { label: "Nama", field: "father_name" },
-            { label: "Tanggal Lahir", field: "father_birth_date" },
+            { label: "Tanggal Lahir", field: "father_birth_date", value: val => val && moment(val).format("DD MMMM YYYY") },
             { label: "Pendidikan", field: "father_education" },
             { label: "Pendidikan Terakhir", field: "father_recent_education" },
             { label: "Pekerjaan", field: "father_occupation" },
-            { label: "Tanggal Kematian", field: "father_death_date" },
+            { label: "Tanggal Kematian", field: "father_death_date", value: val => val && moment(val).format("DD MMMM YYYY") },
           ].map(({ label, field, value = (val) => val }) =>
             <Box key={field} sx={{ display: "inline-block", mb: 2 }}>
               <Box sx={{ pr: 3 }}>
@@ -168,11 +168,11 @@ function DialogTambahStepFive() {
           <h5>Identitas Ibu</h5>
           {[
             { label: "Nama", field: "mother_name" },
-            { label: "Tanggal Lahir", field: "mother_birth_date" },
+            { label: "Tanggal Lahir", field: "mother_birth_date", value: val => val && moment(val).format("DD MMMM YYYY") },
             { label: "Pendidikan", field: "mother_education" },
             { label: "Pendidikan Terakhir", field: "mother_recent_education" },
             { label: "Pekerjaan", field: "mother_occupation" },
-            { label: "Tanggal Kematian", field: "mother_death_date" },
+            { label: "Tanggal Kematian", field: "mother_death_date", value: val => val && moment(val).format("DD MMMM YYYY") },
           ].map(({ label, field, value = (val) => val }) =>
             <Box key={field} sx={{ display: "inline-block", mb: 2 }}>
               <Box sx={{ pr: 3 }}>
@@ -184,11 +184,11 @@ function DialogTambahStepFive() {
           <h5>Identitas Wali</h5>
           {[
             { label: "Nama", field: "trustee_name" },
-            { label: "Tanggal Lahir", field: "trustee_birth_date" },
+            { label: "Tanggal Lahir", field: "trustee_birth_date", value: val => val && moment(val).format("DD MMMM YYYY") },
             { label: "Pendidikan", field: "trustee_education" },
             { label: "Pendidikan Terakhir", field: "trustee_recent_education" },
             { label: "Pekerjaan", field: "trustee_occupation" },
-            { label: "Tanggal Kematian", field: "trustee_death_date" },
+            { label: "Tanggal Kematian", field: "trustee_death_date", value: val => val && moment(val).format("DD MMMM YYYY") },
           ].map(({ label, field, value = (val) => val }) =>
             <Box key={field} sx={{ display: "inline-block", mb: 2 }}>
               <Box sx={{ pr: 3 }}>

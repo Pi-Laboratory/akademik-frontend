@@ -15,7 +15,7 @@ const Schema = Yup.object().shape({
   "father_status": Yup.boolean().required(),
   "father_death_date": Yup.date()
     .when("father_status", {
-      is: "true",
+      is: "false",
       then: Yup.date().required()
     }),
   "father_education": Yup.string()

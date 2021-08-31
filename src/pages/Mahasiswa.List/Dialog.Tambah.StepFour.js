@@ -15,7 +15,7 @@ const Schema = Yup.object().shape({
   "trustee_status": Yup.string().required(),
   "trustee_death_date": Yup.date()
     .when("trustee_status", {
-      is: "true",
+      is: "false",
       then: Yup.date().required()
     }),
   "trustee_education": Yup.string()
