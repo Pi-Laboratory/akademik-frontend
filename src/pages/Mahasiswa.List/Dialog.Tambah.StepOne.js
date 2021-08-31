@@ -17,9 +17,7 @@ const Schema = Yup.object().shape({
   "city": Yup.string().required(),
   "postal_code": Yup.string().required(),
   "phone_number": Yup.string().required(),
-  "cellular_number": Yup.string().required(),
   "email": Yup.string().required(),
-  "photo": Yup.string().required(),
   "generation": Yup.string().required(),
   "registration_number": Yup.string().required(),
   "registration_date": Yup.date().required(),
@@ -31,9 +29,8 @@ export const StepOne = {
   validationSchema: Schema
 }
 
-function DialogTambahStepOne() {
+function DialogTambahStepOne(props) {
   const { values, errors, handleChange, setFieldValue } = useFormikContext();
-
   return (
     <div className={Classes.DIALOG_BODY}>
       <h5 className={Classes.HEADING}>Identitas Diri Mahasiswa</h5>
@@ -230,17 +227,17 @@ function DialogTambahStepOne() {
       </Flex>
       <FormGroup
         label="Nomor Handphone"
-        labelFor="f-cellular_number"
-        helperText={errors["cellular_number"]}
+        labelFor="f-phone_number"
+        helperText={errors["phone_number"]}
         intent={"danger"}
       >
         <InputGroup
           fill={true}
-          id="f-cellular_number"
-          name="cellular_number"
-          value={values["cellular_number"]}
+          id="f-phone_number"
+          name="phone_number"
+          value={values["phone_number"]}
           onChange={handleChange}
-          intent={errors["cellular_number"] ? "danger" : "none"}
+          intent={errors["phone_number"] ? "danger" : "none"}
         />
       </FormGroup>
       <FormGroup
@@ -290,20 +287,20 @@ function DialogTambahStepOne() {
       </FormGroup>
       <FormGroup
         label="Tanggal Registrasi"
-        labelFor="f-registraion_date"
-        helperText={errors["registraion_date"]}
+        labelFor="f-registration_date"
+        helperText={errors["registration_date"]}
         intent={"danger"}
       >
         <DateInput
           fill={true}
-          id="f-registraion_date"
-          name="registraion_date"
-          value={values["registraion_date"]}
-          intent={errors["registraion_date"] ? "danger" : "none"}
+          id="f-registration_date"
+          name="registration_date"
+          value={values["registration_date"]}
+          intent={errors["registration_date"] ? "danger" : "none"}
           formatDate={date => moment(date).format("DD MMMM YYYY")}
           parseDate={(str) => new Date(str)}
           onChange={(v) => {
-            setFieldValue("registraion_date", v);
+            setFieldValue("registration_date", v);
           }}
         />
       </FormGroup>
@@ -318,7 +315,6 @@ function DialogTambahStepOne() {
           name="student_status"
           selectedValue={values["student_status"]}
           onChange={(e) => {
-            console.log(e.target.value);
             handleChange(e);
           }}
           intent={errors["student_status"] ? "danger" : "none"}
