@@ -4,8 +4,14 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "ipk-min": Yup.string().required(),
-  "nip": Yup.string().required(),
+  "semester": Yup.string().required(),
+  "nama-matakuliah": Yup.string().required(),
+  "kelas": Yup.string().required(),
+  "ruang": Yup.string().required(),
+  "jadwal": Yup.object().shape({
+    "created_at": Yup.string().required(),
+    "updated_at": Yup.string().required(),
+  }),
 })
 
 const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
@@ -18,8 +24,14 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "ipk-min": "",
-          "tahun": "",
+          "semester": "",
+          "nama-matakuliah": "",
+          "kelas": "",
+          "ruang": "",
+          "jadwal": {
+            "created_at": "",
+            "updated_at": "",
+          },
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -92,34 +104,34 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
                 <Box>
                   <FormGroup
                     label="Waktu Mulai"
-                    labelFor="f-waktu-mulai"
-                    helperText={errors["waktu-mulai"]}
+                    labelFor="f-created_at"
+                    helperText={errors["created_at"]}
                     intent={"danger"}
                   >
                     <InputGroup
                       fill={true}
-                      id="f-waktu-mulai"
-                      name="waktu-mulai"
-                      value={values["waktu-mulai"]}
+                      id="f-created_at"
+                      name="created_at"
+                      value={values["created_at"]}
                       onChange={handleChange}
-                      intent={errors["waktu-mulai"] ? "danger" : "none"}
+                      intent={errors["created_at"] ? "danger" : "none"}
                     />
                   </FormGroup>
                 </Box>
                 <Box>
                   <FormGroup
                     label="Waktu Selesai"
-                    labelFor="f-waktu-max"
-                    helperText={errors["waktu-max"]}
+                    labelFor="f-updated_at"
+                    helperText={errors["updated_at"]}
                     intent={"danger"}
                   >
                     <InputGroup
                       fill={true}
-                      id="f-waktu-max"
-                      name="waktu-max"
-                      value={values["waktu-max"]}
+                      id="f-updated_at"
+                      name="updated_at"
+                      value={values["updated_at"]}
                       onChange={handleChange}
-                      intent={errors["waktu-max"] ? "danger" : "none"}
+                      intent={errors["updated_at"] ? "danger" : "none"}
                     />
                   </FormGroup>
                 </Box>

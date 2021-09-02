@@ -3,7 +3,8 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "nama prodi": Yup.string().required(),
+  "name": Yup.string().required(),
+  "kode": Yup.string().required(),
 })
 
 
@@ -17,7 +18,7 @@ const DialogTambahBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "nama-prodi": "",
+          "name": "",
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -26,16 +27,16 @@ const DialogTambahBaru = ({ isOpen, onClose = () => { } }) => {
 
               <FormGroup
                 label="Nama Prodi"
-                labelFor="f-nama-prodi"
-                helperText={errors["nama prodi"]}
+                labelFor="f-name"
+                helperText={errors["name"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama prodi"
-                  name="nama prodi"
-                  value={values["nama prodi"]}
+                  id="f-name"
+                  name="name"
+                  value={values["name"]}
                   onChange={handleChange}
-                  intent={errors["nama prodi"] ? "danger" : "none"}
+                  intent={errors["name"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
@@ -51,25 +52,6 @@ const DialogTambahBaru = ({ isOpen, onClose = () => { } }) => {
                   onChange={handleChange}
                   intent={errors["kode"] ? "danger" : "none"}
                 />
-              </FormGroup>
-              <FormGroup
-                label="Jurusan"
-                labelFor="jurusan"
-                helperText={errors["jurusan"]}
-                intent={"danger"}
-              >
-                <div class="bp3-select .modifier">
-                  <select>
-                    <option selected>-- PILIH ---</option>
-                    <option value="1">Teknik Sipil</option>
-                    <option value="2">Teknik Mesin</option>
-                    <option value="3">Teknik Elektro</option>
-                    <option value="4">Akademi Pariwisata</option>
-                    <option value="5">Akuntansi</option>
-                    <option value="6">Administrasi Bisnis</option>
-
-                  </select>
-                </div>
               </FormGroup>
               <FormGroup
                 label="Jenjang Studi"
@@ -88,6 +70,25 @@ const DialogTambahBaru = ({ isOpen, onClose = () => { } }) => {
                     <option value="6">S-II</option>
                     <option value="7">PR</option>
                     <option value="8">Non-Akad</option>
+                  </select>
+                </div>
+              </FormGroup>
+              <FormGroup
+                label="Jurusan"
+                labelFor="jurusan"
+                helperText={errors["jurusan"]}
+                intent={"danger"}
+              >
+                <div class="bp3-select .modifier">
+                  <select>
+                    <option selected>-- PILIH ---</option>
+                    <option value="1">Teknik Sipil</option>
+                    <option value="2">Teknik Mesin</option>
+                    <option value="3">Teknik Elektro</option>
+                    <option value="4">Akademi Pariwisata</option>
+                    <option value="5">Akuntansi</option>
+                    <option value="6">Administrasi Bisnis</option>
+
                   </select>
                 </div>
               </FormGroup>

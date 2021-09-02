@@ -119,6 +119,14 @@ const List = () => {
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
                 <Box>
+                  Dosen
+                </Box>
+                <Box sx={{ color: "gray.5" }}>
+                  Jabatan
+                </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, mr: 3 }}>
+                <Box>
                   Teknik Elektro
                 </Box>
                 <Box sx={{ color: "gray.5" }}>

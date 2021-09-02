@@ -3,8 +3,10 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "ipk-min": Yup.string().required(),
-  "nip": Yup.string().required(),
+  "name": Yup.string().required(),
+  "code": Yup.string().required(),
+  "capacity": Yup.number().required(),
+  "type": Yup.string().required(),
 })
 
 const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
@@ -17,8 +19,10 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "ipk-min": "",
-          "tahun": "",
+          "name": "",
+          "code": "",
+          "capacity": "",
+          "type": "",
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -26,8 +30,8 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
                 label="Tipe"
-                labelFor="f-tipe"
-                helperText={errors["tipe"]}
+                labelFor="f-type"
+                helperText={errors["type"]}
                 intent={"danger"}
               >
                 <div class="bp3-select .modifier">
@@ -41,30 +45,30 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
               </FormGroup>
               <FormGroup
                 label="Nama"
-                labelFor="f-nama"
-                helperText={errors["nama"]}
+                labelFor="f-name"
+                helperText={errors["name"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama"
-                  name="nama"
-                  value={values["nama"]}
+                  id="f-name"
+                  name="name"
+                  value={values["name"]}
                   onChange={handleChange}
-                  intent={errors["nama"] ? "danger" : "none"}
+                  intent={errors["name"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
                 label="kode"
-                labelFor="kode"
-                helperText={errors["kode"]}
+                labelFor="code"
+                helperText={errors["code"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-kode"
-                  name="kode"
-                  value={values["kode"]}
+                  id="f-code"
+                  name="code"
+                  value={values["code"]}
                   onChange={handleChange}
-                  intent={errors["kode"] ? "danger" : "none"}
+                  intent={errors["code"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
@@ -83,16 +87,16 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
               </FormGroup>
               <FormGroup
                 label="Kapasitas"
-                labelFor="kapasitas"
-                helperText={errors["kapasitas"]}
+                labelFor="capacity"
+                helperText={errors["capacity"]}
                 intent={"danger"}
               >
                 <InputGroup
                   id="f-kapasitas"
-                  name="kapasitas"
-                  value={values["kapasitas"]}
+                  name="capacity"
+                  value={values["capacity"]}
                   onChange={handleChange}
-                  intent={errors["kapasitas"] ? "danger" : "none"}
+                  intent={errors["capacity"] ? "danger" : "none"}
                 />
               </FormGroup>
               <h6 className={Classes.HEADING}>Pengelolah</h6>

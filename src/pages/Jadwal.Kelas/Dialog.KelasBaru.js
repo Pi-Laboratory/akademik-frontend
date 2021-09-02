@@ -5,6 +5,8 @@ import * as Yup from "yup";
 const Schema = Yup.object().shape({
   "nama-kelas": Yup.string().required(),
   "kode-kelas": Yup.string().required(),
+  "dosen": Yup.string().required(),
+  "mahasiswa": Yup.string().required(),
 })
 
 const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
@@ -17,8 +19,10 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "nama-matakuliah": "",
-          "kode-matakuliah": "",
+          "nama-kelas": "",
+          "kode-kelas": "",
+          "dosen": "",
+          "mahasiswa": "",
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -54,16 +58,16 @@ const DialogKelasBaru = ({ isOpen, onClose = () => { } }) => {
               </FormGroup>
               <FormGroup
                 label="Dosen Penanggung Jawab"
-                labelFor="f-dosen-penanggung-jawab"
-                helperText={errors["dosen-penanggung-jawab"]}
+                labelFor="f-dosen"
+                helperText={errors["dosen"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-dosen-penanggung-jawab"
-                  name="dosen-penanggung-jawab"
-                  value={values["dosen-penanggung-jawab"]}
+                  id="f-dosen"
+                  name="dosen"
+                  value={values["dosen"]}
                   onChange={handleChange}
-                  intent={errors["dosen-penanggung-jawab"] ? "danger" : "none"}
+                  intent={errors["dosen"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup

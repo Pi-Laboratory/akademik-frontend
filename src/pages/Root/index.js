@@ -12,6 +12,7 @@ import Layout from "./Layout";
 import { useRouteMatch } from "react-router";
 import Helmet from "react-helmet";
 import StaffPengajar from "pages/StaffPengajar";
+import Users from "pages/Users";
 
 const navigation = [
   {
@@ -85,6 +86,14 @@ const navigation = [
     "path": "/settings",
     "icon": "cog"
   },
+  {
+    "title": "Users",
+    "text": "Users",
+    "component": Users,
+    "path": "/users",
+    "icon": "blank",
+    "permission": "admin"
+  }
 ]
 
 const Root = () => {

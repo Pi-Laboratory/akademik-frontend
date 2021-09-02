@@ -1,23 +1,28 @@
-import { Button, Checkbox, FormGroup, H2, InputGroup } from "@blueprintjs/core";
+import { Button, FormGroup, H2, InputGroup } from "@blueprintjs/core";
 import { Box, useClient } from "components";
 import { Formik } from "formik";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import * as Yup from "yup";
+
+const Schema = Yup.object().shape({
+  "username": Yup.string().required(),
+  "password": Yup.string().required()
+})
 
 const Login = () => {
   const client = useClient();
-
-  useEffect(() => {
-    console.log(client);
-  }, [client]);
+  const history = useHistory();
 
   const onSubmit = useCallback(async (values, { setIsSubmitting, setErrors }) => {
     if (!client.__connected) return;
     try {
-      const res = await client.authenticate({
+      await client.authenticate({
+        strategy: "local",
         username: values["username"],
         password: values["password"],
       })
-      console.log(res);
+      history.push("/");
     } catch (err) {
       setErrors({
         submit: err.message
@@ -26,7 +31,7 @@ const Login = () => {
     }
     setIsSubmitting(false);
     console.log(values);
-  }, [client]);
+  }, [client, history]);
 
   return (
     <Box sx={{
@@ -53,6 +58,7 @@ const Login = () => {
               "password": "",
               "keepSignin": true
             }}
+            validationSchema={Schema}
             onSubmit={onSubmit}
           >
             {({ values, errors, setFieldValue, handleChange, handleSubmit, isSubmitting }) => (
@@ -60,6 +66,8 @@ const Login = () => {
                 <FormGroup
                   label="Username or Email"
                   labelFor="f-username"
+                  helperText={errors["username"]}
+                  intent={"danger"}
                 >
                   <InputGroup
                     id="f-username"
@@ -67,11 +75,14 @@ const Login = () => {
                     type="text"
                     onChange={handleChange}
                     value={values["username"]}
+                    intent={errors["username"] ? "danger" : "none"}
                   />
                 </FormGroup>
                 <FormGroup
                   label="Password"
                   labelFor="f-password"
+                  helperText={errors["password"]}
+                  intent={"danger"}
                 >
                   <InputGroup
                     id="f-password"
@@ -79,14 +90,15 @@ const Login = () => {
                     type="password"
                     onChange={handleChange}
                     value={values["password"]}
+                    intent={errors["password"] ? "danger" : "none"}
                   />
                 </FormGroup>
-                <Checkbox
+                {/* <Checkbox
                   label="Tetap Masuk"
                   name="keepSignin"
                   checked={values["keepSignin"]}
                   onChange={handleChange}
-                />
+                /> */}
                 <Button
                   fill={true}
                   loading={isSubmitting}

@@ -1,19 +1,42 @@
-import { Button, ButtonGroup, InputGroup } from "@blueprintjs/core";
+import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Flex } from "components";
 
 const Filter = () => {
   return (
-    <Flex>
-      <Box>
-        <InputGroup large={true} leftIcon="search" placeholder="Filter by user" />
+    <Flex
+      sx={{
+        mb: 3,
+        mr: -3,
+        "> div": {
+          mr: 3
+        }
+      }}
+    >
+      <Box sx={{ flexGrow: 1 }} >
+        <ControlGroup>
+          <Button text="Filter" />
+          <InputGroup fill={true} />
+        </ControlGroup>
       </Box>
-      <Box sx={{ flexGrow: 1 }} />
       <Box>
-        <ButtonGroup large={true}>
-          <Button text="Id" />
-          <Button active={true} text="Name" />
-          <Button text="Role" />
+        <ButtonGroup>
+          <Button
+            text="Admin"
+          />
+          <Button
+            text="Dosen"
+          />
+          <Button
+            text="Mahasiswa"
+          />
         </ButtonGroup>
+      </Box>
+      <Box>
+        <Button
+          intent="primary"
+          icon="plus"
+          text="User Baru"
+        />
       </Box>
     </Flex>
   )
