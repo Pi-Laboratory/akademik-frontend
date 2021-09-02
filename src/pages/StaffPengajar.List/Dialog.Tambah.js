@@ -23,7 +23,7 @@ const Schema = Yup.object().shape({
   "city": Yup.string().required(),
   "country": Yup.string().required(),
   "postal_code": Yup.string().required(),
-  "cellular_phone": Yup.string().required(),
+  "phone_number": Yup.string().required(),
   "type": Yup.string().required(),
   "status": Yup.boolean().required(),
 })
@@ -60,7 +60,7 @@ const DialogTambahBaru = ({
           "city": "",
           "country": "",
           "postal_code": "",
-          "celular_phone": "",
+          "phone_number": "",
           "type": "Dosen",
           "status": "true",
         }}
@@ -378,17 +378,17 @@ const DialogTambahBaru = ({
               </FormGroup>
               <FormGroup
                 label="Nomor Hanphone"
-                labelFor="f-cellular_phone"
-                helperText={errors["cellular_phone"]}
+                labelFor="f-phone_number"
+                helperText={errors["phone_number"]}
                 intent={"danger"}
               >
                 <InputGroup
                   fill={true}
-                  id="f-cellular_phone"
-                  name="cellular_phone"
-                  value={values["cellular_phone"]}
+                  id="f-phone_number"
+                  name="phone_number"
+                  value={values["phone_number"]}
                   onChange={handleChange}
-                  intent={errors["cellular_phone"] ? "danger" : "none"}
+                  intent={errors["phone_number"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup

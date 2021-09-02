@@ -62,7 +62,7 @@ const DialogTambah = ({
         "recent_address": undefined,
         "city": undefined,
         "postal_code": undefined,
-        "phone_number": undefined,
+        "cellular_number": undefined,
         "email": undefined,
         "photo": undefined,
         "generation": undefined,

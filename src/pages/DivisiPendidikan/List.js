@@ -68,7 +68,6 @@ const List = () => {
             }]
           }
         });
-        console.log(res);
         setList(res.data);
         setPaging({
           total: res.total,

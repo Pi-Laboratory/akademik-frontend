@@ -23,10 +23,8 @@ const DialogHapusProdi = ({ isOpen, onClose = () => { }, onSubmitted = () => { }
           "last-word": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values, data);
           try {
             const res = await client["study-programs"].remove(data);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

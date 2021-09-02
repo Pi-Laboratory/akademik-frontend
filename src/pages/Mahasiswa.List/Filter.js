@@ -40,7 +40,7 @@ const Filter = () => {
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
         onSubmitted={() => {
-          history.go(0);
+          // history.go(0);
         }}
       />
     </Flex>

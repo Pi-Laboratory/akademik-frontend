@@ -1,10 +1,12 @@
 import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select } from "components";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import DialogTambahBaru from "./Dialog.Tambah";
 
 const Filter = ({ selectedItem }) => {
   const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
   return (
     <Flex>
       <Box>
@@ -57,6 +59,9 @@ const Filter = ({ selectedItem }) => {
       <DialogTambahBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
       />
     </Flex>
   )

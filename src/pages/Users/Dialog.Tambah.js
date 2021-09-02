@@ -10,9 +10,15 @@ const Schema = Yup.object().shape({
   "confirm_password": Yup.string()
     .oneOf([Yup.ref("password"), null], "Password must match")
     .required(),
-  "lecture_id": Yup.number(),
-  "student_id": Yup.number(),
   "type": Yup.string().oneOf(["admin", "lecture", "student"]),
+  "lecture_id": Yup.number().when("type", {
+    is: "lecture",
+    then: Yup.number().required()
+  }),
+  "student_id": Yup.number().when("type", {
+    is: "student",
+    then: Yup.number().required()
+  }),
   "show_password": Yup.boolean(),
 })
 
@@ -62,7 +68,7 @@ const DialogTambah = ({
       enforceFocus={false}
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Kurikulum Baru"
+      title="Tambah User Baru"
     >
       <Formik
         validationSchema={Schema}
@@ -72,8 +78,8 @@ const DialogTambah = ({
           "confirm_password": "",
           "show_password": false,
           "type": "admin",
-          "lecture_id": null,
-          "student_id": null,
+          "lecture_id": undefined,
+          "student_id": undefined,
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           let data = { ...values };
@@ -239,8 +245,17 @@ const DialogTambah = ({
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Button minimal={true} onClick={() => onClose()} text="Close" />
-                <Button loading={isSubmitting} type="submit" intent="primary" text="Simpan" />
+                <Button
+                  minimal={true}
+                  onClick={() => onClose()}
+                  text="Close"
+                />
+                <Button
+                  loading={isSubmitting}
+                  type="submit"
+                  intent="primary"
+                  text="Simpan"
+                />
               </div>
             </div>
           </form>
