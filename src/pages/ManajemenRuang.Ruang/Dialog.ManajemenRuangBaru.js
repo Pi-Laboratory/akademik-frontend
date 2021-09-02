@@ -1,13 +1,21 @@
-import { Button, Classes, Dialog, FormGroup, InputGroup } from "@blueprintjs/core";
+import { Button, Classes, Dialog, FormGroup, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
+import { useClient } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "ipk-min": Yup.string().required(),
-  "nip": Yup.string().required(),
+  "name": Yup.string().required(),
+  "code": Yup.string().required(),
+  "capacity": Yup.number().min(1).required(),
+  "type": Yup.string().oneOf(["Ruangan", "Gedung", "Laboratorium"]).required(),
 })
 
-const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
+const DialogJadwalBaru = ({
+  isOpen,
+  onClose = () => { },
+  onSubmitted = () => { }
+}) => {
+  const client = useClient();
   return (
     <Dialog
       isOpen={isOpen}
@@ -17,8 +25,23 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "ipk-min": "",
-          "tahun": "",
+          "name": "",
+          "code": "",
+          "capacity": 0,
+          "type": "Ruangan"
+        }}
+        onSubmit={async (values, { setErrors, setSubmitting }) => {
+          console.log(values);
+          try {
+            const res = await client["rooms"].create(values);
+            console.log(res);
+            onClose();
+            onSubmitted(res);
+          } catch (err) {
+            console.error(err);
+            setErrors({ submit: err.message });
+            setSubmitting(false);
+          }
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
@@ -26,125 +49,80 @@ const DialogJadwalBaru = ({ isOpen, onClose = () => { } }) => {
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
                 label="Tipe"
-                labelFor="f-tipe"
-                helperText={errors["tipe"]}
+                labelFor="f-type"
+                helperText={errors["type"]}
                 intent={"danger"}
               >
-                <div class="bp3-select .modifier">
-                  <select>
-                    <option selected>-- PILIH --</option>
-                    <option value="1">Ruangan</option>
-                    <option value="2">Gedung</option>
-                    <option value="3">Laboratorium</option>
-                  </select>
-                </div>
+                <RadioGroup
+                  inline={true}
+                  id="f-type"
+                  name="type"
+                  selectedValue={values["type"]}
+                  onChange={handleChange}
+                  intent={errors["type"] ? "danger" : "none"}
+                >
+                  <Radio label="Ruangan" value={"Ruangan"} />
+                  <Radio label="Gedung" value={"Gedung"} />
+                  <Radio label="Laboratorium" value={"Laboratorium"} />
+                </RadioGroup>
               </FormGroup>
               <FormGroup
                 label="Nama"
-                labelFor="f-nama"
-                helperText={errors["nama"]}
+                labelFor="f-name"
+                helperText={errors["name"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-nama"
-                  name="nama"
-                  value={values["nama"]}
+                  id="f-name"
+                  name="name"
+                  value={values["name"]}
                   onChange={handleChange}
-                  intent={errors["nama"] ? "danger" : "none"}
+                  intent={errors["name"] ? "danger" : "none"}
                 />
               </FormGroup>
               <FormGroup
-                label="kode"
-                labelFor="kode"
-                helperText={errors["kode"]}
+                label="Kode"
+                labelFor="code"
+                helperText={errors["code"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-kode"
-                  name="kode"
-                  value={values["kode"]}
+                  id="f-code"
+                  name="code"
+                  value={values["code"]}
                   onChange={handleChange}
-                  intent={errors["kode"] ? "danger" : "none"}
+                  intent={errors["code"] ? "danger" : "none"}
                 />
-              </FormGroup>
-              <FormGroup
-                label="Status"
-                labelFor="f-status"
-                helperText={errors["status"]}
-                intent={"danger"}
-              >
-                <div class="bp3-select .modifier">
-                  <select>
-                    <option selected>-- PILIH --</option>
-                    <option value="1">Layak</option>
-                    <option value="2">Tidak Layak</option>
-                  </select>
-                </div>
               </FormGroup>
               <FormGroup
                 label="Kapasitas"
-                labelFor="kapasitas"
-                helperText={errors["kapasitas"]}
+                labelFor="capacity"
+                helperText={errors["capacity"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-kapasitas"
-                  name="kapasitas"
-                  value={values["kapasitas"]}
+                  id="f-capacity"
+                  name="capacity"
+                  value={values["capacity"]}
                   onChange={handleChange}
-                  intent={errors["kapasitas"] ? "danger" : "none"}
+                  intent={errors["capacity"] ? "danger" : "none"}
                 />
-              </FormGroup>
-              <h6 className={Classes.HEADING}>Pengelolah</h6>
-              <FormGroup
-                label="Jurusan"
-                labelFor="jurusan"
-                helperText={errors["jurusan"]}
-                intent={"danger"}
-              >
-                <div class="bp3-select .modifier">
-                  <select>
-                    <option selected>-- PILIH --</option>
-                    <option value="1">Teknik Sipil</option>
-                    <option value="2">Teknik Mesin</option>
-                    <option value="3">Teknik Elektro</option>
-                    <option value="4">Akademi Pariwisata</option>
-                    <option value="5">Akuntansi</option>
-                    <option value="6">Administrasi Bisnis</option>
-                    
-                  </select>
-                </div>
-              </FormGroup>
-              <FormGroup
-                label="Program Studi"
-                labelFor="program-studi"
-                helperText={errors["program-studi"]}
-                intent={"danger"}
-              >
-                <div class="bp3-select .modifier">
-                  <select>
-                    <option selected>-- PILIH --</option>
-                    <option value="1">Teknik Sipil (D3)</option>
-                    <option value="2">Konstruksi Bangunan (D4)</option>
-                    <option value="3">Teknik Informatika (D4)</option>
-                    <option value="4">Teknik Komputer (D3)</option>
-                    <option value="5">Teknik Listrik (D3)</option>
-                    <option value="6">Teknik Listrik (D4)</option>
-                    <option value="7">Teknik Mesin (D3)</option>
-                    <option value="8">Perpajakan (D4)</option>
-                    <option value="9">Akuntansi (D3)</option>
-                    <option value="10">Manajemen Bisnis (D4)</option>
-                    <option value="11">Perhotelan (D3)</option>
-                    <option value="12">Usaha Perjalanan Wisata (D3)</option>
-                    <option value="13">Ekowisata Bawah Laut (D3)</option>
-                  </select>
-                </div>
               </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Button minimal={true} intent="danger" text="Close" />
-                <Button loading={isSubmitting} type="submit" intent="primary" text="Simpan" />
+                <Button
+                  minimal={true}
+                  intent="danger"
+                  text="Close"
+                  onClick={() => onClose()}
+                />
+                <Button
+                  loading={isSubmitting}
+                  type="submit"
+                  intent="primary"
+                  text="Simpan"
+                />
               </div>
             </div>
           </form>
