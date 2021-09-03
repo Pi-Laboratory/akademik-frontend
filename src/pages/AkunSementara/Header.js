@@ -1,11 +1,9 @@
 import { Classes, Tag } from "@blueprintjs/core";
 import { Box } from "components";
-import { useLocation, useParams, useRouteMatch } from "react-router";
+import { useParams } from "react-router";
 
 const Header = () => {
   const params = useParams();
-  const match = useRouteMatch();
-  const location = useLocation();
   return (
     <Box sx={{ ml: 3, mb: 3 }}>
       <Box as="h2" className={`${Classes.HEADING}`}>

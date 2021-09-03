@@ -1,6 +1,5 @@
 import { Box } from "components";
 import { useState } from "react";
-import { useClient } from "./client";
 import _debounce from "lodash/debounce";
 import { useDropzone } from "react-dropzone";
 import { Button, Text } from "@blueprintjs/core";
@@ -15,7 +14,6 @@ export const ImageDropzone = ({
   onDelete = () => { },
   onUploaded = () => { }
 }) => {
-  const client = useClient();
   const [loading, setLoading] = useState(false);
   const upload = _debounce((files) => {
     let file = files[0];
@@ -23,7 +21,7 @@ export const ImageDropzone = ({
     console.log(file);
   });
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     disabled: disabled,
     onDropAccepted: (files) => {
       setLoading(true);
