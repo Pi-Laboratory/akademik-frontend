@@ -9,8 +9,7 @@ export const Header = () => {
   const navigation = useNav(path);
   return (
     <Box sx={{ mx: 3 }}>
-      <Box as={H2} sx={{ flexDirection: "column", height: "100%" }}>Manajemen Ruang</Box>
-      <Box sx={{ mb: 3 }} as="p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur soluta similique id vel quae dolorem recusandae blanditiis, aliquid quidem deserunt, voluptas animi dicta laborum ex odio doloribus. Pariatur, ad deleniti.</Box>
+      <Box as={H2} sx={{ flexDirection: "column", height: "100%", mb: 3 }}>Manajemen Ruang</Box>
       <div className={Classes.TABS}>
         <div className={Classes.TAB_LIST} role="tablist" onChange={tab => navigation.go(tab)}>
           {

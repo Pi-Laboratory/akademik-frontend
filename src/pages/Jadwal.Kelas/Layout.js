@@ -1,34 +1,11 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select } from "components";
-import { Link } from "react-router-dom";
+import { Checkbox, Classes } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Select, useList } from "components";
 import Filter from "./Filter";
-import { useReducer } from "react";
+import List from "./List";
+import { Pagination } from "components/Pagination";
 
-function selectedItemReducer(state, action) {
-  switch (action.type) {
-    case "toggle":
-      console.log(state);
-      if (action.data.value) {
-        return selectedItemReducer(state, {
-          type: "add",
-          data: action.data
-        });
-      } else {
-        return selectedItemReducer(state, {
-          type: "remove",
-          data: action.data
-        });
-      }
-    case "add":
-      return [...state, action.data.name];
-    case "remove":
-      return [...state.filter(item => item !== action.data.name)];
-    default: return state;
-  }
-}
-
-const List = () => {
-  const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
+const Layout = () => {
+  const { paging, setPaging, items, status, selectedItem, dispatchSelectedItem } = useList();
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -44,8 +21,13 @@ const List = () => {
           <Flex sx={{ alignItems: "center" }}>
             <Box sx={{ width: 40, flexShrink: 0, }}>
               <Checkbox
+                checked={status.checked}
+                indeterminate={status.indeterminate}
                 onChange={(e) => {
-                  console.log(e);
+                  dispatchSelectedItem({
+                    type: "all",
+                    data: e.target.checked
+                  })
                 }}
               />
             </Box>
@@ -67,72 +49,19 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
-            <Flex>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: idx,
-                      value: e.target.checked
-                    }
-                  })
-                }} />
-              </Box>
-
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  <Link to={`/manajemen-ruang/`}>
-                    TL1
-                  </Link>
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  TL-D4-2020
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  1
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Semester
-                </Box>
-              </Box>
-
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  23
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Jumlah Mahasiswa
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  Teknik Elektro
-                </Box>
-              </Box>
-
-            </Flex>
-          </ListGroup.Item>
-        ))}
+        <List />
       </ListGroup>
-      <Flex sx={{ my: 3, justifyContent: "center" }}>
-        <Button minimal={true} icon="chevron-left" text="Previous" />
-        <ButtonGroup>
-          <Button text="1" active={true} />
-          <Button text="2" />
-          <Button text="3" />
-        </ButtonGroup>
-        <Button minimal={true} text="Next" rightIcon="chevron-right" />
-      </Flex>
+      <Pagination
+        loading={items === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Box >
   )
 }
 
-export default List;
+export default Layout;
