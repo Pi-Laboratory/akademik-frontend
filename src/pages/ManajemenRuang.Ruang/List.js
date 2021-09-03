@@ -130,51 +130,56 @@ const List = () => {
             />
           </Box>
         }
-        {list && list.map((value) => (
-          <ListGroup.Item key={value["id"]}>
-            <Flex>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: value["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }} />
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  <Link to={`/manajemen-ruang/ruang/${value["id"]}`}>
-                    {value["name"]}
-                  </Link>
+        {list && list.map((value) => {
+          console.log(selectedItem.indexOf(value["id"]) !== -1);
+          return (
+            <ListGroup.Item key={value["id"]}>
+              <Flex>
+                <Box sx={{ width: 40, flexShrink: 0 }}>
+                  <Checkbox
+                    checked={selectedItem.indexOf(value["id"]) !== -1}
+                    onChange={(e) => {
+                      console.log(e.target.checked);
+                      dispatchSelectedItem({
+                        type: "toggle",
+                        data: {
+                          name: value["id"],
+                          value: e.target.checked
+                        }
+                      })
+                    }} />
                 </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  {value["code"]}
+                <Box sx={{ flexGrow: 1, mr: 3 }}>
+                  <Box>
+                    <Link to={`/manajemen-ruang/ruang/${value["id"]}`}>
+                      {value["name"]}
+                    </Link>
+                  </Box>
+                  <Box sx={{ color: "gray.5" }}>
+                    {value["code"]}
+                  </Box>
                 </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box sx={{ color: "gray.5" }}>
-                  Tipe
+                <Box sx={{ flexGrow: 1, mr: 3 }}>
+                  <Box sx={{ color: "gray.5" }}>
+                    Tipe
+                  </Box>
+                  <Box>
+                    {value["type"]}
+                  </Box>
                 </Box>
-                <Box>
-                  {value["type"]}
-                </Box>
-              </Box>
 
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box sx={{ color: "gray.5" }}>
-                  Kapasitas
+                <Box sx={{ flexGrow: 1, mr: 3 }}>
+                  <Box sx={{ color: "gray.5" }}>
+                    Kapasitas
+                  </Box>
+                  <Box>
+                    {value["capacity"]} orang
+                  </Box>
                 </Box>
-                <Box>
-                  {value["capacity"]} orang
-                </Box>
-              </Box>
-            </Flex>
-          </ListGroup.Item>
-        ))}
+              </Flex>
+            </ListGroup.Item>
+          )
+        })}
       </ListGroup>
       <Pagination
         loading={list === null}

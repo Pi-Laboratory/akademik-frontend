@@ -1,5 +1,5 @@
-import { DialogStep, MultistepDialog } from "@blueprintjs/core";
-import { useClient } from "components";
+import { Code, DialogStep, MultistepDialog } from "@blueprintjs/core";
+import { Box, useClient } from "components";
 import { Formik } from "formik";
 import { useMemo, useState } from "react";
 import { StepOne } from "./Dialog.Tambah.StepOne";
@@ -95,7 +95,6 @@ const DialogTambah = ({
         "trustee_occupation": undefined,
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
-        console.log("submit", values);
         for (let f of ["father", "mother", "trustee"]) {
           if (!values[`${f}_name`]) {
             delete values[`${f}_name`];
@@ -107,15 +106,31 @@ const DialogTambah = ({
             delete values[`${f}_occupation`];
           }
         }
-        console.log("submit filtered", values);
         try {
           const res = await client["students"].create(values);
           console.log(res);
           onClose();
-          // onSubmitted(res);
+          onSubmitted(res);
         } catch (err) {
           console.error(err);
-          setErrors({ submit: err.message });
+          const errFields = {};
+          if (err["errors"]) {
+            for (let error of err["errors"]) {
+              errFields[error["path"]] = error["message"]
+            }
+          }
+          setErrors({
+            submit: {
+              title: `Server: ${err.message}`,
+              description: (<>
+                {Object.keys(errFields).map((key) => {
+                  const msg = errFields[key];
+                  return <Box key={key}><Code>{key}</Code>: {msg}</Box>
+                })}
+              </>)
+            },
+            ...errFields
+          });
           setSubmitting(false);
         }
       }}

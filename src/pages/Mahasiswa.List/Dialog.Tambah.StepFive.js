@@ -1,4 +1,4 @@
-import { Classes, Tag } from "@blueprintjs/core";
+import { Callout, Classes, Tag } from "@blueprintjs/core";
 import { Box } from "components";
 import { useFormikContext } from "formik";
 import moment from "moment";
@@ -29,7 +29,7 @@ const Schema = Yup.object().shape({
       is: v => !!v,
       then: Yup.date().required()
     }),
-  "father_status": Yup.boolean().required(),
+  "father_status": Yup.boolean(),
   "father_death_date": Yup.date()
     .when("father_status", {
       is: "false",
@@ -57,7 +57,7 @@ const Schema = Yup.object().shape({
       is: v => !!v,
       then: Yup.date().required()
     }),
-  "mother_status": Yup.string().required(),
+  "mother_status": Yup.string(),
   "mother_death_date": Yup.date()
     .when("mother_status", {
       is: "false",
@@ -85,7 +85,7 @@ const Schema = Yup.object().shape({
       is: v => !!v,
       then: Yup.date().required()
     }),
-  "trustee_status": Yup.string().required(),
+  "trustee_status": Yup.string(),
   "trustee_death_date": Yup.date()
     .when("trustee_status", {
       is: "false",
@@ -114,15 +114,22 @@ export const StepFive = {
 }
 
 function DialogTambahStepFive() {
-  const { values, errors, handleChange, setFieldValue, validateForm } = useFormikContext();
+  const { values, errors, validateForm } = useFormikContext();
   useEffect(() => {
     validateForm();
-  }, []);
+  }, [validateForm]);
   return (
     <div className={Classes.DIALOG_BODY}>
       <Box sx={{ minHeight: "50vh" }}>
-        <h4 className={Classes.HEADING}>Anda yakin data yang Anda masukan sudah lengkap?</h4>
         <Box className={Classes.RUNNING_TEXT}>
+          {errors["submit"] &&
+            <Callout
+              intent="danger"
+              title={errors["submit"] && errors["submit"]["title"]}
+            >
+              {errors["submit"]["description"]}
+            </Callout>}
+          <h4>Anda yakin data yang Anda masukan sudah lengkap?</h4>
           <h5>Identitas Mahasiswa</h5>
           {[
             { label: "NIM", field: "nim" },

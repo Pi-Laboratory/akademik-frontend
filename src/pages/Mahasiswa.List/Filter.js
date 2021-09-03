@@ -1,10 +1,12 @@
 import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex } from "components";
+import { Box, Flex, useList } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import DialogTambah from "./Dialog.Tambah";
+import DialogHapus from "./Dialog.Hapus";
 
 const Filter = () => {
+  const { selectedItem } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
   return (
@@ -24,6 +26,16 @@ const Filter = () => {
         </ControlGroup>
       </Box>
       <Box>
+        {selectedItem.length > 0 &&
+          <Button
+            minimal={true}
+            intent="danger"
+            text={`Delete ${selectedItem.length} selected`}
+            onClick={() => setDialogOpen("delete")}
+          />
+        }
+      </Box>
+      <Box>
         <ButtonGroup>
           <Button text="Alumni" />
           <Button text="Drop out" />
@@ -40,7 +52,15 @@ const Filter = () => {
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
         onSubmitted={() => {
-          // history.go(0);
+          history.go(0);
+        }}
+      />
+      <DialogHapus
+        isOpen={dialogOpen === "delete"}
+        data={selectedItem}
+        onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
         }}
       />
     </Flex>

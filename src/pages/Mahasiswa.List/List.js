@@ -1,68 +1,22 @@
-import { Checkbox } from '@blueprintjs/core'
-import { Box, Flex, ListGroup, useClient } from 'components'
-import React, { useEffect, useReducer, useState } from 'react'
+import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
+import { Box, Flex, ListGroup, useClient, useList } from 'components'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-
-function selectedItemReducer(state, action) {
-  switch (action.type) {
-    case "toggle":
-      console.log(state);
-      if (action.data.value) {
-        return selectedItemReducer(state, {
-          type: "add",
-          data: action.data
-        });
-      } else {
-        return selectedItemReducer(state, {
-          type: "remove",
-          data: action.data
-        });
-      }
-    case "add":
-      return [...state, action.data.name];
-    case "remove":
-      return [...state.filter(item => item !== action.data.name)];
-    default: return state;
-  }
-}
 
 const List = () => {
   const client = useClient();
-  const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
-  const [list, setList] = useState(null);
-  const [paging, setPaging] = useState({
-    total: null,
-    limit: null,
-    skip: 0,
-  });
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await client["study-programs"].find({
-          query: {
-            $select: ["id", "name"]
-          }
-        });
-        setStudyPrograms(res.data.map(({ id, name }) => ({ label: name, value: id })));
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetch();
-  }, [client]);
+  const { items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
       try {
         const res = await client["students"].find({
           query: {
-            $select: ["id", "name"]
+            $select: ["id", "name", "nim", "student_status", "generation"]
           }
         });
         console.log(res);
-        setList(res.data);
+        setItems(res.data);
         setPaging({
           total: res.total,
           limit: res.limit,
@@ -70,34 +24,55 @@ const List = () => {
         });
       } catch (err) {
         console.error(err);
-        setList([]);
+        setItems([]);
       }
     }
     fetch();
-  }, [client,]);
+  }, [client, setItems, setPaging]);
 
   return (
     <>
-      {Array(25).fill(0).map((_, idx) => (
-        <ListGroup.Item key={idx}>
+      {items === null &&
+        <Box sx={{ p: 2 }}>
+          <Spinner size={50} />
+        </Box>
+      }
+      {items && items.length === 0 &&
+        <Box sx={{ p: 3 }}>
+          <NonIdealState
+            title="Kosong"
+            description="Belum ada data"
+          />
+        </Box>
+      }
+      {items && items.map((item) => (
+        <ListGroup.Item key={item["id"]}>
           <Flex>
             <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox onChange={(e) => {
-                console.log(e);
-              }} />
+              <Checkbox
+                checked={selectedItem.indexOf(item["id"]) !== -1}
+                onChange={(e) => {
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      name: item["id"],
+                      value: e.target.checked
+                    }
+                  })
+                }} />
             </Box>
-            <Box sx={{ width: "15%", flexShrink: 0 }}>
-              {Math.round(Math.random() * 12093)}
+            <Box sx={{ width: "20%", flexShrink: 0 }}>
+              {item["nim"]}
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
-                <Link to={`mahasiswa/${idx}`}>
-                  Prof. Dr. Imanuel Pundoko, S.Th.
+                <Link to={`mahasiswa/${item["id"]}`}>
+                  {item["name"]}
                 </Link>
               </Box>
             </Box>
             <Box sx={{ flexGrow: 1 }}>
-              Teknik Elektro
+              {item["generation"]}
             </Box>
           </Flex>
         </ListGroup.Item>

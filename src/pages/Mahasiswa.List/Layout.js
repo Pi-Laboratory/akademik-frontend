@@ -1,11 +1,13 @@
-import { Box, Divider, Flex, ListGroup, Select } from 'components'
+import { Box, Divider, Flex, ListGroup, Select, useList } from 'components'
 import React from 'react'
 import List from './List'
 import Header from './Header'
-import { Button, ButtonGroup, Checkbox, Classes } from '@blueprintjs/core'
+import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
+import { Pagination } from 'components/Pagination'
 
 export const Layout = () => {
+  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
   return (
     <Box>
       <Header />
@@ -23,8 +25,14 @@ export const Layout = () => {
             <Flex sx={{ alignItems: "center" }}>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox
+                  checked={status.checked}
+                  indeterminate={status.indeterminate}
                   onChange={(e) => {
-                    console.log(e);
+                    console.log(e.target.checked);
+                    dispatchSelectedItem({
+                      type: "all",
+                      data: e.target.checked
+                    })
                   }}
                 />
               </Box>
@@ -72,15 +80,15 @@ export const Layout = () => {
           </ListGroup.Header>
           <List />
         </ListGroup>
-        <Flex sx={{ my: 3, justifyContent: "center" }}>
-          <Button minimal={true} icon="chevron-left" text="Previous" />
-          <ButtonGroup>
-            <Button text="1" active={true} />
-            <Button text="2" />
-            <Button text="3" />
-          </ButtonGroup>
-          <Button minimal={true} text="Next" rightIcon="chevron-right" />
-        </Flex>
+        <Pagination
+          loading={items === null}
+          total={paging.total}
+          limit={paging.limit}
+          skip={paging.skip}
+          onClick={({ page, skip }) => {
+            setPaging(paging => ({ ...paging, skip: skip }));
+          }}
+        />
       </Box>
     </Box>
   )

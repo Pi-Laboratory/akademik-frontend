@@ -1,10 +1,12 @@
 import React from 'react'
+import ListProvider from 'components/list'
 import { Layout } from './Layout'
 
 const DaftarMahasiswa = () => {
-
   return (
-    <Layout />
+    <ListProvider>
+      <Layout />
+    </ListProvider>
   )
 }
 
