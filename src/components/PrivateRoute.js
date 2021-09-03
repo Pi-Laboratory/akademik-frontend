@@ -1,7 +1,8 @@
 import { Spinner } from "@blueprintjs/core";
 import { useEffect, useState } from "react";
-import { Route } from "react-router-dom"
+import { Redirect, Route } from "react-router-dom"
 import { useClient } from "./client"
+import { Box } from "./Grid";
 
 export const PrivateRoute = ({ ...props }) => {
   const client = useClient();
@@ -19,7 +20,11 @@ export const PrivateRoute = ({ ...props }) => {
     fetch();
   }, [client, client.account]);
 
-  if (isAuth === null) return (<Spinner />)
-  // if (isAuth === false) return (<Redirect to="/login" />)
+  if (isAuth === null) return (
+    <Box sx={{ px: 2, py: 4 }}>
+      <Spinner />
+    </Box>
+  )
+  if (isAuth === false) return (<Redirect to="/login" />)
   return (<Route {...props} />)
 }

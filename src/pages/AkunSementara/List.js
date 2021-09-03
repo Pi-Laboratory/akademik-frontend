@@ -70,7 +70,6 @@ const List = () => {
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {

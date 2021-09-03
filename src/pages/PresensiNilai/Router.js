@@ -1,10 +1,11 @@
 import FourOFour from "pages/404";
 import { useNav } from "pages/Root/hoc"
-import { Route, Switch, useRouteMatch } from "react-router-dom"
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom"
 
 export const Router = () => {
   const { path } = useRouteMatch();
   const navigation = useNav(path);
+  console.log(navigation.items);
   return (
     <Switch>
       {
@@ -18,7 +19,13 @@ export const Router = () => {
           />
         ))
       }
-      <Route path="/" component={FourOFour} />
+      {navigation.items.length > 0 &&
+        <Route
+          exact={true}
+          path={path}
+          render={() => <Redirect to={navigation.items[0].path} />}
+        />}
+      <Route component={FourOFour} />
     </Switch>
   )
 }

@@ -1,12 +1,12 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select } from "components";
+import { Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Select, useClient } from "components";
 import Filter from "./Filter";
-import { useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
+import { Pagination } from "components/Pagination";
 
 function selectedItemReducer(state, action) {
   switch (action.type) {
     case "toggle":
-      console.log(state);
       if (action.data.value) {
         return selectedItemReducer(state, {
           type: "add",
@@ -27,7 +27,61 @@ function selectedItemReducer(state, action) {
 }
 
 const List = () => {
+  const client = useClient();
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
+  const [list, setList] = useState(null);
+  const [paging, setPaging] = useState({
+    total: null,
+    limit: null,
+    skip: 0,
+  });
+
+  const [majors, setMajors] = useState([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await client["majors"].find({
+          query: {
+            $select: ["id", "name"]
+          }
+        });
+        setMajors(res.data.map(({ id, name }) => ({ label: name, value: id })));
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetch();
+  }, [client,]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      setList(null);
+      try {
+        const res = await client["study-programs"].find({
+          query: {
+            $select: ["id", "name"],
+            $skip: paging.skip,
+            $include: [{
+              model: "majors",
+              $select: ["name"]
+            }]
+          }
+        });
+        setList(res.data);
+        setPaging({
+          total: res.total,
+          limit: res.limit,
+          skip: res.skip
+        });
+      } catch (err) {
+        console.error(err);
+        setList([]);
+      }
+    }
+    fetch();
+  }, [client, paging.skip]);
+
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -53,33 +107,7 @@ const List = () => {
               <Select
                 minimal={true}
                 label="Jurusan"
-                options={[
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Sipil", value: 1 },
-                  { label: "Teknik Mesin", value: 2 },
-                  { label: "Akuntansi", value: 3 },
-                  { label: "Administrasi Bisnis", value: 4 },
-                  { label: "Pariwisata", value: 5 },
-                ]}
-              />
-              <Select
-                minimal={true}
-                label="Program Studi"
-                options={[
-                  { label: "Teknik Sipil (D3)", value: 0 },
-                  { label: "Konstruksi Bangunan (D4)", value: 1 },
-                  { label: "Teknik Informatika (D4)", value: 2 },
-                  { label: "Teknik Komputer (D3)", value: 3 },
-                  { label: "Teknik Listrik (D3)", value: 4 },
-                  { label: "Teknik Listrik (D4)", value: 5 },
-                  { label: "Teknik Mesin (D3)", value: 6 },
-                  { label: "Perpajakan (D4)", value: 7 },
-                  { label: "Akuntansi (D3)", value: 8 },
-                  { label: "Manajemen Bisnis (D4)", value: 9 },
-                  { label: "Perhotelan (D3)", value: 10 },
-                  { label: "Usaha Perjalanan Wisata (D3)", value: 11 },
-                  { label: "Ekowisata Bawah Laut (D3)", value: 12 },
-                ]}
+                options={majors}
               />
               <Select
                 minimal={true}
@@ -92,8 +120,21 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
+        {list === null &&
+          <Box sx={{ p: 2 }}>
+            <Spinner size={50} />
+          </Box>
+        }
+        {list && list.length === 0 &&
+          <Box sx={{ p: 3 }}>
+            <NonIdealState
+              title="Kosong"
+              description="Belum ada data"
+            />
+          </Box>
+        }
+        {list && list.map((value) => (
+          <ListGroup.Item key={value["id"]}>
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
@@ -101,49 +142,49 @@ const List = () => {
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {
-                      name: idx,
+                      name: value["id"],
                       value: e.target.checked
                     }
                   })
                 }} />
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  Teknik Komputer
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Program Studi
                 </Box>
+                <Box>
+                  {value["name"]}
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  D-III
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Jenjang Studi
                 </Box>
+                <Box>
+                  D-III
+                </Box>
               </Box>
               <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                  Teknik Elektro
-                </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Jurusan
+                </Box>
+                <Box>
+                  {value["major"]["name"]}
                 </Box>
               </Box>
             </Flex>
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <Flex sx={{ my: 3, justifyContent: "center" }}>
-        <Button minimal={true} icon="chevron-left" text="Previous" />
-        <ButtonGroup>
-          <Button text="1" active={true} />
-          <Button text="2" />
-          <Button text="3" />
-        </ButtonGroup>
-        <Button minimal={true} text="Next" rightIcon="chevron-right" />
-      </Flex>
+      <Pagination
+        loading={list === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Box >
   )
 }

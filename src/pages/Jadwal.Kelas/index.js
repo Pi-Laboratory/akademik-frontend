@@ -1,8 +1,11 @@
+import ListProvider from "components/list";
 import Layout from "./Layout";
 
 const Kelas = () => {
   return (
-    <Layout />
+    <ListProvider>
+      <Layout />
+    </ListProvider>
   )
 }
 

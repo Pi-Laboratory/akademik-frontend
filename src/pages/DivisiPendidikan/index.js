@@ -5,6 +5,7 @@ import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import List from './List'
 import ListJurusan from 'pages/DivisiPendidikan.ListJurusan'
+
 export const DivisiPendidikan = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
@@ -22,7 +23,7 @@ export const DivisiPendidikan = () => {
       "component": ListJurusan,
       "path": `/list-jurusan`,
       exact: true
-    },
+    }
   ]), []);
 
   return (

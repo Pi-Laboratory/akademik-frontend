@@ -3,7 +3,7 @@ import { Box } from "components";
 
 const Header = () => {
   return (
-    <Box sx={{ ml: 3 }}>
+    <Box sx={{ ml: 3, mb: 4 }}>
       <Box as="h2" className={`${Classes.HEADING}`}>Users</Box>
     </Box>
   )

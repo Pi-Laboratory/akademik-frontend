@@ -13,8 +13,7 @@ export const Layout = () => {
   return (
     <Flex sx={{ py: 4, flexDirection: 'column', height: '100%' }}>
       <Box sx={{ px: 3 }}>
-        <Box as={H2} sx={{ m: 0 }}>Divisi Pendidikan</Box>
-        <Box sx={{ mb: 3 }} as="p">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur soluta similique id vel quae dolorem recusandae blanditiis, aliquid quidem deserunt, voluptas animi dicta laborum ex odio doloribus. Pariatur, ad deleniti.</Box>
+        <Box as={H2} sx={{ m: 0, mb: 3 }}>Divisi Pendidikan</Box>
         <Tabs selectedTabId={pathname} onChange={tab => navigation.go(tab)}>
           {
             navigation.items.map((item, i) => (

@@ -1,4 +1,4 @@
-import { Box, Flex } from "components";
+import { Box, Divider, Flex } from "components";
 import Filter from "./Filter";
 import Header from "./Header";
 import List from "./List";
@@ -12,6 +12,7 @@ const Layout = () => {
     }}>
       <Box sx={{ mb: 3 }}>
         <Header />
+        <Divider />
       </Box>
       <Box sx={{ mx: 3 }}>
         <Filter />
