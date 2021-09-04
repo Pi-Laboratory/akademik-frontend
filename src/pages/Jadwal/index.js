@@ -5,6 +5,7 @@ import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import List from './List'
 import Kelas from 'pages/Jadwal.Kelas'
+import JamPerHari from 'pages/Jadwal.JamPerHari';
 export const Jadwal = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
@@ -23,9 +24,13 @@ export const Jadwal = () => {
       "path": `/kelas`,
       exact: true
     },
-  
-  
-   
+    {
+      "title": "Jam per Hari",
+      "text": "Jam",
+      "component": JamPerHari,
+      "path": `/jam-per-hari`,
+      exact: true
+    },
   ]), []);
 
   return (
