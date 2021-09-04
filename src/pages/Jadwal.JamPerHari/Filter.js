@@ -37,7 +37,7 @@ const Filter = () => {
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
-          text="Kelas Baru"
+          text="Segment Baru"
           onClick={() => setDialogOpen("add")}
         />
       </Flex>

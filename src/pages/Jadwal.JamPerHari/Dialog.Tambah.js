@@ -1,9 +1,8 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup } from "@blueprintjs/core";
-import { DateInput, TimePicker } from "@blueprintjs/datetime";
-import { Select, useClient } from "components";
+import { TimePicker } from "@blueprintjs/datetime";
+import { useClient } from "components";
 import { Formik } from "formik";
 import moment from "moment";
-import { useCallback, useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
@@ -22,7 +21,7 @@ const DialogKelasBaru = ({
     <Dialog
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Kelas Baru"
+      title="Tambah Segment Jam baru"
     >
       <Formik
         validationSchema={Schema}
@@ -34,8 +33,8 @@ const DialogKelasBaru = ({
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           const data = {
             "order": values["order"],
-            "start": moment(values["start"]).format("HH:mm"),
-            "end": moment(values["end"]).format("HH:mm"),
+            "start": moment(values["start"]).format("HH:mm:ss"),
+            "end": moment(values["end"]).format("HH:mm:ss"),
           }
           console.log(data);
           try {
@@ -76,10 +75,10 @@ const DialogKelasBaru = ({
                 intent={"danger"}
               >
                 <TimePicker
-                  fill={true}
                   id="f-start"
                   name="start"
                   value={values["start"]}
+                  precision="second"
                   inputProps={{
                     intent: errors["start"] ? "danger" : "none"
                   }}
@@ -96,10 +95,10 @@ const DialogKelasBaru = ({
                 intent={"danger"}
               >
                 <TimePicker
-                  fill={true}
                   id="f-end"
                   name="end"
                   value={values["end"]}
+                  precision="second"
                   inputProps={{
                     intent: errors["end"] ? "danger" : "none"
                   }}

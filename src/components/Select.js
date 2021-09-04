@@ -89,7 +89,8 @@ export const Select = ({
       }}
       popoverProps={{
         onOpening: onOpening,
-        minimal: true
+        minimal: true,
+        fill: fill
       }}
       tagInputProps={{
         onRemove: removeItem

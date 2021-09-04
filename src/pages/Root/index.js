@@ -34,7 +34,7 @@ const navigation = [
     "title": "Nama Servis",
     "text": "Jadwal dan Kelas",
     "component": Jadwal,
-    "path": "/jadwal/",
+    "path": "/jadwal-kelas/",
     "icon": "blank"
   },
   {

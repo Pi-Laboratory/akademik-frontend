@@ -5,11 +5,11 @@ import List from "./List";
 import { Pagination } from "components/Pagination";
 
 const Layout = () => {
-  const { paging, setPaging, items, status, selectedItem, dispatchSelectedItem } = useList();
+  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
-        <Filter selectedItem={selectedItem} />
+        <Filter />
       </Box>
       <ListGroup sx={{
         width: "100%",
