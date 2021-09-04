@@ -1,11 +1,14 @@
-import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select } from "components";
+import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Box, Divider, Flex, Select, useList } from "components";
 import { useState } from "react";
-import DialogJadwalBaru from "./Dialog.JadwalBaru";
-import DialogChart from "./Dialog.Chart";
+import DialogTambah from "./Dialog.Tambah";
+import DialogHapus from "./Dialog.Hapus";
+import { useHistory } from "react-router";
 
-const Filter = ({ selectedItem }) => {
+const Filter = () => {
+  const { selectedItem } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
   return (
     <Flex>
       <Box>
@@ -31,40 +34,27 @@ const Filter = ({ selectedItem }) => {
             onClick={() => setDialogOpen("delete")}
           />
         }
+        <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
-          text="Chart"
-          onClick={() => setDialogOpen("chart")}
-        />
-        <Divider vertical={true} sx={{ my: 2 }} />
-        <Button
-          intent="primary"
-          text="Jadwal Baru"
+          text="Segment Baru"
           onClick={() => setDialogOpen("add")}
         />
-
       </Flex>
-      <Alert
-        isOpen={dialogOpen === "delete"}
-        icon="trash"
-        intent="danger"
-        minimal={true}
-        cancelButtonText="Tidak"
-        confirmButtonText="Hapus"
-        onClose={() => setDialogOpen(null)}
-      >
-        <p>
-          <span>Anda yakin ingin menghapus {selectedItem.length} data jadwal ini?</span>
-          <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
-        </p>
-      </Alert>
-      <DialogJadwalBaru
+      <DialogTambah
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
       />
-      <DialogChart
-        isOpen={dialogOpen === "chart"}
+      <DialogHapus
+        isOpen={dialogOpen === "delete"}
+        data={selectedItem}
         onClose={() => { setDialogOpen(null) }}
+        onSubmitted={() => {
+          history.go(0);
+        }}
       />
     </Flex>
   )

@@ -1,11 +1,10 @@
 import { useNav } from 'pages/Root/hoc'
-import FourOFour from "pages/404";
 import React from 'react'
-import { Switch, Route, useRouteMatch, Redirect } from 'react-router'
+import { Switch, Route } from 'react-router'
 
 const Router = () => {
-  const { path } = useRouteMatch();
-  const navigation = useNav(path);
+  const navigation = useNav();
+
   return (
     <Switch>
       {/* <Route exact path={'/akademik-mahasiswa'}>
@@ -19,13 +18,6 @@ const Router = () => {
           component={item.component}
         />
       ))}
-      {navigation.items.length > 0 &&
-        <Route
-          exact={true}
-          path={path}
-          render={() => <Redirect to={navigation.items[0].path} />}
-        />}
-      <Route component={FourOFour} />
     </Switch>
   )
 }
