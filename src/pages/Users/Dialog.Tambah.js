@@ -39,12 +39,13 @@ const DialogTambah = ({
     setLoading(loading => ({ ...loading, lecture: true }));
     const res = await client["lecturers"].find({
       query: {
-        $select: ["id", "name"]
+        $select: ["id", "name", "nip"]
       }
     });
-    setLecturers(res.data.map(({ id, name }) => ({
+    setLecturers(res.data.map(({ id, name, nip }) => ({
       label: name,
-      value: id
+      value: id,
+      info: nip
     })));
     setLoading(loading => ({ ...loading, lecture: false }));
   }, [client]);
@@ -53,12 +54,13 @@ const DialogTambah = ({
     setLoading(loading => ({ ...loading, lecture: true }));
     const res = await client["students"].find({
       query: {
-        $select: ["id", "name"]
+        $select: ["id", "name", "nim"]
       }
     });
-    setStudents(res.data.map(({ id, name }) => ({
+    setStudents(res.data.map(({ id, name, nim }) => ({
       label: name,
-      value: id
+      value: id,
+      info: nim
     })));
     setLoading(loading => ({ ...loading, lecture: false }));
   }, [client]);
@@ -92,9 +94,7 @@ const DialogTambah = ({
           if (data.type === "lecture") data["lecture_id"] = values["lecture_id"];
           if (data.type === "student") data["student_id"] = values["student_id"];
           try {
-            console.log(data);
             const res = await client["users"].create(data);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {
@@ -106,7 +106,70 @@ const DialogTambah = ({
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange, setFieldValue }) =>
           <form onSubmit={handleSubmit}>
-            <div className={Classes.DIALOG_BODY}>
+            <div className={Classes.DIALOG_BODY}><FormGroup
+              label="Type"
+              labelFor="f-type"
+              helperText={errors["type"]}
+              intent={"danger"}
+            >
+              <RadioGroup
+                inline={true}
+                id="f-type"
+                name="type"
+                selectedValue={values["type"]}
+                onChange={(e) => {
+                  console.log(e.target.value);
+                  handleChange(e);
+                }}
+                intent={errors["type"] ? "danger" : "none"}
+              >
+                <Radio label="Admin" value={"admin"} />
+                <Radio label="Lecture" value={"lecture"} />
+                <Radio label="Student" value={"student"} />
+              </RadioGroup>
+            </FormGroup>
+              {values["type"] === "lecture" &&
+                <FormGroup
+                  label="Identitas Pengajar"
+                  labelFor="f-lecture_id"
+                  helperText={errors["lecture_id"]}
+                  intent={"danger"}
+                >
+                  <Select
+                    loading={loading["lecture"]}
+                    id="f-lecture_id"
+                    name="lecture_id"
+                    value={values["lecture_id"]}
+                    onOpening={async () => { await fetchLecturers(); }}
+                    onChange={async ({ value, info }) => {
+                      await setFieldValue("username", info);
+                      await setFieldValue("lecture_id", value);
+                    }}
+                    intent={errors["lecture_id"] ? "danger" : "none"}
+                    options={lecturers}
+                  />
+                </FormGroup>}
+              {values["type"] === "student" &&
+                <FormGroup
+                  label="Identitas Mahasiswa"
+                  labelFor="f-student_id"
+                  helperText={errors["student_id"]}
+                  intent={"danger"}
+                >
+                  <Select
+                    loading={loading["student"]}
+                    id="f-student_id"
+                    name="student_id"
+                    value={values["student_id"]}
+                    onOpening={async () => { await fetchStudents(); }}
+                    onChange={async ({ value, info }) => {
+                      await setFieldValue("username", info);
+                      await setFieldValue("student_id", value);
+                    }}
+                    intent={errors["student_id"] ? "danger" : "none"}
+                    options={students}
+                  />
+                </FormGroup>}
               <h6 className={Classes.HEADING}>Informasi Pengguna</h6>
               <FormGroup
                 label="Username"
@@ -180,68 +243,6 @@ const DialogTambah = ({
                   intent={errors["show_password"] ? "danger" : "none"}
                 />
               </FormGroup>
-              <FormGroup
-                label="Type"
-                labelFor="f-type"
-                helperText={errors["type"]}
-                intent={"danger"}
-              >
-                <RadioGroup
-                  inline={true}
-                  id="f-type"
-                  name="type"
-                  selectedValue={values["type"]}
-                  onChange={(e) => {
-                    console.log(e.target.value);
-                    handleChange(e);
-                  }}
-                  intent={errors["type"] ? "danger" : "none"}
-                >
-                  <Radio label="Admin" value={"admin"} />
-                  <Radio label="Lecture" value={"lecture"} />
-                  <Radio label="Student" value={"student"} />
-                </RadioGroup>
-              </FormGroup>
-              {values["type"] === "lecture" &&
-                <FormGroup
-                  label="Identitas Pengajar"
-                  labelFor="f-lecture_id"
-                  helperText={errors["lecture_id"]}
-                  intent={"danger"}
-                >
-                  <Select
-                    loading={loading["lecture"]}
-                    id="f-lecture_id"
-                    name="lecture_id"
-                    value={values["lecture_id"]}
-                    onOpening={async () => { await fetchLecturers(); }}
-                    onChange={async ({ value, label }) => {
-                      await setFieldValue("lecture_id", value);
-                    }}
-                    intent={errors["lecture_id"] ? "danger" : "none"}
-                    options={lecturers}
-                  />
-                </FormGroup>}
-              {values["type"] === "student" &&
-                <FormGroup
-                  label="Identitas Mahasiswa"
-                  labelFor="f-student_id"
-                  helperText={errors["student_id"]}
-                  intent={"danger"}
-                >
-                  <Select
-                    loading={loading["student"]}
-                    id="f-student_id"
-                    name="student_id"
-                    value={values["student_id"]}
-                    onOpening={async () => { await fetchStudents(); }}
-                    onChange={async ({ value, label }) => {
-                      await setFieldValue("student_id", value);
-                    }}
-                    intent={errors["student_id"] ? "danger" : "none"}
-                    options={students}
-                  />
-                </FormGroup>}
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
