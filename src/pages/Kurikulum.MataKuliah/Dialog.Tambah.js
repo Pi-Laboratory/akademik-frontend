@@ -23,6 +23,7 @@ const Schema = Yup.object().shape({
   "syllabus_file": Yup.string(),
   "major_id": Yup.number().required(),
   "study_program_id": Yup.number().required(),
+  "curriculum_id": Yup.number().required(),
 })
 
 const DialogMataKuliahBaru = ({
@@ -32,12 +33,28 @@ const DialogMataKuliahBaru = ({
 }) => {
   const client = useClient();
   const [semester, setSemester] = useState([]);
+  const [curriculums, setCurriculums] = useState([]);
   const [studyPrograms, setStudyPrograms] = useState([]);
   const [majors, setMajors] = useState([]);
   const [loading, setLoading] = useState({
+    curriculums: false,
     studyPrograms: false,
     majors: false
   })
+
+  const fetchCurriculums = useCallback(async () => {
+    setLoading(loading => ({ ...loading, curriculums: true }));
+    const res = await client["curriculums"].find({
+      query: {
+        $select: ["id", "name"]
+      }
+    });
+    setCurriculums(res.data.map(({ id, name }) => ({
+      label: name,
+      value: id
+    })));
+    setLoading(loading => ({ ...loading, curriculums: false }));
+  }, [client]);
 
   const fetchMajors = useCallback(async () => {
     setLoading(loading => ({ ...loading, majors: true }));
@@ -112,6 +129,7 @@ const DialogMataKuliahBaru = ({
           "syllabus_file": "",
           "major_id": "",
           "study_program_id": "",
+          "curriculum_id": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -256,6 +274,26 @@ const DialogMataKuliahBaru = ({
                     setFieldValue("semester", e.value);
                   }}
                   options={semester}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Kurikulum"
+                labelFor="f-curriculum_id"
+                helperText={errors["curriculum_id"]}
+                intent={"danger"}
+              >
+                <Select
+                  id="f-curriculum_id"
+                  name="curriculum_id"
+                  value={values["curriculum_id"]}
+                  intent={errors["curriculum_id"] ? "danger" : "none"}
+                  onOpening={async () => {
+                    await fetchCurriculums();
+                  }}
+                  onChange={(e) => {
+                    setFieldValue("curriculum_id", e.value);
+                  }}
+                  options={curriculums}
                 />
               </FormGroup>
 
