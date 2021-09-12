@@ -53,21 +53,6 @@ const Sidemenu = () => {
             })
           }
         </Menu>
-        <Divider />
-        <Box sx={{ color: "gray.5" }}>
-          <Box sx={{ px: 2, mb: 3 }}>
-            <Box as={H6}>NIM</Box>
-            <Box>16021103032</Box>
-          </Box>
-          <Box sx={{ px: 2, mb: 3 }}>
-            <Box as={H6}>Email</Box>
-            <Box>ilomon10@gmail.com</Box>
-          </Box>
-          <Box sx={{ px: 2, mb: 3 }}>
-            <Box as={H6}>Telp</Box>
-            <Box>+62 852-9948-2331</Box>
-          </Box>
-        </Box>
       </Box>
     </Box>
   )
