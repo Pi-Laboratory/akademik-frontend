@@ -1,5 +1,5 @@
 import {
-  BrowserRouter,
+  HashRouter,
   Switch,
   Route
 } from "react-router-dom";
@@ -11,14 +11,14 @@ import { PrivateRoute } from "components/PrivateRoute";
 
 const Router = () => {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/registrasi" exact component={Registrasi} />
         <PrivateRoute path="/" component={Root} />
         <Route path="/" component={FourOFour} />
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
