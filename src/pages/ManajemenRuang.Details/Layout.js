@@ -43,6 +43,12 @@ const Layout = () => {
             </td>
             <td>{item["type"]}</td>
           </tr>
+          <tr>
+            <td>
+              <Box sx={{ color: "gray.4" }}>Kapasitas</Box>
+            </td>
+            <td>{item["capacity"]}</td>
+          </tr>
         </tbody>
       </HTMLTable>
     </Box>

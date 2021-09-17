@@ -6,7 +6,7 @@ import io from "socket.io-client";
 
 
 const host = new URL(window.location.origin);
-host.protocol = process.env["REACT_APP_SERVER_PROTOCOL"];
+host.protocol = process.env["REACT_APP_SERVER_PROTOCOL"] || "http";
 host.hostname = process.env["REACT_APP_SERVER_HOST"];
 host.port = process.env["REACT_APP_SERVER_PORT"];
 

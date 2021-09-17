@@ -180,7 +180,7 @@ const List = () => {
                 }} />
               </Box>
 
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
+              <Box sx={{ width: "15%", flexGrow: 1, mr: 3 }}>
                 <Box>
                   {value["name"]}
                 </Box>
