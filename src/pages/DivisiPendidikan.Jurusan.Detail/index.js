@@ -1,9 +1,9 @@
 import Layout from "./Layout";
 
-const ListJurusan = () => {
+const JurusanDetail = () => {
   return (
     <Layout />
   )
 }
 
-export default ListJurusan;
+export default JurusanDetail;
