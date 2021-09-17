@@ -18,7 +18,13 @@ export const Router = () => {
           />
         ))
       }
-      <Route path="/" component={FourOFour} />
+      {/* {navigation.items.length > 0 &&
+        <Route
+          exact={true}
+          path={path}
+          render={() => <Redirect to={navigation.items[0].path} />}
+        />} */}
+      <Route component={FourOFour} />
     </Switch>
   )
 }

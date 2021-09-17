@@ -1,7 +1,6 @@
-import { Checkbox, Classes, HTMLTable, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, useClient } from "components";
+import { Classes, H3, HTMLTable } from "@blueprintjs/core";
+import { AspectRatio, Box, Divider, Flex, useClient } from "components";
 import { useEffect, useState } from "react";
-import { Pagination } from "components/Pagination";
 import { useParams } from "react-router";
 
 const Layout = () => {
@@ -12,7 +11,7 @@ const Layout = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await client["majors"].get(params.id);
+        const res = await client["rooms"].get(params.id);
         setItem(res);
       } catch (err) {
         console.error(err);
@@ -28,9 +27,21 @@ const Layout = () => {
         <tbody>
           <tr>
             <td>
+              <Box sx={{ color: "gray.4" }}>Kode</Box>
+            </td>
+            <td>{item["code"]}</td>
+          </tr>
+          <tr>
+            <td>
               <Box sx={{ color: "gray.4" }}>Nama</Box>
             </td>
             <td>{item["name"]}</td>
+          </tr>
+          <tr>
+            <td>
+              <Box sx={{ color: "gray.4" }}>Tipe</Box>
+            </td>
+            <td>{item["type"]}</td>
           </tr>
         </tbody>
       </HTMLTable>
