@@ -18,7 +18,7 @@ export const Router = () => {
           />
         ))
       }
-      <Route path="/" component={FourOFour} />
+      <Route component={FourOFour} />
     </Switch>
   )
 }

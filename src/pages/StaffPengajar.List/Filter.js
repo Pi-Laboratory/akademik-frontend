@@ -1,10 +1,11 @@
 import { Alert, Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select } from "components";
+import { Box, Divider, Flex, Select, useList } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import DialogTambahBaru from "./Dialog.Tambah";
 
-const Filter = ({ selectedItem }) => {
+const Filter = () => {
+  const { selectedItem } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
   return (
@@ -39,7 +40,7 @@ const Filter = ({ selectedItem }) => {
           text="Tambah Baru"
           onClick={() => setDialogOpen("add")}
         />
-       
+
       </Flex>
       <Alert
         isOpen={dialogOpen === "delete"}
@@ -55,7 +56,7 @@ const Filter = ({ selectedItem }) => {
           <Box as="span" sx={{ fontWeight: "bold" }}>Note:</Box> Data yang di hapus tidak dapat di kembalikan lagi.
         </p>
       </Alert>
-     
+
       <DialogTambahBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}

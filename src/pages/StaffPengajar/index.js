@@ -8,15 +8,16 @@ import StaffPengajarDetail from "pages/StaffPengajar.Details";
 const navigation = [
   {
     "title": "Staff dan Pengajar",
-    "component": StaffPengajarDetail,
-    "path": "/staff-dan-pengajar/:nip",
-    "icon": "blank"
-  },
-  {
-    "title": "Staff dan Pengajar",
     "component": StaffPengajarList,
     "path": "/staff-dan-pengajar",
-    "icon": "blank"
+    "icon": "blank",
+    "exact": true,
+  },
+  {
+    "component": StaffPengajarDetail,
+    "path": "/staff-dan-pengajar/:id",
+    "icon": "blank",
+    "exact": true,
   },
 ]
 

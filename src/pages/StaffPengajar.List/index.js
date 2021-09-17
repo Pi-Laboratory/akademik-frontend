@@ -1,8 +1,11 @@
+import ListProvider from "components/list";
 import Layout from "./Layout";
 
 const StaffPengajarList = () => {
   return (
-    <Layout />
+    <ListProvider>
+      <Layout />
+    </ListProvider>
   )
 }
 

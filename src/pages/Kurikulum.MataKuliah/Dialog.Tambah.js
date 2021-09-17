@@ -14,7 +14,7 @@ const Schema = Yup.object().shape({
   "total_hours": Yup.number().required(),
   "type": Yup.string().required(),
   "minimum_pass_score": Yup.number().required(),
-  "semester": Yup.string().required(),
+  "semester": Yup.number().required(),
   "subject_trait": Yup.string().required(),
   "study_plan": Yup.string().required(),
   "study_matter": Yup.string().required(),
@@ -32,7 +32,6 @@ const DialogMataKuliahBaru = ({
   onSubmitted = () => { }
 }) => {
   const client = useClient();
-  const [semester, setSemester] = useState([]);
   const [curriculums, setCurriculums] = useState([]);
   const [studyPrograms, setStudyPrograms] = useState([]);
   const [majors, setMajors] = useState([]);
@@ -85,24 +84,6 @@ const DialogMataKuliahBaru = ({
     setLoading(loading => ({ ...loading, studyPrograms: false }));
   }, [client]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const resSemester = await client["semesters"].find({
-          query: {
-            $select: ["id", "year", "type"]
-          }
-        });
-        setSemester(resSemester.data.map(({ id, year, type }) => ({
-          label: `${year} - ${type}`,
-          value: id
-        })));
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetch();
-  }, [client]);
   return (
     <Dialog
       isOpen={isOpen}
@@ -273,7 +254,14 @@ const DialogMataKuliahBaru = ({
                   onChange={(e) => {
                     setFieldValue("semester", e.value);
                   }}
-                  options={semester}
+                  options={
+                    Array(8).fill(0).map((_, i) => {
+                      const smstr = i + 1;
+                      return (
+                        { label: `${smstr}`, value: `${smstr}`, info: smstr % 2 ? "Gasal" : "Genap" }
+                      );
+                    })
+                  }
                 />
               </FormGroup>
               <FormGroup

@@ -47,7 +47,6 @@ const List = () => {
         </Box>
       }
       {items && items.map((value) => {
-        console.log(selectedItem.indexOf(value["id"]) !== -1);
         return (
           <ListGroup.Item key={value["id"]}>
             <Flex>
