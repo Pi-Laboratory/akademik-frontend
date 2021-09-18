@@ -8,7 +8,6 @@ import { Pagination } from "components/Pagination";
 function selectedItemReducer(state, action) {
   switch (action.type) {
     case "toggle":
-      console.log(state);
       if (action.data.value) {
         return selectedItemReducer(state, {
           type: "add",
@@ -63,7 +62,6 @@ const List = () => {
             $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"]
           }
         });
-        console.log(res);
         setList(res.data);
         setPaging({
           total: res.total,
@@ -138,7 +136,6 @@ const List = () => {
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {

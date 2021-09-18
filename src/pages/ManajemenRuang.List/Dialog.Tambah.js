@@ -31,10 +31,8 @@ const DialogJadwalBaru = ({
           "type": "Ruangan"
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values);
           try {
             const res = await client["rooms"].create(values);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

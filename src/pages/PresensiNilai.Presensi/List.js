@@ -7,7 +7,6 @@ import { useReducer } from "react";
 function selectedItemReducer(state, action) {
   switch (action.type) {
     case "toggle":
-      console.log(state);
       if (action.data.value) {
         return selectedItemReducer(state, {
           type: "add",
@@ -98,7 +97,6 @@ const List = () => {
             <Flex>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox onChange={(e) => {
-                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {

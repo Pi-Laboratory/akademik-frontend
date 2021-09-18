@@ -95,7 +95,6 @@ function DialogTambahStepThree() {
               name="mother_status"
               selectedValue={values["mother_status"]}
               onChange={(e) => {
-                console.log(e.target.value);
                 handleChange(e);
               }}
               intent={errors["mother_status"] ? "danger" : "none"}

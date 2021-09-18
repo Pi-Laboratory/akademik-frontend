@@ -54,7 +54,6 @@ const List = () => {
                 <Checkbox
                   checked={selectedItem.indexOf(value["id"]) !== -1}
                   onChange={(e) => {
-                    console.log(e.target.checked);
                     dispatchSelectedItem({
                       type: "toggle",
                       data: {

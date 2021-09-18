@@ -33,7 +33,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client]);
+  }, [client, paging.skip, setItems, setPaging]);
 
   return (
     <>

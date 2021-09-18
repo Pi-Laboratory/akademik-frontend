@@ -118,7 +118,6 @@ const DialogTambah = ({
                 name="type"
                 selectedValue={values["type"]}
                 onChange={(e) => {
-                  console.log(e.target.value);
                   handleChange(e);
                 }}
                 intent={errors["type"] ? "danger" : "none"}

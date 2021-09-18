@@ -108,7 +108,6 @@ const DialogTambah = ({
         }
         try {
           const res = await client["students"].create(values);
-          console.log(res);
           onClose();
           onSubmitted(res);
         } catch (err) {

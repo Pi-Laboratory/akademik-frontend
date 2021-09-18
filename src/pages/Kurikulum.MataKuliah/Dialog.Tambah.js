@@ -1,7 +1,7 @@
 import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
 import { Divider, Select, useClient } from "components";
 import { Formik } from "formik";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
@@ -231,7 +231,6 @@ const DialogMataKuliahBaru = ({
                   value={values["study_program_id"]}
                   intent={errors["study_program_id"] ? "danger" : "none"}
                   onOpening={async () => {
-                    console.log(values["major_id"]);
                     await fetchStudyPrograms(values["major_id"])
                   }}
                   onChange={(e) => {
@@ -461,7 +460,6 @@ const DialogMataKuliahBaru = ({
                   }}
                   value={values["syllabus_file"]}
                   onChange={(e) => {
-                    console.log(e);
                   }}
                   intent={errors["syllabus_file"] ? "danger" : "none"}
                   options={[

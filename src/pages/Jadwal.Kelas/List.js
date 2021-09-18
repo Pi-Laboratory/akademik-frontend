@@ -22,7 +22,6 @@ const List = () => {
             }]
           }
         });
-        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -59,7 +58,6 @@ const List = () => {
               <Checkbox
                 checked={selectedItem.indexOf(item["id"]) !== -1}
                 onChange={(e) => {
-                  console.log(e.target.checked);
                   dispatchSelectedItem({
                     type: "toggle",
                     data: {

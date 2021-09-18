@@ -1,9 +1,7 @@
-import { Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
-import Filter from "./Filter";
+import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, useClient, useList } from "components"
 import { Link } from "react-router-dom";
-import { useEffect, useReducer, useState } from "react";
-import { Pagination } from "components/Pagination";
+import { useEffect } from "react";
 
 const List = () => {
   const client = useClient();
@@ -18,7 +16,6 @@ const List = () => {
             $select: ["id", "name", "front_degree", "back_degree", "nip", "nidn", "id_number"]
           }
         });
-        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -31,7 +28,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client]);
+  }, [client, setPaging, setItems]);
   return (
     <>
       {items === null &&
@@ -47,28 +44,31 @@ const List = () => {
           />
         </Box>
       }
-      {items && items.map((value) => (
-        <ListGroup.Item key={value["id"]}>
+      {items && items.map((item) => (
+        <ListGroup.Item key={item["id"]}>
           <Flex>
             <Box sx={{ width: 24, px: 0, flexShrink: 0 }}>
-              <Checkbox onChange={(e) => {
-                dispatchSelectedItem({
-                  type: "toggle",
-                  data: {
-                    name: value["id"],
-                    value: e.target.checked
-                  }
-                })
-              }} />
+              <Checkbox
+                checked={selectedItem.indexOf(item["id"]) !== -1}
+                onChange={(e) => {
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      name: item["id"],
+                      value: e.target.checked
+                    }
+                  })
+                }}
+              />
             </Box>
             <Box sx={{ flexGrow: 1, px: 2, mr: 3 }}>
               <Box>
-                <Link to={`/staff-dan-pengajar/${value["id"]}`}>
-                  {`${value["front_degree"]} ${value["name"]} ${value["back_degree"]}`}
+                <Link to={`/staff-dan-pengajar/${item["id"]}`}>
+                  {`${item["front_degree"]} ${item["name"]} ${item["back_degree"]}`}
                 </Link>
               </Box>
               <Box sx={{ color: "gray.5" }}>
-                {value["nip"]}
+                {item["nip"]}
               </Box>
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
@@ -76,7 +76,7 @@ const List = () => {
                 NIDN
               </Box>
               <Box sx={{ color: "gray.5" }}>
-                {value["id_number"]}
+                {item["id_number"]}
               </Box>
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
@@ -84,7 +84,7 @@ const List = () => {
                 NIK
               </Box>
               <Box sx={{ color: "gray.5" }}>
-                {value["id_number"]}
+                {item["id_number"]}
               </Box>
             </Box>
           </Flex>

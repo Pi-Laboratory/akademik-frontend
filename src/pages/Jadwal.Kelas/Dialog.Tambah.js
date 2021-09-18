@@ -66,10 +66,8 @@ const DialogKelasBaru = ({
           "study_program_id": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values);
           try {
             const res = await client["classes"].create(values);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {
@@ -132,7 +130,6 @@ const DialogKelasBaru = ({
                   value={values["study_program_id"]}
                   intent={errors["study_program_id"] ? "danger" : "none"}
                   onOpening={async () => {
-                    console.log(values["major_id"]);
                     await fetchStudyPrograms(values["major_id"])
                   }}
                   onChange={(e) => {

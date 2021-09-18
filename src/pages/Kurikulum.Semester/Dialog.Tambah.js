@@ -39,7 +39,6 @@ const DialogDosenBaru = ({
           "end_input_period": moment().endOf("month").toDate(),
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values);
           try {
             const res = await client["semesters"].create(values);
             onClose();

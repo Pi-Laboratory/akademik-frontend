@@ -96,7 +96,6 @@ function DialogTambahStepFour() {
               name="trustee_status"
               selectedValue={values["trustee_status"]}
               onChange={(e) => {
-                console.log(e.target.value);
                 handleChange(e);
               }}
               intent={errors["trustee_status"] ? "danger" : "none"}

@@ -23,10 +23,8 @@ const DialogHapusMataKuliah = ({ isOpen, onClose = () => { }, onSubmitted = () =
           "last-word": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values, data);
           try {
             const res = await client["subjects"].remove(data);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

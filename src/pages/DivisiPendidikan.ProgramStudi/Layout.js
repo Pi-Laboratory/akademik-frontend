@@ -43,7 +43,6 @@ const Layout = () => {
                   checked={status.checked}
                   indeterminate={status.indeterminate}
                   onChange={(e) => {
-                    console.log(e.target.checked);
                     dispatchSelectedItem({
                       type: "all",
                       data: e.target.checked

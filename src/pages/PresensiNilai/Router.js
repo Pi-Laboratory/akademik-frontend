@@ -5,7 +5,6 @@ import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom"
 export const Router = () => {
   const { path } = useRouteMatch();
   const navigation = useNav(path);
-  console.log(navigation.items);
   return (
     <Switch>
       {

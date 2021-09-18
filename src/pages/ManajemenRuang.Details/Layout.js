@@ -1,5 +1,5 @@
-import { Classes, H3, HTMLTable } from "@blueprintjs/core";
-import { AspectRatio, Box, Divider, Flex, useClient } from "components";
+import { Classes, HTMLTable } from "@blueprintjs/core";
+import { Box, useClient } from "components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 

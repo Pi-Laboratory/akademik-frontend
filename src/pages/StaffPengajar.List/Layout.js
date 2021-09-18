@@ -21,8 +21,13 @@ const Layout = () => {
           <Flex sx={{ alignItems: "center" }}>
             <Box sx={{ width: 40, flexShrink: 0, }}>
               <Checkbox
+                checked={status.checked}
+                indeterminate={status.indeterminate}
                 onChange={(e) => {
-                  console.log(e);
+                  dispatchSelectedItem({
+                    type: "all",
+                    data: e.target.checked
+                  })
                 }}
               />
             </Box>

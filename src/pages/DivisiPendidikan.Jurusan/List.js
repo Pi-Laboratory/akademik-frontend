@@ -1,4 +1,4 @@
-import { AnchorButton, Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, useClient, useList } from "components";
 import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -30,7 +30,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip]);
+  }, [client, paging.skip, setItems, setPaging]);
 
   return (
     <>

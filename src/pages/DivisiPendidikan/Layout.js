@@ -1,4 +1,4 @@
-import { H2, Tabs, Tab, Classes } from '@blueprintjs/core'
+import { H2, Classes } from '@blueprintjs/core'
 import { Box, Divider, Flex } from 'components'
 import { useNav } from 'pages/Root/hoc'
 import React from 'react'

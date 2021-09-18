@@ -47,7 +47,6 @@ const DialogTambahBaru = ({
           try {
             const res = await client["study-programs"].create(values);
             onClose();
-            console.log(res);
             onSubmitted(res);
           } catch (err) {
             console.error(err);

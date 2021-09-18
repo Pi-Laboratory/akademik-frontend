@@ -57,7 +57,6 @@ const DialogKurikulumBaru = ({
             }]
           }
         });
-        console.log(res);
         setStudyPrograms(res.data
           .map(({ name, id, major }) => ({
             label: name,
@@ -95,7 +94,6 @@ const DialogKurikulumBaru = ({
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
             const res = await client["curriculums"].create(values);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

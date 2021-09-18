@@ -15,7 +15,6 @@ const List = () => {
             $select: ["id", "name", "nim", "student_status", "generation"]
           }
         });
-        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,

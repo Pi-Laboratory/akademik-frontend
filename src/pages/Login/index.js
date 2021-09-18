@@ -30,7 +30,6 @@ const Login = () => {
       console.error(err);
     }
     setIsSubmitting(false);
-    console.log(values);
   }, [client, history]);
 
   return (

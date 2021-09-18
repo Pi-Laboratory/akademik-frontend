@@ -36,10 +36,8 @@ const DialogKelasBaru = ({
             "start": moment(values["start"]).format("HH:mm:ss"),
             "end": moment(values["end"]).format("HH:mm:ss"),
           }
-          console.log(data);
           try {
             const res = await client["hours"].create(data);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

@@ -65,10 +65,8 @@ const DialogTambahBaru = ({
           "status": "true",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values);
           try {
             const res = await client["lecturers"].create(values);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

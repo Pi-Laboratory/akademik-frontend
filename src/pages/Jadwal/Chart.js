@@ -58,7 +58,6 @@ const noLine = () => ({
 });
 
 const CustomizedDot = (props) => {
-  console.log(props);
   const { cx, cy, payload: task } = props;
   // const width = task.endDate.valueOf() - startTimestamp;
   const width = 80;

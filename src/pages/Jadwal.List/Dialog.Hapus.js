@@ -23,10 +23,8 @@ const DialogHapus = ({ isOpen, onClose = () => { }, onSubmitted = () => { }, dat
           "last-word": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          console.log(values, data);
           try {
             const res = await client["schedules"].remove(data);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

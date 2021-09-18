@@ -85,7 +85,6 @@ const DialogTambah = ({
         $select: ["id", "name", "nip", "front_degree", "back_degree"]
       }
     });
-    console.log(res);
     setLecturers(res.data.map(({ id, nip, name, front_degree, back_degree }) => ({
       label: `${front_degree}${name}${back_degree}`,
       value: id,
