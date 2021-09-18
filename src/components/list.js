@@ -2,9 +2,9 @@ import { createContext, useCallback, useContext, useMemo, useReducer, useState }
 
 const ListContext = createContext();
 
-const ListProvider = ({ children }) => {
+const ListProvider = ({ children, ...props }) => {
   const [items, setItems] = useState(null);
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState(props.filter || null);
   const [paging, setPaging] = useState({
     total: null,
     limit: null,

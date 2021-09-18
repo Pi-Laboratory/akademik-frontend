@@ -13,10 +13,12 @@ import { useRouteMatch } from "react-router";
 import Helmet from "react-helmet";
 import Users from "pages/Users";
 import StaffPengajar from "pages/StaffPengajar";
+import { MataKuliah } from "pages/MataKuliah";
+import { Semester } from "pages/Semester";
 
 const navigation = [
   {
-    "title": "Nama Servis",
+    "title": "Dashboard",
     "text": "Dashboard",
     "component": Dashboard,
     "path": "/",
@@ -24,14 +26,28 @@ const navigation = [
     "exact": true
   },
   {
-    "title": "Nama Servis",
+    "title": "Kurikulum",
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum/",
     "icon": "book"
   },
   {
-    "title": "Nama Servis",
+    "title": "Mata Kuliah",
+    "text": "Mata Kuliah",
+    "component": MataKuliah,
+    "path": "/mata-kuliah/",
+    "icon": "blank"
+  },
+  {
+    "title": "Semester",
+    "text": "Semester",
+    "component": Semester,
+    "path": "/semester/",
+    "icon": "blank"
+  },
+  {
+    "title": "Jadwal dan Kelas",
     "text": "Jadwal dan Kelas",
     "component": Jadwal,
     "path": "/jadwal-kelas/",

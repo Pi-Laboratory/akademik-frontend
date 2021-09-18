@@ -1,3 +1,4 @@
+import FourOFour from 'pages/404';
 import { useNav } from 'pages/Root/hoc'
 import React from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router'
@@ -18,6 +19,7 @@ const Router = () => {
           component={item.component}
         />
       ))}
+      <Route component={FourOFour} />
     </Switch>
   )
 }

@@ -3,10 +3,10 @@ import React, { useMemo } from 'react'
 import Helmet from "react-helmet";
 import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
-import List from 'pages/Kurikulum.List'
-import Detail from 'pages/Kurikulum.Details';
+import List from 'pages/Semester.List'
+import Detail from 'pages/Semester.Details';
 
-export const Kurikulum = () => {
+export const Semester = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {
@@ -26,7 +26,7 @@ export const Kurikulum = () => {
   return (
     <>
       <Helmet>
-        <title>Dashboard - Kurikulum</title>
+        <title>Dashboard - Semester</title>
       </Helmet>
       <Navigation base={path} navigation={navigation}>
         <Layout />

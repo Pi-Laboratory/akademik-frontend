@@ -25,7 +25,7 @@ const DialogDosenBaru = ({
       enforceFocus={false}
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Tambah Dosen Baru"
+      title="Generate Semester"
     >
       <Formik
         validationSchema={Schema}

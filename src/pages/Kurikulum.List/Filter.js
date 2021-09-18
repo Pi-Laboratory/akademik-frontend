@@ -1,15 +1,24 @@
 import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select } from "components";
+import { Box, Divider, Flex, Select, useList } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import DialogHapusSemester from "./Dialog.Hapus";
-import DialogSemesterBaru from "./Dialog.Tambah";
+import DialogHapusKurikulum from "./Dialog.Hapus";
+import DialogKurikulumBaru from "./Dialog.Tambah";
 
-const Filter = ({ selectedItem }) => {
+const Filter = () => {
+  const { selectedItem } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
   return (
-    <Flex>
+    <Flex
+      sx={{
+        mb: 3,
+        mr: -3,
+        "> div": {
+          mr: 3
+        }
+      }}
+    >
       <Box>
         <ControlGroup>
           <Select
@@ -36,18 +45,18 @@ const Filter = ({ selectedItem }) => {
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           intent="primary"
-          text="Semester Baru"
+          text="Kurikulum Baru"
           onClick={() => setDialogOpen("add")}
         />
       </Flex>
-      <DialogSemesterBaru
+      <DialogKurikulumBaru
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
         onSubmitted={() => {
           history.go(0);
         }}
       />
-      <DialogHapusSemester
+      <DialogHapusKurikulum
         data={selectedItem}
         isOpen={dialogOpen === "delete"}
         onClose={() => { setDialogOpen(null) }}

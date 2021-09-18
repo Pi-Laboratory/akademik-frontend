@@ -1,9 +1,9 @@
 import Layout from "./Layout";
 
-const Semester = () => {
+const Detail = () => {
   return (
     <Layout />
   )
 }
 
-export default Semester;
+export default Detail;
