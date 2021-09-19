@@ -52,6 +52,7 @@ export const Layout = () => {
                   }}
                 />
               </Box>
+              <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ flexShrink: 0 }}>
                 <Select
                   minimal={true}
