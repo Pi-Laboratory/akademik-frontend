@@ -1,11 +1,11 @@
-// import InjectProvider from "./hoc";
+import InjectProvider from "components/inject";
 import Layout from "./Layout";
 
 const Detail = () => {
   return (
-    // <InjectProvider state={null}>
+    <InjectProvider state={null}>
       <Layout />
-    // </InjectProvider>
+    </InjectProvider>
   )
 }
 

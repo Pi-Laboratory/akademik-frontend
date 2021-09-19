@@ -1,10 +1,10 @@
 import { Classes, HTMLTable } from "@blueprintjs/core";
 import { Box, useClient } from "components";
 import ListProvider from "components/list";
+import { useInject } from "components/inject";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { useInject } from "./hoc";
 import MataKuliahList from "./MataKuliah.List";
 
 const Layout = () => {

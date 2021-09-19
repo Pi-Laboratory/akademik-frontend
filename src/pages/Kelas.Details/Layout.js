@@ -1,10 +1,9 @@
 import { Classes, HTMLTable } from "@blueprintjs/core";
 import { Box, useClient } from "components";
-import ListProvider from "components/list";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import MahasiswaList from "./Mahasiswa.List";
+import Mahasiswa from "./Mahasiswa";
 
 const Layout = () => {
   const client = useClient();
@@ -55,8 +54,8 @@ const Layout = () => {
                   ["Nama", item["name"]],
                   ["Program Studi", <Link to={`/divisi-pendidikan/program-studi/${item["study_program"]["id"]}`}>{item["study_program"]["name"]}</Link>],
                   ["Jurusan", <Link to={`/divisi-pendidikan/jurusan/${item["study_program"]["major"]["id"]}`}>{item["study_program"]["major"]["name"]}</Link>],
-                ].map((value) => (
-                  <tr>
+                ].map((value, idx) => (
+                  <tr key={idx}>
                     <td>
                       <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
                     </td>
@@ -67,12 +66,7 @@ const Layout = () => {
           </Box>
         }
       </Box>
-      <h4 className={Classes.HEADING}>Mahasiswa</h4>
-      <ListProvider filter={{
-        "curriculum_id": params.id,
-      }}>
-        <MahasiswaList />
-      </ListProvider>
+      <Mahasiswa />
     </Box>
   )
 }

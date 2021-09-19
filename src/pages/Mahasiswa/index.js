@@ -3,33 +3,30 @@ import React, { useMemo } from 'react'
 import Helmet from "react-helmet";
 import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
-import Students from './Students'
-import Generations from './Generations'
+import List from 'pages/Mahasiswa.List';
+import Detail from 'pages/Mahasiswa.Details';
 
 export const Mahasiswa = () => {
   const { path } = useRouteMatch();
-  document.title = "Dashboard - Akademik Kemahasiswaan"
   const navigation = useMemo(() => ([
     {
-      "title": "Halaman Utama",
-      "text": "Halaman Utama",
-      "component": Generations,
-      "path": `${path}`,
-      exact: true
+      "component": List,
+      "path": `/`,
+      "hide": true,
+      "exact": true
     },
     {
-      "title": "Mahasiswa",
-      "text": "Mahasiswa",
-      "component": Students,
-      "path": `/mahasiswa`,
-      exact: true
+      "component": Detail,
+      "path": `/:id`,
+      "hide": true,
+      "exact": true
     },
-  ]), [path]);
+  ]), []);
 
   return (
     <>
       <Helmet>
-        <title>Dashboard - Akademik Kemahasiswaan</title>
+        <title>Dashboard - Mahasiswa</title>
       </Helmet>
       <Navigation base={path} navigation={navigation}>
         <Layout />

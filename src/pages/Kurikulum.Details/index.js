@@ -1,4 +1,4 @@
-import InjectProvider from "./hoc";
+import InjectProvider from "components/inject";
 import Layout from "./Layout";
 
 const Detail = () => {

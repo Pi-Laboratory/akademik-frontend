@@ -1,7 +1,6 @@
-import { Box, Divider, Flex, ListGroup, Select, useList } from 'components'
+import { Box, Flex, ListGroup, Select, useList } from 'components'
 import React from 'react'
 import List from './List'
-import Header from './Header'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 import { Pagination } from 'components/Pagination'
@@ -10,8 +9,6 @@ export const Layout = () => {
   const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
   return (
     <Box>
-      <Header />
-      <Divider />
       <Box sx={{ px: 3, pt: 3 }}>
         <Filter />
         <ListGroup

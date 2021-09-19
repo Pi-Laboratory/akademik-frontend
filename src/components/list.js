@@ -1,8 +1,12 @@
-import { createContext, useCallback, useContext, useMemo, useReducer, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react"
 
 const ListContext = createContext();
 
-const ListProvider = ({ children, ...props }) => {
+const ListProvider = ({
+  children,
+  onSelectionChange = () => { },
+  ...props
+}) => {
   const [items, setItems] = useState(null);
   const [filter, setFilter] = useState(props.filter || null);
   const [paging, setPaging] = useState({
@@ -40,6 +44,11 @@ const ListProvider = ({ children, ...props }) => {
   }, [items])
 
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
+
+  useEffect(() => {
+    onSelectionChange(selectedItem);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedItem]);
 
   const status = useMemo(() => {
     let indeterminate = false;
