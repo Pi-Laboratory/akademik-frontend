@@ -1,8 +1,7 @@
 import { Button, Classes, Position, ProgressBar, Toaster } from "@blueprintjs/core";
 import { Box, Flex, useClient } from "components";
 import ListProvider from "components/list";
-import { timeout } from "d3-timer";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import TradeProvider from "./hoc";
 import MahasiswaTradeSource from "./Mahasiswa.Trade.Source";
@@ -22,7 +21,7 @@ const MahasiswaTrade = () => {
   const [progress, setProgress] = useState(null);
   const tradeToasterKeyRef = useRef(null);
 
-  const renderProgress = (amount) => {
+  const renderProgress = useCallback((amount) => {
     return {
       icon: "cloud-upload",
       message: (
@@ -37,7 +36,7 @@ const MahasiswaTrade = () => {
       },
       timeout: amount < 100 ? 0 : 1000,
     }
-  };
+  }, [history]);
 
   const onClickExchange = useCallback(async () => {
     const inc = 100 / (sourceList.length + targetList.length);
@@ -64,7 +63,7 @@ const MahasiswaTrade = () => {
     } else {
       TradeToaster.show(renderProgress(progress), tradeToasterKeyRef.current);
     }
-  }, [progress]);
+  }, [progress, renderProgress]);
 
   return (
     <TradeProvider
