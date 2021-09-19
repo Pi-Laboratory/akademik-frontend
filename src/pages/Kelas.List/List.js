@@ -70,7 +70,7 @@ const List = () => {
 
             <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
-                <Link to={`/manajemen-ruang/`}>
+                <Link to={`/kelas/${item["id"]}`}>
                   {item["name"]}
                 </Link>
               </Box>

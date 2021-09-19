@@ -15,6 +15,7 @@ import Users from "pages/Users";
 import StaffPengajar from "pages/StaffPengajar";
 import { MataKuliah } from "pages/MataKuliah";
 import { Semester } from "pages/Semester";
+import { Kelas } from "pages/Kelas";
 
 const navigation = [
   {
@@ -47,10 +48,10 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Jadwal dan Kelas",
-    "text": "Jadwal dan Kelas",
+    "title": "Jadwal",
+    "text": "Jadwal",
     "component": Jadwal,
-    "path": "/jadwal-kelas/",
+    "path": "/jadwal/",
     "icon": "blank"
   },
   {
@@ -80,6 +81,13 @@ const navigation = [
     "component": Mahasiswa,
     "path": "/mahasiswa",
     "icon": "user"
+  },
+  {
+    "title": "Kelas",
+    "text": "Kelas",
+    "component": Kelas,
+    "path": "/kelas",
+    "icon": "inherited-group"
   },
   {
     "title": "Divisi Pendidikan",

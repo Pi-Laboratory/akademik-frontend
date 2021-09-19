@@ -3,33 +3,30 @@ import React, { useMemo } from 'react'
 import Helmet from "react-helmet";
 import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
-import JamPerHari from 'pages/Jadwal.JamPerHari';
-import JadwalList from 'pages/Jadwal.List';
+import List from 'pages/Kelas.List'
+import Detail from 'pages/Kelas.Details';
 
-export const Jadwal = () => {
+export const Kelas = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {
-      "title": "Jadwal",
-      "text": "Jadwal",
-      "component": JadwalList,
-      "path": `/jadwal`,
-      exact: true,
-      icon: 'home'
+      "component": List,
+      "path": `/`,
+      "hide": true,
+      "exact": true
     },
     {
-      "title": "Segmen Jam per Hari",
-      "text": "Segmen Jam",
-      "component": JamPerHari,
-      "path": `/jam-per-hari`,
-      exact: true
+      "component": Detail,
+      "path": `/:id`,
+      "hide": true,
+      "exact": true
     },
   ]), []);
 
   return (
     <>
       <Helmet>
-        <title>Dashboard - Jadwal</title>
+        <title>Dashboard - Kelas</title>
       </Helmet>
       <Navigation base={path} navigation={navigation}>
         <Layout />

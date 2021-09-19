@@ -1,13 +1,14 @@
 import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Flex, useList } from "components";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory,useLocation } from "react-router-dom";
 import DialogTambah from "./Dialog.Tambah";
 import DialogHapus from "./Dialog.Hapus";
 
 const Filter = () => {
+  const location = useLocation();
   const { selectedItem } = useList();
-  const [dialogOpen, setDialogOpen] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(new URLSearchParams(location.search).get("d") || null);
   const history = useHistory();
   return (
     <Flex
