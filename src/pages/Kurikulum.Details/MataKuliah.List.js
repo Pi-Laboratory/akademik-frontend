@@ -2,11 +2,9 @@ import { AnchorButton, Button, Checkbox, NonIdealState, Spinner } from "@bluepri
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import { useInject } from "./hoc";
 
 const List = () => {
   const client = useClient();
-  const inject = useInject();
   const { items, setItems, paging, setPaging, filter, setFilter, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {

@@ -35,7 +35,7 @@ const Layout = () => {
       }
     }
     fetch();
-  }, [client, params.id]);
+  }, [client, params.id, inject]);
 
   return (
     <Box sx={{
