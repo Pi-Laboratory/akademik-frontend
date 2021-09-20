@@ -95,13 +95,12 @@ function DialogTambahStepOne(props) {
           onChange={handleChange}
           intent={errors["religion"] ? "danger" : "none"}
           options={[
-            "Kristen Protestan",
-            "Kristen Katholik",
-            "Islam",
-            "Hindu",
-            "Buddha",
-            "Konghucu",
-            "Lainnya",
+            {label: "Kristen Protestan", value: "KRISTEN PROTESTAN"},
+            {label: "Katolik", value: "KATOLIK"},
+            {label: "Islam", value: "ISLAM"},
+            {label: "Hindu", value: "HINDU"},
+            {label: "Budha", value: "BUDHA"},
+            {label: "Lainnya", value: "LAINNYA"},
           ]}
         />
       </FormGroup>

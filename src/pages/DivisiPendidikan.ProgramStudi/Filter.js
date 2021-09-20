@@ -24,9 +24,7 @@ const Filter = () => {
           <Select
             label="Filter"
             options={[
-              { label: "ID", value: 0 },
-              { label: "Nama", value: 1 },
-              { label: "NIDN", value: 2 },
+              { label: "Nama", value: "name" }
             ]}
           />
           <InputGroup leftIcon="search" placeholder="Filter by name" />

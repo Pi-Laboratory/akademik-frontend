@@ -54,10 +54,10 @@ const DialogTambah = ({
       initialValues={{
         "nim": undefined,
         "name": undefined,
-        "gender": "",
+        "gender": "L",
         "birth_city": undefined,
         "birth_date": undefined,
-        "religion": "",
+        "religion": 3,
         "origin_address": undefined,
         "recent_address": undefined,
         "city": undefined,
