@@ -1,4 +1,4 @@
-import { Checkbox, Classes } from "@blueprintjs/core";
+import { Button, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import Filter from "./Filter";
 import { Pagination } from "components/Pagination";
@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 const Layout = () => {
   const client = useClient();
-  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
+  const { paging, setPaging, items, status, filter, setFilter, dispatchSelectedItem } = useList();
   const [majors, setMajors] = useState([]);
 
   useEffect(() => {
@@ -56,7 +56,24 @@ const Layout = () => {
                   minimal={true}
                   label="Jurusan"
                   options={majors}
+                  value={filter["major_id"]}
+                  onChange={({ value }) => {
+                    setFilter(filter => ({ ...filter, "major_id": value }));
+                  }}
                 />
+                {[
+                  filter["major_id"]
+                ].indexOf(null) === -1 &&
+                  <Button
+                    minimal={true}
+                    text="Reset"
+                    onClick={() => {
+                      setFilter(filter => ({
+                        ...filter,
+                        "major_id": null
+                      }))
+                    }}
+                  />}
               </Box>
             </Flex>
           </ListGroup.Header>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, paging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, setPaging, paging, filter, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -18,7 +18,8 @@ const List = () => {
             $include: [{
               model: "majors",
               $select: ["id", "name"]
-            }]
+            }],
+            "major_id": filter["major_id"] || undefined
           }
         });
         setItems(res.data);
@@ -33,7 +34,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setItems, setPaging]);
+  }, [client, paging.skip, setItems, setPaging, filter]);
 
   return (
     <>

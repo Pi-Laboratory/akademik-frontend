@@ -3,7 +3,9 @@ import Layout from "./Layout";
 
 const ListJurusan = () => {
   return (
-    <ListProvider>
+    <ListProvider filter={{
+      "major_id": null
+    }}>
       <Layout />
     </ListProvider>
   )
