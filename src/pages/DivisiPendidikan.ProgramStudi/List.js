@@ -78,7 +78,7 @@ const List = () => {
                 </Link>
               </Box>
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
+            <Box sx={{ width: "20%", mr: 3 }}>
               <Box sx={{ color: "gray.5" }}>
                 Jurusan
               </Box>
