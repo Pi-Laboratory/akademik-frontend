@@ -71,14 +71,13 @@ function DialogTambahStepOne(props) {
         <HTMLSelect
           id="f-gender"
           name="gender"
+          placeholder="Pilih"
           value={values["gender"]}
           onChange={handleChange}
           intent={errors["gender"] ? "danger" : "none"}
           options={[
-            { label: "Pilih", value: "", disabled: true },
-            "Pria",
-            "Wanita",
-            "Tidak ingin disebutkan"
+            { label: "Pria", value: "L" },
+            { label: "Wanita", value: "P" },
           ]}
         />
       </FormGroup>
@@ -91,11 +90,11 @@ function DialogTambahStepOne(props) {
         <HTMLSelect
           id="f-religion"
           name="religion"
+          placeholder="Pilih"
           value={values["religion"]}
           onChange={handleChange}
           intent={errors["religion"] ? "danger" : "none"}
           options={[
-            { label: "Pilih", value: "", disabled: true },
             "Kristen Protestan",
             "Kristen Katholik",
             "Islam",
