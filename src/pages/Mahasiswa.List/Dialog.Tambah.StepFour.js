@@ -1,6 +1,6 @@
 import { Classes, FormGroup, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { Box } from "components";
+import { Box, CONSTANTS, Select } from "components";
 import { useFormikContext } from "formik";
 import moment from "moment";
 import * as Yup from "yup";
@@ -131,13 +131,17 @@ function DialogTambahStepFour() {
             helperText={errors["trustee_education"]}
             intent={"danger"}
           >
-            <InputGroup
-              fill={true}
+            <Select
               id="f-trustee_education"
               name="trustee_education"
               value={values["trustee_education"]}
-              onChange={handleChange}
               intent={errors["trustee_education"] ? "danger" : "none"}
+              onChange={({ value }) => {
+                setFieldValue("trustee_education", value);
+              }}
+              options={CONSTANTS["PENDIDIKAN"].map((v) => {
+                return { label: v, value: v };
+              })}
             />
           </FormGroup>
           <FormGroup
@@ -146,13 +150,17 @@ function DialogTambahStepFour() {
             helperText={errors["trustee_recent_education"]}
             intent={"danger"}
           >
-            <InputGroup
-              fill={true}
+            <Select
               id="f-trustee_recent_education"
               name="trustee_recent_education"
               value={values["trustee_recent_education"]}
-              onChange={handleChange}
               intent={errors["trustee_recent_education"] ? "danger" : "none"}
+              onChange={({ value }) => {
+                setFieldValue("trustee_recent_education", value);
+              }}
+              options={CONSTANTS["PENDIDIKAN"].map((v) => {
+                return { label: v, value: v };
+              })}
             />
           </FormGroup>
           <FormGroup
@@ -161,13 +169,17 @@ function DialogTambahStepFour() {
             helperText={errors["trustee_occupation"]}
             intent={"danger"}
           >
-            <InputGroup
-              fill={true}
+            <Select
               id="f-trustee_occupation"
               name="trustee_occupation"
               value={values["trustee_occupation"]}
-              onChange={handleChange}
               intent={errors["trustee_occupation"] ? "danger" : "none"}
+              onChange={({ value }) => {
+                setFieldValue("trustee_occupation", value);
+              }}
+              options={CONSTANTS["PEKERJAAN"].map((v) => {
+                return { label: v, value: v };
+              })}
             />
           </FormGroup>
         </>}
