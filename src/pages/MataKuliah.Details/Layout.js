@@ -40,7 +40,7 @@ const Layout = () => {
               ["Tipe", item["type"]],
               ["Kurikulum", <Link to={`/kurikulum/${item["curriculum"]["id"]}`}>{item["curriculum"]["name"]}</Link>],
             ].map((value) => (
-              <tr>
+              <tr key={value[0]}>
                 <td>
                   <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
                 </td>

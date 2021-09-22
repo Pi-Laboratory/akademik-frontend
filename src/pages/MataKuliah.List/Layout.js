@@ -1,4 +1,4 @@
-import { Checkbox, Classes, } from "@blueprintjs/core";
+import { Button, Checkbox, Classes, } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import Filter from "./Filter";
 import { useCallback, useState } from "react";
@@ -9,7 +9,6 @@ const Layout = () => {
   const client = useClient();
   const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
 
-  const [majors, setMajors] = useState([]);
   const [studyPrograms, setStudyPrograms] = useState([]);
 
   const [loading, setLoading] = useState({
@@ -17,31 +16,22 @@ const Layout = () => {
     major: false
   })
 
-  const fetchMajors = useCallback(async () => {
-    setLoading(loading => ({ ...loading, major: true }));
-    const res = await client["majors"].find({
-      query: {
-        $select: ["id", "name"]
-      }
-    });
-    setMajors(res.data.map(({ id, name }) => ({
-      label: name,
-      value: id
-    })));
-    setLoading(loading => ({ ...loading, major: false }));
-  }, [client]);
-
-  const fetchStudyPrograms = useCallback(async (major) => {
+  const fetchStudyPrograms = useCallback(async () => {
     setLoading(loading => ({ ...loading, studyProgram: true }));
     const res = await client["study-programs"].find({
       query: {
-        major_id: major,
-        $select: ["id", "name"]
+        $limit: "100",
+        $select: ["id", "name"],
+        $include: [{
+          model: "majors",
+          $select: ["name"]
+        }]
       }
     });
-    await setStudyPrograms(res.data.map(({ id, name }) => ({
+    await setStudyPrograms(res.data.map(({ id, name, major }) => ({
       label: name,
-      value: id
+      value: id,
+      info: major["name"]
     })));
     setLoading(loading => ({ ...loading, studyProgram: false }));
   }, [client]);
@@ -74,18 +64,6 @@ const Layout = () => {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
               <Select
-                loading={loading["major"]}
-                minimal={true}
-                label="Jurusan"
-                value={filter["major_id"]}
-                onChange={({ value }) => setFilter(filter => ({
-                  ...filter,
-                  "major_id": value
-                }))}
-                onOpening={async () => await fetchMajors()}
-                options={majors}
-              />
-              <Select
                 loading={loading["studyProgram"]}
                 minimal={true}
                 label="Program Studi"
@@ -94,9 +72,24 @@ const Layout = () => {
                   "study_program_id": value
                 }))}
                 value={filter["study_program_id"]}
-                onOpening={async () => await fetchStudyPrograms(filter["major_id"])}
+                onOpening={async () => await fetchStudyPrograms()}
                 options={studyPrograms}
               />
+              {[
+                !!filter["study_program_id"]
+              ].indexOf(true) !== -1
+                && <Button
+                  title="Clear Filter"
+                  minimal={true}
+                  intent="warning"
+                  icon="filter-remove"
+                  onClick={() => {
+                    setFilter(filter => ({
+                      ...filter,
+                      "study_program_id": null
+                    }))
+                  }}
+                />}
             </Box>
           </Flex>
         </ListGroup.Header>
