@@ -13,6 +13,8 @@ const List = () => {
       try {
         const res = await client["curriculums"].find({
           query: {
+            "year": filter["year"] || undefined,
+            "study_program_id": filter["study_program_id"] || undefined,
             $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"],
             $skip: paging.skip,
             $include: [{

@@ -4,7 +4,12 @@ import { Layout } from './Layout'
 
 const ListKurikulum = () => {
   return (
-    <ListProvider>
+    <ListProvider
+      filter={{
+        "year": String(new Date().getFullYear()),
+        "study_program_id": undefined
+      }}
+    >
       <Layout />
     </ListProvider>
   )

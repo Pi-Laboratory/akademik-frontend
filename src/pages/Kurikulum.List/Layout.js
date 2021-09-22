@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Box, Flex, ListGroup, Select, Pagination, useClient, useList } from 'components'
 import List from './List'
-import { Checkbox, Classes } from '@blueprintjs/core'
+import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 
 export const Layout = () => {
   const client = useClient();
-  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
+  const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
   const [studyPrograms, setStudyPrograms] = useState([]);
 
   useEffect(() => {
@@ -14,16 +14,21 @@ export const Layout = () => {
       try {
         const res = await client["study-programs"].find({
           query: {
-            $select: ["id", "name"]
+            $limit: 100,
+            $select: ["id", "name"],
+            $include: [{
+              model: "majors",
+              $select: ["id", "name"]
+            }]
           }
         });
-        setStudyPrograms(res.data.map(({ id, name }) => ({ label: name, value: id })));
+        setStudyPrograms(res.data);
       } catch (err) {
         console.error(err);
       }
     }
     fetch();
-  }, [client]);
+  }, [client, filter]);
 
   return (
     <Box>
@@ -55,20 +60,49 @@ export const Layout = () => {
                 <Select
                   minimal={true}
                   label="Tahun"
-                  options={[
-                    { label: "2020", value: 0 },
-                    { label: "2019", value: 0 },
-                    { label: "2018", value: 1 },
-                    { label: "2017", value: 2 },
-                    { label: "2016", value: 3 },
-                    { label: "2015", value: 3 },
-                  ]}
+                  value={filter["year"]}
+                  options={Array(25).fill(0).map((_, idx) => {
+                    const year = String(new Date().getFullYear() - idx);
+                    return ({
+                      label: year,
+                      value: year
+                    })
+                  })}
+                  onChange={({ value }) => {
+                    setFilter(filter => ({ ...filter, "year": value }))
+                  }}
                 />
                 <Select
                   minimal={true}
                   label="Program Studi"
-                  options={studyPrograms}
+                  value={filter["study_program_id"]}
+                  options={studyPrograms.map((item) => {
+                    return {
+                      label: item["name"],
+                      value: item["id"],
+                      info: item["major"]["name"]
+                    }
+                  })}
+                  onChange={({ value }) => {
+                    setFilter(filter => ({ ...filter, "study_program_id": value }))
+                  }}
                 />
+                {[
+                  !!filter["year"],
+                  !!filter["study_program_id"]
+                ].indexOf(true) !== -1
+                  && <Button
+                    minimal={true}
+                    intent="warning"
+                    icon="filter-remove"
+                    onClick={() => {
+                      setFilter(filter => ({
+                        ...filter,
+                        "year": null,
+                        "study_program_id": null
+                      }))
+                    }}
+                  />}
               </Box>
             </Flex>
           </ListGroup.Header>

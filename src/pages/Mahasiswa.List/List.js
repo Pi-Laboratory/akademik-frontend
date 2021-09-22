@@ -13,10 +13,10 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
+            "generation": filter["generation"] || undefined,
+            "study_program_id": filter["study_program_id"] || undefined,
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
-            "generation": filter["generation"],
-            "study_program_id": filter["study_program_id"],
             $include: [{
               model: "study_programs",
               $select: ["id", "name"]

@@ -102,6 +102,22 @@ export const Layout = () => {
                     setFilter(filter => ({ ...filter, "study_program_id": value }))
                   }}
                 />
+                {[
+                  !!filter["study_program_id"],
+                  !!filter["generation"],
+                ].indexOf(true) !== -1
+                  && <Button
+                    minimal={true}
+                    intent="warning"
+                    icon="filter-remove"
+                    onClick={() => {
+                      setFilter(filter => ({
+                        ...filter,
+                        "study_program_id": null,
+                        "generation": null
+                      }))
+                    }}
+                  />}
               </Box>
             </Flex>
           </ListGroup.Header>
