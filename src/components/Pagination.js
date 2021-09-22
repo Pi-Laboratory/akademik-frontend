@@ -10,13 +10,43 @@ export const Pagination = ({ loading, disabled, total, skip, limit, onClick = ()
       return null;
     const count = Math.floor(total / limit);
     const active = Math.floor(skip / limit) + 1;
-    return { count, active };
+
+    // https://gist.github.com/kottenator/9d936eb3e4e3c3e02598
+    const pages = [];
+    const delta = 2;
+    const left = active - delta;
+    const right = active + delta + 1;
+    const pagesWithDots = [];
+    let l;
+
+    for (let i = 1; i <= count; i++) {
+      if (i === 1 || i === count || (i >= left && i < right)) {
+        pages.push(i);
+      }
+    }
+
+    for (let i of pages) {
+      if (l) {
+        if (i - l === 2) {
+          pagesWithDots.push(l + 1);
+        } else if (i - l !== 1) {
+          pagesWithDots.push('...');
+        }
+      }
+      pagesWithDots.push(i);
+      l = i;
+    }
+
+    return { count, active, pages, pagesWithDots };
   }, [total, limit, skip]);
+
+
   if (opt === null || opt.count < 2) return null;
   const calcPage = (page) => {
     const skip = (page - 1) * limit;
     return { page, skip };
   }
+
   return (
     <Flex sx={{ my: 3, justifyContent: "center" }}>
       {opt.active > 1 &&
@@ -31,12 +61,23 @@ export const Pagination = ({ loading, disabled, total, skip, limit, onClick = ()
           }}
         />}
       <ButtonGroup>
-        {Array(opt.count).fill(0).map((_, idx) => {
-          const page = idx + 1;
+        {opt.pagesWithDots.map((page, idx) => {
+          if (page === '...') return (
+            <Button
+              icon="more"
+              minimal={true}
+              key={`${page}${idx}`}
+              style={{
+                pointerEvents: "none",
+                paddingLeft: 16,
+                paddingRight: 16
+              }}
+            />
+          )
           return (<Button
             disabled={disabled}
             loading={loading}
-            key={idx}
+            key={page}
             text={page}
             active={opt.active === page}
             onClick={() => {
