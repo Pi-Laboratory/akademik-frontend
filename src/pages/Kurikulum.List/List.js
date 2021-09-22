@@ -5,14 +5,15 @@ import { Link } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, paging, setPaging, filter, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
       try {
         const res = await client["curriculums"].find({
           query: {
-            $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"]
+            $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"],
+            $skip: paging.skip
           }
         });
         setItems(res.data);
@@ -27,7 +28,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging]);
+  }, [client, setItems, setPaging, paging.skip, filter]);
 
   return (
     <>
