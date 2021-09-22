@@ -187,11 +187,11 @@ const DialogMataKuliahBaru = ({
                   onChange={handleChange}
                   intent={errors["subject_trait"] ? "danger" : "none"}
                   options={[
-                    { label: "Wajib", value: "A", info: "A" },
-                    { label: "Pilihan", value: "B", info: "B" },
-                    { label: "Wajib Permintaan", value: "C", info: "C" },
-                    { label: "Pilihan Permintaan", value: "D", info: "D" },
-                    { label: "Tugas Akhir/ Skripsi", value: "S", info: "S" },
+                    { label: "A - Wajib", value: "A", info: "A" },
+                    { label: "B - Pilihan", value: "B", info: "B" },
+                    { label: "C - Wajib Permintaan", value: "C", info: "C" },
+                    { label: "D - Pilihan Permintaan", value: "D", info: "D" },
+                    { label: "S - Tugas Akhir/ Skripsi", value: "S", info: "S" },
                   ]}
                 />
               </FormGroup>
