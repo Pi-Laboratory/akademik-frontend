@@ -13,7 +13,7 @@ const List = () => {
       try {
         const res = await client["subjects"].find({
           query: {
-            $select: ["id", "code", "name", "major_id", "semester", "created_at"],
+            $select: ["id", "code", "name", "semester", "created_at"],
             $skip: paging.skip
           }
         });

@@ -9,11 +9,20 @@ const List = () => {
 
   useEffect(() => {
     const fetch = async () => {
+      setItems(null);
       try {
         const res = await client["curriculums"].find({
           query: {
             $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"],
-            $skip: paging.skip
+            $skip: paging.skip,
+            $include: [{
+              model: "study_programs",
+              $select: ["id", "name"],
+              $include: [{
+                model: "majors",
+                $select: ["id", "name"]
+              }]
+            }]
           }
         });
         setItems(res.data);
@@ -68,31 +77,7 @@ const List = () => {
                 </Link>
               </Box>
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                2
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                min
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                3
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                Min.Percobaan
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                3
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                Maks Nilai D
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
+            <Box sx={{ width: "25%" }}>
               <Box>
                 24
               </Box>
@@ -100,8 +85,13 @@ const List = () => {
                 Mata Kuliah
               </Box>
             </Box>
-            <Box sx={{ flexGrow: 1 }}>
-              Teknik Elektro
+            <Box sx={{ width: "25%" }}>
+              <Box>
+                {item["study_program"]["name"]}
+              </Box>
+              <Box sx={{ color: "gray.5" }}>
+                {item["study_program"]["major"]["name"]}
+              </Box>
             </Box>
           </Flex>
         </ListGroup.Item>

@@ -8,6 +8,7 @@ const List = () => {
   const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
+    setItems(null);
     const fetch = async () => {
       try {
         const res = await client["students"].find({

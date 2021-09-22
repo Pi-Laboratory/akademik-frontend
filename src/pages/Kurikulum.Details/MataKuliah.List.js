@@ -1,7 +1,7 @@
 import { AnchorButton, Button, Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { forwardRef, useEffect } from "react";
 
 const List = () => {
   const client = useClient();
@@ -13,7 +13,7 @@ const List = () => {
       try {
         const res = await client["subjects"].find({
           query: {
-            $select: ["id", "code", "name", "major_id", "semester", "created_at"],
+            $select: ["id", "code", "name", "semester", "created_at"],
             $skip: paging.skip,
             "curriculum_id": filter["curriculum_id"]
           }
@@ -93,7 +93,13 @@ const List = () => {
                   pathname: "/mata-kuliah",
                   search: "?d=add"
                 }}
-                component={AnchorButton}
+                component={forwardRef((props, ref) =>
+                  <AnchorButton
+                    {...props}
+                    ref={ref}
+                    navigate={undefined}
+                  />
+                )}
                 small={true}
                 minimal={true}
                 intent="primary"

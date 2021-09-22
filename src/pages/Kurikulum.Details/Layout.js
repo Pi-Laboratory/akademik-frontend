@@ -59,7 +59,7 @@ const Layout = () => {
                   ["Tahun", item["year"]],
                   ["Program Studi", <Link to={`/divisi-pendidikan/program-studi/${item["id"]}`}>{item["study_program"]["name"]}</Link>],
                 ].map((value) => (
-                  <tr>
+                  <tr key={value[0]}>
                     <td>
                       <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
                     </td>
