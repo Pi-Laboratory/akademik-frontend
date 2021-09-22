@@ -1,14 +1,12 @@
-import { Box, Flex, ListGroup, Select, useClient, useList } from 'components'
 import React, { useEffect, useState } from 'react'
+import { Box, Flex, ListGroup, Select, Pagination, useClient, useList } from 'components'
 import List from './List'
 import { Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
-import { Pagination } from 'components/Pagination'
 
 export const Layout = () => {
   const client = useClient();
   const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
-
   const [studyPrograms, setStudyPrograms] = useState([]);
 
   useEffect(() => {

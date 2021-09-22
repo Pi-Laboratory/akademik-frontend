@@ -1,10 +1,8 @@
-import { Box, Flex, ListGroup, Select, useClient, useList } from 'components'
-import React, { useEffect } from 'react'
+import { Box, Flex, ListGroup, Select, useClient, useList, Pagination } from 'components'
+import React, { useEffect, useCallback, useState } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
-import { Pagination } from 'components/Pagination'
-import { useCallback, useState } from 'react/cjs/react.development'
 
 export const Layout = () => {
   const client = useClient();

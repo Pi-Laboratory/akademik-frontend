@@ -12,5 +12,6 @@ export { useList } from "./list";
 export { Container } from "./Container";
 export { Navbar } from "./Navbar";
 export { toaster } from "./toaster";
+export { Pagination } from "./Pagination";
 
 export { default as CONSTANTS } from "./constants";
