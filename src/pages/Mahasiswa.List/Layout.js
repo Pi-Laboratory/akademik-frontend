@@ -1,12 +1,40 @@
-import { Box, Flex, ListGroup, Select, useList } from 'components'
-import React from 'react'
+import { Box, Flex, ListGroup, Select, useClient, useList } from 'components'
+import React, { useEffect } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 import { Pagination } from 'components/Pagination'
+import { useCallback, useState } from 'react/cjs/react.development'
 
 export const Layout = () => {
-  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
+  const client = useClient();
+  const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
+
+  const [studyPrograms, setStudyPrograms] = useState([]);
+
+  const fetchStudyPrograms = useCallback(async () => {
+    try {
+      const res = await client["study-programs"].find({
+        query: {
+          $limit: 100,
+          $select: ["id", "name"],
+          $include: [{
+            model: "majors",
+            $select: ["id", "name"]
+          }]
+        }
+      });
+      setStudyPrograms(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  }, [client]);
+
+  useEffect(() => {
+    fetchStudyPrograms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <Box>
       <Box sx={{ px: 3, pt: 3 }}>
@@ -49,27 +77,32 @@ export const Layout = () => {
                 <Select
                   minimal={true}
                   label="Angkatan"
-                  options={[
-                    { label: "Aktif", value: true },
-                    { label: "Tidak Aktif", value: false }
-                  ]}
+                  value={filter["generation"]}
+                  options={Array(25).fill(0).map((_, idx) => {
+                    const year = String(new Date().getFullYear() - idx);
+                    return ({
+                      label: year,
+                      value: year
+                    })
+                  })}
+                  onChange={({ value }) => {
+                    setFilter(filter => ({ ...filter, "generation": value }))
+                  }}
                 />
                 <Select
                   minimal={true}
                   label="Program Studi"
-                  options={[
-                    { label: "Aktif", value: true },
-                    { label: "Tidak Aktif", value: false }
-                  ]}
-                />
-                <Select
-                  filterable={false}
-                  minimal={true}
-                  label="Sort"
-                  options={[
-                    { label: "Aktif", value: true },
-                    { label: "Tidak Aktif", value: false }
-                  ]}
+                  value={filter["study_program_id"]}
+                  options={studyPrograms.map((item) => {
+                    return {
+                      label: item["name"],
+                      value: item["id"],
+                      info: item["major"]["name"]
+                    }
+                  })}
+                  onChange={({ value }) => {
+                    setFilter(filter => ({ ...filter, "study_program_id": value }))
+                  }}
                 />
               </Box>
             </Flex>

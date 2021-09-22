@@ -5,14 +5,21 @@ import { Link } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
       try {
         const res = await client["students"].find({
           query: {
-            $select: ["id", "name", "nim", "student_status", "generation"]
+            $skip: paging.skip,
+            $select: ["id", "name", "nim", "student_status", "generation"],
+            "generation": filter["generation"],
+            "study_program_id": filter["study_program_id"],
+            $include: [{
+              model: "study_programs",
+              $select: ["id", "name"]
+            }]
           }
         });
         setItems(res.data);
@@ -27,7 +34,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging]);
+  }, [client, setItems, setPaging, paging.skip, filter]);
 
   return (
     <>
@@ -60,18 +67,21 @@ const List = () => {
                   })
                 }} />
             </Box>
-            <Box sx={{ width: "20%", flexShrink: 0 }}>
-              {item["nim"]}
-            </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
                 <Link to={`mahasiswa/${item["id"]}`}>
                   {item["name"]}
                 </Link>
               </Box>
+              <Box>
+                {item["nim"]}
+              </Box>
             </Box>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ width: "10%" }}>
               {item["generation"]}
+            </Box>
+            <Box sx={{ width: "20%", flexShrink: 0 }}>
+              {item["study_program"]["name"]}
             </Box>
           </Flex>
         </ListGroup.Item>
