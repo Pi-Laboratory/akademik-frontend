@@ -15,7 +15,7 @@ export const Select = ({
   allowCreateItem,
   options,
   optionRenderer,
-  onCreateNew,
+  onCreateNew = () => { },
   onChange,
   onClick,
   onOpening,
