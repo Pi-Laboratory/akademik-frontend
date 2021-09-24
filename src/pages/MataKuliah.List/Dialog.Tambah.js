@@ -86,6 +86,7 @@ const DialogMataKuliahBaru = ({
 
   return (
     <Dialog
+      enforceFocus={false}
       isOpen={isOpen}
       onClose={() => { onClose() }}
       title="Tambah Mata Kuliah Baru"
@@ -187,11 +188,11 @@ const DialogMataKuliahBaru = ({
                   onChange={handleChange}
                   intent={errors["subject_trait"] ? "danger" : "none"}
                   options={[
-                    { label: "A - Wajib", value: "A", info: "A" },
-                    { label: "B - Pilihan", value: "B", info: "B" },
-                    { label: "C - Wajib Permintaan", value: "C", info: "C" },
-                    { label: "D - Pilihan Permintaan", value: "D", info: "D" },
-                    { label: "S - Tugas Akhir/ Skripsi", value: "S", info: "S" },
+                    { label: "Wajib", value: "A", info: "A" },
+                    { label: "Pilihan", value: "B", info: "B" },
+                    { label: "Wajib Permintaan", value: "C", info: "C" },
+                    { label: "Pilihan Permintaan", value: "D", info: "D" },
+                    { label: "Tugas Akhir/ Skripsi", value: "S", info: "S" },
                   ]}
                 />
               </FormGroup>
@@ -471,7 +472,14 @@ const DialogMataKuliahBaru = ({
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Button minimal={true} intent="danger" text="Close" />
+                <Button
+                  minimal={true}
+                  intent="danger"
+                  text="Close"
+                  onClick={() => {
+                    onClose();
+                  }}
+                />
                 <Button loading={isSubmitting} type="submit" intent="primary" text="Simpan" />
               </div>
             </div>
