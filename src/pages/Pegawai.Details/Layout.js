@@ -1,4 +1,4 @@
-import { Classes, H3, HTMLTable } from "@blueprintjs/core";
+import { Classes, HTMLTable } from "@blueprintjs/core";
 import { AspectRatio, Box, Divider, Flex, useClient } from "components";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -29,9 +29,8 @@ const Layout = () => {
             <tbody>
               {[
                 ["NIP", item["nip"]],
-                ["NIDN", item["nidn"]],
                 ["Nama Lengkap", `${item["front_degree"] || ""}${item["name"]}${item["back_degree"] || ""}`],
-                ["NIK", item["nik"]],
+                ["NIK", item["id_number"]],
                 ["Tempat Lahir", item["birth_city"]],
                 ["Tanggal Lahir", item["birth_date"]],
                 ["Jenis Kelamin", item["gender"]],
