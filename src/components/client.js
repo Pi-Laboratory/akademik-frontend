@@ -54,7 +54,7 @@ export const ClientProvider = ({ children }) => {
     }
   }
 
-  async function reAuthenticate(force) {
+  async function reAuthenticate(force = false) {
     try {
       const ret = await feathers.reAuthenticate(force);
       // console.log(ret);
@@ -91,18 +91,19 @@ export const ClientProvider = ({ children }) => {
       get: (name) => { return feathers.get(name) },
 
       // Services
-      get "users"() { return feathers.service("users") },
-      get "rooms"() { return feathers.service("rooms") },
-      get "semesters"() { return feathers.service("semesters") },
-      get "students"() { return feathers.service("students") },
-      get "lecturers"() { return feathers.service("lecturers") },
-      get "subjects"() { return feathers.service("subjects") },
-      get "majors"() { return feathers.service("majors") },
-      get "study-programs"() { return feathers.service("study-programs") },
-      get "schedules"() { return feathers.service("schedules") },
-      get "hours"() { return feathers.service("hours") },
       get "classes"() { return feathers.service("classes") },
       get "curriculums"() { return feathers.service("curriculums") },
+      get "employees"() { return feathers.service("employees") },
+      get "hours"() { return feathers.service("hours") },
+      get "lecturers"() { return feathers.service("lecturers") },
+      get "majors"() { return feathers.service("majors") },
+      get "rooms"() { return feathers.service("rooms") },
+      get "schedules"() { return feathers.service("schedules") },
+      get "semesters"() { return feathers.service("semesters") },
+      get "students"() { return feathers.service("students") },
+      get "study-programs"() { return feathers.service("study-programs") },
+      get "subjects"() { return feathers.service("subjects") },
+      get "users"() { return feathers.service("users") },
     }
   }, [isConnected, isAuthenticated, account, role]);
 

@@ -7,7 +7,6 @@ import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
   "nip": Yup.string().required(),
-  "nidn": Yup.string().required(),
   "name": Yup.string().required(),
   "front_degree": Yup.string(),
   "back_degree": Yup.string(),
@@ -18,7 +17,6 @@ const Schema = Yup.object().shape({
   "gender": Yup.string().required(),
   "religion": Yup.string().required(),
   "blood_type": Yup.string().required(),
-  "married_status": Yup.boolean().required(),
   "home_address": Yup.string().required(),
   "city": Yup.string().required(),
   "country": Yup.string().required(),
@@ -44,7 +42,6 @@ const DialogTambahBaru = ({
         validationSchema={Schema}
         initialValues={{
           "nip": "",
-          "nidn": "",
           "name": "",
           "front_degree": "",
           "back_degree": "",
@@ -55,7 +52,6 @@ const DialogTambahBaru = ({
           "gender": "",
           "religion": "",
           "blood_type": "O",
-          "married_status": "false",
           "home_address": "",
           "city": "",
           "country": "",
@@ -356,23 +352,6 @@ const DialogTambahBaru = ({
                     "AB"
                   ]}
                 />
-              </FormGroup>
-              <FormGroup
-                label="Status Pernikahan"
-                labelFor="f-married_status"
-                helperText={errors["married_status"]}
-                intent={"danger"}
-              >
-                <RadioGroup
-                  id="f-married_status"
-                  name="married_status"
-                  selectedValue={values["married_status"]}
-                  onChange={handleChange}
-                  intent={errors["married_status"] ? "danger" : "none"}
-                >
-                  <Radio label="Menikah" value={"true"} />
-                  <Radio label="Belum Menikah" value={"false"} />
-                </RadioGroup>
               </FormGroup>
               <FormGroup
                 label="Nomor Hanphone"

@@ -1,36 +1,35 @@
-import StaffPengajarList from "pages/StaffPengajar.List";
 import { Navigation } from "pages/Root/hoc";
 import { Helmet } from "react-helmet";
 import { useRouteMatch } from "react-router";
 import { Layout } from "./Layout";
-import StaffPengajarDetail from "pages/StaffPengajar.Details";
+import List from "pages/Pengajar.List";
+import Detail from "pages/Pengajar.Details";
 
 const navigation = [
   {
-    "title": "Staff dan Pengajar",
-    "component": StaffPengajarList,
-    "path": "/staff-dan-pengajar",
+    "component": List,
+    "path": "/pengajar",
     "icon": "blank",
     "exact": true,
   },
   {
-    "component": StaffPengajarDetail,
-    "path": "/staff-dan-pengajar/:id",
+    "component": Detail,
+    "path": "/pengajar/:id",
     "icon": "blank",
     "exact": true,
   },
 ]
 
-const StaffPengajar = () => {
+const Pengajar = () => {
   const { path } = useRouteMatch();
   return (
     <Navigation base={path} navigation={navigation}>
       <Helmet>
-        <title>Staff - Pengajar</title>
+        <title>Pengajar</title>
       </Helmet>
       <Layout />
     </Navigation>
   )
 }
 
-export default StaffPengajar;
+export default Pengajar;

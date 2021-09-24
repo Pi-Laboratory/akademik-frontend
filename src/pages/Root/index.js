@@ -12,7 +12,8 @@ import Layout from "./Layout";
 import { useRouteMatch } from "react-router";
 import Helmet from "react-helmet";
 import Users from "pages/Users";
-import StaffPengajar from "pages/StaffPengajar";
+import Pengajar from "pages/Pengajar";
+import Pegawai from "pages/Pegawai";
 import { MataKuliah } from "pages/MataKuliah";
 import { Semester } from "pages/Semester";
 import { Kelas } from "pages/Kelas";
@@ -55,24 +56,24 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Nama Servis",
-    "text": "Manajemen Ruang",
-    "component": ManajemenRuang,
-    "path": "/manajemen-ruang",
-    "icon": "blank"
-  },
-  {
-    "title": "Staff Dan Pengajar",
-    "text": "Staff Dan Pengajar",
-    "component": StaffPengajar,
-    "path": "/staff-dan-pengajar",
-    "icon": "blank"
-  },
-  {
     "title": "Presensi",
     "text": "Presensi dan Nilai",
     "component": Presensi,
     "path": "/presensi-nilai",
+    "icon": "blank"
+  },
+  {
+    "title": "Pegawai",
+    "text": "Pegawai",
+    "component": Pegawai,
+    "path": "/pegawai",
+    "icon": "blank"
+  },
+  {
+    "title": "Pengajar",
+    "text": "Pengajar",
+    "component": Pengajar,
+    "path": "/pengajar",
     "icon": "blank"
   },
   {
@@ -94,6 +95,13 @@ const navigation = [
     "text": "Divisi Pendidikan",
     "component": DivisiPendidikan,
     "path": "/divisi-pendidikan",
+    "icon": "blank"
+  },
+  {
+    "title": "Nama Servis",
+    "text": "Manajemen Ruang",
+    "component": ManajemenRuang,
+    "path": "/manajemen-ruang",
     "icon": "blank"
   },
   {

@@ -1,11 +1,11 @@
-import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Checkbox, Icon, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, useClient, useList } from "components"
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -13,7 +13,15 @@ const List = () => {
       try {
         const res = await client["lecturers"].find({
           query: {
-            $select: ["id", "name", "front_degree", "back_degree", "nip", "nidn", "id_number"]
+            $skip: paging.skip,
+            $select: ["id", "nidn", "certified"],
+            $include: [{
+              model: "employees",
+              $select: ["name", "front_degree", "back_degree"]
+            }, {
+              model: "study_programs",
+              $select: ["id", "name"]
+            }]
           }
         });
         setItems(res.data);
@@ -28,7 +36,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setPaging, setItems]);
+  }, [client, paging.skip, setPaging, setItems]);
   return (
     <>
       {items === null &&
@@ -62,31 +70,29 @@ const List = () => {
               />
             </Box>
             <Box sx={{ flexGrow: 1, px: 2, mr: 3 }}>
-              <Box>
-                <Link to={`/staff-dan-pengajar/${item["id"]}`}>
-                  {`${item["front_degree"]} ${item["name"]} ${item["back_degree"]}`}
-                </Link>
-              </Box>
+              <Flex sx={{ alignItems: "center" }}>
+                <Box sx={{ mr: 1 }}>
+                  {item["employee"] &&
+                    <Link to={`/pengajar/${item["id"]}`}>
+                      {`${item["employee"]["front_degree"] || ""} ${item["employee"]["name"]} ${item["employee"]["back_degree"] || ""}`}
+                    </Link>}
+                </Box>
+                {item["certified"] &&
+                  <Box as={Icon} sx={{ color: "green.4" }} iconSize={12} icon="endorsed" />}
+              </Flex>
               <Box sx={{ color: "gray.5" }}>
-                {item["nip"]}
+                {item["nidn"]}
               </Box>
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                NIDN
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                {item["id_number"]}
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                NIK
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                {item["id_number"]}
-              </Box>
-            </Box>
+            {item["study_program"] &&
+              <Box sx={{ width: "50%", mr: 3 }}>
+                <Box sx={{ color: "gray.5" }}>
+                  Program Studi
+                </Box>
+                <Box>
+                  {item["study_program"]["name"]}
+                </Box>
+              </Box>}
           </Flex>
         </ListGroup.Item>
       ))}
