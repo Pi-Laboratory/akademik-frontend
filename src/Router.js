@@ -8,6 +8,7 @@ import FourOFour from "pages/404";
 import Root from "pages/Root";
 import Registrasi from "pages/Registrasi";
 import { PrivateRoute } from "components/PrivateRoute";
+import Form from "pages/Form";
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/registrasi" exact component={Registrasi} />
+        <Route path="/form" exact component={Form} />
         <PrivateRoute path="/" component={Root} />
         <Route path="/" component={FourOFour} />
       </Switch>
