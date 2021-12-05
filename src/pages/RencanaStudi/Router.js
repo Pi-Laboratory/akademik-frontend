@@ -1,15 +1,13 @@
+import FourOFour from 'pages/404';
 import { useNav } from 'pages/Root/hoc'
 import React from 'react'
-import { Switch, Route } from 'react-router'
+import { Switch, Route, useRouteMatch } from 'react-router'
 
 const Router = () => {
-  const navigation = useNav();
-
+  const { path } = useRouteMatch();
+  const navigation = useNav(path);
   return (
     <Switch>
-      {/* <Route exact path={'/akademik-mahasiswa'}>
-        <Redirect to={'/akademik-mahasiswa/mahasiswa'} />
-      </Route> */}
       {navigation.items.map((item) => (
         <Route
           exact={item.exact}
@@ -18,6 +16,7 @@ const Router = () => {
           component={item.component}
         />
       ))}
+      <Route component={FourOFour} />
     </Switch>
   )
 }

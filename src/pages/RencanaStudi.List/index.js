@@ -1,12 +1,14 @@
 import ListProvider from "components/list";
 import Layout from "./Layout";
 
-const JamPerHari = () => {
+const List = () => {
   return (
-    <ListProvider>
+    <ListProvider filter={{
+      "study_program_id": null
+    }}>
       <Layout />
     </ListProvider>
   )
 }
 
-export default JamPerHari;
+export default List;

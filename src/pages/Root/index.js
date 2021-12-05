@@ -17,6 +17,7 @@ import Pegawai from "pages/Pegawai";
 import { MataKuliah } from "pages/MataKuliah";
 import { Semester } from "pages/Semester";
 import { Kelas } from "pages/Kelas";
+import { RencanaStudi } from "pages/RencanaStudi";
 
 const navigation = [
   {
@@ -82,6 +83,13 @@ const navigation = [
     "component": Mahasiswa,
     "path": "/mahasiswa",
     "icon": "user"
+  },
+  {
+    "title": "Rencana Studi",
+    "text": "Rencana Studi",
+    "component": RencanaStudi,
+    "path": "/rencana-studi",
+    "icon": "blank"
   },
   {
     "title": "Kelas",
