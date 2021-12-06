@@ -5,6 +5,14 @@ import { useEffect, forwardRef } from "react";
 import { Pagination } from "components/Pagination";
 import { useTrade } from "./hoc";
 
+const btn = forwardRef((props, ref) =>
+  <AnchorButton
+    {...props}
+    ref={ref}
+    navigate={undefined}
+  />
+);
+
 const MahasiswaTradeSource = () => {
   const client = useClient();
   const trade = useTrade();
@@ -114,13 +122,7 @@ const MahasiswaTradeSource = () => {
                     pathname: "/mahasiswa",
                     search: "?d=add"
                   }}
-                  component={forwardRef((props, ref) => (
-                    <AnchorButton
-                      ref={ref}
-                      {...props}
-                      navigate={undefined}
-                    />
-                  ))}
+                  component={btn}
                   small={true}
                   minimal={true}
                   intent="primary"

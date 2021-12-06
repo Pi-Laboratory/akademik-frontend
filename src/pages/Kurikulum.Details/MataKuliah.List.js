@@ -3,6 +3,14 @@ import { Box, Flex, ListGroup, Pagination, Select, useClient, useList } from "co
 import { Link } from "react-router-dom";
 import { forwardRef, useEffect } from "react";
 
+const btn = forwardRef((props, ref) =>
+  <AnchorButton
+    {...props}
+    ref={ref}
+    navigate={undefined}
+  />
+);
+
 const List = () => {
   const client = useClient();
   const { items, setItems, paging, setPaging, filter, setFilter, selectedItem, dispatchSelectedItem } = useList();
@@ -94,13 +102,7 @@ const List = () => {
                     pathname: "/mata-kuliah",
                     search: "?d=add"
                   }}
-                  component={forwardRef((props, ref) =>
-                    <AnchorButton
-                      {...props}
-                      ref={ref}
-                      navigate={undefined}
-                    />
-                  )}
+                  component={btn}
                   small={true}
                   minimal={true}
                   intent="primary"
