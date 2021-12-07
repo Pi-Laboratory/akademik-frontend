@@ -56,7 +56,7 @@ const ListProvider = ({
     if (items) {
       indeterminate = (selectedItem.length > 0)
         && (selectedItem.length < items.length);
-      checked = selectedItem.length === items.length;
+      checked = selectedItem.length > 0 && selectedItem.length === items.length;
     }
     return {
       indeterminate,
