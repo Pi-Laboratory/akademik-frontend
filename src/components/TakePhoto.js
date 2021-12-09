@@ -27,7 +27,7 @@ export const TakePhotoArea = ({ onCapture = () => { }, onClose = () => { } }) =>
     return () => {
       cleanup();
     }
-  }, []);
+  }, [cleanup]);
 
   const captureImage = useCallback(() => {
     const video = videoArea.current;
@@ -38,11 +38,11 @@ export const TakePhotoArea = ({ onCapture = () => { }, onClose = () => { } }) =>
     const data = canvas.toDataURL('image/jpeg');
     onCapture(data);
     return data;
-  }, []);
+  }, [onCapture]);
 
   useEffect(() => {
     askForPermission();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -93,7 +93,7 @@ export const TakePhoto = ({ onCapture, icon = "camera", text, title = "Take Pict
   const [isOpen, setIsOpen] = useState(false);
   const isCompatible = useMemo(() => {
     return !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-  })
+  }, []);
   return (isCompatible && (
     <>
       <Button
