@@ -17,8 +17,8 @@ export const CropImageArea = ({ src, ratio = 1 / 1, onCropped, onClose = () => {
         const canvas = cropper.getCroppedCanvas();
         setCroppedImage(canvas.toDataURL());
       }
-    })
-  }, []);
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -29,7 +29,12 @@ export const CropImageArea = ({ src, ratio = 1 / 1, onCropped, onClose = () => {
         }
       }}>
         <AspectRatio ratio="1:1">
-          <img id="image-crop-area" ref={imageRef} src={src} />
+          <img
+            id="image-crop-area"
+            ref={imageRef}
+            src={src}
+            alt="Crop Area"
+          />
         </AspectRatio>
       </Box>
       <Box

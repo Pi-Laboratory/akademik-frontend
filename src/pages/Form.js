@@ -1,5 +1,5 @@
 import { Button, Card, FileInput, FormGroup, InputGroup } from "@blueprintjs/core";
-import { Box, CropImage, Flex, TakePhoto, TakePhotoArea } from "components";
+import { Box, CropImage, Flex, TakePhoto } from "components";
 import { Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -10,6 +10,7 @@ const Schema = Yup.object().shape({
   "foto": Yup.object().shape({
     "value": Yup.string().required(),
     "name": Yup.string().required(),
+    "cropped": Yup.string(),
   }).required(),
 })
 
@@ -139,7 +140,10 @@ const Form = () => {
                       maxWidth: "100%"
                     }
                   }}>
-                    <img src={values["foto"]["cropped"] || values["foto"]["value"]} />
+                    <img
+                      src={values["foto"]["cropped"] || values["foto"]["value"]}
+                      alt="Preview area"
+                    />
                   </Box>
                 }
                 <Box sx={{ mt: 3 }}>
