@@ -1,5 +1,5 @@
 import { Button, Card, FileInput, FormGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex } from "components";
+import { Box, CropImage, Flex, TakePhoto, TakePhotoArea } from "components";
 import { Formik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -85,34 +85,73 @@ const Form = () => {
                   helperText={errors["foto"] && "foto is required"}
                   intent={"danger"}
                 >
-                  <FileInput
-                    id="f-foto"
-                    name="foto"
-                    hasSelection={!!values["foto"]}
-                    text={loading["file"] ? "Loading" : values["foto"] ? values["foto"]["name"] : "Choose file..."}
-                    inputProps={{
-                      accept: "image/jpeg"
-                    }}
-                    onChange={async (ev) => {
-                      let file = ev.target.files[0];
-                      await setFieldValue("foto", undefined, true);
-                      await setLoading(l => ({ ...l, file: true }));
-                      const fileBase64 = await getBase64(file);
-                      await setFieldValue("foto", { value: fileBase64, name: file["name"] }, true);
-                      await setLoading(l => ({ ...l, file: false }));
-                    }}
-                  />
+                  <Flex>
+                    <Box sx={{ flexGrow: 1 }}>
+                      <FileInput
+                        id="f-foto"
+                        name="foto"
+                        fill={true}
+                        hasSelection={!!values["foto"]}
+                        text={loading["file"] ? "Loading" : values["foto"] ? values["foto"]["name"] : "Choose file..."}
+                        inputProps={{
+                          accept: "image/jpeg"
+                        }}
+                        onChange={async (ev) => {
+                          let file = ev.target.files[0];
+                          await setFieldValue("foto", undefined, true);
+                          await setLoading(l => ({ ...l, file: true }));
+                          const fileBase64 = await getBase64(file);
+                          await setFieldValue("foto", { value: fileBase64, name: file["name"], cropped: null }, true);
+                          await setLoading(l => ({ ...l, file: false }));
+                        }}
+                      />
+                    </Box>
+                    <Box sx={{ flexShink: 0 }}>
+                      <TakePhoto
+                        onCapture={(value) => {
+                          setFieldValue("foto", {
+                            name: "Webcam Capture",
+                            value: value,
+                            cropped: null,
+                          }, true);
+                        }}
+                      />
+                    </Box>
+                    <Box sx={{ flexShink: 0 }}>
+                      <CropImage
+                        ratio={3 / 4}
+                        onCropped={(value) => {
+                          setFieldValue("foto", {
+                            ...values["foto"],
+                            cropped: value,
+                          }, true);
+                        }}
+                        src={values["foto"] && values["foto"]["value"]}
+                        disabled={!values["foto"]}
+                      />
+                    </Box>
+                  </Flex>
                 </FormGroup>
                 <Box as="p" sx={{ fontSize: 0 }}>Ukuran foto 3x4.Foto Bebas Rapih.Latar Belakang Polos</Box>
+                {values["foto"] &&
+                  <Box sx={{
+                    "> img": {
+                      maxWidth: "100%"
+                    }
+                  }}>
+                    <img src={values["foto"]["cropped"] || values["foto"]["value"]} />
+                  </Box>
+                }
                 <Box sx={{ mt: 3 }}>
                   <Button text="Simpan" type="submit" intent="primary" loading={isSubmitting} />
                 </Box>
               </Card>
             </Box>
           </form>
-        )}
-      </Formik>
-    </Flex>
+        )
+        }
+      </Formik >
+    </Flex >
   )
 }
 export default Form;

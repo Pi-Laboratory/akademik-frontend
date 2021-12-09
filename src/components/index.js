@@ -1,5 +1,7 @@
 export { AspectRatio } from "./AspectRatio";
 export { ImageDropzone } from "./ImageDropzone";
+export { TakePhoto, TakePhotoArea } from "./TakePhoto";
+export { CropImage, CropImageArea } from "./CropImage";
 
 export { Box } from "./Grid";
 export { Flex } from "./Grid";
