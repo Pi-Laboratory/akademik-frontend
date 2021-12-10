@@ -10,7 +10,7 @@ export const Jadwal = () => {
   const navigation = useMemo(() => ([
     {
       "component": List,
-      "path": `/jadwal`,
+      "path": `/`,
       exact: true,
       icon: 'home'
     },

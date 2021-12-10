@@ -179,7 +179,7 @@ const DialogTambahBaru = ({
                     "Keluar/Pensiun/Alm",
                     "ALMARHUM",
                     "Studi Lanjut",
-                  ].map((v) => <Radio label={v} value={v} />)}
+                  ].map((v) => <Radio key={v} label={v} value={v} />)}
                 </RadioGroup>
               </FormGroup>
               <FormGroup

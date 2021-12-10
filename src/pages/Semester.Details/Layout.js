@@ -30,7 +30,7 @@ const Layout = () => {
               ["Year", item["year"]],
               ["Tipe", item["type"]]
             ].map((value) => (
-              <tr>
+              <tr key={value[0]}>
                 <td>
                   <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
                 </td>

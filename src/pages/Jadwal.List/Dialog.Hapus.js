@@ -24,7 +24,7 @@ const DialogHapus = ({ isOpen, onClose = () => { }, onSubmitted = () => { }, dat
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
-            const res = await client["schedules"].remove(data);
+            const res = await client["subject-lecturers"].remove(data);
             onClose();
             onSubmitted(res);
           } catch (err) {

@@ -40,7 +40,7 @@ const Layout = () => {
         total={paging.total}
         limit={paging.limit}
         skip={paging.skip}
-        onClick={({ page, skip }) => {
+        onClick={({ skip }) => {
           setPaging(paging => ({ ...paging, skip: skip }));
         }}
       />

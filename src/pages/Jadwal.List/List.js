@@ -1,7 +1,7 @@
 import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, CONSTANTS, Flex, ListGroup, useClient, useList } from "components";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import moment from "moment";
 
 const List = () => {
@@ -11,12 +11,12 @@ const List = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await client["schedules"].find({
+        const res = await client["subject-lecturers"].find({
           query: {
-            $select: ["id", "day", "subject_id", "lecturer_id"],
+            // $select: ["id", "day", "subject_id", "lecturer_id"],
             $include: [{
               model: "subjects",
-              $select: ["id", "name", "code"],
+              $select: ["id", "name", "code", "semester"],
               $include: [{
                 model: "study_programs",
                 $select: ["id", "name"]
@@ -30,7 +30,7 @@ const List = () => {
               }]
             }, {
               model: "hours",
-              $select: ["id", "start", "end"]
+              $select: ["id", "day", "start", "end"]
             }]
           }
         });
@@ -80,37 +80,31 @@ const List = () => {
                 }}
               />
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                {CONSTANTS["DAYS"][item["day"]]}
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                {moment(item["hour"]["start"], "HH:mm:ss").format("HH:mm")} - {moment(item["hour"]["end"], "HH:mm:ss").format("HH:mm")}
-              </Box>
+            <Box sx={{ flexShrink: 0, mr: 3, width: `15%` }}>
+              {item["hours"].map((hour, idx) => {
+                return (
+                  <Fragment key={idx}>
+                    <Box>
+                      {CONSTANTS["DAYS"][hour["day"]]}
+                    </Box>
+                    <Box sx={{ color: "gray.5" }}>
+                      {moment(hour["start"], "HH:mm:ss").format("HH:mm")} - {moment(hour["end"], "HH:mm:ss").format("HH:mm")}
+                    </Box>
+                  </Fragment>
+                )
+              })}
             </Box>
-
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box sx={{ color: "gray.5" }}>
-                Kelas
-              </Box>
-              <Box>
-                <Link to={`kelas`}>
-                  {item["class"]["name"]}
-                </Link>
-              </Box>
-
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
+            <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
               <Box>
                 <Link to={`/staff-dan-pengajar/${item["lecturer"]["nip"]}`}>
-                  {item["lecturer"]["name"]}
+                  {item["lecturer"]["employee"]["name"]}
                 </Link>
               </Box>
               <Box sx={{ color: "gray.5" }}>
-                {item["lecturer"]["nip"]}
+                {item["lecturer"]["employee"]["nip"]}
               </Box>
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
+            <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
               <Box>
                 <Link to={`/kurikulum/mata-kuliah/${item["subject"]["id"]}`}>
                   {item["subject"]["name"]}
@@ -120,7 +114,7 @@ const List = () => {
                 {item["subject"]["code"]}
               </Box>
             </Box>
-            <Box sx={{ flexGrow: 1 }}>
+            <Box sx={{ flexGrow: 1, width: `${100 / 3}%` }}>
               {item["subject"]["study_program"]["name"]}
             </Box>
           </Flex>
