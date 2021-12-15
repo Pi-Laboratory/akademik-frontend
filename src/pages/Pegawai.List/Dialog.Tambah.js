@@ -62,7 +62,7 @@ const DialogTambahBaru = ({
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
-            const res = await client["lecturers"].create(values);
+            const res = await client["employees"].create(values);
             onClose();
             onSubmitted(res);
           } catch (err) {
@@ -406,7 +406,12 @@ const DialogTambahBaru = ({
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                <Button minimal={true} intent="danger" text="Close" />
+                <Button
+                  minimal={true}
+                  intent="danger"
+                  text="Close"
+                  onClick={() => onClose()}
+                />
                 <Button loading={isSubmitting} type="submit" intent="primary" text="Simpan" />
               </div>
             </div>
