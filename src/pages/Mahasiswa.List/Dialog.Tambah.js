@@ -69,6 +69,7 @@ const DialogTambah = ({
         "registration_number": undefined,
         "registration_date": undefined,
         "student_status": "false",
+        "study_program_id": undefined,
 
         "father_name": undefined,
         "father_birth_date": undefined,

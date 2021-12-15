@@ -412,7 +412,12 @@ const DialogTambahBaru = ({
                   text="Close"
                   onClick={() => onClose()}
                 />
-                <Button loading={isSubmitting} type="submit" intent="primary" text="Simpan" />
+                <Button
+                  loading={isSubmitting}
+                  type="submit"
+                  intent="primary"
+                  text="Simpan"
+                />
               </div>
             </div>
           </form>

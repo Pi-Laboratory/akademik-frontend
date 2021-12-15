@@ -1,22 +1,27 @@
-import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, useClient, useList } from "components";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
+import { Box, Flex, ListGroup, useClient, useList } from 'components'
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, paging, setPaging, filter, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
+    setItems(null);
     const fetch = async () => {
-      setItems(null);
       try {
-        const res = await client["study-plans"].find({
-          // query: {
-          //   "study_program_id": filter["study_program_id"] || undefined,
-          //   $select: ["id", "code", "name", "semester", "created_at"],
-          //   $skip: paging.skip
-          // }
+        const res = await client["students"].find({
+          query: {
+            "generation": filter["generation"] || undefined,
+            "study_program_id": filter["study_program_id"] || undefined,
+            $skip: paging.skip,
+            $select: ["id", "name", "nim", "student_status", "generation"],
+            $include: [{
+              model: "study_programs",
+              $select: ["id", "name"]
+            }]
+          }
         });
         setItems(res.data);
         setPaging({
@@ -30,7 +35,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, filter, setItems, setPaging]);
+  }, [client, setItems, setPaging, paging.skip, filter]);
 
   return (
     <>
@@ -50,60 +55,22 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box>
-
-            <Box sx={{ width: "15%", flexGrow: 1, mr: 3 }}>
+            <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
-                <Link to={`${item["id"]}`}>
+                <Link to={`rencana-studi/${item["id"]}`}>
                   {item["name"]}
                 </Link>
               </Box>
-              <Box sx={{ color: "gray.5" }}>
-                {item["code"]}
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box sx={{ color: "gray.5" }}>
-                Semester
-              </Box>
               <Box>
-                {item["semester"]} <Box as="span" sx={{ color: "gray.5" }}>{Number(item["semester"]) % 2 ? "Gasal" : "Genap"}</Box>
+                {item["nim"]}
               </Box>
             </Box>
-
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                3
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                SKS
-              </Box>
+            <Box sx={{ width: "10%" }}>
+              {item["generation"]}
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                3
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                Jam
-              </Box>
+            <Box sx={{ width: "20%", flexShrink: 0 }}>
+              {item["study_program"]["name"]}
             </Box>
-            <Box sx={{ flexGrow: 1 }}>
-              Teori
-            </Box>
-
           </Flex>
         </ListGroup.Item>
       ))}
@@ -111,4 +78,4 @@ const List = () => {
   )
 }
 
-export default List;
+export default List

@@ -1,8 +1,9 @@
 import { Classes, FormGroup, HTMLSelect, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { Box, Flex } from "components";
+import { Box, Flex, Select, useClient } from "components";
 import { useFormikContext } from "formik";
 import moment from "moment";
+import { useCallback, useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
@@ -22,6 +23,7 @@ const Schema = Yup.object().shape({
   "registration_number": Yup.string().required(),
   "registration_date": Yup.date().required(),
   "student_status": Yup.boolean().required(),
+  "study_program_id": Yup.string().required(),
 });
 
 export const StepOne = {
@@ -31,6 +33,42 @@ export const StepOne = {
 
 function DialogTambahStepOne(props) {
   const { values, errors, handleChange, setFieldValue } = useFormikContext();
+  const client = useClient();
+
+  const [studyPrograms, setStudyPrograms] = useState([]);
+  const [loading, setLoading] = useState({
+    studyPrograms: false
+  })
+
+  const fetchStudyPrograms = useCallback(async (query) => {
+    setLoading(l => ({ ...l, studyPrograms: true }));
+    try {
+      const res = await client["study-programs"].find({
+        query: {
+          $select: ["id", "name"],
+          $or: [{
+            name: { $iLike: `%${query}%` }
+          }],
+          $include: [{
+            model: "majors",
+            $select: ["name"]
+          }]
+        }
+      });
+      console.log(res);
+      setStudyPrograms(res.data.map(({ id, name, major }) => {
+        return {
+          label: name,
+          value: id,
+          info: major["name"]
+        }
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(l => ({ ...l, studyPrograms: false }));
+  }, [client]);
+
   return (
     <div className={Classes.DIALOG_BODY}>
       <h5 className={Classes.HEADING}>Identitas Diri Mahasiswa</h5>
@@ -95,12 +133,12 @@ function DialogTambahStepOne(props) {
           onChange={handleChange}
           intent={errors["religion"] ? "danger" : "none"}
           options={[
-            {label: "Kristen Protestan", value: "KRISTEN PROTESTAN"},
-            {label: "Katolik", value: "KATOLIK"},
-            {label: "Islam", value: "ISLAM"},
-            {label: "Hindu", value: "HINDU"},
-            {label: "Budha", value: "BUDHA"},
-            {label: "Lainnya", value: "LAINNYA"},
+            { label: "Kristen Protestan", value: "KRISTEN PROTESTAN" },
+            { label: "Katolik", value: "KATOLIK" },
+            { label: "Islam", value: "ISLAM" },
+            { label: "Hindu", value: "HINDU" },
+            { label: "Budha", value: "BUDHA" },
+            { label: "Lainnya", value: "LAINNYA" },
           ]}
         />
       </FormGroup>
@@ -324,6 +362,25 @@ function DialogTambahStepOne(props) {
           <Radio label="Aktif" value={"true"} />
           <Radio label="Belum Aktif" value={"false"} />
         </RadioGroup>
+      </FormGroup>
+      <FormGroup
+        label="Program Studi"
+        labelFor="f-study_program_id"
+        helperText={errors["study_program_id"]}
+        intent={"danger"}
+      >
+        <Select
+          loading={loading["studyPrograms"]}
+          id="f-study_program_id"
+          name="study_program_id"
+          value={values["study_program_id"]}
+          intent={errors["study_program_id"] ? "danger" : "none"}
+          onChange={async ({ value }) => {
+            await setFieldValue("study_program_id", value, true);
+          }}
+          onCreateNew={(query) => fetchStudyPrograms(query)}
+          options={studyPrograms}
+        />
       </FormGroup>
 
     </div>

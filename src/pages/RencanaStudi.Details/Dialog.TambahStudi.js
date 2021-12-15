@@ -1,14 +1,14 @@
 import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
 import { Divider, Select, useClient } from "components";
 import { Formik } from "formik";
-import { useCallback, useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
-  "name": Yup.string().required(),
+  "semester": Yup.number().required(),
 })
 
-const DialogMataKuliahBaru = ({
+const DialogRencanaStudiBaru = ({
+  data,
   isOpen,
   onClose = () => { },
   onSubmitted = () => { }
@@ -20,18 +20,21 @@ const DialogMataKuliahBaru = ({
       enforceFocus={false}
       isOpen={isOpen}
       onClose={() => { onClose() }}
-      title="Generate Rencana Studi"
+      title="Tambah Rencana Studi"
     >
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "name": ""
+          "semester": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
-            // const res = await client["subjects"].create(values);
+            const res = await client["studies"].create({
+              "semester": values["semester"],
+              "student_id": data["student_id"]
+            });
             onClose();
-            // onSubmitted(res);
+            onSubmitted(res);
           } catch (err) {
             console.error(err);
             setErrors({ submit: err.message });
@@ -43,17 +46,17 @@ const DialogMataKuliahBaru = ({
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
-                label="Nama Mata Kuliah"
-                labelFor="f-name"
-                helperText={errors["name"]}
+                label="Semester"
+                labelFor="f-semester"
+                helperText={errors["semester"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  id="f-name"
-                  name="name"
-                  value={values["name"]}
+                  id="f-semester"
+                  name="semester"
+                  value={values["semester"]}
                   onChange={handleChange}
-                  intent={errors["name"] ? "danger" : "none"}
+                  intent={errors["semester"] ? "danger" : "none"}
                 />
               </FormGroup>
             </div>
@@ -77,4 +80,4 @@ const DialogMataKuliahBaru = ({
   )
 }
 
-export default DialogMataKuliahBaru;
+export default DialogRencanaStudiBaru;

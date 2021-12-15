@@ -43,7 +43,7 @@ const Layout = () => {
                 ["Nomor Telepon", item["phone_number"]],
                 ["Email", item["email"]]
               ].map((value, idx) => (
-                <tr>
+                <tr key={value[0]}>
                   <td>
                     <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
                   </td>

@@ -2,6 +2,7 @@ import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select, useList } from "components";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { flexBasis } from "styled-system";
 import DialogHapusMataKuliah from "./Dialog.Hapus";
 import DialogMataKuliahBaru from "./Dialog.Tambah";
 
@@ -12,7 +13,15 @@ const Filter = () => {
   const history = useHistory();
 
   return (
-    <Flex>
+    <Flex
+      sx={{
+        mb: 3,
+        mr: -3,
+        "> div": {
+          mr: 3
+        }
+      }}
+    >
       <Box>
         <ControlGroup>
           <Select
@@ -36,12 +45,12 @@ const Filter = () => {
             onClick={() => setDialogOpen("delete")}
           />
         }
-        <Divider vertical={true} sx={{ my: 1 }} />
-        <Button
+        {/* <Divider vertical={true} sx={{ my: 1 }} /> */}
+        {/* <Button
           intent="primary"
-          text="Mata Kuliah Baru"
+          text="Generate Rencana Studi"
           onClick={() => setDialogOpen("add")}
-        />
+        /> */}
       </Flex>
       <DialogMataKuliahBaru
         isOpen={dialogOpen === "add"}

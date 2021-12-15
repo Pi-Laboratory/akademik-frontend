@@ -101,6 +101,7 @@ export const ClientProvider = ({ children }) => {
       get "subject-lecturers"() { return feathers.service("subject-lecturers") },
       get "semesters"() { return feathers.service("semesters") },
       get "students"() { return feathers.service("students") },
+      get "studies"() { return feathers.service("studies") },
       get "study-programs"() { return feathers.service("study-programs") },
       get "study-plans"() { return feathers.service("study-plans") },
       get "subjects"() { return feathers.service("subjects") },
