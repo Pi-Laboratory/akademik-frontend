@@ -17,7 +17,7 @@ export const RencanaStudi = () => {
     },
     {
       "component": Detail,
-      "path": `/:student_id`,
+      "path": `/mahasiswa/:student_id`,
       "hide": true,
       "exact": true
     },

@@ -1,12 +1,21 @@
 import { Box, Flex, ListGroup, Select, useClient, useList, Pagination } from 'components'
-import React, { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useState } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 
 export const Layout = () => {
   const client = useClient();
-  const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
+  const {
+    selectedItem,
+    paging,
+    setPaging,
+    filter,
+    setFilter,
+    items,
+    status,
+    dispatchSelectedItem,
+  } = useList();
 
   const [studyPrograms, setStudyPrograms] = useState([]);
 
@@ -37,10 +46,42 @@ export const Layout = () => {
     <Box>
       <Box sx={{ px: 3, pt: 3 }}>
         <Filter />
-        <ListGroup>
+        <ListGroup sx={{
+          width: "100%",
+          [`.${Classes.CHECKBOX}`]: {
+            m: 0
+          }
+        }}>
           <ListGroup.Header>
             <Flex sx={{ alignItems: "center" }}>
-              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ width: 40, flexShrink: 0, }}>
+                <Checkbox
+                  disabled={paging.total === 0}
+                  checked={status.checked}
+                  indeterminate={status.indeterminate}
+                  onChange={(e) => {
+                    dispatchSelectedItem({
+                      type: "all",
+                      data: e.target.checked
+                    })
+                  }}
+                />
+              </Box>
+              <Box sx={{ flexGrow: 1 }}>
+                {selectedItem.length > 0
+                  && <Box>{selectedItem.length} selected</Box>
+                }
+                {items !== null
+                  && (selectedItem.length === items.length)
+                  && (selectedItem.length < paging.total)
+                  && <Button
+                    minimal={true}
+                    intent="primary"
+                    text={`Select all ${paging.total} item`}
+                    onClick={() => { }}
+                  />
+                }
+              </Box>
               <Box sx={{ flexShrink: 0 }}>
                 <Select
                   minimal={true}

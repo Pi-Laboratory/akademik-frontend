@@ -9,6 +9,10 @@ const List = () => {
 
   useEffect(() => {
     setItems(null);
+    setPaging(p => ({
+      ...p,
+      total: 0
+    }));
     const fetch = async () => {
       try {
         const res = await client["students"].find({
@@ -55,9 +59,23 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
+            <Box sx={{ width: 40, flexShrink: 0 }}>
+              <Checkbox
+                checked={selectedItem.indexOf(item["id"]) !== -1}
+                onChange={(e) => {
+                  dispatchSelectedItem({
+                    type: "toggle",
+                    data: {
+                      name: item["id"],
+                      value: e.target.checked
+                    }
+                  })
+                }}
+              />
+            </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
-                <Link to={`rencana-studi/${item["id"]}`}>
+                <Link to={`rencana-studi/mahasiswa/${item["id"]}`}>
                   {item["name"]}
                 </Link>
               </Box>

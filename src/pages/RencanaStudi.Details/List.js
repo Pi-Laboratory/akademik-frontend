@@ -50,7 +50,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging, filter["study_id"]]);
+  }, [client, setItems, setPaging, filter["study_id"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

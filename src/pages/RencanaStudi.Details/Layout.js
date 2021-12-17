@@ -35,7 +35,7 @@ const Layout = () => {
       }
     }
     fetch();
-  }, [client, params.id]);
+  }, [client, params["student_id"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box sx={{ mt: 3, px: 3 }}>

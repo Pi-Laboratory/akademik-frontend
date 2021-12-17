@@ -62,7 +62,7 @@ const ListProvider = ({
       indeterminate,
       checked,
     }
-  }, [items, selectedItem])
+  }, [items, selectedItem]);
 
   return (
     <ListContext.Provider value={{

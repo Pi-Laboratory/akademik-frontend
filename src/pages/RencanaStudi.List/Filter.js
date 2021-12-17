@@ -1,10 +1,9 @@
-import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Button, ControlGroup, Dialog, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select, useList } from "components";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { flexBasis } from "styled-system";
 import DialogHapusMataKuliah from "./Dialog.Hapus";
-import DialogMataKuliahBaru from "./Dialog.Tambah";
+import DialogMataKuliahBaru from "./Dialog.GenerateBatch";
 
 const Filter = () => {
   const location = useLocation();
@@ -45,20 +44,28 @@ const Filter = () => {
             onClick={() => setDialogOpen("delete")}
           />
         }
-        {/* <Divider vertical={true} sx={{ my: 1 }} /> */}
-        {/* <Button
+        <Divider vertical={true} sx={{ my: 1 }} />
+        <Button
+          disabled={selectedItem.length === 0}
           intent="primary"
           text="Generate Rencana Studi"
           onClick={() => setDialogOpen("add")}
-        /> */}
+        />
       </Flex>
-      <DialogMataKuliahBaru
+      <Dialog
+        enforceFocus={false}
         isOpen={dialogOpen === "add"}
         onClose={() => { setDialogOpen(null) }}
-        onSubmitted={() => {
-          history.go(0);
-        }}
-      />
+        title="Generate Rencana Studi"
+      >
+        <DialogMataKuliahBaru
+          data={selectedItem}
+          onClose={() => { setDialogOpen(null) }}
+          onSubmitted={() => {
+            history.go(0);
+          }}
+        />
+      </Dialog>
       <DialogHapusMataKuliah
         data={selectedItem}
         isOpen={dialogOpen === "delete"}

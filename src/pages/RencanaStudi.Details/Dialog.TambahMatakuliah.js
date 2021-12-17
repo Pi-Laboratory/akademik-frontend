@@ -1,5 +1,5 @@
-import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
-import { Divider, Select, useClient } from "components";
+import { Button, Classes, Dialog, FormGroup } from "@blueprintjs/core";
+import { Select, useClient } from "components";
 import { Formik } from "formik";
 import { useCallback } from "react";
 import { useState } from "react/cjs/react.development";
@@ -54,7 +54,7 @@ const DialogMatakuliah = ({
       console.error(err);
     }
     setLoading(loading => ({ ...loading, employees: false }));
-  }, [client]);
+  }, [client, data]);
 
   return (
     <Dialog

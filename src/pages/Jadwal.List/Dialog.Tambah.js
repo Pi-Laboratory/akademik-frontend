@@ -81,7 +81,7 @@ const DialogTambah = ({
           "subject_id": "",
           "lecturer_id": "",
           "hours": [{
-            day: null, start: new Date, end: new Date
+            day: null, start: new Date(), end: new Date()
           }]
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
