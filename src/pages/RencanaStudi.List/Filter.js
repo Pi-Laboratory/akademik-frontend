@@ -2,7 +2,6 @@ import { Button, ControlGroup, Dialog, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, Select, useList } from "components";
 import { useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import DialogHapusMataKuliah from "./Dialog.Hapus";
 import DialogMataKuliahBaru from "./Dialog.GenerateBatch";
 
 const Filter = () => {
@@ -36,14 +35,6 @@ const Filter = () => {
       </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Flex>
-        {selectedItem.length > 0 &&
-          <Button
-            minimal={true}
-            intent="danger"
-            text={`Delete ${selectedItem.length} selected`}
-            onClick={() => setDialogOpen("delete")}
-          />
-        }
         <Divider vertical={true} sx={{ my: 1 }} />
         <Button
           disabled={selectedItem.length === 0}
@@ -66,14 +57,6 @@ const Filter = () => {
           }}
         />
       </Dialog>
-      <DialogHapusMataKuliah
-        data={selectedItem}
-        isOpen={dialogOpen === "delete"}
-        onClose={() => { setDialogOpen(null) }}
-        onSubmitted={() => {
-          history.go(0);
-        }}
-      />
     </Flex>
   )
 }
