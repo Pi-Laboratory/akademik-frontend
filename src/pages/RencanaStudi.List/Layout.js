@@ -1,11 +1,18 @@
 import { Box, Flex, ListGroup, Select, useClient, useList, Pagination } from 'components'
-import { useEffect, useCallback, useState } from 'react'
+import { useEffect, useCallback, useState, useMemo } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export const Layout = () => {
   const client = useClient();
+  const history = useHistory();
+  const location = useLocation();
+  const urlQuery = useMemo(() => {
+    return new URLSearchParams(location["search"]);
+  }, [location["search"]]);
+
   const {
     selectedItem,
     paging,
@@ -122,6 +129,9 @@ export const Layout = () => {
                     intent="warning"
                     icon="filter-remove"
                     onClick={() => {
+                      history.replace({
+                        search: ""
+                      });
                       setFilter(filter => ({
                         ...filter,
                         "study_program_id": null,

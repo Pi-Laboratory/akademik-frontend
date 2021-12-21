@@ -11,10 +11,10 @@ const Router = () => {
     <Switch>
       {
         navigation.items &&
-        navigation.items.map((item) => (
+        navigation.items.map((item, idx) => (
           <Route
             exact={item.exact}
-            key={item.path}
+            key={`${item.path}_${idx}`}
             path={`${item.path}`}
             component={item.component}
           />

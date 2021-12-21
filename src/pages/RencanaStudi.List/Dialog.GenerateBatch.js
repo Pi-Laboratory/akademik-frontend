@@ -1,4 +1,4 @@
-import { Button, Classes, ControlGroup, FormGroup, InputGroup, Switch } from "@blueprintjs/core";
+import { Button, Classes, ControlGroup, FormGroup, HTMLSelect, InputGroup, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { ListGroup, useClient, Box, Flex, Select } from "components";
 import { Formik } from "formik";
 import { useCallback, useEffect, useState } from "react";
@@ -16,12 +16,45 @@ const DialogGenerateBatch = ({
 }) => {
   const client = useClient();
   const [items, setItems] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [curriculums, setCurriculums] = useState([]);
   const [studyPrograms, setStudyPrograms] = useState([]);
   const [loading, setLoading] = useState({
     curriculums: false,
     studyPrograms: false
   });
+
+  const fetchSubjects = useCallback(async (curriculum_id, semester) => {
+    let ret = [];
+    await setLoading(l => ({ ...l, studyPrograms: true }));
+    try {
+      const res = await client["subjects"].find({
+        query: {
+          "semester": semester,
+          "curriculum_id": curriculum_id,
+          $select: ["id", "name", "code"],
+          $include: [{
+            model: "subject_lecturers",
+            $select: ["id"],
+            $include: [{
+              model: "lecturers",
+              $select: ["id"],
+              $include: [{
+                model: "employees",
+                $select: ["id", "name"]
+              }]
+            }]
+          }]
+        }
+      });
+      await setSubjects(res.data);
+      ret = res.data;
+    } catch (err) {
+      console.error(err);
+    }
+    await setLoading(l => ({ ...l, studyPrograms: false }));
+    return ret;
+  }, [client]);
 
   const fetchStudyPrograms = useCallback(async (query) => {
     setLoading(l => ({ ...l, studyPrograms: true }));
@@ -99,6 +132,8 @@ const DialogGenerateBatch = ({
       }
     }
     fetch();
+    fetchStudyPrograms("");
+    fetchCurriculums("", undefined);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -107,14 +142,18 @@ const DialogGenerateBatch = ({
       initialValues={{
         "semester": "",
         "semester_package": false,
-        "semester_curriculum": 1
+        "semester_curriculum": "",
+        "subject_lecturer_ids": [],
       }}
       onSubmit={async (values, { setErrors, setSubmitting }) => {
         try {
-          console.log(values);
-          // const res = await client["subjects"].create(values);
-          // onClose();
-          // onSubmitted(res);
+          const res = await client["contracts"].create({
+            "student_ids": data,
+            "semester": values["semester"],
+            "subject_lecturer_ids": values["subject_lecturer_ids"],
+          });
+          onClose();
+          onSubmitted(res);
         } catch (err) {
           console.error(err);
           setErrors({ submit: err.message });
@@ -255,11 +294,68 @@ const DialogGenerateBatch = ({
                       id="f-semester_curriculum"
                       name="semester_curriculum"
                       value={values["semester_curriculum"]}
-                      onChange={handleChange}
+                      onChange={async (e) => {
+                        const v = e.target.value;
+                        await setFieldValue("semester_curriculum", v);
+                        await fetchSubjects(values["curriculum_id"], v);
+                        await setFieldValue("subject_lecturer_ids", []);
+                      }}
                       intent={errors["semester_curriculum"] ? "danger" : "none"}
                     />
                   </ControlGroup>
                 </FormGroup>
+                <Box sx={{
+                  mb: 3
+                }}>
+                  <ListGroup>
+                    {subjects.map((item, idx) => {
+                      return (
+                        <ListGroup.Item key={item["id"]}>
+                          <Flex sx={{
+                            "> div": {
+                              width: `${100 / 3}%`
+                            }
+                          }}>
+                            <Box>
+                              <Box>
+                                {item["name"]}
+                              </Box>
+                              <Box sx={{ color: "gray.5" }}>
+                                {item["code"]}
+                              </Box>
+                            </Box>
+                            <Box>
+
+                            </Box>
+                            <Box>
+                              <RadioGroup
+                                onChange={(e) => {
+                                  console.log(values["subject_lecturer_ids"]);
+                                  console.log(values["subject_lecturer_ids"].indexOf(e.target.value));
+                                  if (values["subject_lecturer_ids"].indexOf(e.target.value) !== -1) return;
+                                  values["subject_lecturer_ids"][idx] = e.target.value;
+                                  setFieldValue("subject_lecturer_ids", values["subject_lecturer_ids"]);
+                                }}
+                                selectedValue={values["subject_lecturer_ids"][idx]}
+                              >
+                                {item["subject_lecturers"].map(({ id, lecturer: { employee: { name } } }) => {
+                                  return <Radio key={id} label={name} value={`${id}`} />;
+                                })}
+                              </RadioGroup>
+                            </Box>
+                          </Flex>
+                        </ListGroup.Item>)
+                    })}
+                    {data.length > 3 &&
+                      <ListGroup.Item>
+                        <Flex sx={{
+                          justifyContent: "center"
+                        }}>
+                          <Box>{data.length - 3} more student</Box>
+                        </Flex>
+                      </ListGroup.Item>}
+                  </ListGroup>
+                </Box>
               </>
             }
           </div>

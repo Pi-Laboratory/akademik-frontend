@@ -106,7 +106,7 @@ const navigation = [
     "icon": "blank"
   },
   {
-    "title": "Nama Servis",
+    "title": "Manajemeen Ruang",
     "text": "Manajemen Ruang",
     "component": ManajemenRuang,
     "path": "/manajemen-ruang",
@@ -132,7 +132,7 @@ const navigation = [
     "component": Users,
     "path": "/users",
     "icon": "blank",
-    "permission": "admin"
+    "permission": "Admin"
   }
 ]
 

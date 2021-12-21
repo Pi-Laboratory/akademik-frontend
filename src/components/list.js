@@ -5,6 +5,7 @@ const ListContext = createContext();
 const ListProvider = ({
   children,
   onSelectionChange = () => { },
+  onFilterChange = () => { },
   ...props
 }) => {
   const [items, setItems] = useState(null);
@@ -14,6 +15,10 @@ const ListProvider = ({
     limit: null,
     skip: 0
   });
+
+  useEffect(() => {
+    onFilterChange(filter);
+  }, [filter]);
 
   const selectedItemReducer = useCallback((state, action) => {
     switch (action.type) {
