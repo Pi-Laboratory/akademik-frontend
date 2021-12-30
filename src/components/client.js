@@ -27,8 +27,8 @@ export const ClientProvider = ({ children }) => {
 
   const role = useMemo(() => {
     if (account === null) return null;
-    const { lecturerId, studentId } = account;
-    return !studentId ? !lecturerId ? "Admin" : "Lecture" : "Student";
+    const { lecturer_id, student_id } = account;
+    return !student_id ? !lecturer_id ? "Admin" : "Lecture" : "Student";
   }, [account]);
 
   useEffect(() => {
