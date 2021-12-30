@@ -11,7 +11,7 @@ const Schema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Password must match")
     .required(),
   "type": Yup.string().oneOf(["admin", "lecture", "student"]),
-  "lecture_id": Yup.number().when("type", {
+  "lecturer_id": Yup.number().when("type", {
     is: "lecture",
     then: Yup.number().required()
   }),
@@ -39,10 +39,14 @@ const DialogTambah = ({
     setLoading(loading => ({ ...loading, lecture: true }));
     const res = await client["lecturers"].find({
       query: {
-        $select: ["id", "name", "nip"]
+        $select: ["id", "nidn"],
+        $include: [{
+          model: "employees",
+          $select: ["name", "nip"]
+        }]
       }
     });
-    setLecturers(res.data.map(({ id, name, nip }) => ({
+    setLecturers(res.data.map(({ id, employee: { name, nip } }) => ({
       label: name,
       value: id,
       info: nip
@@ -80,7 +84,7 @@ const DialogTambah = ({
           "confirm_password": "",
           "show_password": false,
           "type": "admin",
-          "lecture_id": undefined,
+          "lecturer_id": undefined,
           "student_id": undefined,
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
@@ -91,8 +95,8 @@ const DialogTambah = ({
           delete data["lecture_id"];
           delete data["student_id"];
 
-          if (data.type === "lecture") data["lecture_id"] = values["lecture_id"];
-          if (data.type === "student") data["student_id"] = values["student_id"];
+          if (values.type === "lecture") data["lecturer_id"] = values["lecturer_id"];
+          if (values.type === "student") data["student_id"] = values["student_id"];
           try {
             const res = await client["users"].create(data);
             onClose();
@@ -130,21 +134,21 @@ const DialogTambah = ({
               {values["type"] === "lecture" &&
                 <FormGroup
                   label="Identitas Pengajar"
-                  labelFor="f-lecture_id"
-                  helperText={errors["lecture_id"]}
+                  labelFor="f-lecturer_id"
+                  helperText={errors["lecturer_id"]}
                   intent={"danger"}
                 >
                   <Select
                     loading={loading["lecture"]}
-                    id="f-lecture_id"
-                    name="lecture_id"
-                    value={values["lecture_id"]}
+                    id="f-lecturer_id"
+                    name="lecturer_id"
+                    value={values["lecturer_id"]}
                     onOpening={async () => { await fetchLecturers(); }}
                     onChange={async ({ value, info }) => {
                       await setFieldValue("username", info);
-                      await setFieldValue("lecture_id", value);
+                      await setFieldValue("lecturer_id", value);
                     }}
-                    intent={errors["lecture_id"] ? "danger" : "none"}
+                    intent={errors["lecturer_id"] ? "danger" : "none"}
                     options={lecturers}
                   />
                 </FormGroup>}
