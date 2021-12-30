@@ -60,5 +60,5 @@ Bagian ini dipindahkan ke halaman berikut: [https://facebook.github.io/create-re
 
 Bagian ini dipindahkan ke halaman berikut: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-![Akademik](https://user-images.githubusercontent.com/20113627/146182587-78b742fe-bf02-4556-b871-0776b2d60a38.png)
+![akademik](https://user-images.githubusercontent.com/20113627/147768345-d3dd28fa-0aa4-40ed-8de3-7a8d4713c360.jpg)
 
