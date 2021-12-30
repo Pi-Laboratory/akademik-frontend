@@ -37,8 +37,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client]);
-
+  }, [client]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Container sx={{ px: 3 }}>
       <ListGroup

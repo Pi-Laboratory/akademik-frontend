@@ -1,6 +1,7 @@
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
+import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
@@ -33,98 +34,120 @@ const navigation = [
     "text": "Kurikulum",
     "component": Kurikulum,
     "path": "/kurikulum/",
-    "icon": "book"
+    "icon": "book",
+    "permission": "Admin"
   },
   {
     "title": "Mata Kuliah",
     "text": "Mata Kuliah",
     "component": MataKuliah,
     "path": "/mata-kuliah/",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Semester",
     "text": "Semester",
     "component": Semester,
     "path": "/semester/",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
+  },
+  {
+    "title": "Jadwal",
+    "text": "Jadwal",
+    "component": LecturerJadwal,
+    "path": "/jadwal/",
+    "icon": "blank",
+    "permission": "Lecturer"
   },
   {
     "title": "Jadwal",
     "text": "Jadwal",
     "component": Jadwal,
     "path": "/jadwal/",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Presensi",
     "text": "Presensi dan Nilai",
     "component": Presensi,
     "path": "/presensi-nilai",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Pegawai",
     "text": "Pegawai",
     "component": Pegawai,
     "path": "/pegawai",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Pengajar",
     "text": "Pengajar",
     "component": Pengajar,
     "path": "/pengajar",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Akademik Kemahasiswaan",
     "text": "Mahasiswa",
     "component": Mahasiswa,
     "path": "/mahasiswa",
-    "icon": "user"
+    "icon": "user",
+    "permission": "Admin"
   },
   {
     "title": "Rencana Studi",
     "text": "Rencana Studi",
     "component": RencanaStudi,
     "path": "/rencana-studi",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Kelas",
     "text": "Kelas",
     "component": Kelas,
     "path": "/kelas",
-    "icon": "inherited-group"
+    "icon": "inherited-group",
+    "permission": "Admin"
   },
   {
     "title": "Divisi Pendidikan",
     "text": "Divisi Pendidikan",
     "component": DivisiPendidikan,
     "path": "/divisi-pendidikan",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Manajemeen Ruang",
     "text": "Manajemen Ruang",
     "component": ManajemenRuang,
     "path": "/manajemen-ruang",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Penerimaan mahasiswa baru",
     "text": "Penerimaan",
     "component": AkunSementara,
     "path": "/penerimaan",
-    "icon": "blank"
+    "icon": "blank",
+    "permission": "Admin"
   },
   {
     "title": "Settings",
     "text": "Settings",
     "component": Settings,
     "path": "/settings",
-    "icon": "cog"
+    "icon": "cog",
+    "permission": "Admin"
   },
   {
     "title": "Users",

@@ -14,7 +14,7 @@ const List = () => {
       "study_program_id": url.get("study_program_id"),
     };
     return [filter, url];
-  }, [location["search"]]);
+  }, [location["search"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <ListProvider
