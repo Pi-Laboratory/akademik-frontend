@@ -91,21 +91,6 @@ const DialogTambahBaru = ({
                 />
               </FormGroup>
               <FormGroup
-                label="NIDN"
-                labelInfo="(Nomor Induk Dosen Nasional)"
-                labelFor="f-nidn"
-                helperText={errors["nidn"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-nidn"
-                  name="nidn"
-                  value={values["nidn"]}
-                  onChange={handleChange}
-                  intent={errors["nidn"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
                 label="NIK"
                 labelInfo="(Nomor Induk Kependudukan)"
                 labelFor="f-id_number"
