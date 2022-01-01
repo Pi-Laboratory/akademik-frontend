@@ -1,4 +1,4 @@
-import { Button, Classes, Dialog, FormGroup, InputGroup, Tag } from "@blueprintjs/core";
+import { Button, Classes, Dialog, FormGroup } from "@blueprintjs/core";
 import { TimePicker } from "@blueprintjs/datetime";
 import { Box, CONSTANTS, Flex, Select, useClient } from "components";
 import { FieldArray, Formik } from "formik";
@@ -17,11 +17,7 @@ const Schema = Yup.object().shape({
     "end": Yup.date().default(() => {
       return new Date();
     })
-  })),
-  "mid_test_weight": Yup.number().required(),
-  "final_test_weight": Yup.number().required(),
-  "task_weight": Yup.number().required(),
-  "presence_weight": Yup.number().required(),
+  }))
 })
 
 const DialogTambah = ({
@@ -86,11 +82,7 @@ const DialogTambah = ({
           "lecturer_id": "",
           "hours": [{
             day: null, start: new Date(), end: new Date()
-          }],
-          "mid_test_weight": 25,
-          "final_test_weight": 25,
-          "task_weight": 25,
-          "presence_weight": 25,
+          }]
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -99,10 +91,6 @@ const DialogTambah = ({
               "subject_id": values["subject_id"],
               "lecturer_id": values["lecturer_id"],
               "semester_id": values["semester_id"],
-              "mid_test_weight": values["mid_test_weight"],
-              "final_test_weight": values["final_test_weight"],
-              "task_weight": values["task_weight"],
-              "presence_weight": values["presence_weight"]
             });
             await Promise.all(values["hours"].map(async (hour) => {
               return await client["hours"].create({
@@ -265,71 +253,6 @@ const DialogTambah = ({
                   </Box>
                 )}
               />
-              <h4>Bobot nilai</h4>
-              <FormGroup
-                label="Kehadiran"
-                labelFor="f-presence_weight"
-                helperText={errors["presence_weight"]}
-                intent={"danger"}
-                inline={true}
-              >
-                <InputGroup
-                  id="f-presence_weight"
-                  name="presence_weight"
-                  value={values["presence_weight"]}
-                  onChange={handleChange}
-                  intent={errors["presence_weight"] ? "danger" : "none"}
-                  rightElement={<Tag minimal={true}>%</Tag>}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Tugas"
-                labelFor="f-task_weight"
-                helperText={errors["task_weight"]}
-                intent={"danger"}
-                inline={true}
-              >
-                <InputGroup
-                  id="f-task_weight"
-                  name="task_weight"
-                  value={values["task_weight"]}
-                  onChange={handleChange}
-                  intent={errors["task_weight"] ? "danger" : "none"}
-                  rightElement={<Tag minimal={true}>%</Tag>}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Mid Semester"
-                labelFor="f-mid_test_weight"
-                helperText={errors["mid_test_weight"]}
-                intent={"danger"}
-                inline={true}
-              >
-                <InputGroup
-                  id="f-mid_test_weight"
-                  name="mid_test_weight"
-                  value={values["mid_test_weight"]}
-                  onChange={handleChange}
-                  intent={errors["mid_test_weight"] ? "danger" : "none"}
-                  rightElement={<Tag minimal={true}>%</Tag>}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Akhir Semester"
-                labelFor="f-final_test_weight"
-                helperText={errors["final_test_weight"]}
-                intent={"danger"}
-                inline={true}
-              >
-                <InputGroup
-                  id="f-final_test_weight"
-                  name="final_test_weight"
-                  value={values["final_test_weight"]}
-                  onChange={handleChange}
-                  intent={errors["final_test_weight"] ? "danger" : "none"}
-                  rightElement={<Tag minimal={true}>%</Tag>}
-                />
-              </FormGroup>
             </div>
             <div className={Classes.DIALOG_FOOTER}>
               <div className={Classes.DIALOG_FOOTER_ACTIONS}>

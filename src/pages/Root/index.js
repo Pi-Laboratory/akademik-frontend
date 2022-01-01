@@ -3,6 +3,7 @@ import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
 import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import Presensi from "pages/PresensiNilai"
+import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManajemenRuang";
@@ -54,14 +55,6 @@ const navigation = [
     "path": "/semester/",
     "icon": "blank",
     "permission": "Admin"
-  },
-  {
-    "title": "Jadwal",
-    "text": "Jadwal",
-    "component": LecturerJadwal,
-    "path": "/jadwal/",
-    "icon": "blank",
-    "permission": "Lecturer"
   },
   {
     "title": "Jadwal",
@@ -158,7 +151,24 @@ const navigation = [
     "path": "/users",
     "icon": "blank",
     "permission": "Admin"
-  }
+  },
+  
+  {
+    "title": "Jadwal",
+    "text": "Jadwal",
+    "component": LecturerJadwal,
+    "path": "/jadwal/",
+    "icon": "blank",
+    "permission": "Lecturer"
+  },
+  {
+    "title": "Penilaian",
+    "text": "Penilaian",
+    "component": LecturerPresensiNilai,
+    "path": "/penilaian/",
+    "icon": "blank",
+    "permission": "Lecturer"
+  },
 ]
 
 const Root = () => {

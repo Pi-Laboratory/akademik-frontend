@@ -18,7 +18,7 @@ const ListProvider = ({
 
   useEffect(() => {
     onFilterChange(filter);
-  }, [filter]);
+  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const selectedItemReducer = useCallback((state, action) => {
     switch (action.type) {
