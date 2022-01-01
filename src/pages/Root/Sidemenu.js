@@ -1,19 +1,12 @@
 import ScrollArea from "react-scrollbar";
 import { Classes, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
-import { Box, useClient } from "components";
+import { Box } from "components";
 import { useNav } from "./hoc";
 import { useLocation } from "react-router";
-import { useMemo } from "react";
 
 const Sidemenu = () => {
   const navigation = useNav("/");
   const location = useLocation();
-  const client = useClient();
-  const items = useMemo(() => {
-    return navigation.items.filter(({ permission }) => {
-      return permission ? permission === client.role : true;
-    });
-  }, [navigation.items, client.role]);
   return (
     <Box as={ScrollArea}
       sx={{
@@ -35,8 +28,8 @@ const Sidemenu = () => {
         <Menu>
           <MenuDivider title="Main Menu" />
           {
-            items
-            && items.map((item) => {
+            navigation.items
+            && navigation.items.map((item) => {
               let active = false;
               if (item.exact) {
                 active = location.pathname === item.path;

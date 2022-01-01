@@ -19,6 +19,8 @@ import { MataKuliah } from "pages/MataKuliah";
 import { Semester } from "pages/Semester";
 import { Kelas } from "pages/Kelas";
 import { RencanaStudi } from "pages/RencanaStudi";
+import { useClient } from "components";
+import { useMemo } from "react";
 
 const navigation = [
   {
@@ -161,12 +163,19 @@ const navigation = [
 
 const Root = () => {
   const { path } = useRouteMatch();
+  const client = useClient();
+  const items = useMemo(() => {
+    return navigation.filter(({ permission }) => {
+      return permission ? permission === client.role : true;
+    });
+  }, [navigation, client.role]);  // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <RootProvider>
       <Helmet>
         <title>Dashboard - Portal Akademik</title>
       </Helmet>
-      <Navigation base={path} navigation={navigation}>
+      <Navigation base={path} navigation={items}>
         <Layout />
       </Navigation>
     </RootProvider>
