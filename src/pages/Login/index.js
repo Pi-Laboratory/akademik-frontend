@@ -14,7 +14,7 @@ const Login = () => {
   const client = useClient();
   const history = useHistory();
 
-  const onSubmit = useCallback(async (values, { setIsSubmitting, setErrors }) => {
+  const onSubmit = useCallback(async (values, { setSubmitting, setErrors }) => {
     if (!client.__connected) return;
     try {
       await client.authenticate({
@@ -29,7 +29,7 @@ const Login = () => {
       });
       console.error(err);
     }
-    setIsSubmitting(false);
+    setSubmitting(false);
   }, [client, history]);
 
   return (
