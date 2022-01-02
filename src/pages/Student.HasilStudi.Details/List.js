@@ -1,12 +1,11 @@
-import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, CONSTANTS, Flex, ListGroup, useClient, useList } from "components";
+import { NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, useClient, useList } from "components";
 import { Link } from "react-router-dom";
-import { Fragment, useEffect } from "react";
-import moment from "moment";
+import { useEffect } from "react";
 
 const List = () => {
   const client = useClient();
-  const { items, filter, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, filter, setItems, setPaging } = useList();
 
   useEffect(() => {
     const fetch = async () => {

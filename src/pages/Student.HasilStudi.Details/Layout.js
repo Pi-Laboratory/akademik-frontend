@@ -1,19 +1,13 @@
-import { Button, Checkbox, Classes, FormGroup, HTMLSelect, HTMLTable } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, useClient, useList } from "components";
+import { Classes, HTMLTable } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, useClient } from "components";
 import { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router";
-import DialogMatakuliah from "./Dialog.TambahMatakuliah";
-import DialogHapusMatakuliah from "./Dialog.HapusMatakuliah";
-import DialogRencanaStudiBaru from "./Dialog.TambahStudi";
+import { useParams } from "react-router";
 import List from "./List";
 
 const Layout = () => {
   const client = useClient();
   const params = useParams();
-  const history = useHistory();
   const [studyDetail, setStudyDetail] = useState(null);
-  const { filter, setFilter, status, selectedItem, dispatchSelectedItem } = useList();
-  const [dialogOpen, setDialogOpen] = useState(null);
 
   useEffect(() => {
     const fetch = async () => {

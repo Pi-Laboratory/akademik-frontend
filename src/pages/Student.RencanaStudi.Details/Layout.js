@@ -20,7 +20,7 @@ const Layout = () => {
   const location = useLocation();
   const history = useHistory();
   const [studyDetail, setStudyDetail] = useState(null);
-  const { filter, setFilter, status, selectedItem, dispatchSelectedItem } = useList();
+  const { status, selectedItem, dispatchSelectedItem } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
 
   useEffect(() => {
