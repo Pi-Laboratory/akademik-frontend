@@ -1,9 +1,11 @@
+import StudentRencanaStudi from "pages/Student.RencanaStudi";
+import StudentHasilStudi from "pages/Student.HasilStudi";
+import { LecturerJadwal } from "pages/Lecturer.Jadwal";
+import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
-import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import Presensi from "pages/PresensiNilai"
-import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManajemenRuang";
@@ -168,6 +170,23 @@ const navigation = [
     "path": "/penilaian/",
     "icon": "blank",
     "permission": "Lecturer"
+  },
+
+  {
+    "title": "Rencana Studi",
+    "text": "Rencana Studi",
+    "component": StudentRencanaStudi,
+    "path": "/rencana-studi/",
+    "icon": "blank",
+    "permission": "Student"
+  },
+  {
+    "title": "Hasil Studi",
+    "text": "Hasil Studi",
+    "component": StudentHasilStudi,
+    "path": "/hasil-studi/",
+    "icon": "blank",
+    "permission": "Student"
   },
 ]
 
