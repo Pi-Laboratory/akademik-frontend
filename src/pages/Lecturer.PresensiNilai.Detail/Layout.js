@@ -1,36 +1,99 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select } from "components";
+import { Button, Classes, HTMLTable } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Pagination, Select, useClient, useList } from "components";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Filter from "./Filter";
-import { useReducer } from "react";
+import { usePage } from "./hoc";
+import List from "./List";
 
-function selectedItemReducer(state, action) {
-  switch (action.type) {
-    case "toggle":
-      if (action.data.value) {
-        return selectedItemReducer(state, {
-          type: "add",
-          data: action.data
+const Layout = () => {
+  const client = useClient();
+  const params = useParams();
+  const { paging, setPaging, items } = useList();
+  const [pageState, setPageState] = usePage();
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await client["subject-lecturers"].get(params["subject_id"], {
+          query: {
+            // $select: ["id", "name", "code"],
+            $include: [{
+              model: "subjects",
+              $select: ["id", "name", "code"],
+            }, {
+              model: "lecturers",
+              $select: ["id", "employee_id"],
+              $include: [{
+                model: "employees",
+                $select: ["id", "front_degree", "name", "back_degree",]
+              }]
+            }]
+          }
         });
-      } else {
-        return selectedItemReducer(state, {
-          type: "remove",
-          data: action.data
-        });
+        console.log(res);
+        setPageState(res);
+      } catch (err) {
+        console.error(err);
       }
-    case "add":
-      return [...state, action.data.name];
-    case "remove":
-      return [...state.filter(item => item !== action.data.name)];
-    default: return state;
-  }
-}
+    }
+    fetch();
+  }, [client, params]); //eslint-disable-line react-hooks/exhaustive-deps
 
-const List = () => {
-  const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
   return (
     <Box sx={{ mt: 3, px: 3 }}>
+      <Flex sx={{ mb: 3, mx: -2 }}>
+        <Box sx={{ mx: 2 }}>
+          <h4 className={Classes.HEADING}>Ringkasan</h4>
+          {pageState &&
+            <HTMLTable striped={true}>
+              <tbody>
+                {[
+                  ["Mata Kuliah", pageState["subject"]["name"]],
+                  ["Kode", pageState["subject"]["code"]],
+                ].map((value, idx) => (
+                  <tr key={idx}>
+                    <td>
+                      <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
+                    </td>
+                    <td>{value[1]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </HTMLTable>}
+        </Box>
+        <Box sx={{ mx: 2 }}>
+          <Flex sx={{ justifyContent: "space-between" }}>
+            <h4 className={Classes.HEADING}>Bobot Penilaian</h4>
+            <Box>
+              <Button
+                small={true}
+                minimal={true}
+                text="Edit"
+              />
+            </Box>
+          </Flex>
+          {pageState &&
+            <HTMLTable striped={true}>
+              <tbody>
+                {[
+                  ["Kehadiran", `${pageState["presence_weight"]}%`],
+                  ["Tugas", `${pageState["task_weight"]}%`],
+                  ["Ujian Tengah Semester", `${pageState["mid_test_weight"]}%`],
+                  ["Ujian Akhir Semester", `${pageState["final_test_weight"]}%`],
+                ].map((value, idx) => (
+                  <tr key={idx}>
+                    <td>
+                      <Box sx={{ color: "gray.4" }}>{value[0]}</Box>
+                    </td>
+                    <td>{value[1]}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </HTMLTable>}
+        </Box>
+      </Flex>
       <Box sx={{ mb: 3 }}>
-        <Filter selectedItem={selectedItem} />
+        <Filter />
       </Box>
       <ListGroup sx={{
         width: "100%",
@@ -40,16 +103,9 @@ const List = () => {
       }}>
         <ListGroup.Header>
           <Flex sx={{ alignItems: "center" }}>
-            <Box sx={{ width: 40, flexShrink: 0, }}>
-              <Checkbox
-                onChange={(e) => {
-                  console.log(e);
-                }}
-              />
-            </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-             
+
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -65,53 +121,19 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
-            <Flex>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: idx,
-                      value: e.target.checked
-                    }
-                  })
-                }} />
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                Uzumaki Naruto
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                16022062
-                </Box>
-              </Box>
-             
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                Hadir Alpa Sakit Izin 
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Status
-                </Box>
-              </Box>
-
-            </Flex>
-          </ListGroup.Item>
-        ))}
+        <List />
       </ListGroup>
-      <Flex sx={{ my: 3, justifyContent: "center" }}>
-        <Button minimal={true} icon="chevron-left" text="Previous" />
-        <ButtonGroup>
-          <Button text="1" active={true} />
-          <Button text="2" />
-          <Button text="3" />
-        </ButtonGroup>
-        <Button minimal={true} text="Next" rightIcon="chevron-right" />
-      </Flex>
+      <Pagination
+        loading={items === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Box >
   )
 }
 
-export default List;
+export default Layout;

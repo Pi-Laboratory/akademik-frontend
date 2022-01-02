@@ -1,36 +1,14 @@
-import { Button, ButtonGroup, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select } from "components";
+import { Checkbox, Classes } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Pagination, Select, useList } from "components";
 import Filter from "./Filter";
-import { useReducer } from "react";
+import List from "./List";
 
-function selectedItemReducer(state, action) {
-  switch (action.type) {
-    case "toggle":
-      if (action.data.value) {
-        return selectedItemReducer(state, {
-          type: "add",
-          data: action.data
-        });
-      } else {
-        return selectedItemReducer(state, {
-          type: "remove",
-          data: action.data
-        });
-      }
-    case "add":
-      return [...state, action.data.name];
-    case "remove":
-      return [...state.filter(item => item !== action.data.name)];
-    default: return state;
-  }
-}
-
-const List = () => {
-  const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
+const PresensiNilaiList = () => {
+  const { paging, setPaging, items } = useList();
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
-        <Filter selectedItem={selectedItem} />
+        <Filter />
       </Box>
       <ListGroup sx={{
         width: "100%",
@@ -49,7 +27,6 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-             
               <Select
                 minimal={true}
                 label="Program Studi"
@@ -65,79 +42,19 @@ const List = () => {
             </Box>
           </Flex>
         </ListGroup.Header>
-        {Array(25).fill(0).map((_, idx) => (
-          <ListGroup.Item key={idx}>
-            <Flex>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: idx,
-                      value: e.target.checked
-                    }
-                  })
-                }} />
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                Matematika
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                3500
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                TL1
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                1
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Semester
-                </Box>
-              </Box>
-              
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                0
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Telah dinilai
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                31
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                Belum dinilai
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, mr: 3 }}>
-                <Box>
-                Teknik Elektro
-                </Box>
-              </Box>
-
-            </Flex>
-          </ListGroup.Item>
-        ))}
+        <List />
       </ListGroup>
-      <Flex sx={{ my: 3, justifyContent: "center" }}>
-        <Button minimal={true} icon="chevron-left" text="Previous" />
-        <ButtonGroup>
-          <Button text="1" active={true} />
-          <Button text="2" />
-          <Button text="3" />
-        </ButtonGroup>
-        <Button minimal={true} text="Next" rightIcon="chevron-right" />
-      </Flex>
+      <Pagination
+        loading={items === null}
+        total={paging.total}
+        limit={paging.limit}
+        skip={paging.skip}
+        onClick={({ page, skip }) => {
+          setPaging(paging => ({ ...paging, skip: skip }));
+        }}
+      />
     </Box >
   )
 }
 
-export default List;
+export default PresensiNilaiList;

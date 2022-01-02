@@ -1,14 +1,18 @@
-import { NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, CONSTANTS, Flex, ListGroup, useClient, useList } from "components";
+import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core';
+import { Box, Flex, ListGroup, useClient, useList } from 'components';
 import { Link } from "react-router-dom";
-import { Fragment, useEffect } from "react";
-import moment from "moment";
+import React, { useEffect } from 'react';
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, filter } = useList();
+  const { items, setItems, setPaging, filter, paging, dispatchSelectedItem } = useList();
 
   useEffect(() => {
+    setItems(null);
+    setPaging(p => ({
+      ...p,
+      total: 0
+    }));
     const fetch = async () => {
       try {
         const res = await client["subject-lecturers"].find({
@@ -50,7 +54,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging, filter]);
+  }, [client, setItems, setPaging, paging.skip, filter]);
 
   return (
     <>
@@ -70,37 +74,20 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            {/* <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box> */}
-            <Box sx={{ flexShrink: 0, mr: 3, width: `15%` }}>
-              {item["hours"].map((hour, idx) => {
-                return (
-                  <Fragment key={idx}>
-                    <Box>
-                      {CONSTANTS["DAYS"][hour["day"]]}
-                    </Box>
-                    <Box sx={{ color: "gray.5" }}>
-                      {moment(hour["start"], "HH:mm:ss").format("HH:mm")} - {moment(hour["end"], "HH:mm:ss").format("HH:mm")}
-                    </Box>
-                  </Fragment>
-                )
-              })}
+            <Box sx={{ width: 40, flexShrink: 0 }}>
+              <Checkbox onChange={(e) => {
+                dispatchSelectedItem({
+                  type: "toggle",
+                  data: {
+                    name: item["id"],
+                    value: e.target.checked
+                  }
+                })
+              }} />
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
               <Box>
-                <Link to={`/kurikulum/mata-kuliah/${item["subject"]["id"]}`}>
+                <Link to={`/penilaian/mata-kuliah/${item["subject"]["id"]}`}>
                   {item["subject"]["name"]}
                 </Link>
               </Box>
@@ -111,6 +98,12 @@ const List = () => {
             <Box sx={{ flexGrow: 1, width: `${100 / 3}%` }}>
               {item["subject"]["study_program"]["name"]}
             </Box>
+            <Box sx={{ flexGrow: 1, width: `${100 / 3}%` }}>
+              <Box>33</Box>
+              <Box sx={{ color: "gray.5" }}>
+                Mahasiswa
+              </Box>
+            </Box>
           </Flex>
         </ListGroup.Item>
       ))}
@@ -118,4 +111,4 @@ const List = () => {
   )
 }
 
-export default List;
+export default List
