@@ -87,10 +87,10 @@ const DialogTambah = ({
           "hours": [{
             day: null, start: new Date(), end: new Date()
           }],
-          "mid_test_weight": 25,
-          "final_test_weight": 25,
-          "task_weight": 25,
-          "presence_weight": 25,
+          "final_test_weight": 40,
+          "mid_test_weight": 30,
+          "task_weight": 20,
+          "presence_weight": 10,
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {

@@ -104,6 +104,7 @@ export const ClientProvider = ({ children }) => {
       get "studies"() { return feathers.service("studies") },
       get "study-programs"() { return feathers.service("study-programs") },
       get "study-plans"() { return feathers.service("study-plans") },
+      get "study-results"() { return feathers.service("study-results") },
       get "contracts"() { return feathers.service("contracts") },
       get "subjects"() { return feathers.service("subjects") },
       get "users"() { return feathers.service("users") },

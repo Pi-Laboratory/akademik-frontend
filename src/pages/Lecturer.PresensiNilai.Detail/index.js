@@ -1,11 +1,17 @@
 import ListProvider from "components/list";
+import { useParams } from "react-router-dom";
 import { PageProvider } from "./hoc";
 import Layout from "./Layout";
 
 const PresensiDetail = () => {
+  const params = useParams();
   return (
     <PageProvider>
-      <ListProvider>
+      <ListProvider
+        filter={{
+          "subject_lecturer_id": params["subject_lecturer_id"]
+        }}
+      >
         <Layout />
       </ListProvider>
     </PageProvider>

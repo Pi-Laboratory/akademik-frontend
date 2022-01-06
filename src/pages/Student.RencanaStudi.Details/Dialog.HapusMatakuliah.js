@@ -4,7 +4,7 @@ import { Formik } from "formik"
 import { useMemo } from "react";
 import * as Yup from "yup";
 
-const DialogHapusMataKuliah = ({ isOpen, onClose = () => { }, onSubmitted = () => { }, data }) => {
+const DialogHapus = ({ isOpen, onClose = () => { }, onSubmitted = () => { }, data }) => {
   const client = useClient();
   const Schema = useMemo(() => (Yup.object().shape({
     'last-word': Yup.string()
@@ -68,4 +68,4 @@ const DialogHapusMataKuliah = ({ isOpen, onClose = () => { }, onSubmitted = () =
   )
 }
 
-export default DialogHapusMataKuliah;
+export default DialogHapus;

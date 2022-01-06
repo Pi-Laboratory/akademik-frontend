@@ -26,7 +26,7 @@ const Filter = () => {
             text={`Delete ${selectedItem.length} selected`}
             onClick={() => setDialogOpen("delete")}
           />
-        } */}
+        } */} 
       </Flex>
     </Flex>
   )

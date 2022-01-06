@@ -14,7 +14,7 @@ const navigation = [
   },
   {
     "component": PresensiNilaiDetail,
-    "path": "/mata-kuliah/:subject_id",
+    "path": "/jadwal/:subject_lecturer_id",
     "hide": true,
     "exact": true,
   }

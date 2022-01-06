@@ -1,7 +1,8 @@
-import { Button, Classes, HTMLTable } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Pagination, Select, useClient, useList } from "components";
-import { useEffect } from "react";
+import { Button, ButtonGroup, Classes, HTMLTable } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Pagination, useClient, useList } from "components";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import DialogEdit from "./Dialog.Edit";
 import Filter from "./Filter";
 import { usePage } from "./hoc";
 import List from "./List";
@@ -11,10 +12,12 @@ const Layout = () => {
   const params = useParams();
   const { paging, setPaging, items } = useList();
   const [pageState, setPageState] = usePage();
+  const [dialogOpen, setDialogOpen] = useState(null);
+
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await client["subject-lecturers"].get(params["subject_id"], {
+        const res = await client["subject-lecturers"].get(params["subject_lecturer_id"], {
           query: {
             // $select: ["id", "name", "code"],
             $include: [{
@@ -30,7 +33,7 @@ const Layout = () => {
             }]
           }
         });
-        console.log(res);
+        console.log("page", res);
         setPageState(res);
       } catch (err) {
         console.error(err);
@@ -69,6 +72,7 @@ const Layout = () => {
                 small={true}
                 minimal={true}
                 text="Edit"
+                onClick={() => { setDialogOpen("edit"); }}
               />
             </Box>
           </Flex>
@@ -106,23 +110,31 @@ const Layout = () => {
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
 
-              <Select
-                minimal={true}
-                label="Program Studi"
-                options={[
-                  { label: "Teologi", value: 0 },
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Arsitektur", value: 1 },
-                  { label: "Akuntansi", value: 2 },
-                  { label: "Teknik Sipil", value: 3 },
-                  { label: "Bahasa Inggris", value: 3 },
-                ]}
-              />
+              <ButtonGroup>
+                <Button active={true} text="Lulus" />
+                <Button text="Belum Lulus" />
+              </ButtonGroup>
             </Box>
           </Flex>
         </ListGroup.Header>
         <List />
       </ListGroup>
+      {pageState !== null &&
+        <DialogEdit
+          isOpen={dialogOpen === "edit"}
+          onClose={() => { setDialogOpen(null) }}
+          onSubmitted={(val) => {
+            setPageState((s) => {
+              return {
+                ...s,
+                "presence_weight": val["presence_weight"],
+                "task_weight": val["task_weight"],
+                "mid_test_weight": val["mid_test_weight"],
+                "final_test_weight": val["final_test_weight"],
+              }
+            });
+          }}
+        />}
       <Pagination
         loading={items === null}
         total={paging.total}

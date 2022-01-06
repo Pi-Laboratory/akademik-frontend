@@ -7,8 +7,7 @@ const Detail = () => {
   return (
     <ListProvider
       filter={{
-        "student_id": params["student_id"],
-        "study_id": ""
+        "study_id": params["study_id"]
       }}
     >
       <Layout />

@@ -11,7 +11,7 @@ const List = () => {
     const url = new URLSearchParams(location["search"]);
     const filter = {
       "generation": url.get("generation") || String(new Date().getFullYear()),
-      "study_program_id": url.get("study_program_id"),
+      "study_program_id": url.get("study_program_id") || "",
     };
     return [filter, url];
   }, [location["search"]]); // eslint-disable-line react-hooks/exhaustive-deps

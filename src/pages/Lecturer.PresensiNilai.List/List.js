@@ -87,7 +87,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
               <Box>
-                <Link to={`/penilaian/mata-kuliah/${item["subject"]["id"]}`}>
+                <Link to={`/penilaian/jadwal/${item["id"]}`}>
                   {item["subject"]["name"]}
                 </Link>
               </Box>

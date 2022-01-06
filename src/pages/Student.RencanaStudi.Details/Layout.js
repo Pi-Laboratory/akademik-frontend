@@ -3,6 +3,7 @@ import { Box, Flex, ListGroup, useClient, useList } from "components";
 import { forwardRef, useEffect, useState } from "react";
 import { useParams, useHistory, useLocation } from "react-router";
 import { Link } from "react-router-dom";
+import DialogHapus from "./Dialog.HapusMatakuliah";
 import DialogMatakuliah from "./Dialog.TambahMatakuliah";
 import List from "./List";
 
@@ -148,14 +149,14 @@ const Layout = () => {
               history.go(0);
             }}
           />
-          {/* <DialogHapusMatakuliah
+          <DialogHapus
             data={selectedItem}
             isOpen={dialogOpen === "delete-subject"}
             onClose={() => { setDialogOpen(null) }}
             onSubmitted={() => {
               history.go(0);
             }}
-          /> */}
+          />
         </ListGroup>}
     </Box >
   )

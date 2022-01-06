@@ -73,10 +73,21 @@ export const PENDIDIKAN = [
   "SPG (SEKOLAH PENDIDIKAN GURU)",
 ]
 
+export const PREDIKAT = {
+  "A": 4,
+  "B+": 3.30,
+  "B": 3,
+  "C+": 2.30,
+  "C": 2,
+  "D": 1,
+  "E": 0,
+}
+
 const CONSTANTS = {
   DAYS,
   PEKERJAAN,
-  PENDIDIKAN
+  PENDIDIKAN,
+  PREDIKAT
 }
 
 export default CONSTANTS;

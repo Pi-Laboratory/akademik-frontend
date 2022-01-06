@@ -12,9 +12,9 @@ const List = () => {
       setItems(null);
       try {
         console.log(filter);
-        const res = await client["study-plans"].find({
+        const res = await client["study-results"].find({
           query: {
-            "study_id": filter["study_id"] || undefined,
+            // "study_id": filter["study_id"],
             $select: ["id", "study_id", "subject_lecturer_id"],
             $include: [{
               model: "subject_lecturers",
