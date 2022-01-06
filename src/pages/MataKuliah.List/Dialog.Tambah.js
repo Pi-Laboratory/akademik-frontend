@@ -1,5 +1,5 @@
 import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
-import { Divider, Select, useClient } from "components";
+import { Box, Divider, Flex, Select, useClient } from "components";
 import { Formik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
@@ -7,9 +7,18 @@ import * as Yup from "yup";
 const Schema = Yup.object().shape({
   "name": Yup.string().required(),
   "code": Yup.string().required(),
-  "stheory": Yup.number().required(),
-  "spractice": Yup.number().required(),
-  "spractice_field": Yup.number().required(),
+  "stheory": Yup.number().when("type", {
+    is: v => ["Teori", "Teori dan Praktek"].indexOf(v) !== -1,
+    then: Yup.number().required()
+  }),
+  "spractice": Yup.number().when("type", {
+    is: v => ["Praktek", "Teori dan Praktek"].indexOf(v) !== -1,
+    then: Yup.number().required()
+  }),
+  "spractice_field": Yup.number().when("type", {
+    is: v => ["Praktek", "Teori dan Praktek"].indexOf(v) !== -1,
+    then: Yup.number().required()
+  }),
   "stotal": Yup.number().required(),
   "total_hours": Yup.number().required(),
   "type": Yup.string().required(),
@@ -96,10 +105,10 @@ const DialogMataKuliahBaru = ({
         initialValues={{
           "name": "",
           "code": "",
-          "stheory": "",
-          "spractice": "",
-          "spractice_field": "",
-          "stotal": "",
+          "stheory": 0,
+          "spractice": 0,
+          "spractice_field": 0,
+          "stotal": 0,
           "type": "Teori",
           "minumum_pass_score": "",
           "semester": "",
@@ -128,206 +137,235 @@ const DialogMataKuliahBaru = ({
         {({ values, errors, isSubmitting, handleSubmit, handleChange, setFieldValue }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
-              <FormGroup
-                label="Nama Mata Kuliah"
-                labelFor="f-name"
-                helperText={errors["name"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-name"
-                  name="name"
-                  value={values["name"]}
-                  onChange={handleChange}
-                  intent={errors["name"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Kode Mata Kuliah"
-                labelFor="f-code"
-                helperText={errors["code"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-code"
-                  name="code"
-                  value={values["code"]}
-                  onChange={handleChange}
-                  intent={errors["code"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Tipe"
-                labelFor="f-type"
-                helperText={errors["type"]}
-                intent={"danger"}
-              >
-                <HTMLSelect
-                  id="f-type"
-                  name="type"
-                  value={values["type"]}
-                  onChange={handleChange}
-                  intent={errors["type"] ? "danger" : "none"}
-                  options={[
-                    "Teori",
-                    "Praktek",
-                    "Teori dan Praktek",
-                  ]}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Sifat Mata Kuliah"
-                labelFor="f-subject_trait"
-                helperText={errors["subject_trait"]}
-                intent={"danger"}
-              >
-                <HTMLSelect
-                  id="f-subject_trait"
-                  name="subject_trait"
-                  value={values["subject_trait"]}
-                  onChange={handleChange}
-                  intent={errors["subject_trait"] ? "danger" : "none"}
-                  options={[
-                    { label: "Wajib", value: "A", info: "A" },
-                    { label: "Pilihan", value: "B", info: "B" },
-                    { label: "Wajib Permintaan", value: "C", info: "C" },
-                    { label: "Pilihan Permintaan", value: "D", info: "D" },
-                    { label: "Tugas Akhir/ Skripsi", value: "S", info: "S" },
-                  ]}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Jurusan"
-                labelFor="f-major_id"
-                helperText={errors["major_id"]}
-                intent={"danger"}
-              >
-                <Select
-                  loading={loading["majors"]}
-                  id="f-major_id"
-                  name="major_id"
-                  value={values["major_id"]}
-                  intent={errors["major_id"] ? "danger" : "none"}
-                  onOpening={async () => {
-                    await fetchMajors();
-                  }}
-                  onChange={async (e) => {
-                    await setFieldValue("study_program_id", "", true);
-                    await setFieldValue("major_id", e.value, true);
-                  }}
-                  options={majors}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Program Studi"
-                labelFor="f-study_program_id"
-                helperText={errors["study_program_id"]}
-                intent={"danger"}
-              >
-                <Select
-                  loading={loading["studyPrograms"]}
-                  disabled={!values["major_id"]}
-                  id="f-study_program_id"
-                  name="study_program_id"
-                  value={values["study_program_id"]}
-                  intent={errors["study_program_id"] ? "danger" : "none"}
-                  onOpening={async () => {
-                    await fetchStudyPrograms(values["major_id"])
-                  }}
-                  onChange={(e) => {
-                    setFieldValue("study_program_id", e.value);
-                  }}
-                  options={studyPrograms}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Semester"
-                labelFor="f-semester"
-                helperText={errors["semester"]}
-                intent={"danger"}
-              >
-                <Select
-                  id="f-semester"
-                  name="semester"
-                  value={values["semester"]}
-                  intent={errors["semester"] ? "danger" : "none"}
-                  onChange={(e) => {
-                    setFieldValue("semester", e.value);
-                  }}
-                  options={
-                    Array(8).fill(0).map((_, i) => {
-                      const smstr = i + 1;
-                      return (
-                        { label: `${smstr}`, value: `${smstr}`, info: smstr % 2 ? "Gasal" : "Genap" }
-                      );
-                    })
-                  }
-                />
-              </FormGroup>
-              <FormGroup
-                label="Kurikulum"
-                labelFor="f-curriculum_id"
-                helperText={errors["curriculum_id"]}
-                intent={"danger"}
-              >
-                <Select
-                  id="f-curriculum_id"
-                  name="curriculum_id"
-                  value={values["curriculum_id"]}
-                  intent={errors["curriculum_id"] ? "danger" : "none"}
-                  onOpening={async () => {
-                    await fetchCurriculums();
-                  }}
-                  onChange={(e) => {
-                    setFieldValue("curriculum_id", e.value);
-                  }}
-                  options={curriculums}
-                />
-              </FormGroup>
-
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Nama Mata Kuliah"
+                    labelFor="f-name"
+                    helperText={errors["name"]}
+                    intent={"danger"}
+                  >
+                    <InputGroup
+                      id="f-name"
+                      name="name"
+                      value={values["name"]}
+                      onChange={handleChange}
+                      intent={errors["name"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Kode Mata Kuliah"
+                    labelFor="f-code"
+                    helperText={errors["code"]}
+                    intent={"danger"}
+                  >
+                    <InputGroup
+                      id="f-code"
+                      name="code"
+                      value={values["code"]}
+                      onChange={handleChange}
+                      intent={errors["code"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Tipe"
+                    labelFor="f-type"
+                    helperText={errors["type"]}
+                    intent={"danger"}
+                  >
+                    <HTMLSelect
+                      id="f-type"
+                      name="type"
+                      value={values["type"]}
+                      onChange={handleChange}
+                      intent={errors["type"] ? "danger" : "none"}
+                      options={[
+                        "Teori",
+                        "Praktek",
+                        "Teori dan Praktek",
+                      ]}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Sifat Mata Kuliah"
+                    labelFor="f-subject_trait"
+                    helperText={errors["subject_trait"]}
+                    intent={"danger"}
+                  >
+                    <HTMLSelect
+                      id="f-subject_trait"
+                      name="subject_trait"
+                      value={values["subject_trait"]}
+                      onChange={handleChange}
+                      intent={errors["subject_trait"] ? "danger" : "none"}
+                      options={[
+                        { label: "Wajib", value: "A", info: "A" },
+                        { label: "Pilihan", value: "B", info: "B" },
+                        { label: "Wajib Permintaan", value: "C", info: "C" },
+                        { label: "Pilihan Permintaan", value: "D", info: "D" },
+                        { label: "Tugas Akhir/ Skripsi", value: "S", info: "S" },
+                      ]}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Jurusan"
+                    labelFor="f-major_id"
+                    helperText={errors["major_id"]}
+                    intent={"danger"}
+                  >
+                    <Select
+                      loading={loading["majors"]}
+                      id="f-major_id"
+                      name="major_id"
+                      value={values["major_id"]}
+                      intent={errors["major_id"] ? "danger" : "none"}
+                      onOpening={async () => {
+                        await fetchMajors();
+                      }}
+                      onChange={async (e) => {
+                        await setFieldValue("study_program_id", "", true);
+                        await setFieldValue("major_id", e.value, true);
+                      }}
+                      options={majors}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Program Studi"
+                    labelFor="f-study_program_id"
+                    helperText={errors["study_program_id"]}
+                    intent={"danger"}
+                  >
+                    <Select
+                      loading={loading["studyPrograms"]}
+                      disabled={!values["major_id"]}
+                      id="f-study_program_id"
+                      name="study_program_id"
+                      value={values["study_program_id"]}
+                      intent={errors["study_program_id"] ? "danger" : "none"}
+                      onOpening={async () => {
+                        await fetchStudyPrograms(values["major_id"])
+                      }}
+                      onChange={(e) => {
+                        setFieldValue("study_program_id", e.value);
+                      }}
+                      options={studyPrograms}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Kurikulum"
+                    labelFor="f-curriculum_id"
+                    helperText={errors["curriculum_id"]}
+                    intent={"danger"}
+                  >
+                    <Select
+                      id="f-curriculum_id"
+                      name="curriculum_id"
+                      value={values["curriculum_id"]}
+                      intent={errors["curriculum_id"] ? "danger" : "none"}
+                      onOpening={async () => {
+                        await fetchCurriculums();
+                      }}
+                      onChange={(e) => {
+                        setFieldValue("curriculum_id", e.value);
+                      }}
+                      options={curriculums}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Semester"
+                    labelFor="f-semester"
+                    helperText={errors["semester"]}
+                    intent={"danger"}
+                  >
+                    <Select
+                      id="f-semester"
+                      name="semester"
+                      value={values["semester"]}
+                      intent={errors["semester"] ? "danger" : "none"}
+                      onChange={(e) => {
+                        setFieldValue("semester", e.value);
+                      }}
+                      options={
+                        Array(8).fill(0).map((_, i) => {
+                          const smstr = i + 1;
+                          return (
+                            { label: `${smstr}`, value: `${smstr}`, info: smstr % 2 ? "Gasal" : "Genap" }
+                          );
+                        })
+                      }
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
               <h6 className={Classes.HEADING}>Jumlah Satuan Kredit Semester (SKS)</h6>
-              <FormGroup
-                label="SKS Teori"
-                labelFor="f-stheory"
-                helperText={errors["stheory"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-stheory"
-                  name="stheory"
-                  value={values["stheory"]}
-                  onChange={handleChange}
-                  intent={errors["stheory"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="SKS Praktek"
-                labelFor="f-spractice"
-                helperText={errors["spractice"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-spractice"
-                  name="spractice"
-                  value={values["spractice"]}
-                  onChange={handleChange}
-                  intent={errors["spractice"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="SKS Praktek Lapangan"
-                labelFor="f-spractice_field"
-                helperText={errors["spractice_field"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-spractice_field"
-                  name="spractice_field"
-                  value={values["spractice_field"]}
-                  onChange={handleChange}
-                  intent={errors["spractice_field"] ? "danger" : "none"}
-                />
-              </FormGroup>
+              {["Teori", "Teori dan Praktek"]
+                .indexOf(values["type"]) !== -1 &&
+                <FormGroup
+                  label="SKS Teori"
+                  labelFor="f-stheory"
+                  helperText={errors["stheory"]}
+                  intent={"danger"}
+                >
+                  <InputGroup
+                    id="f-stheory"
+                    name="stheory"
+                    value={values["stheory"]}
+                    onChange={handleChange}
+                    intent={errors["stheory"] ? "danger" : "none"}
+                  />
+                </FormGroup>}
+              {["Praktek", "Teori dan Praktek"]
+                .indexOf(values["type"]) !== -1 &&
+                <FormGroup
+                  label="SKS Praktek"
+                  labelFor="f-spractice"
+                  helperText={errors["spractice"]}
+                  intent={"danger"}
+                >
+                  <InputGroup
+                    id="f-spractice"
+                    name="spractice"
+                    value={values["spractice"]}
+                    onChange={handleChange}
+                    intent={errors["spractice"] ? "danger" : "none"}
+                  />
+                </FormGroup>}
+              {["Praktek", "Teori dan Praktek"]
+                .indexOf(values["type"]) !== -1 &&
+                <FormGroup
+                  label="SKS Praktek Lapangan"
+                  labelFor="f-spractice_field"
+                  helperText={errors["spractice_field"]}
+                  intent={"danger"}
+                >
+                  <InputGroup
+                    id="f-spractice_field"
+                    name="spractice_field"
+                    value={values["spractice_field"]}
+                    onChange={handleChange}
+                    intent={errors["spractice_field"] ? "danger" : "none"}
+                  />
+                </FormGroup>}
               <FormGroup
                 label="SKS Total"
                 labelFor="f-stotal"
@@ -343,35 +381,40 @@ const DialogMataKuliahBaru = ({
                 />
               </FormGroup>
               <Divider />
-              <FormGroup
-                label="Total Waktu Belajar"
-                labelFor="f-total_hours"
-                helperText={errors["total_hours"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-total_hours"
-                  name="total_hours"
-                  value={values["total_hours"]}
-                  onChange={handleChange}
-                  intent={errors["total_hours"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Nilai Kelulusan"
-                labelFor="f-minimum_pass_score"
-                helperText={errors["minimum_pass_score"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-minimum_pass_score"
-                  name="minimum_pass_score"
-                  value={values["minimum_pass_score"]}
-                  onChange={handleChange}
-                  intent={errors["minimum_pass_score"] ? "danger" : "none"}
-                />
-              </FormGroup>
-
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Total Waktu Belajar"
+                    labelFor="f-total_hours"
+                    helperText={errors["total_hours"]}
+                    intent={"danger"}
+                  >
+                    <InputGroup
+                      id="f-total_hours"
+                      name="total_hours"
+                      value={values["total_hours"]}
+                      onChange={handleChange}
+                      intent={errors["total_hours"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={{ width: "50%", mx: 2 }}>
+                  <FormGroup
+                    label="Nilai Kelulusan"
+                    labelFor="f-minimum_pass_score"
+                    helperText={errors["minimum_pass_score"]}
+                    intent={"danger"}
+                  >
+                    <InputGroup
+                      id="f-minimum_pass_score"
+                      name="minimum_pass_score"
+                      value={values["minimum_pass_score"]}
+                      onChange={handleChange}
+                      intent={errors["minimum_pass_score"] ? "danger" : "none"}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
               <FormGroup
                 label="Rencana Pembelajaran"
                 labelFor="f-study_plan"
@@ -486,7 +529,7 @@ const DialogMataKuliahBaru = ({
           </form>
         }
       </Formik>
-    </Dialog>
+    </Dialog >
   )
 }
 

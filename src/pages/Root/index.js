@@ -5,11 +5,11 @@ import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
-import Presensi from "pages/PresensiNilai"
+// import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManajemenRuang";
-import AkunSementara from "pages/AkunSementara";
+// import AkunSementara from "pages/AkunSementara";
 import { DivisiPendidikan } from "pages/DivisiPendidikan";
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
@@ -66,14 +66,14 @@ const navigation = [
     "icon": "blank",
     "permission": "Admin"
   },
-  {
-    "title": "Presensi",
-    "text": "Presensi dan Nilai",
-    "component": Presensi,
-    "path": "/presensi-nilai",
-    "icon": "blank",
-    "permission": "Admin"
-  },
+  // {
+  //   "title": "Presensi",
+  //   "text": "Presensi dan Nilai",
+  //   "component": Presensi,
+  //   "path": "/presensi-nilai",
+  //   "icon": "blank",
+  //   "permission": "Admin"
+  // },
   {
     "title": "Pegawai",
     "text": "Pegawai",
@@ -130,14 +130,14 @@ const navigation = [
     "icon": "blank",
     "permission": "Admin"
   },
-  {
-    "title": "Penerimaan mahasiswa baru",
-    "text": "Penerimaan",
-    "component": AkunSementara,
-    "path": "/penerimaan",
-    "icon": "blank",
-    "permission": "Admin"
-  },
+  // {
+  //   "title": "Penerimaan mahasiswa baru",
+  //   "text": "Penerimaan",
+  //   "component": AkunSementara,
+  //   "path": "/penerimaan",
+  //   "icon": "blank",
+  //   "permission": "Admin"
+  // },
   {
     "title": "Settings",
     "text": "Settings",
