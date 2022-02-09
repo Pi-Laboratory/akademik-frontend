@@ -2,6 +2,7 @@ import { AnchorButton, Button } from "@blueprintjs/core";
 import { Box, Flex } from "components";
 import { useState } from "react";
 import Email from "./Email";
+import { host } from "components/client";
 
 const Login = () => {
   const [logType, setLogType] = useState(null);
@@ -53,7 +54,7 @@ const Login = () => {
                 >Atau</Box>
                 <Box>
                   <AnchorButton
-                    href="http://localhost:3030/oauth/google"
+                    href={`${host.origin}/oauth/google`}
                     intent="danger"
                     fill={true}
                     text="Login dengan Google"

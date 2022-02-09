@@ -4,7 +4,7 @@ import FeathersSocketIOClient from "@feathersjs/socketio-client";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
 
-const host = new URL(window.location.origin);
+export const host = new URL(window.location.origin);
 host.protocol = process.env["REACT_APP_SERVER_PROTOCOL"] || "http";
 host.hostname = process.env["REACT_APP_SERVER_HOST"];
 host.port = process.env["REACT_APP_SERVER_PORT"];
