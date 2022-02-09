@@ -16,9 +16,9 @@ import { ClientProvider } from 'components/client';
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <ClientProvider>
-      <Router />
-    </ClientProvider>
+      <ClientProvider>
+        <Router />
+      </ClientProvider>
   </ThemeProvider>
   ,
   document.getElementById('root')

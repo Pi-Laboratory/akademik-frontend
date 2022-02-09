@@ -4,7 +4,6 @@ import FeathersSocketIOClient from "@feathersjs/socketio-client";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
 
-
 const host = new URL(window.location.origin);
 host.protocol = process.env["REACT_APP_SERVER_PROTOCOL"] || "http";
 host.hostname = process.env["REACT_APP_SERVER_HOST"];
@@ -16,7 +15,7 @@ const feathers = Feathers();
 feathers.configure(FeathersSocketIOClient(socket))
 feathers.configure(FeathersAuth({
   storageKey: "accessToken"
-}))
+}));
 
 export const ClientContext = createContext(null);
 
@@ -27,8 +26,15 @@ export const ClientProvider = ({ children }) => {
 
   const role = useMemo(() => {
     if (account === null) return null;
-    const { lecturer_id, student_id } = account;
-    return !student_id ? !lecturer_id ? "Admin" : "Lecturer" : "Student";
+    const { lecturer_id, student_id, registration_id } = account;
+    if (student_id) {
+      return "Student";
+    } else if (lecturer_id) {
+      return "Lecturer";
+    } else if (registration_id) {
+      return "Public";
+    }
+    return "Admin";
   }, [account]);
 
   useEffect(() => {
@@ -108,6 +114,7 @@ export const ClientProvider = ({ children }) => {
       get "contracts"() { return feathers.service("contracts") },
       get "subjects"() { return feathers.service("subjects") },
       get "users"() { return feathers.service("users") },
+      get "registrations"() { return feathers.service("registrations") },
     }
   }, [isConnected, isAuthenticated, account, role]);
 

@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.3.0",
     "@feathersjs/authentication-client": "^4.5.11",
     "@feathersjs/feathers": "^4.5.11",
+    "@feathersjs/rest-client": "^4.5.12",
     "@feathersjs/socketio-client": "^4.5.11",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",

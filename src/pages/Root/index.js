@@ -1,3 +1,6 @@
+import { PublicForm } from "pages/Public.Form";
+import { PublicSecurity } from "pages/Public.Security";
+import { PublicDashboard } from "pages/Public.Dashboard";
 import StudentRencanaStudi from "pages/Student.RencanaStudi";
 import StudentHasilStudi from "pages/Student.HasilStudi";
 import { LecturerJadwal } from "pages/Lecturer.Jadwal";
@@ -32,7 +35,8 @@ const navigation = [
     "component": Dashboard,
     "path": "/",
     "icon": "blank",
-    "exact": true
+    "exact": true,
+    "permission": "Admin"
   },
   {
     "title": "Kurikulum",
@@ -154,7 +158,16 @@ const navigation = [
     "icon": "blank",
     "permission": "Admin"
   },
-  
+
+  {
+    "title": "Dashboard",
+    "text": "Dashboard",
+    "component": Dashboard,
+    "path": "/",
+    "icon": "blank",
+    "exact": true,
+    "permission": "Lecturer"
+  },
   {
     "title": "Jadwal",
     "text": "Jadwal",
@@ -173,6 +186,15 @@ const navigation = [
   },
 
   {
+    "title": "Dashboard",
+    "text": "Dashboard",
+    "component": Dashboard,
+    "path": "/",
+    "icon": "blank",
+    "exact": true,
+    "permission": "Student"
+  },
+  {
     "title": "Rencana Studi",
     "text": "Rencana Studi",
     "component": StudentRencanaStudi,
@@ -187,6 +209,32 @@ const navigation = [
     "path": "/hasil-studi/",
     "icon": "blank",
     "permission": "Student"
+  },
+
+  {
+    "title": "Dashboard",
+    "text": "Dashboard",
+    "component": PublicDashboard,
+    "path": "/",
+    "exact": true,
+    "icon": "blank",
+    "permission": "Public"
+  },
+  {
+    "title": "Data Diri",
+    "text": "Data Diri",
+    "component": PublicForm,
+    "path": "/bio",
+    "icon": "blank",
+    "permission": "Public"
+  },
+  {
+    "title": "Security",
+    "text": "Security",
+    "component": PublicSecurity,
+    "path": "/security",
+    "icon": "blank",
+    "permission": "Public"
   },
 ]
 

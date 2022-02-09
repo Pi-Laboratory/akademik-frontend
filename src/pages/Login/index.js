@@ -1,36 +1,13 @@
-import { Button, FormGroup, H2, InputGroup } from "@blueprintjs/core";
-import { Box, useClient } from "components";
-import { Formik } from "formik";
-import { useCallback } from "react";
+import { AnchorButton, Button, FormGroup, H2, InputGroup } from "@blueprintjs/core";
+import { Box, Flex, useClient } from "components";
+import { useCallback, useState } from "react";
 import { useHistory } from "react-router-dom";
-import * as Yup from "yup";
+import { textAlign } from "styled-system";
+import Email from "./Email";
 
-const Schema = Yup.object().shape({
-  "username": Yup.string().required(),
-  "password": Yup.string().required()
-})
 
 const Login = () => {
-  const client = useClient();
-  const history = useHistory();
-
-  const onSubmit = useCallback(async (values, { setSubmitting, setErrors }) => {
-    if (!client.__connected) return;
-    try {
-      await client.authenticate({
-        strategy: "local",
-        username: values["username"],
-        password: values["password"],
-      })
-      history.push("/");
-    } catch (err) {
-      setErrors({
-        submit: err.message
-      });
-      console.error(err);
-    }
-    setSubmitting(false);
-  }, [client, history]);
+  const [logType, setLogType] = useState(null);
 
   return (
     <Box sx={{
@@ -45,69 +22,49 @@ const Login = () => {
         py: 4,
         bg: "white"
       }}>
-        <Box sx={{ px: 3, mb: 3 }}>
-          <H2>
-            Login
-          </H2>
-        </Box>
         <Box sx={{ px: 3 }}>
-          <Formik
-            initialValues={{
-              "username": "",
-              "password": "",
-              "keepSignin": true
-            }}
-            validationSchema={Schema}
-            onSubmit={onSubmit}
-          >
-            {({ values, errors, setFieldValue, handleChange, handleSubmit, isSubmitting }) => (
-              <form onSubmit={handleSubmit}>
-                <FormGroup
-                  label="Username or Email"
-                  labelFor="f-username"
-                  helperText={errors["username"]}
-                  intent={"danger"}
-                >
-                  <InputGroup
-                    id="f-username"
-                    name="username"
-                    type="text"
-                    onChange={handleChange}
-                    value={values["username"]}
-                    intent={errors["username"] ? "danger" : "none"}
+          {logType === "email" &&
+            <Email
+              onBack={() => {
+                setLogType(null);
+              }}
+            />}
+          {logType === null &&
+            <Box>
+              <Box sx={{ px: 3, mb: 3, textAlign: "center" }}>
+                Pilih cara login Anda
+              </Box>
+              <Flex sx={{
+                flexDirection: "column",
+              }}>
+                <Box>
+                  <Button
+                    intent="primary"
+                    fill={true}
+                    text="Login dengan Email"
+                    onClick={() => {
+                      setLogType("email");
+                    }}
                   />
-                </FormGroup>
-                <FormGroup
-                  label="Password"
-                  labelFor="f-password"
-                  helperText={errors["password"]}
-                  intent={"danger"}
-                >
-                  <InputGroup
-                    id="f-password"
-                    name="password"
-                    type="password"
-                    onChange={handleChange}
-                    value={values["password"]}
-                    intent={errors["password"] ? "danger" : "none"}
+                </Box>
+                <Box
+                  sx={{
+                    py: 3,
+                    width: "100%",
+                    textAlign: "center"
+                  }}
+                >Atau</Box>
+                <Box>
+                  <AnchorButton
+                    href="http://localhost:3030/oauth/google"
+                    intent="danger"
+                    fill={true}
+                    text="Login dengan Google"
                   />
-                </FormGroup>
-                {/* <Checkbox
-                  label="Tetap Masuk"
-                  name="keepSignin"
-                  checked={values["keepSignin"]}
-                  onChange={handleChange}
-                /> */}
-                <Button
-                  fill={true}
-                  loading={isSubmitting}
-                  intent="primary"
-                  text="Masuk"
-                  type="submit"
-                />
-              </form>
-            )}
-          </Formik>
+                </Box>
+              </Flex>
+            </Box>
+          }
         </Box>
       </Box>
     </Box>

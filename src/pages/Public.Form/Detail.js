@@ -1,8 +1,8 @@
-import { Button, Card, FileInput, FormGroup, InputGroup, TextArea } from "@blueprintjs/core";
+import { Button, FileInput, FormGroup, InputGroup, NonIdealState, Spinner, TextArea } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { Box, CropImage, Flex, TakePhoto } from "components";
+import { Box, CropImage, Divider, Flex, TakePhoto, useClient } from "components";
 import { Formik } from "formik";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
 import moment from "moment";
 import { Helmet } from "react-helmet";
@@ -28,16 +28,41 @@ const getBase64 = file => new Promise((resolve, reject) => {
   reader.readAsDataURL(file);
   reader.onload = () => resolve(reader.result);
   reader.onerror = (error) => reject(error);
-})
+});
 
-const Form = () => {
+export const Detail = () => {
+  const client = useClient();
+  const [defaultInfo, setDefaultInfo] = useState(null);
+
   const [loading, setLoading] = useState({
     "file": false
   });
 
-  const onSubmit = useCallback(async (values, { setErrors, setSubmitting }) => {
+  useEffect(() => {
+    const account = client.account;
+    const fetch = async () => {
+      try {
+        const res = await client.registrations.get(account.registration_id);
+        setDefaultInfo(res)
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetch();
+  }, []);
+
+  const onSubmit = useCallback(async (values, { touched, setErrors, setSubmitting }) => {
+    const result = { ...values };
+    if (values["photo"].cropped) {
+      result["photo"] = values["photo"].cropped;
+    } else {
+      result["photo"] = undefined;
+    }
     try {
-      console.log(values);
+      console.log(result);
+      const res = await client.registrations.patch(defaultInfo["id"], result);
+      console.log(values, res);
     } catch (err) {
       console.error(err);
     }
@@ -55,36 +80,31 @@ const Form = () => {
           justifyContent: "center"
         }}
       >
-        <Formik
-          validationSchema={Schema}
-          initialValues={{
-            "full_name": undefined,
-            "address": undefined,
-            "birth_place": undefined,
-            "birth_date": undefined,
-            "phone_number": undefined,
-            "nisn": undefined,
-            "school_name": undefined,
-            "school_address": undefined,
-            "photo": undefined
-          }}
-          onSubmit={onSubmit}
-        >
-          {({ setFieldValue, handleChange, handleSubmit, values, errors, isSubmitting }) => (
-            <form onSubmit={handleSubmit}>
-              <Box sx={{ maxWidth: '512px', mx: 'auto', py: 3 }}>
-                <Box
-                  as="h1"
-                  sx={{
-                    mt: 4,
-                    mb: 3,
-                    textAlign: "center",
-                    fontSize: 2
-                  }}
-                >
-                  Pendaftaran Calon Mahasiswa Baru
-                </Box>
-                <Card>
+        {defaultInfo === null &&
+          <Box sx={{ py: 5 }}>
+            <Spinner />
+          </Box>}
+        {defaultInfo !== null &&
+          <Formik
+            validationSchema={Schema}
+            initialValues={{
+              "full_name": defaultInfo["full_name"],
+              "address": defaultInfo["address"],
+              "birth_place": defaultInfo["birth_place"],
+              "birth_date": defaultInfo["birth_date"] && new Date(defaultInfo["birth_date"]),
+              "phone_number": defaultInfo["phone_number"],
+              "nisn": defaultInfo["nisn"],
+              "school_name": defaultInfo["school_name"],
+              "school_address": defaultInfo["school_address"],
+              "photo": {
+                "cropped": defaultInfo["photo"]
+              }
+            }}
+            onSubmit={onSubmit}
+          >
+            {({ setFieldValue, handleChange, handleSubmit, values, errors, isSubmitting }) => (
+              <form onSubmit={handleSubmit}>
+                <Box sx={{ maxWidth: '512px', mx: 'auto', py: 3 }}>
                   <FormGroup
                     label="Nama Lengkap"
                     labelFor="f-full_name"
@@ -158,20 +178,6 @@ const Form = () => {
                     </Box>
                   </Flex>
                   <FormGroup
-                    label="Email"
-                    labelFor="f-email"
-                    helperText={errors["email"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      id="f-email"
-                      name="email"
-                      value={values["email"]}
-                      onChange={handleChange}
-                      intent={errors["email"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                  <FormGroup
                     label="Nomor Telephone"
                     labelFor="f-phone_number"
                     helperText={errors["phone_number"]}
@@ -186,6 +192,7 @@ const Form = () => {
                       intent={errors["phone_number"] ? "danger" : "none"}
                     />
                   </FormGroup>
+                  <Divider />
                   <FormGroup
                     label="Nomor Induk Siswa Nasional"
                     labelFor="f-nisn"
@@ -220,14 +227,18 @@ const Form = () => {
                     helperText={errors["school_address"]}
                     intent={"danger"}
                   >
-                    <InputGroup
+                    <TextArea
+                      fill={true}
+                      growVertically={true}
                       id="f-school_address"
                       name="school_address"
+                      placeholder="contoh: Buha, Kec. Mapanget, Kota Manado, Sulawesi Utara, Indonesia"
                       value={values["school_address"]}
                       onChange={handleChange}
                       intent={errors["school_address"] ? "danger" : "none"}
                     />
                   </FormGroup>
+                  <Divider />
                   <FormGroup
                     label="Foto"
                     labelFor="f-photo"
@@ -286,14 +297,15 @@ const Form = () => {
                     </Flex>
                   </FormGroup>
                   <Box as="p" sx={{ fontSize: 0 }}>Ukuran foto 3x4.Foto Bebas Rapih.Latar Belakang Polos</Box>
-                  {values["photo"] &&
+                  {(defaultInfo["photo"] || values["photo"]) &&
                     <Box sx={{
+                      maxWidth: 254,
                       "> img": {
                         maxWidth: "100%"
                       }
                     }}>
                       <img
-                        src={values["photo"]["cropped"] || values["photo"]["value"]}
+                        src={defaultInfo["photo"] || values["photo"]["cropped"] || values["photo"]["value"]}
                         alt="Preview area"
                       />
                     </Box>
@@ -301,14 +313,11 @@ const Form = () => {
                   <Box sx={{ mt: 3 }}>
                     <Button text="Simpan" type="submit" intent="primary" loading={isSubmitting} />
                   </Box>
-                </Card>
-              </Box>
-            </form>
-          )
-          }
-        </Formik>
+                </Box>
+              </form>
+            )}
+          </Formik>}
       </Flex>
     </>
   )
 }
-export default Form;
