@@ -1,10 +1,7 @@
-import { AnchorButton, Button, FormGroup, H2, InputGroup } from "@blueprintjs/core";
-import { Box, Flex, useClient } from "components";
-import { useCallback, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { textAlign } from "styled-system";
+import { AnchorButton, Button } from "@blueprintjs/core";
+import { Box, Flex } from "components";
+import { useState } from "react";
 import Email from "./Email";
-
 
 const Login = () => {
   const [logType, setLogType] = useState(null);

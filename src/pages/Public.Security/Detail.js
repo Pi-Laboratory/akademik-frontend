@@ -2,7 +2,6 @@ import { Button, Callout, FormGroup, InputGroup } from "@blueprintjs/core";
 import { Box, useClient } from "components";
 import { Formik } from "formik";
 import { useCallback, useState } from "react";
-import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
@@ -14,13 +13,12 @@ const Schema = Yup.object().shape({
 
 export const Detail = () => {
   const client = useClient();
-  const history = useHistory();
   const [callout, setCallout] = useState(null);
 
   const onSubmit = useCallback(async (values, { setErrors, setSubmitting, resetForm }) => {
     const account = client.account;
     try {
-      const res = await client.users.patch(account.id, {
+      await client.users.patch(account.id, {
         password: values["confirm_password"]
       });
       setCallout({
@@ -38,7 +36,7 @@ export const Detail = () => {
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box

@@ -1,4 +1,4 @@
-import { Button, FileInput, FormGroup, InputGroup, NonIdealState, Spinner, TextArea } from "@blueprintjs/core";
+import { Button, FileInput, FormGroup, InputGroup, Spinner, TextArea } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import { Box, CropImage, Divider, Flex, TakePhoto, useClient } from "components";
 import { Formik } from "formik";
@@ -50,7 +50,7 @@ export const Detail = () => {
       }
     }
     fetch();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onSubmit = useCallback(async (values, { touched, setErrors, setSubmitting }) => {
     const result = { ...values };
@@ -66,7 +66,7 @@ export const Detail = () => {
     } catch (err) {
       console.error(err);
     }
-  }, []);
+  }, [defaultInfo]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

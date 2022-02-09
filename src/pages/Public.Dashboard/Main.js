@@ -1,10 +1,10 @@
 import { useState, forwardRef } from "react";
 import { Link } from "react-router-dom";
-import { NonIdealState, Button, Callout, AnchorButton } from "@blueprintjs/core";
+import { NonIdealState, Callout, AnchorButton } from "@blueprintjs/core";
 import { Box } from "components";
 
 const Main = () => {
-  const [items, setItems] = useState([{
+  const [items] = useState([{
     intent: "warning",
     title: "Password diperlukan",
     description: (
