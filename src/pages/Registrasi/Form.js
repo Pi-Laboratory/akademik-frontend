@@ -4,6 +4,7 @@ import { Box, useClient } from "components";
 import { useMemo, useState } from "react";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
+import { Position, Toaster } from "@blueprintjs/core";
 
 const Step = [
   {
@@ -17,6 +18,10 @@ const Step = [
     ...StepAccount
   },
 ]
+
+const toaster = Toaster.create({
+  position: Position.TOP
+})
 
 
 export const Form = () => {
@@ -43,6 +48,10 @@ export const Form = () => {
       initialValues={initialValues}
       onSubmit={async (values, { setSubmitting }) => {
         try {
+          toaster.show({
+            intent: "none",
+            message: "Sedang menyimpan data"
+          });
           const reg = await client.registrations.create({
             "full_name": values["full_name"],
             "address": values["address"],
@@ -57,11 +66,24 @@ export const Form = () => {
           const acc = await client.users.create({
             username: values["username"],
             password: values["password"],
+            "registration_id": reg["id"]
           });
           console.log(reg, acc);
-          history.push(`/login?from=reg`);
+          toaster.show({
+            intent: "success",
+            message: "Pendaftaran Berhasil! silahkan login"
+          });
+          history.push({
+            pathname: "/login",
+            search: "?from=reg"
+          });
         } catch (err) {
+          toaster.show({
+            intent: "danger",
+            message: err.message
+          });
           console.error(err);
+          setSubmitting(false);
         }
       }}
     >

@@ -17,6 +17,13 @@ const Layout = () => {
       }}>
         <Form />
       </Box>
+      <Box sx={{
+        textAlign: "center",
+        my: 4,
+        fontSize: 0,
+      }}>
+        <a href="mailto:ilomon10@gmail.com">Laporkan sesuatu</a>
+      </Box>
     </Box>
   )
 }
