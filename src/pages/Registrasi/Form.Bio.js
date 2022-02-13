@@ -55,7 +55,6 @@ export const FormBio = ({ goTo = () => { } }) => {
     values,
     errors,
     isSubmitting,
-    isValid,
     validateForm
   } = useFormikContext();
 

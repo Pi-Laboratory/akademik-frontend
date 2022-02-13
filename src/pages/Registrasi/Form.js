@@ -1,6 +1,6 @@
 import { StepBio } from "./Form.Bio";
 import { StepAccount } from "./Form.Account";
-import { Box, useClient } from "components";
+import { useClient } from "components";
 import { useMemo, useState } from "react";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
@@ -41,6 +41,8 @@ export const Form = () => {
       return ret;
     }, {})
   }, []);
+
+  const SelectedPanel = CurrentStep.panel;
 
   return (
     <Formik
@@ -89,7 +91,7 @@ export const Form = () => {
     >
       {({ handleSubmit }) =>
         <form onSubmit={handleSubmit}>
-          <CurrentStep.panel goTo={setStep} />
+          <SelectedPanel goTo={setStep} />
         </form>
       }
     </Formik>
