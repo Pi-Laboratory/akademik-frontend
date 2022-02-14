@@ -65,12 +65,11 @@ export const Form = () => {
             "school_address": values["school_address"],
             "photo": values["photo"]["cropped"]
           });
-          const acc = await client.users.create({
+          await client.users.create({
             username: values["username"],
             password: values["password"],
             "registration_id": reg["id"]
           });
-          console.log(reg, acc);
           toaster.show({
             intent: "success",
             message: "Pendaftaran Berhasil! silahkan login"

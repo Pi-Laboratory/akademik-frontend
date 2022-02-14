@@ -1,17 +1,13 @@
-import { Classes, Tag } from "@blueprintjs/core";
-import { Box } from "components";
-import { useParams } from "react-router";
+import { H2 } from "@blueprintjs/core";
+import { Box, Divider } from "components";
 
 const Header = () => {
-  const params = useParams();
   return (
-    <Box sx={{ ml: 3, mb: 3 }}>
-      <Box as="h2" className={`${Classes.HEADING}`}>
-        <span>Akun Sementara</span>
-        {params.nip && <Tag>{params.nip}</Tag>}
-      </Box>
-    </Box >
-  )
+    <>
+      <Box as={H2} sx={{ m: 0, mb: 4, ml: 3 }}>Penerimaan</Box>
+      <Divider sx={{ mt: 0, mb: "8px" }} />
+    </>
+  );
 }
 
 export default Header;

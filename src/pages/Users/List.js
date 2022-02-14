@@ -2,28 +2,55 @@ import { Checkbox, Classes, NonIdealState } from "@blueprintjs/core";
 import { Box, Container, Flex, ListGroup, useClient, useList } from "components";
 import { Pagination } from "components/Pagination";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, status, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { filter, items, setItems, status, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
       setItems(null);
       try {
-        const res = await client["users"].find({
-          query: {
-            $limit: 50
-          }
-        });
+        const query = {
+          $limit: 50,
+        };
+        if (filter["role"] === "Dosen") {
+          query["lecturer_id"] = { $ne: null }
+        } else if (filter["role"] === "Mahasiswa") {
+          query["student_id"] = { $ne: null };
+        } else if (filter["role"] === "Public") {
+          query["registration_id"] = { $ne: null };
+        } else if (filter["role"] !== "") {
+          query["lecturer_id"] = null;
+          query["student_id"] = null;
+          query["registration_id"] = null;
+        }
+        const res = await client["users"].find({ query });
         setItems(res.data.map((item) => {
           let role = "Admin";
-          if (item["lecturer_id"] !== null) role = "Dosen";
-          if (item["student_id"] !== null) role = "Mahasiswa";
+          let url = "";
+          if (item["lecturer_id"] !== null) {
+            role = "Dosen";
+            url = `/pengajar/${item["lecturer_id"]}`;
+          }
+          if (item["student_id"] !== null) {
+            role = "Mahasiswa";
+            url = `/mahasiswa/${item["student_id"]}`;
+          }
+          if (item["registration_id"] !== null) {
+            role = "Public";
+            url = `/penerimaan/${item["registration_id"]}`;
+          }
+
           return {
             id: item["id"],
             username: item["username"],
-            role: role
+            role: role,
+            link: {
+              label: "Detail",
+              url
+            }
           }
         }));
         setPaging({
@@ -37,7 +64,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Container sx={{ px: 3 }}>
       <ListGroup
@@ -89,7 +116,7 @@ const List = () => {
                   }}
                 />
               </Box>
-              <Box sx={{ flexGrow: 1, flexShrink: 0, width: "50%" }}>
+              <Box sx={{ flexGrow: 1, flexShrink: 0, width: `${100 / 3}%` }}>
                 <Box>
                   {item["username"]}
                 </Box>
@@ -97,13 +124,22 @@ const List = () => {
                   Username
                 </Box>
               </Box>
-              <Box sx={{ flexGrow: 1, flexShrink: 0, width: "50%" }}>
+              <Box sx={{ flexGrow: 1, flexShrink: 0, width: `${100 / 3}%` }}>
                 <Box>
                   {item["role"]}
                 </Box>
                 <Box sx={{ color: "gray.5" }}>
                   Role
                 </Box>
+              </Box>
+              <Box sx={{ flexGrow: 1, flexShrink: 0, width: `${100 / 3}%` }}>
+                {item["link"]["url"] &&
+                  <Box>
+                    <Link to={item["link"]["url"]}>
+                      {item["link"]["label"]}
+                    </Link>
+                  </Box>
+                }
               </Box>
             </Flex>
           </ListGroup.Item>))}

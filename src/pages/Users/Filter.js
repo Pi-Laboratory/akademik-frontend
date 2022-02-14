@@ -6,7 +6,7 @@ import DialogHapus from "./Dialog.Hapus";
 import DialogTambah from "./Dialog.Tambah";
 
 const Filter = () => {
-  const { selectedItem } = useList();
+  const { selectedItem, filter, setFilter } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
   return (
@@ -37,15 +37,23 @@ const Filter = () => {
       }
       <Box>
         <ButtonGroup>
-          <Button
-            text="Admin"
-          />
-          <Button
-            text="Dosen"
-          />
-          <Button
-            text="Mahasiswa"
-          />
+          {[
+            "Admin",
+            "Dosen",
+            "Mahasiswa",
+            "Public",
+          ].map((role) => (
+            <Button
+              key={role}
+              text={role}
+              active={filter["role"] === role}
+              onClick={() => {
+                setFilter(f => ({
+                  ...f, role: f["role"] === role ? "" : role
+                }));
+              }}
+            />
+          ))}
         </ButtonGroup>
       </Box>
       <Box>

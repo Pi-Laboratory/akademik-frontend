@@ -1,26 +1,14 @@
-import { Box, Divider, Flex } from "components";
-import MahasiswaDetail from "pages/Mahasiswa.Details";
-import { Route, Switch } from "react-router-dom";
-import Header from "./Header";
-import List from "./List";
+import { Flex } from 'components'
+import React from 'react'
+import Router from './Router'
+import Header from './Header'
 
-const Layout = () => {
+export const Layout = () => {
+
   return (
-    <Flex sx={{
-      pt: 4,
-      mr: 3,
-      flexDirection: "column",
-    }}>
+    <Flex sx={{ py: 4, flexDirection: 'column', height: '100%' }}>
       <Header />
-      <Divider sx={{ mb: 0 }} />
-      <Box>
-        <Switch>
-          <Route path="/penerimaan/:nip" component={MahasiswaDetail} />
-          <Route path="/penerimaan" component={List} />
-        </Switch>
-      </Box>
+      <Router />
     </Flex>
-  );
+  )
 }
-
-export default Layout;

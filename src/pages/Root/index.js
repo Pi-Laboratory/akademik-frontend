@@ -12,7 +12,7 @@ import { Jadwal } from "pages/Jadwal";
 import Dashboard from "pages/Dashboard";
 import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManajemenRuang";
-// import AkunSementara from "pages/AkunSementara";
+import { AkunSementara } from "pages/AkunSementara";
 import { DivisiPendidikan } from "pages/DivisiPendidikan";
 import { Navigation, RootProvider } from "./hoc";
 import Layout from "./Layout";
@@ -134,14 +134,14 @@ const navigation = [
     "icon": "blank",
     "permission": "Admin"
   },
-  // {
-  //   "title": "Penerimaan mahasiswa baru",
-  //   "text": "Penerimaan",
-  //   "component": AkunSementara,
-  //   "path": "/penerimaan",
-  //   "icon": "blank",
-  //   "permission": "Admin"
-  // },
+  {
+    "title": "Penerimaan mahasiswa baru",
+    "text": "Penerimaan",
+    "component": AkunSementara,
+    "path": "/penerimaan",
+    "icon": "blank",
+    "permission": "Admin"
+  },
   {
     "title": "Settings",
     "text": "Settings",
