@@ -35,7 +35,7 @@ export const Layout = () => {
 
   return (
     <Box>
-      <Box sx={{ px: 3, pt: 3 }}>
+      <Box sx={{ px: 3, pt: 4 }}>
         <Filter />
         <ListGroup
           sx={{

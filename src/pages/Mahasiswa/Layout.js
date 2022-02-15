@@ -6,7 +6,7 @@ export const Layout = () => {
   return (
     <Flex sx={{ py: 4, flexDirection: 'column', height: '100%' }}>
       <Header />
-      <Divider />
+      <Divider sx={{ m: 0 }} />
       <Router />
     </Flex>
   )
