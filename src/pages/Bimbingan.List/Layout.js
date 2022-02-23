@@ -3,12 +3,17 @@ import React, { useEffect, useCallback, useState } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
+import { useHistory } from 'react-router-dom'
+import { DialogAssign } from './Dialog.Assign'
 
 export const Layout = () => {
   const client = useClient();
   const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
 
   const [studyPrograms, setStudyPrograms] = useState([]);
+  const { selectedItem } = useList();
+  const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
 
   const fetchStudyPrograms = useCallback(async () => {
     try {
@@ -51,14 +56,32 @@ export const Layout = () => {
                   checked={status.checked}
                   indeterminate={status.indeterminate}
                   onChange={(e) => {
+                    const x = items.filter(item => !item["preceptor"]).map(item => item["id"]);
                     dispatchSelectedItem({
-                      type: "all",
-                      data: e.target.checked
-                    })
+                      type: "exclude",
+                      data: x,
+                      checked: e.target.checked
+                    });
                   }}
                 />
               </Box>
               <Box sx={{ ml: -10 }}>
+                {selectedItem.length > 0 &&
+                  <Button
+                    minimal={true}
+                    intent="primary"
+                    text={`Assign ${selectedItem.length} selected`}
+                    onClick={() => setDialogOpen("assign")}
+                  />
+                }
+                <DialogAssign
+                  isOpen={dialogOpen === "assign"}
+                  data={selectedItem}
+                  onClose={() => { setDialogOpen(null) }}
+                  onSubmitted={() => {
+                    history.go(0);
+                  }}
+                />
                 <Button
                   minimal={true}
                   icon="circle"

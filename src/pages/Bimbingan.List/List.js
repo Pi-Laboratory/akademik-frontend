@@ -13,16 +13,27 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
-            "generation": filter["generation"] || undefined,
-            "study_program_id": filter["study_program_id"] || undefined,
+            "lecturer_id": filter["lecturer_id"] || undefined,
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
             $include: [{
+              model: "preceptors",
+              $select: ["id", "lecturer_id"],
+              $include: [{
+                model: "lecturers",
+                $select: ["id", "employee_id"],
+                $include: [{
+                  model: "employees",
+                  $select: ["id", "front_degree", "name", "back_degree"]
+                }]
+              }]
+            }, {
               model: "study_programs",
               $select: ["id", "name"]
             }]
           }
         });
+        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -57,6 +68,7 @@ const List = () => {
           <Flex>
             <Box sx={{ width: 40, flexShrink: 0 }}>
               <Checkbox
+                disabled={!!item["preceptor"]}
                 checked={selectedItem.indexOf(item["id"]) !== -1}
                 onChange={(e) => {
                   dispatchSelectedItem({
@@ -79,14 +91,21 @@ const List = () => {
               </Box>
             </Box>
             <Box sx={{ width: "30%" }}>
-              <Box sx={{ color: "gray.5" }}>
-                Dibimbing oleh
-              </Box>
-              <Box>
-                <Link to={`pengajar/${item["id"]}/`}>
-                  {item["name"]}
-                </Link>
-              </Box>
+              {item["preceptor"] &&
+                <>
+                  <Box sx={{ color: "gray.5" }}>
+                    Dibimbing oleh
+                  </Box>
+                  <Box>
+                    <Link to={`pengajar/${item["id"]}/`}>
+                      {item["preceptor"]["lecturer"]["employee"]["name"]}
+                    </Link>
+                  </Box>
+                </>}
+              {item["preceptor"] === null &&
+                <Box sx={{ color: "gray.5" }}>
+                  Belum ada pembimbing
+                </Box>}
             </Box>
             <Box sx={{ width: "10%" }}>
               {item["generation"]}

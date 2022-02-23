@@ -3,17 +3,18 @@ import ListProvider from 'components/list'
 import { Layout } from './Layout'
 import { useHistory, useLocation } from 'react-router-dom';
 import { H2 } from '@blueprintjs/core';
-import { Box, Divider } from 'components';
+import { Box, Divider, useClient } from 'components';
 
 const DaftarMahasiswa = () => {
   const location = useLocation();
   const history = useHistory();
+  const client = useClient();
 
   const [filter, filterSearch] = useMemo(() => {
     const url = new URLSearchParams(location["search"]);
+    console.log(client.account);
     const filter = {
-      "generation": url.get("generation") || String(new Date().getFullYear()),
-      "study_program_id": url.get("study_program_id") || "",
+      "lecturer_id": "",
     };
     return [filter, url];
   }, [location["search"]]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -21,9 +22,8 @@ const DaftarMahasiswa = () => {
   return (
     <ListProvider
       filter={filter}
-      onFilterChange={({ generation, study_program_id }) => {
-        filterSearch.set("generation", generation);
-        filterSearch.set("study_program_id", study_program_id);
+      onFilterChange={({ lecturer_id }) => {
+        filterSearch.set("lecturer_id", lecturer_id);
         history.replace({
           search: filterSearch.toString()
         });
