@@ -1,6 +1,5 @@
 import { Button, Classes, InputGroup, NonIdealState } from "@blueprintjs/core"
 import { Box, Divider, Flex, useClient } from "components"
-import { ID } from "components/helper";
 import { useCallback, useEffect, useState } from "react"
 
 export const Achievements = ({ studyProgramId, preceptorId, list }) => {
@@ -20,7 +19,7 @@ export const Achievements = ({ studyProgramId, preceptorId, list }) => {
       console.error(err);
     }
     setSubmitting(false);
-  }, [client, studyProgramId, preceptorId, achievements]);
+  }, [client, preceptorId, achievements]);
 
   useEffect(() => {
     const fetch = async () => {
@@ -32,7 +31,7 @@ export const Achievements = ({ studyProgramId, preceptorId, list }) => {
       }
     }
     fetch();
-  }, []);
+  }, [client, studyProgramId]);
 
   return (
     <>

@@ -102,7 +102,7 @@ export const useNav = (base) => {
     }
     if (goToPath === null) return;
     navigation.go(goToPath);
-  }, [base, navigation, items]);
+  }, [navigation, items]);
 
   return {
     breadcrumb: breadcrumb,
