@@ -19,6 +19,41 @@ feathers.configure(FeathersAuth({
 
 export const ClientContext = createContext(null);
 
+const getAccountRole = (account) => {
+  const { lecturer_id, student_id, registration_id } = account;
+  if (student_id) {
+    return "Student";
+  } else if (lecturer_id) {
+    return "Lecturer";
+  } else if (registration_id) {
+    return "Public";
+  }
+  return "Admin";
+}
+
+const populateAccount = async (account) => {
+  if (getAccountRole(account) === "Student") {
+    account.student = await feathers.service("students").get(account["student_id"], {
+      query: { $select: ["id", "name", "study_program_id"] }
+    });
+  } else if (getAccountRole(account) === "Lecturer") {
+    account.lecturer = await feathers.service("lecturers").get(account["lecturer_id"], {
+      query: {
+        $select: ["id", "nidn", "employee", "employee_id", "study_program_id"],
+        $include: [{
+          model: "employees",
+          $select: ["id", "name", "nip"]
+        }]
+      }
+    });
+  } else if (getAccountRole(account) === "Public") {
+    account.registration = await feathers.service("registrations").get(account["registration_id"], {
+      query: ["id", "full_name"]
+    });
+  }
+  return account;
+}
+
 export const ClientProvider = ({ children }) => {
   const [account, setAccount] = useState(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -26,15 +61,7 @@ export const ClientProvider = ({ children }) => {
 
   const role = useMemo(() => {
     if (account === null) return null;
-    const { lecturer_id, student_id, registration_id } = account;
-    if (student_id) {
-      return "Student";
-    } else if (lecturer_id) {
-      return "Lecturer";
-    } else if (registration_id) {
-      return "Public";
-    }
-    return "Admin";
+    return getAccountRole(account);
   }, [account]);
 
   useEffect(() => {
@@ -53,7 +80,8 @@ export const ClientProvider = ({ children }) => {
   async function authenticate(data, params) {
     try {
       const res = await feathers.authenticate(data, params);
-      setAccount(res.user);
+      const account = await populateAccount(res.user);
+      setAccount(account);
       setIsAuthenticated(true);
     } catch (err) {
       throw new Error(err);
@@ -62,11 +90,12 @@ export const ClientProvider = ({ children }) => {
 
   async function reAuthenticate(force = false) {
     try {
-      const ret = await feathers.reAuthenticate(force);
-      // console.log(ret);
-      setAccount(ret.user);
+      const res = await feathers.reAuthenticate(force);
+      const account = await populateAccount(res.user);
+      console.log(account);
+      setAccount(account);
       setIsAuthenticated(true);
-      return ret;
+      return res;
     } catch (err) {
       setIsAuthenticated(false);
       throw new Error(err);

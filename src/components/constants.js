@@ -81,6 +81,7 @@ export const PREDIKAT = {
   "C": 2,
   "D": 1,
   "E": 0,
+  "I": -1
 }
 
 const CONSTANTS = {

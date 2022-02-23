@@ -5,7 +5,7 @@ import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import List from 'pages/Lecturer.Bimbingan.List';
 
-export const LecturerJadwal = () => {
+export const LecturerBimbingan = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {

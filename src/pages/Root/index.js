@@ -1,10 +1,14 @@
 import { PublicForm } from "pages/Public.Form";
 import { PublicSecurity } from "pages/Public.Security";
 import { PublicDashboard } from "pages/Public.Dashboard";
+
 import StudentRencanaStudi from "pages/Student.RencanaStudi";
 import StudentHasilStudi from "pages/Student.HasilStudi";
+
+import { LecturerBimbingan } from "pages/Lecturer.Bimbingan";
 import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
+
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
@@ -166,6 +170,14 @@ const navigation = [
     "path": "/",
     "icon": "blank",
     "exact": true,
+    "permission": "Lecturer"
+  },
+  {
+    "title": "Bimbingan",
+    "text": "Bimbingan",
+    "component": LecturerBimbingan,
+    "path": "/bimbingan/",
+    "icon": "blank",
     "permission": "Lecturer"
   },
   {

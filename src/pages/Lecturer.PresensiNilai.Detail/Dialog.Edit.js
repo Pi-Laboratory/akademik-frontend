@@ -1,5 +1,5 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup, Tag } from "@blueprintjs/core";
-import { Box, Flex, useClient } from "components";
+import { Box, Flex, toaster, useClient } from "components";
 import { Formik } from "formik";
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
@@ -37,26 +37,42 @@ const DialogEdit = ({
           "presence_weight": page[0]["presence_weight"],
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
+          const total = (Number(values["final_test_weight"]) + Number(values["mid_test_weight"]) + Number(values["task_weight"]) + Number(values["presence_weight"]))
+          if (total > 100) {
+            setErrors({ "total_weight": "Melewati batas maksimum" });
+            setSubmitting(false);
+            return false;
+          }
           try {
+            console.log(values);
             const res = await client["subject-lecturers"].patch(params["subject_lecturer_id"], {
               "mid_test_weight": values["mid_test_weight"],
               "final_test_weight": values["final_test_weight"],
               "task_weight": values["task_weight"],
               "presence_weight": values["presence_weight"],
             });
-            console.log(res);
             onClose();
             onSubmitted(res);
+            toaster.show({
+              icon: "tick",
+              intent: "success",
+              message: "Data berhasil disimpan"
+            });
           } catch (err) {
             console.error(err.message);
+            toaster.show({
+              intent: "danger",
+              message: "Gagal menyimpan"
+            });
           }
+          setSubmitting(false);
         }}
       >
         {({ values, errors, isSubmitting, handleSubmit, handleChange }) =>
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
-              <Flex>
-                <Box sx={{ width: "50%" }}>
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", px: 2 }}>
                   <FormGroup
                     label="Kehadiran"
                     labelFor="f-presence_weight"
@@ -73,7 +89,7 @@ const DialogEdit = ({
                     />
                   </FormGroup>
                 </Box>
-                <Box sx={{ width: "50%" }}>
+                <Box sx={{ width: "50%", px: 2 }}>
                   <FormGroup
                     label="Tugas"
                     labelFor="f-task_weight"
@@ -91,8 +107,8 @@ const DialogEdit = ({
                   </FormGroup>
                 </Box>
               </Flex>
-              <Flex>
-                <Box sx={{ width: "50%" }}>
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", px: 2 }}>
                   <FormGroup
                     label="UTS"
                     labelFor="f-mid_test_weight"
@@ -109,7 +125,7 @@ const DialogEdit = ({
                     />
                   </FormGroup>
                 </Box>
-                <Box sx={{ width: "50%" }}>
+                <Box sx={{ width: "50%", px: 2 }}>
                   <FormGroup
                     label="UAS"
                     labelFor="f-final_test_weight"
