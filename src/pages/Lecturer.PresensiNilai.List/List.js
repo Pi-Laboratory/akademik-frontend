@@ -1,11 +1,11 @@
-import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core';
+import { NonIdealState, Spinner } from '@blueprintjs/core';
 import { Box, Flex, ListGroup, useClient, useList } from 'components';
 import { Link } from "react-router-dom";
 import React, { useEffect } from 'react';
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, filter, paging, dispatchSelectedItem } = useList();
+  const { items, setItems, setPaging, filter, paging } = useList();
 
   useEffect(() => {
     setItems(null);
@@ -17,28 +17,15 @@ const List = () => {
       try {
         const res = await client["subject-lecturers"].find({
           query: {
-            // $select: ["id", "day", "subject_id", "lecturer_id"],
+            $select: ["id", "subject_id", "lecturer_id"],
             "lecturer_id": filter["lecturer_id"],
             $include: [{
               model: "subjects",
               $select: ["id", "name", "code", "semester"],
-              // $where: {
-              //   "study_program_id": filter["study_program_id"],
-              // },
               $include: [{
                 model: "study_programs",
                 $select: ["id", "name"],
               }]
-            }, {
-              model: "lecturers",
-              $select: ["id", "employee_id"],
-              $include: [{
-                model: "employees",
-                $select: ["id", "front_degree", "name", "back_degree",]
-              }]
-            }, {
-              model: "hours",
-              $select: ["id", "day", "start", "end"]
             }]
           }
         });
@@ -74,17 +61,6 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox onChange={(e) => {
-                dispatchSelectedItem({
-                  type: "toggle",
-                  data: {
-                    name: item["id"],
-                    value: e.target.checked
-                  }
-                })
-              }} />
-            </Box>
             <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
               <Box>
                 <Link to={`/penilaian/jadwal/${item["id"]}`}>
@@ -96,12 +72,19 @@ const List = () => {
               </Box>
             </Box>
             <Box sx={{ flexGrow: 1, width: `${100 / 3}%` }}>
-              {item["subject"]["study_program"]["name"]}
+              <Box sx={{ color: "gray.5" }}>
+                Program Studi
+              </Box>
+              <Box>
+                {item["subject"]["study_program"]["name"]}
+              </Box>
             </Box>
             <Box sx={{ flexGrow: 1, width: `${100 / 3}%` }}>
-              <Box>33</Box>
               <Box sx={{ color: "gray.5" }}>
-                Mahasiswa
+                Semester
+              </Box>
+              <Box>
+                {item["subject"]["semester"]}
               </Box>
             </Box>
           </Flex>

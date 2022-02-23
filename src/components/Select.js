@@ -24,11 +24,14 @@ export const Select = ({
   multiple,
   removeItem
 }) => {
+
   const items = useMemo(() => {
     return options;
   }, [options]);
+
   const activeItem = useMemo(() => {
-    return items.find(item => item.value === value);
+    // eslint-disable-next-line eqeqeq
+    return items.find(item => item.value == value); 
   }, [value, items]);
 
   const createNewItemRenderer = (query, active) => {

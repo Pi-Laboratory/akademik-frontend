@@ -92,7 +92,6 @@ export const ClientProvider = ({ children }) => {
     try {
       const res = await feathers.reAuthenticate(force);
       const account = await populateAccount(res.user);
-      console.log(account);
       setAccount(account);
       setIsAuthenticated(true);
       return res;

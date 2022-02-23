@@ -1,10 +1,51 @@
-import { Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Pagination, Select, useList } from "components";
+import { Button, Classes } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Pagination, Select, useClient, useList } from "components";
+import { useCallback, useEffect, useState } from "react";
 import Filter from "./Filter";
 import List from "./List";
 
 const PresensiNilaiList = () => {
-  const { paging, setPaging, items } = useList();
+  const client = useClient();
+  const { paging, setPaging, items, filter, setFilter } = useList();
+  const [studyPrograms, setStudyPrograms] = useState([]);
+  const [loading, setLoading] = useState({
+    studyPrograms: false
+  })
+  const fetchStudyPrograms = useCallback(async () => {
+    setLoading(l => ({ ...l, studyPrograms: true }));
+    if (studyPrograms.length > 0) {
+      setLoading(l => ({ ...l, studyPrograms: false }));
+      return;
+    }
+    try {
+      const res = await client["study-programs"].find({
+        query: {
+          $select: ["id", "name"],
+          $include: [{
+            model: "majors",
+            $select: ["id", "name"]
+          }]
+        }
+      });
+      setStudyPrograms(res.data.map((x) => {
+        return {
+          label: x["name"],
+          value: x["id"],
+          info: x["major"]["name"],
+        }
+      }));
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(l => ({ ...l, studyPrograms: false }));
+  }, [client, studyPrograms]);
+
+  useEffect(() => {
+    if (filter["study_program_id"]) {
+      fetchStudyPrograms();
+    }
+  }, [filter, fetchStudyPrograms]);
+
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -18,27 +59,38 @@ const PresensiNilaiList = () => {
       }}>
         <ListGroup.Header>
           <Flex sx={{ alignItems: "center" }}>
-            <Box sx={{ width: 40, flexShrink: 0, }}>
-              <Checkbox
-                onChange={(e) => {
-                  console.log(e);
-                }}
-              />
-            </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
               <Select
                 minimal={true}
                 label="Program Studi"
-                options={[
-                  { label: "Teologi", value: 0 },
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Arsitektur", value: 1 },
-                  { label: "Akuntansi", value: 2 },
-                  { label: "Teknik Sipil", value: 3 },
-                  { label: "Bahasa Inggris", value: 3 },
-                ]}
+                loading={loading["studyPrograms"]}
+                value={filter["study_program_id"]}
+                onOpening={() => {
+                  fetchStudyPrograms();
+                }}
+                options={studyPrograms}
+                onChange={({ value }) => {
+                  setFilter(f => ({
+                    ...f,
+                    study_program_id: value
+                  }))
+                }}
               />
+              {[
+                !!filter["study_program_id"],
+              ].indexOf(true) !== -1
+                && <Button
+                  minimal={true}
+                  intent="warning"
+                  icon="filter-remove"
+                  onClick={() => {
+                    setFilter(filter => ({
+                      ...filter,
+                      "study_program_id": null
+                    }))
+                  }}
+                />}
             </Box>
           </Flex>
         </ListGroup.Header>

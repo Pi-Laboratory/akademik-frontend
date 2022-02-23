@@ -1,6 +1,5 @@
 import { NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, CONSTANTS, Flex, ListGroup, useClient, useList } from "components";
-import { Link } from "react-router-dom";
 import { Fragment, useEffect } from "react";
 import moment from "moment";
 
@@ -11,21 +10,24 @@ const List = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
+        let querySubjects = {
+          model: "subjects",
+          $select: ["id", "name", "code", "semester", "study_program_id"],
+          $include: [{
+            model: "study_programs",
+            $select: ["id", "name"],
+          }],
+        }
+        if (filter["study_program_id"]) {
+          querySubjects["$where"] = {
+            "study_program_id": filter["study_program_id"],
+          }
+        }
         const res = await client["subject-lecturers"].find({
           query: {
-            // $select: ["id", "day", "subject_id", "lecturer_id"],
+            $select: ["id", "subject_id", "lecturer_id"],
             "lecturer_id": filter["lecturer_id"],
-            $include: [{
-              model: "subjects",
-              $select: ["id", "name", "code", "semester"],
-              // $where: {
-              //   "study_program_id": filter["study_program_id"],
-              // },
-              $include: [{
-                model: "study_programs",
-                $select: ["id", "name"],
-              }]
-            }, {
+            $include: [querySubjects, {
               model: "lecturers",
               $select: ["id", "employee_id"],
               $include: [{
@@ -33,9 +35,9 @@ const List = () => {
                 $select: ["id", "front_degree", "name", "back_degree",]
               }]
             }, {
-              model: "hours",
-              $select: ["id", "day", "start", "end"]
-            }]
+                model: "hours",
+                $select: ["id", "day", "start", "end"]
+              }]
           }
         });
         setItems(res.data);
@@ -70,21 +72,7 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            {/* <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box> */}
-            <Box sx={{ flexShrink: 0, mr: 3, width: `15%` }}>
+            <Box sx={{ flexShrink: 0, mr: 3, width: `20%` }}>
               {item["hours"].map((hour, idx) => {
                 return (
                   <Fragment key={idx}>
@@ -100,9 +88,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
               <Box>
-                <Link to={`/kurikulum/mata-kuliah/${item["subject"]["id"]}`}>
-                  {item["subject"]["name"]}
-                </Link>
+                {item["subject"]["name"]}
               </Box>
               <Box sx={{ color: "gray.5" }}>
                 {item["subject"]["code"]}

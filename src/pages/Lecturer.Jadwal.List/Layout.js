@@ -3,7 +3,7 @@ import { Box, Flex, ListGroup, useList, Select, useClient } from "components";
 import Filter from "./Filter";
 import List from "./List";
 import { Pagination } from "components/Pagination";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const Layout = () => {
   const client = useClient();
@@ -39,6 +39,12 @@ const Layout = () => {
     setLoading((l) => ({ ...l, "study_program_id": false }));
   }, [client]);
 
+  useEffect(() => {
+    if (filter["study_program_id"]) {
+      fetchStudyPrograms();
+    }
+  }, [filter, fetchStudyPrograms]);
+
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -52,19 +58,6 @@ const Layout = () => {
       }}>
         <ListGroup.Header>
           <Flex sx={{ alignItems: "center" }}>
-            <Box sx={{ width: 40, flexShrink: 0, }}>
-              {/* <Checkbox
-                disabled={paging.total === 0}
-                checked={status.checked}
-                indeterminate={status.indeterminate}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "all",
-                    data: e.target.checked
-                  })
-                }}
-              /> */}
-            </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }} >
               <Select
