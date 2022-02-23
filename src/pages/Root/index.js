@@ -9,6 +9,7 @@ import { LecturerBimbingan } from "pages/Lecturer.Bimbingan";
 import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
 
+import { Bimbingan } from "pages/Bimbingan";
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
@@ -95,6 +96,14 @@ const navigation = [
     "text": "Pengajar",
     "component": Pengajar,
     "path": "/pengajar",
+    "icon": "blank",
+    "permission": "Admin"
+  },
+  {
+    "title": "Bimbingan",
+    "text": "Bimbingan",
+    "component": Bimbingan,
+    "path": "/bimbingan",
     "icon": "blank",
     "permission": "Admin"
   },
