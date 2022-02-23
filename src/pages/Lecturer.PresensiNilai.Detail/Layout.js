@@ -33,7 +33,6 @@ const Layout = () => {
             }]
           }
         });
-        console.log("page", res);
         setPageState(res);
       } catch (err) {
         console.error(err);

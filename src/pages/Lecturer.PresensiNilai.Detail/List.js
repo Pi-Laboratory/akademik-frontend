@@ -36,7 +36,6 @@ const List = () => {
             }]
           }
         });
-        console.log(res.data);
         setItems(res.data);
         setPaging({
           total: res.total,

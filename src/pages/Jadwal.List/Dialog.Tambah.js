@@ -94,7 +94,6 @@ const DialogTambah = ({
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
-            console.log(values);
             const res = await client["subject-lecturers"].create({
               "subject_id": values["subject_id"],
               "lecturer_id": values["lecturer_id"],

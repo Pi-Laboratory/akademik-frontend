@@ -63,8 +63,6 @@ const DialogEdit = ({
             }).map(hour => hour["id"]);
             const editedHour = values["hours"].filter(hour => hour["id"]);
 
-            console.log(createdHour, editedHour, deletedHour);
-
             const res = await client["subject-lecturers"].patch(data["id"], {
               "semester_id": values["semester_id"],
               "mid_test_weight": values["mid_test_weight"],

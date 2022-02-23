@@ -55,7 +55,6 @@ function DialogTambahStepOne(props) {
           }]
         }
       });
-      console.log(res);
       setStudyPrograms(res.data.map(({ id, name, major }) => {
         return {
           label: name,

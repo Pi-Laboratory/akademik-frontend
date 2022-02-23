@@ -12,7 +12,6 @@ const List = () => {
     const fetch = async () => {
       setItems(null);
       try {
-        console.log(filter);
         const res = await client["study-plans"].find({
           query: {
             "study_id": filter["study_id"] || undefined,
@@ -37,7 +36,6 @@ const List = () => {
             }]
           }
         });
-        console.log(res.data);
         setItems(res.data);
         setPaging({
           total: res.total,

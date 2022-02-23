@@ -3,16 +3,14 @@ import ListProvider from 'components/list'
 import { Layout } from './Layout'
 import { useHistory, useLocation } from 'react-router-dom';
 import { H2 } from '@blueprintjs/core';
-import { Box, Divider, useClient } from 'components';
+import { Box, Divider } from 'components';
 
 const DaftarMahasiswa = () => {
   const location = useLocation();
   const history = useHistory();
-  const client = useClient();
 
   const [filter, filterSearch] = useMemo(() => {
     const url = new URLSearchParams(location["search"]);
-    console.log(client.account);
     const filter = {
       "lecturer_id": "",
     };

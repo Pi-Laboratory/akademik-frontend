@@ -22,8 +22,6 @@ const List = () => {
           }
         });
 
-        console.log(res);
-
         setItems(res.data);
         setPaging({
           total: res.total,

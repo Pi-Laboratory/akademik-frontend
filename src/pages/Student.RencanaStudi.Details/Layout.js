@@ -39,7 +39,6 @@ const Layout = () => {
             }]
           }
         });
-        console.log(res);
         setStudyDetail(res);
       } catch (err) {
         console.error(err);

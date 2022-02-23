@@ -44,7 +44,6 @@ const DialogEdit = ({
             return false;
           }
           try {
-            console.log(values);
             const res = await client["subject-lecturers"].patch(params["subject_lecturer_id"], {
               "mid_test_weight": values["mid_test_weight"],
               "final_test_weight": values["final_test_weight"],

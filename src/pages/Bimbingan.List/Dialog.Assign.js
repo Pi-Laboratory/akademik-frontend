@@ -39,7 +39,6 @@ export const DialogAssign = ({
           }]
         }
       });
-      console.log(res);
       await setLecturers(res.data.map((x) => ({
         label: x["employee"]["name"],
         value: x["id"],
@@ -98,10 +97,8 @@ export const DialogAssign = ({
             "student_id": student_id,
             "achievements": []
           }));
-          console.log(result);
           try {
             const res = await client["preceptors"].create(result);
-            console.log(res);
             onClose();
             onSubmitted(res);
           } catch (err) {

@@ -46,7 +46,6 @@ const DialogMatakuliah = ({
           }]
         }
       });
-      console.log(res);
       setSubjectLecturers(res.data.map((value) => {
         return { label: value["subject"]["name"], value: value["id"], info: value["subject"]["code"] };
       }));

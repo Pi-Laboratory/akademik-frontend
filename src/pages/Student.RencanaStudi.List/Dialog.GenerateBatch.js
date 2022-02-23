@@ -69,7 +69,6 @@ const DialogGenerateBatch = ({
           }]
         }
       });
-      console.log(res);
       setStudyPrograms(res.data.map((v) => ({
         label: v["name"],
         value: v["id"],
@@ -95,7 +94,6 @@ const DialogGenerateBatch = ({
           $select: ["id", "name", "year"]
         }
       });
-      console.log(res);
       setCurriculums(res.data.map((v) => ({
         label: v["name"],
         value: v["id"],
@@ -330,8 +328,6 @@ const DialogGenerateBatch = ({
                             <Box>
                               <RadioGroup
                                 onChange={(e) => {
-                                  console.log(values["subject_lecturer_ids"]);
-                                  console.log(values["subject_lecturer_ids"].indexOf(e.target.value));
                                   if (values["subject_lecturer_ids"].indexOf(e.target.value) !== -1) return;
                                   values["subject_lecturer_ids"][idx] = e.target.value;
                                   setFieldValue("subject_lecturer_ids", values["subject_lecturer_ids"]);

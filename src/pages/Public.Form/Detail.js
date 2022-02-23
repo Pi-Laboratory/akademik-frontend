@@ -37,7 +37,6 @@ export const Detail = () => {
       try {
         const res = await client.registrations.get(account.registration_id);
         setDefaultInfo(res)
-        console.log(res);
       } catch (err) {
         console.error(err);
       }
@@ -53,9 +52,7 @@ export const Detail = () => {
       result["photo"] = undefined;
     }
     try {
-      console.log(result);
-      const res = await client.registrations.patch(defaultInfo["id"], result);
-      console.log(values, res);
+      await client.registrations.patch(defaultInfo["id"], result);
     } catch (err) {
       console.error(err);
     }
