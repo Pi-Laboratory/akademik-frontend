@@ -1,6 +1,6 @@
 import { Button, FileInput, FormGroup, InputGroup, Spinner, TextArea } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { Box, CropImage, Divider, Flex, TakePhoto, useClient } from "components";
+import { Box, CropImage, Divider, Flex, TakePhoto, useClient, getBase64 } from "components";
 import { Formik } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
@@ -21,13 +21,6 @@ const Schema = Yup.object().shape({
     "name": Yup.string().required(),
     "cropped": Yup.string(),
   }).required(),
-})
-
-const getBase64 = file => new Promise((resolve, reject) => {
-  var reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = () => resolve(reader.result);
-  reader.onerror = (error) => reject(error);
 });
 
 export const Detail = () => {

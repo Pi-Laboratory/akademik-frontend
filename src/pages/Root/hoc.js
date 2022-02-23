@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState } from "react";
-import { useHistory } from "react-router";
+import { useHistory, useParams, generatePath } from "react-router";
 
 export const RootContext = createContext(null);
 
@@ -8,6 +8,7 @@ function navigationReducer(state, action) {
   if (!ret[action.base]) {
     ret[action.base] = [];
   }
+
   return {
     ...ret,
     [action.base]: action.data,
@@ -48,11 +49,13 @@ export const useRoot = () => {
 
 export const Navigation = ({ base, navigation, children }) => {
   const root = useRoot();
+  const params = useParams();
   const { __internal } = root;
   useEffect(() => {
     __internal.dispatchNavigation({
       base: base,
-      data: navigation
+      data: navigation,
+      params
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return children;
@@ -60,11 +63,13 @@ export const Navigation = ({ base, navigation, children }) => {
 
 export const useNav = (base) => {
   const { navigation } = useContext(RootContext);
-  const [breadcrumb ] = useState([]);
+  const [breadcrumb] = useState([]);
+  const params = useParams();
 
   const items = useMemo(() => {
     let its = navigation.path[base] || [];
     its = its.map((itm) => {
+      itm.rendered = itm.path;
       if (itm.path.indexOf(base) === 0) return itm;
       let path = base;
 
@@ -72,10 +77,15 @@ export const useNav = (base) => {
         path = path.concat("/");
 
       itm.path = itm.path.replace("/", path);
+      try {
+        itm.rendered = generatePath(itm.path, params);
+      } catch (err) {
+        // do nothing
+      }
       return itm;
     });
     return its || null;
-  }, [navigation.path, base]);
+  }, [navigation.path, base, params]);
 
   const push = useCallback((path) => {
     // navigation.go(path);
@@ -83,10 +93,21 @@ export const useNav = (base) => {
     // setBreadcrumb(crumbs => [...crumbs, path]);
   }, []);
 
+  const go = useCallback((path) => {
+    let goToPath = null;
+    for (let item of navigation.path[base]) {
+      if (item["path"] === path) {
+        goToPath = item["rendered"];
+      }
+    }
+    if (goToPath === null) return;
+    navigation.go(goToPath);
+  }, [base, navigation]);
+
   return {
     breadcrumb: breadcrumb,
     items: items,
-    go: navigation.go,
+    go: go,
     push: push
   };
 }

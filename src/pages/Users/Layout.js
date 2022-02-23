@@ -17,7 +17,7 @@ const Layout = () => {
       <Box sx={{ mx: 3 }}>
         <Filter />
       </Box>
-      <Box>
+      <Box sx={{ mb: 4 }}>
         <List />
       </Box>
     </Flex>

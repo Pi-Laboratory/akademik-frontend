@@ -30,7 +30,7 @@ const DaftarMahasiswa = () => {
       }}
     >
       <Box sx={{ px: 3, mb: 4 }}>
-        <Box as={H2} sx={{ m: 0 }}>Mahasiswa</Box>
+        <Box as={H2} sx={{ m: 0 }}>Bimbingan</Box>
       </Box>
       <Divider sx={{ m: 0 }} />
       <Layout />

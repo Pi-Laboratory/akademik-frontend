@@ -89,18 +89,26 @@ export const TakePhotoArea = ({ onCapture = () => { }, onClose = () => { } }) =>
   )
 }
 
-export const TakePhoto = ({ onCapture, icon = "camera", text, title = "Take Picture" }) => {
+export const TakePhoto = ({
+  ButtonComponent = Button,
+  buttonProps = {},
+  onCapture,
+  icon = "camera",
+  text,
+  title = "Take Picture"
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const isCompatible = useMemo(() => {
     return !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
   }, []);
   return (isCompatible && (
     <>
-      <Button
+      <ButtonComponent
         icon={icon}
         text={text}
         title={title}
         onClick={() => setIsOpen(s => !s)}
+        {...buttonProps}
       />
       <Dialog
         enforceFocus={false}

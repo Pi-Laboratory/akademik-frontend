@@ -3,6 +3,12 @@ import { AspectRatio, Box } from "components";
 import { useRef, useEffect, useState } from "react";
 import Cropper from "cropperjs";
 
+export const getBase64 = file => new Promise((resolve, reject) => {
+  var reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = (error) => reject(error);
+});
 
 export const CropImageArea = ({ src, ratio = 1 / 1, onCropped, onClose = () => { } }) => {
   const imageRef = useRef(null);
@@ -68,6 +74,8 @@ export const CropImageArea = ({ src, ratio = 1 / 1, onCropped, onClose = () => {
 }
 
 export const CropImage = ({
+  ButtonComponent = Button,
+  buttonProps = {},
   ratio,
   src,
   onCropped,
@@ -79,12 +87,13 @@ export const CropImage = ({
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <Button
+      <ButtonComponent
         disabled={disabled}
         icon={icon}
         text={text}
         title={title}
         onClick={() => setIsOpen(s => !s)}
+        {...buttonProps}
       />
       <Dialog
         enforceFocus={false}
