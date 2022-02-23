@@ -3,11 +3,16 @@ import { Box, Flex, ListGroup, Select, Pagination, useClient, useList } from 'co
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
+import DialogHapusKurikulum from "./Dialog.Hapus";
+import { useHistory } from 'react-router-dom'
 
 export const Layout = () => {
   const client = useClient();
-  const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
+  const history = useHistory();
+
+  const { selectedItem, paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
   const [studyPrograms, setStudyPrograms] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(null);
 
   useEffect(() => {
     const fetch = async () => {
@@ -37,7 +42,7 @@ export const Layout = () => {
         <ListGroup
           sx={{
             [`.${Classes.CHECKBOX}`]: {
-              m: 0
+              m: 0,
             }
           }}
         >
@@ -45,6 +50,7 @@ export const Layout = () => {
             <Flex sx={{ alignItems: "center" }}>
               <Box sx={{ width: 40, flexShrink: 0 }}>
                 <Checkbox
+                  disabled={(items === null) || items.length === 0}
                   checked={status.checked}
                   indeterminate={status.indeterminate}
                   onChange={(e) => {
@@ -55,7 +61,24 @@ export const Layout = () => {
                   }}
                 />
               </Box>
-              <Box sx={{ flexGrow: 1 }} />
+              <Box sx={{ flexGrow: 1, ml: -10 }}>
+                {selectedItem.length > 0 &&
+                  <Button
+                    minimal={true}
+                    intent="danger"
+                    text={`Delete ${selectedItem.length} selected`}
+                    onClick={() => setDialogOpen("delete")}
+                  />
+                }
+                <DialogHapusKurikulum
+                  data={selectedItem}
+                  isOpen={dialogOpen === "delete"}
+                  onClose={() => { setDialogOpen(null) }}
+                  onSubmitted={() => {
+                    history.go(0);
+                  }}
+                />
+              </Box>
               <Box sx={{ flexShrink: 0 }}>
                 <Select
                   minimal={true}
