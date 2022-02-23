@@ -1,12 +1,15 @@
-import { Checkbox, Classes, NonIdealState } from "@blueprintjs/core";
+import { Button, Checkbox, Classes, NonIdealState } from "@blueprintjs/core";
 import { Box, Container, Flex, ListGroup, useClient, useList } from "components";
 import { Pagination } from "components/Pagination";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import DialogHapus from "./Dialog.Hapus";
 
 const List = () => {
   const client = useClient();
   const { filter, items, setItems, status, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const [dialogOpen, setDialogOpen] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
     const fetch = async () => {
@@ -88,8 +91,24 @@ const List = () => {
                 }}
               />
             </Box>
-            <Box>
-            </Box>
+            {selectedItem.length > 0 &&
+              <Box>
+                <Button
+                  minimal={true}
+                  intent="danger"
+                  text={`Delete ${selectedItem.length} selected`}
+                  onClick={() => setDialogOpen("delete")}
+                />
+              </Box>
+            }
+            <DialogHapus
+              data={selectedItem}
+              isOpen={dialogOpen === "delete"}
+              onClose={() => { setDialogOpen(null) }}
+              onSubmitted={() => {
+                history.go(0);
+              }}
+            />
           </Flex>
         </ListGroup.Header>
         {items && items.length === 0 && (
