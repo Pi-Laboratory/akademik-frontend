@@ -2,6 +2,7 @@ import { Classes, HTMLTable } from "@blueprintjs/core";
 import { Box, useClient } from "components";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Achievements } from "./Achievements";
 
 const Layout = () => {
   const client = useClient();
@@ -54,6 +55,9 @@ const Layout = () => {
           </tr>
         </tbody>
       </HTMLTable>
+      {item &&
+        <Achievements data={item} />}
+
     </Box >
   )
 }
