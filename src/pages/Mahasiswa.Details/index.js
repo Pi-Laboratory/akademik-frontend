@@ -19,12 +19,28 @@ const StudentProvider = ({ children }) => {
       try {
         const res = await client["students"].get(params["id"], {
           query: {
-            // $select: ["id", "name", "birth_date", "birth_city"]
-            $select: ["id", "name", "birth_date", "birth_city", "photo"]
+            $select: [
+              "id",
+              "name",
+              "religion",
+              "gender",
+              "birth_date",
+              "birth_city",
+              "origin_address",
+              "recent_address",
+              "city",
+              "postal_code",
+              "phone_number",
+              "email",
+              "photo",
+              "generation",
+              "registration_number",
+              "registration_date",
+              "student_status",
+              "study_program_id",
+            ]
           }
         });
-        res.photo = base64ArrayBuffer(res.photo);
-        console.log(res);
         setData(res);
       } catch (err) {
         console.error(err);

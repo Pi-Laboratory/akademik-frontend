@@ -22,8 +22,8 @@ export const Header = () => {
             {student && student["photo"] &&
               <Box
                 as="img"
-                sx={{ width: "100%", height: "100%", display: "block" }}
-                src={`data:image/jpg;base64, ${student["photo"]}`}
+                sx={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
+                src={`data:image/jpg;base64,${student["photo"]}`}
               />}
             {student && !student["photo"] &&
               <NonIdealState

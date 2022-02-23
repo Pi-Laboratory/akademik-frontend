@@ -2,6 +2,7 @@ import { Button, Card, Classes, FormGroup, H2, H3, HTMLSelect, InputGroup, Menu,
 import { DateInput } from "@blueprintjs/datetime";
 import { Popover2 } from "@blueprintjs/popover2";
 import { Box, CropImage, Divider, Flex, TakePhoto, useClient, getBase64, AspectRatio, toaster } from "components"
+import { _base64ToArrayBuffer } from "components/base64ArrayBuffer";
 import { Formik } from "formik";
 import moment from "moment";
 import { useNav } from "pages/Root/hoc";
@@ -12,10 +13,6 @@ export const Settings = ({ base }) => {
   const client = useClient();
   const student = useStudent();
   const navigation = useNav(base);
-  // const photo = useMemo(() => {
-  //   if (student === null) return null;
-  //   return base64ArrayBuffer(student["photo"]);
-  // }, [student]);
 
   const [photoPopover, setPhotoPopover] = useState(false);
 
@@ -39,7 +36,7 @@ export const Settings = ({ base }) => {
       <Formik
         initialValues={{
           "photo": {
-            "cropped": ""
+            "cropped": `data:image/jpg;base64,${student["photo"]}`
           },
           "name": student["name"],
           "birth_city": student["birth_city"],
@@ -60,18 +57,17 @@ export const Settings = ({ base }) => {
         onSubmit={async (values, { setSubmitting }) => {
           const result = { ...values };
           if (values["photo"].cropped) {
-            result["photo"] = values["photo"].cropped;
+            result["photo"] = values["photo"].cropped.split(",")[1];
+            result["photo"] = _base64ToArrayBuffer(result["photo"]);
           } else {
             result["photo"] = undefined;
           }
-          console.log(result);
           try {
-            const res = await client["students"].patch(student["id"], values);
+            const res = await client["students"].patch(student["id"], result);
             toaster.show({
               intent: "success",
               message: "Berhasil disimpan"
             });
-            console.log(res.photo)
           } catch (err) {
             console.error(err);
           }
@@ -132,7 +128,7 @@ export const Settings = ({ base }) => {
                             <Menu>
                               <MenuItem
                                 tagName="label"
-                                for="f-photo"
+                                htmlFor="f-photo"
                                 text={loading["file"] ? "Loading" : "Upload photo"}
                                 icon="blank"
                               />

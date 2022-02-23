@@ -44,6 +44,12 @@ const ListProvider = ({
         } else {
           return [];
         }
+      case "exclude":
+        if (action.data) {
+          return [...items.filter(item => action.data.indexOf(item.id) !== -1).map(item => item.id)];
+        } else {
+          return [];
+        }
       default: return state;
     }
   }, [items])

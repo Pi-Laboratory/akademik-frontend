@@ -69,7 +69,7 @@ export const useNav = (base) => {
   const items = useMemo(() => {
     let its = navigation.path[base] || [];
     its = its.map((itm) => {
-      itm.rendered = itm.path;
+      if (!itm.rendered) { itm.rendered = itm.path; }
       if (itm.path.indexOf(base) === 0) return itm;
       let path = base;
 
@@ -95,14 +95,14 @@ export const useNav = (base) => {
 
   const go = useCallback((path) => {
     let goToPath = null;
-    for (let item of navigation.path[base]) {
+    for (let item of items) {
       if (item["path"] === path) {
         goToPath = item["rendered"];
       }
     }
     if (goToPath === null) return;
     navigation.go(goToPath);
-  }, [base, navigation]);
+  }, [base, navigation, items]);
 
   return {
     breadcrumb: breadcrumb,

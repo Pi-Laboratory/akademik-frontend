@@ -83,13 +83,13 @@ const Profile = () => {
       <Divider vertical={true} />
       <Box sx={{ pt: 4, px: 2, width: 350, flexShrink: 0 }}>
         <Box className={`${Classes.CARD}`} sx={{ p: 2, mb: 2, width: 250 }}>
-          <AspectRatio ratio="1:1">
+          <AspectRatio ratio="3:4">
             <Box sx={{ width: "100%", height: "100%" }} >
               {data["photo"] &&
                 <Box
                   as="img"
                   sx={{ width: "100%", height: "100%", display: "block" }}
-                  src={data["photo"]}
+                  src={`data:image/jpg;base64,${data["photo"]}`}
                 />}
               {!data["photo"] &&
                 <NonIdealState
