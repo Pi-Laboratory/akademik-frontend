@@ -63,7 +63,7 @@ export const Settings = ({ base }) => {
             result["photo"] = undefined;
           }
           try {
-            const res = await client["students"].patch(student["id"], result);
+            await client["students"].patch(student["id"], result);
             toaster.show({
               intent: "success",
               message: "Berhasil disimpan"

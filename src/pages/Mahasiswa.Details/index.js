@@ -1,5 +1,4 @@
 import { useClient } from "components";
-import { base64ArrayBuffer } from "components/base64ArrayBuffer";
 import { Navigation } from "pages/Root/hoc";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
