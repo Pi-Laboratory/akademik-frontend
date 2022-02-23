@@ -19,7 +19,13 @@ const List = () => {
             $select: ["id", "name", "nim", "student_status", "generation"],
             $include: [{
               model: "study_programs",
-              $select: ["id", "name"]
+              $select: ["id", "name"],
+            }, {
+              model: "preceptors",
+              $select: ["id", "achievements"],
+              $where: {
+                "lecturer_id": client.lecturer_id
+              }
             }]
           }
         });

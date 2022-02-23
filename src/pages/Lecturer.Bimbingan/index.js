@@ -4,6 +4,7 @@ import Helmet from "react-helmet";
 import { Navigation } from 'pages/Root/hoc'
 import { useRouteMatch } from 'react-router'
 import List from 'pages/Lecturer.Bimbingan.List';
+import Details from 'pages/Lecturer.Bimbingan.Details';
 
 export const LecturerBimbingan = () => {
   const { path } = useRouteMatch();
@@ -11,6 +12,12 @@ export const LecturerBimbingan = () => {
     {
       "component": List,
       "path": `/`,
+      exact: true,
+      icon: 'home'
+    },
+    {
+      "component": Details,
+      "path": `/mahasiswa/:id`,
       exact: true,
       icon: 'home'
     },
