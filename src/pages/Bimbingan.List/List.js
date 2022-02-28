@@ -14,6 +14,8 @@ const List = () => {
         const res = await client["students"].find({
           query: {
             "lecturer_id": filter["lecturer_id"] || undefined,
+            "generation": filter["generation"] || undefined,
+            "study_program_id": filter["study_program_id"] || undefined,
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
             $include: [{

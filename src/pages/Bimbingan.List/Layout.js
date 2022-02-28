@@ -57,11 +57,19 @@ export const Layout = () => {
                   indeterminate={status.indeterminate}
                   onChange={(e) => {
                     const x = items.filter(item => !item["preceptor"]).map(item => item["id"]);
-                    dispatchSelectedItem({
-                      type: "exclude",
-                      data: x,
-                      checked: e.target.checked
-                    });
+                    const y = e.target.checked;
+                    if (!y || status.indeterminate) {
+                      dispatchSelectedItem({
+                        type: "all",
+                        checked: false
+                      });
+                    } else {
+                      dispatchSelectedItem({
+                        type: "exclude",
+                        data: x,
+                        checked: true
+                      });
+                    }
                   }}
                 />
               </Box>
@@ -81,16 +89,6 @@ export const Layout = () => {
                   onSubmitted={() => {
                     history.go(0);
                   }}
-                />
-                <Button
-                  minimal={true}
-                  icon="circle"
-                  text={`${Math.round(Math.random() * 250)} Aktif`}
-                />
-                <Button
-                  minimal={true}
-                  icon="disable"
-                  text={`${Math.round(Math.random() * 250)} Cuti`}
                 />
               </Box>
               <Box sx={{ flexGrow: 1 }} />
