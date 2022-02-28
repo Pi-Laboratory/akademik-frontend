@@ -1,5 +1,6 @@
 import { StepBio } from "./Form.Bio";
 import { StepAccount } from "./Form.Account";
+import { StepStudyProgram } from "./Form.StudyProgram";
 import { useClient } from "components";
 import { useMemo, useState } from "react";
 import { Formik } from "formik";
@@ -11,6 +12,11 @@ const Step = [
     id: "bio",
     title: "Bio",
     ...StepBio
+  },
+  {
+    id: "study-programs",
+    title: "Study Programs",
+    ...StepStudyProgram
   },
   {
     id: "account",
@@ -51,19 +57,24 @@ export const Form = () => {
       onSubmit={async (values, { setSubmitting }) => {
         try {
           toaster.show({
+            icon: "time",
             intent: "none",
             message: "Sedang menyimpan data"
           });
           const reg = await client.registrations.create({
-            "full_name": values["full_name"],
-            "address": values["address"],
-            "birth_place": values["birth_place"],
+            "name": values["name"],
+            "origin_address": values["origin_address"],
+            "birth_city": values["birth_city"],
             "birth_date": values["birth_date"],
             "phone_number": values["phone_number"],
             "nisn": values["nisn"],
+            "email": values["email"],
             "school_name": values["school_name"],
             "school_address": values["school_address"],
-            "photo": values["photo"]["cropped"]
+            "photo": values["photo"]["cropped"],
+            "gender": values["gender"],
+            "study_program_1_id": values["study_program_1_id"],
+            "study_program_2_id": values["study_program_2_id"],
           });
           await client.users.create({
             username: values["username"],
@@ -71,6 +82,7 @@ export const Form = () => {
             "registration_id": reg["id"]
           });
           toaster.show({
+            icon: "tick",
             intent: "success",
             message: "Pendaftaran Berhasil! silahkan login"
           });

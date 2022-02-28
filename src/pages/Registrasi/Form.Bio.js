@@ -1,4 +1,4 @@
-import { Button, FileInput, FormGroup, InputGroup, TextArea } from "@blueprintjs/core";
+import { Button, FileInput, FormGroup, HTMLSelect, InputGroup, TextArea } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import { Box, CropImage, Divider, Flex, TakePhoto } from "components";
 import { useFormikContext } from "formik";
@@ -7,9 +7,10 @@ import * as Yup from "yup";
 import moment from "moment";
 
 export const Schema = Yup.object().shape({
-  "full_name": Yup.string().required(),
-  "address": Yup.string().required(),
-  "birth_place": Yup.string().required(),
+  "name": Yup.string().required(),
+  "origin_address": Yup.string().required(),
+  "gender": Yup.string().oneOf(["L", "P"]).required(),
+  "birth_city": Yup.string().required(),
   "birth_date": Yup.date().required(),
   "phone_number": Yup.string().required(),
   "nisn": Yup.string().required(),
@@ -23,9 +24,10 @@ export const Schema = Yup.object().shape({
 });
 
 const InitialValues = {
-  "full_name": "",
-  "address": "",
-  "birth_place": "",
+  "name": "",
+  "origin_address": "",
+  "gender": "L",
+  "birth_city": "",
   "birth_date": null,
   "phone_number": "",
   "nisn": "",
@@ -38,7 +40,11 @@ const InitialValues = {
 
 const getBase64 = file => new Promise((resolve, reject) => {
   var reader = new FileReader();
-  reader.readAsDataURL(file);
+  try {
+    reader.readAsDataURL(file);
+  } catch(err) {
+    reject(err);
+  }
   reader.onload = () => resolve(reader.result);
   reader.onerror = (error) => reject(error);
 });
@@ -62,49 +68,83 @@ export const FormBio = ({ goTo = () => { } }) => {
     <Box sx={{ py: 3 }}>
       <FormGroup
         label="Nama Lengkap"
-        labelFor="f-full_name"
-        helperText={errors["full_name"]}
+        labelFor="f-name"
+        helperText={errors["name"]}
         intent={"danger"}
       >
         <InputGroup
-          id="f-full_name"
-          name="full_name"
-          value={values["full_name"]}
+          id="f-name"
+          name="name"
+          value={values["name"]}
           onChange={handleChange}
-          intent={errors["full_name"] ? "danger" : "none"}
+          intent={errors["name"] ? "danger" : "none"}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Jenis Kelamin"
+        labelFor="f-gender"
+        helperText={errors["gender"]}
+        intent={"danger"}
+      >
+        <HTMLSelect
+          id="f-gender"
+          name="gender"
+          placeholder="Pilih"
+          value={values["gender"]}
+          onChange={handleChange}
+          intent={errors["gender"] ? "danger" : "none"}
+          options={[
+            { label: "Pria", value: "L" },
+            { label: "Wanita", value: "P" },
+          ]}
+        />
+      </FormGroup>
+      <FormGroup
+        label="Email"
+        labelFor="f-email"
+        helperText={errors["email"]}
+        intent={"danger"}
+      >
+        <InputGroup
+          fill={true}
+          id="f-email"
+          name="email"
+          value={values["email"]}
+          onChange={handleChange}
+          intent={errors["email"] ? "danger" : "none"}
         />
       </FormGroup>
       <FormGroup
         label="Alamat"
-        labelFor="f-address"
-        helperText={errors["address"]}
+        labelFor="f-origin_address"
+        helperText={errors["origin_address"]}
         intent={"danger"}
       >
         <TextArea
           fill={true}
           growVertically={true}
-          id="f-address"
-          name="address"
+          id="f-origin_address"
+          name="origin_address"
           placeholder="contoh: Buha, Kec. Mapanget, Kota Manado, Sulawesi Utara, Indonesia"
-          value={values["address"]}
+          value={values["origin_address"]}
           onChange={handleChange}
-          intent={errors["address"] ? "danger" : "none"}
+          intent={errors["origin_address"] ? "danger" : "none"}
         />
       </FormGroup>
       <Flex sx={{ mx: -2 }}>
         <Box sx={{ px: 2, width: "50%" }}>
           <FormGroup
             label="Tempat Lahir"
-            labelFor="f-birth_place"
-            helperText={errors["birth_place"]}
+            labelFor="f-birth_city"
+            helperText={errors["birth_city"]}
             intent={"danger"}
           >
             <InputGroup
-              id="f-birth_place"
-              name="birth_place"
-              value={values["birth_place"]}
+              id="f-birth_city"
+              name="birth_city"
+              value={values["birth_city"]}
               onChange={handleChange}
-              intent={errors["birth_place"] ? "danger" : "none"}
+              intent={errors["birth_city"] ? "danger" : "none"}
             />
           </FormGroup>
         </Box>
