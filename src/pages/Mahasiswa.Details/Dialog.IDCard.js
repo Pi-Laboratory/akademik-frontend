@@ -1,12 +1,42 @@
+import { useRef, useCallback } from "react";
 import { Button, Classes, NonIdealState } from "@blueprintjs/core";
-import { AspectRatio, Box, Flex } from "components";
+import { toPng } from "html-to-image";
+import { AspectRatio, Box, Flex, toaster } from "components";
 import IDCardBG from "assets/imgs/idcard_bg.png";
 
 export const DialogIDCard = ({ onClose, data }) => {
+  const canvasRef = useRef(null);
+
+  const saveIDCard = useCallback(() => {
+    const el = canvasRef.current;
+    const tp = toaster.show({
+      icon: "time",
+      intent: "info",
+      message: "Menyiapkan gambar",
+    });
+
+    toPng(el, {
+      canvasHeight: 1625,
+      canvasWidth: 1024,
+    }).then((dataUrl) => {
+      let anchorDownload = document.createElement("a");
+      anchorDownload.download = `${data["nim"]}.png`;
+      anchorDownload.href = dataUrl;
+      anchorDownload.click();
+      toaster.dismiss(tp);
+      toaster.show({
+        icon: "tick",
+        intent: "success",
+        message: "Gambar disimpan",
+      });
+    });
+  }, [data]);
+
   return (
     <>
       <div className={Classes.DIALOG_BODY}>
         <Box
+          ref={canvasRef}
           sx={{
             borderRadius: 8,
             backgroundImage: `url(${IDCardBG})`,
@@ -48,7 +78,7 @@ export const DialogIDCard = ({ onClose, data }) => {
                   {data["photo"] &&
                     <Box
                       as="img"
-                      src={data["photo"]}
+                      src={`data:image/jpg;base64,${data["photo"]}`}
                       sx={{
                         display: "block",
                         width: "100%"
@@ -92,10 +122,15 @@ export const DialogIDCard = ({ onClose, data }) => {
                   alignItems: "center",
                   lineHeight: 1.25,
                 }}>
-                  <Box>{data["name"]}</Box>
-                  <Box>{data["study_program"]["name"]}</Box>
-                  <Box>{data["study_program"]["major"]["name"]}</Box>
-                  <Box>{data["nim"]}</Box>
+                  <Box sx={{
+                    maxWidth: "20ch",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    // textOverflow: "ellipsis"
+                  }}>{data["name"]}</Box>
+                  <Box sx={{ fontSize: 3, fontWeight: "bold", color: "gray.7" }}>{data["study_program"]["name"]}</Box>
+                  <Box sx={{ fontSize: 3, fontWeight: "bold", color: "gray.7" }}>{data["study_program"]["major"]["name"]}</Box>
+                  <Box sx={{ fontFamily: "monospace", my: 2 }}>{data["nim"]}</Box>
                 </Flex>
               </Flex>
             </Box>
@@ -110,7 +145,11 @@ export const DialogIDCard = ({ onClose, data }) => {
             text="Tutup"
             onClick={() => { onClose(); }}
           />
-          <Button intent="primary" text="Save" />
+          <Button
+            intent="primary"
+            text="Save"
+            onClick={() => saveIDCard()}
+          />
         </div>
       </div>
     </>
