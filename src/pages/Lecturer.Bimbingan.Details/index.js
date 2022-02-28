@@ -1,5 +1,5 @@
 import { useClient } from "components";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 import Layout from "./Layout";
