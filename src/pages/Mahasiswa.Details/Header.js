@@ -20,11 +20,13 @@ export const Header = () => {
             sx={{ width: "100%", height: "100%" }}
           >
             {student && student["photo"] &&
-              <Box
-                as="img"
-                sx={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                src={`data:image/jpg;base64,${student["photo"]}`}
-              />}
+              <Box sx={{
+                width: "100%",
+                height: "100%",
+                display: "block",
+                backgroundSize: "cover",
+                backgroundImage: `url(data:image/jpg;base64,${student["photo"]})`
+              }} />}
             {student && !student["photo"] &&
               <NonIdealState
                 title="No Photo"

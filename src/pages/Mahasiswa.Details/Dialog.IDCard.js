@@ -1,11 +1,13 @@
-import { useRef, useCallback } from "react";
-import { Button, Classes, NonIdealState } from "@blueprintjs/core";
+import { useRef, useCallback, useEffect, useState } from "react";
+import { Button, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { toPng } from "html-to-image";
 import { AspectRatio, Box, Flex, toaster } from "components";
 import IDCardBG from "assets/imgs/idcard_bg.png";
+import QRCode from "qrcode";
 
 export const DialogIDCard = ({ onClose, data }) => {
   const canvasRef = useRef(null);
+  const [qrcode, setQRCode] = useState(null);
 
   const saveIDCard = useCallback(() => {
     const el = canvasRef.current;
@@ -30,6 +32,13 @@ export const DialogIDCard = ({ onClose, data }) => {
         message: "Gambar disimpan",
       });
     });
+  }, [data]);
+
+  useEffect(() => {
+    QRCode.toDataURL(data["nim"], { type: "png", margin: 2 }, (err, url) => {
+      if (err) { return; }
+      setQRCode(url);
+    })
   }, [data]);
 
   return (
@@ -58,7 +67,7 @@ export const DialogIDCard = ({ onClose, data }) => {
                   p: 2,
                   borderRadius: 8,
                   border: "2px solid white",
-                  mt: "225px",
+                  mt: "200px",
                   mx: "auto",
                   width: "232px",
                   height: "293px",
@@ -77,11 +86,12 @@ export const DialogIDCard = ({ onClose, data }) => {
                 <Box sx={{ position: "absolute", inset: 0 }}>
                   {data["photo"] &&
                     <Box
-                      as="img"
-                      src={`data:image/jpg;base64,${data["photo"]}`}
                       sx={{
                         display: "block",
-                        width: "100%"
+                        width: "100%",
+                        height: "100%",
+                        backgroundSize: "cover",
+                        backgroundImage: `url(data:image/jpg;base64,${data["photo"]})`,
                       }}
                     />}
                   {!data["photo"] &&
@@ -91,9 +101,29 @@ export const DialogIDCard = ({ onClose, data }) => {
                     />}
                 </Box>
               </Box>
+              <Box sx={{
+                borderRadius: 8,
+                position: "absolute",
+                top: 405,
+                left: 22,
+                height: 120,
+                width: 120,
+                backgroundColor: "white",
+                overflow: "hidden"
+              }}>
+                {qrcode &&
+                  <Box sx={{
+                    height: "100%",
+                    width: "100%",
+                    backgroundSize: "cover",
+                    backgroundImage: `url(${qrcode})`
+                  }} />}
+                {!qrcode &&
+                  <Spinner />}
+              </Box>
               <Flex
                 sx={{
-                  mt: 25,
+                  mt: 50,
                   width: 340,
                   height: 165,
                   mx: "auto",
