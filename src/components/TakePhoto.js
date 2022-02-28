@@ -7,6 +7,7 @@ export const TakePhotoArea = ({ onCapture = () => { }, onClose = () => { } }) =>
   const canvasArea = useRef();
 
   const cleanup = useCallback(async () => {
+    if (!videoArea.current.srcObject) return;
     const tracks = videoArea.current.srcObject.getTracks();
     tracks.forEach((track) => {
       track.stop();
@@ -21,8 +22,11 @@ export const TakePhotoArea = ({ onCapture = () => { }, onClose = () => { } }) =>
       alert(err.message);
       return;
     }
-    videoArea.current.srcObject = stream;
-    videoArea.current.classList.add("allowed");
+    
+    if (videoArea.current) {
+      videoArea.current.srcObject = stream;
+      videoArea.current.classList.add("allowed");
+    }
 
     return () => {
       cleanup();
