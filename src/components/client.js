@@ -21,12 +21,12 @@ export const ClientContext = createContext(null);
 
 const getAccountRole = (account) => {
   const { lecturer_id, student_id, registration_id } = account;
-  if (student_id) {
-    return "Student";
+  if (registration_id) {
+    return "Public";
   } else if (lecturer_id) {
     return "Lecturer";
-  } else if (registration_id) {
-    return "Public";
+  } else if (student_id) {
+    return "Student";
   }
   return "Admin";
 }
@@ -47,9 +47,16 @@ const populateAccount = async (account) => {
       }
     });
   } else if (getAccountRole(account) === "Public") {
-    account.registration = await feathers.service("registrations").get(account["registration_id"], {
-      query: ["id", "full_name"]
+    account.student = await feathers.service("students").get(account["student_id"], {
+      query: {
+        $select: ["id", "name", "email", "registration"],
+        $include: [{
+          model: "registrations",
+          $select: ["id", "status"]
+        }]
+      }
     });
+    account.registrations = account.student.registration;
   }
   return account;
 }
