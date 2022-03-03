@@ -7,6 +7,7 @@ import * as Yup from "yup";
 const Schema = Yup.object().shape({
   "name": Yup.string().required(),
   "major_id": Yup.string().required(),
+  "code": Yup.string().required(),
 });
 
 const DialogTambahBaru = ({
@@ -42,6 +43,7 @@ const DialogTambahBaru = ({
         initialValues={{
           "name": "",
           "major_id": "",
+          "code": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -59,20 +61,6 @@ const DialogTambahBaru = ({
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
-                label="Nama Prodi"
-                labelFor="f-name"
-                helperText={errors["name"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-name"
-                  name="name"
-                  value={values["name"]}
-                  onChange={handleChange}
-                  intent={errors["name"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
                 label="Jurusan"
                 labelFor="f-major_id"
                 helperText={errors["major_id"]}
@@ -89,6 +77,34 @@ const DialogTambahBaru = ({
                   options={majors.map((major) => (
                     { label: major["name"], value: major["id"] }
                   ))}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Nama Prodi"
+                labelFor="f-name"
+                helperText={errors["name"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-name"
+                  name="name"
+                  value={values["name"]}
+                  onChange={handleChange}
+                  intent={errors["name"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Code"
+                labelFor="f-code"
+                helperText={errors["code"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-code"
+                  name="code"
+                  value={values["code"]}
+                  onChange={handleChange}
+                  intent={errors["code"] ? "danger" : "none"}
                 />
               </FormGroup>
             </div>
