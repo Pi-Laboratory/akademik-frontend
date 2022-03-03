@@ -1,5 +1,5 @@
-import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select, useClient } from "components";
+import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup, Switch, Tag } from "@blueprintjs/core";
+import { Box, Divider, Flex, getBase64, Select, useClient } from "components";
 import { Formik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
@@ -19,21 +19,49 @@ const Schema = Yup.object().shape({
     is: v => ["Praktek", "Teori dan Praktek"].indexOf(v) !== -1,
     then: Yup.number().required()
   }),
-  "stotal": Yup.number().required(),
-  "total_hours": Yup.number().required(),
+  "stotal": Yup.number(),
+  "total_hours": Yup.number(),
   "type": Yup.string().required(),
-  "minimum_pass_score": Yup.number().required(),
   "semester": Yup.number().required(),
   "subject_trait": Yup.string().required(),
-  "study_plan": Yup.string().required(),
-  "study_matter": Yup.string().required(),
-  "study_note": Yup.string().required(),
-  "abstract": Yup.string(),
-  "syllabus_file": Yup.string(),
+  "study_plan": Yup.boolean().required(),
+  "study_matter": Yup.boolean().required(),
+  "study_note": Yup.boolean().required(),
+  "abstract": Yup.boolean(),
+  "syllabus_file": Yup.object().shape({
+    "value": Yup.string().required(),
+    "name": Yup.string().required(),
+  }),
   "major_id": Yup.number().required(),
   "study_program_id": Yup.number().required(),
   "curriculum_id": Yup.number().required(),
-})
+});
+
+const STotal = (values) => {
+  let res = 0;
+
+  try {
+    if (["Teori", "Teori dan Praktek"].indexOf(values["type"]) !== -1) {
+      res += Number(values["stheory"]);
+    }
+    if (["Praktek", "Teori dan Praktek"].indexOf(values["type"]) !== -1) {
+      res += Number(values["spractice"]);
+      res += Number(values["spractice_field"]);
+    }
+  } catch (err) {
+    // Do nothing
+  }
+
+  return res;
+}
+
+const TotalHours = (values) => {
+  const sks = STotal(values);
+  let res = 0;
+  res = 50 + 60 + 60;
+  res = res * sks;
+  return res;
+}
 
 const DialogMataKuliahBaru = ({
   isOpen,
@@ -47,7 +75,8 @@ const DialogMataKuliahBaru = ({
   const [loading, setLoading] = useState({
     curriculums: false,
     studyPrograms: false,
-    majors: false
+    majors: false,
+    file: false
   })
 
   const fetchCurriculums = useCallback(async () => {
@@ -110,19 +139,26 @@ const DialogMataKuliahBaru = ({
           "spractice_field": 0,
           "stotal": 0,
           "type": "Teori",
-          "minumum_pass_score": "",
           "semester": "",
           "subject_trait": "Wajib",
-          "study_plan": "Ada",
-          "study_matter": "Ada",
-          "study_note": "Ada",
+          "study_plan": false,
+          "study_matter": false,
+          "study_note": false,
           "abstract": "",
-          "syllabus_file": "",
+          "syllabus_file": {
+            "value": "",
+            "name": ""
+          },
           "major_id": "",
           "study_program_id": "",
           "curriculum_id": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
+          values["stotal"] = STotal(values);
+          values["total_hours"] = TotalHours(values);
+          if (values["syllabus_file"]) {
+            values["syllabus_file"] = values["syllabus_file"]["value"];
+          }
           try {
             const res = await client["subjects"].create(values);
             onClose();
@@ -373,100 +409,87 @@ const DialogMataKuliahBaru = ({
                 intent={"danger"}
               >
                 <InputGroup
+                  readOnly={true}
                   id="f-stotal"
                   name="stotal"
-                  value={values["stotal"]}
-                  onChange={handleChange}
+                  value={STotal(values)}
                   intent={errors["stotal"] ? "danger" : "none"}
                 />
               </FormGroup>
               <Divider />
-              <Flex sx={{ mx: -2 }}>
-                <Box sx={{ width: "50%", mx: 2 }}>
+              <FormGroup
+                label="Total Waktu Belajar"
+                labelFor="f-total_hours"
+                helperText={`
+                  Tatap Muka: 50mnt;
+                  Keg. Akademik: 60mnt;
+                  Keg. Mandiri: 60mnt;
+                  Per SKS
+                `}
+                intent={"info"}
+              >
+                <InputGroup
+                  readOnly={true}
+                  id="f-total_hours"
+                  name="total_hours"
+                  value={TotalHours(values)}
+                  intent={errors["total_hours"] ? "danger" : "none"}
+                  rightElement={<Tag>menit</Tag>}
+                />
+              </FormGroup>
+              <Flex>
+                <Box sx={{
+                  width: "50%"
+                }}>
                   <FormGroup
-                    label="Total Waktu Belajar"
-                    labelFor="f-total_hours"
-                    helperText={errors["total_hours"]}
+                    label="Rencana Pembelajaran"
+                    labelFor="f-study_plan"
+                    helperText={errors["study_plan"]}
                     intent={"danger"}
                   >
-                    <InputGroup
-                      id="f-total_hours"
-                      name="total_hours"
-                      value={values["total_hours"]}
+                    <Switch
+                      id="f-study_plan"
+                      name="study_plan"
+                      label="Ada"
+                      value={values["study_plan"]}
                       onChange={handleChange}
-                      intent={errors["total_hours"] ? "danger" : "none"}
+                      intent={errors["study_plan"] ? "danger" : "none"}
                     />
                   </FormGroup>
                 </Box>
-                <Box sx={{ width: "50%", mx: 2 }}>
+                <Box sx={{
+                  width: "50%"
+                }}>
                   <FormGroup
-                    label="Nilai Kelulusan"
-                    labelFor="f-minimum_pass_score"
-                    helperText={errors["minimum_pass_score"]}
+                    label="Bahan Ajar"
+                    labelFor="f-study_matter"
+                    helperText={errors["study_matter"]}
                     intent={"danger"}
                   >
-                    <InputGroup
-                      id="f-minimum_pass_score"
-                      name="minimum_pass_score"
-                      value={values["minimum_pass_score"]}
+                    <Switch
+                      id="f-study_matter"
+                      name="study_matter"
+                      label="Ada"
+                      value={values["study_matter"]}
                       onChange={handleChange}
-                      intent={errors["minimum_pass_score"] ? "danger" : "none"}
+                      intent={errors["study_matter"] ? "danger" : "none"}
                     />
                   </FormGroup>
                 </Box>
               </Flex>
-              <FormGroup
-                label="Rencana Pembelajaran"
-                labelFor="f-study_plan"
-                helperText={errors["study_plan"]}
-                intent={"danger"}
-              >
-                <HTMLSelect
-                  id="f-study_plan"
-                  name="study_plan"
-                  value={values["study_plan"]}
-                  onChange={handleChange}
-                  intent={errors["study_plan"] ? "danger" : "none"}
-                  options={[
-                    "Ada",
-                    "Tidak Ada"
-                  ]}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Bahan Ajar"
-                labelFor="f-study_matter"
-                helperText={errors["study_matter"]}
-                intent={"danger"}
-              >
-                <HTMLSelect
-                  id="f-study_matter"
-                  name="study_matter"
-                  value={values["study_matter"]}
-                  onChange={handleChange}
-                  intent={errors["study_matter"] ? "danger" : "none"}
-                  options={[
-                    "Ada",
-                    "Tidak Ada"
-                  ]}
-                />
-              </FormGroup>
               <FormGroup
                 label="Diktat"
                 labelFor="f-study_note"
                 helperText={errors["study_note"]}
                 intent={"danger"}
               >
-                <HTMLSelect
+                <Switch
                   id="f-study_note"
                   name="study_note"
+                  label="Ada"
                   value={values["study_note"]}
                   onChange={handleChange}
                   intent={errors["study_note"] ? "danger" : "none"}
-                  options={[
-                    "Ada",
-                    "Tidak Ada"
-                  ]}
                 />
               </FormGroup>
               <Divider />
@@ -477,39 +500,40 @@ const DialogMataKuliahBaru = ({
                 helperText={errors["abstract"]}
                 intent={"danger"}
               >
-                <HTMLSelect
+                <Switch
                   id="f-abstract"
                   name="abstract"
+                  label="Ada"
                   value={values["abstract"]}
                   onChange={handleChange}
                   intent={errors["abstract"] ? "danger" : "none"}
-                  options={[
-                    "Ada",
-                    "Tidak Ada"
-                  ]}
                 />
               </FormGroup>
               <FormGroup
                 label="File Silabus"
                 labelFor="f-syllabus_file"
-                helperText={errors["syllabus_file"]}
+                helperText={errors["syllabus_file"] && ("File is required")}
                 intent={"danger"}
               >
                 <FileInput
                   id="f-syllabus_file"
                   name="syllabus_file"
-
                   inputProps={{
                     accept: "application/pdf"
                   }}
+                  hasSelection={!!values["syllabus_file"]}
+                  text={loading["file"] ? "Loading" : values["syllabus_file"] ? values["syllabus_file"]["name"] : "Choose file..."}
                   value={values["syllabus_file"]}
-                  onChange={(e) => {
+                  onChange={async (ev) => {
+                    let file = ev.target.files[0];
+                    await setFieldValue("syllabus_file", undefined, true);
+                    await setLoading(l => ({ ...l, file: true }));
+                    if (!file) return;
+                    const fileBase64 = await getBase64(file);
+                    await setFieldValue("syllabus_file", { value: fileBase64, name: file["name"] }, true);
+                    await setLoading(l => ({ ...l, file: false }));
                   }}
                   intent={errors["syllabus_file"] ? "danger" : "none"}
-                  options={[
-                    "Ada",
-                    "Tidak Ada"
-                  ]}
                 />
               </FormGroup>
             </div>
