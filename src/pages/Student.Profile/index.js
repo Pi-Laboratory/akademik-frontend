@@ -82,7 +82,7 @@ export const useStudent = () => {
   return student;
 }
 
-export const PublicForm = () => {
+export const StudentProfile = () => {
   const { path } = useRouteMatch();
   const navigation = useMemo(() => ([
     {

@@ -1,11 +1,12 @@
 import { useRef, useCallback, useEffect, useState } from "react";
 import { Button, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { toPng } from "html-to-image";
-import { AspectRatio, Box, Flex, toaster } from "components";
+import { AspectRatio, Box, Flex, toaster, useClient } from "components";
 import IDCardBG from "assets/imgs/idcard_bg.png";
 import QRCode from "qrcode";
 
 export const DialogIDCard = ({ onClose, data }) => {
+  const client = useClient();
   const canvasRef = useRef(null);
   const [qrcode, setQRCode] = useState(null);
 
@@ -84,21 +85,20 @@ export const DialogIDCard = ({ onClose, data }) => {
                   }}
                 />
                 <Box sx={{ position: "absolute", inset: 0 }}>
-                  {data["photo"] &&
-                    <Box
-                      sx={{
-                        display: "block",
-                        width: "100%",
-                        height: "100%",
-                        backgroundSize: "cover",
-                        backgroundImage: `url(data:image/jpg;base64,${data["photo"]})`,
-                      }}
-                    />}
-                  {!data["photo"] &&
-                    <NonIdealState
-                      icon="graph-remove"
-                      title="No Photo"
-                    />}
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "block",
+                      objectFit: "cover",
+                    }}
+                    as="img"
+                    src={`${client.host.toString()}files/students/${data["id"]}/photo.jpg`}
+                    onError={({ currentTarget }) => {
+                      currentTarget.onerror = null; // prevents looping
+                      currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
+                    }}
+                  />
                 </Box>
               </Box>
               <Box sx={{

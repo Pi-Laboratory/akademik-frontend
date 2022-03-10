@@ -12,13 +12,16 @@ const List = () => {
       try {
         const res = await client["classes"].find({
           query: {
-            $select: ["id", "name"],
+            // $select: ["id", "name"],
             $include: [{
               model: "majors",
               $select: ["name"]
             }, {
               model: "study_programs",
               $select: ["name"]
+            }, {
+              model: "students",
+              $select: ["id"]
             }]
           }
         });
@@ -77,21 +80,7 @@ const List = () => {
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
-                TL-D4-2020
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                1
-              </Box>
-              <Box sx={{ color: "gray.5" }}>
-                Semester
-              </Box>
-            </Box>
-
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                23
+                {item["students"].length}
               </Box>
               <Box sx={{ color: "gray.5" }}>
                 Jumlah Mahasiswa

@@ -39,3 +39,14 @@ code {
 .bp3-control-group.bp3-control-group.bp3-control-group .bp3-input {
   z-index: unset;
 }
+
+.bp3-input-group {
+  max-width: 390px;
+}
+.bp3-input-group.bp3-fill {
+  max-width: 100%;
+}
+
+textarea.bp3-input {
+  min-height: 100px;
+}

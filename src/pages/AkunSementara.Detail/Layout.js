@@ -13,22 +13,29 @@ const Layout = () => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await client["registrations"].get(params["student_id"], {
+        const res = await client["registrations"].get(params["registraion_id"], {
           query: {
             $select: [
               "id",
-              "full_name",
-              "address",
-              "birth_place",
-              "birth_date",
-              "phone_number",
               "school_name",
               "school_address",
               "nisn",
-              "photo",
+              "student"
             ],
+            $include: [{
+              model: "students",
+              $select: [
+                "id",
+                "name",
+                "birth_city",
+                "birth_date",
+                "phone_number",
+                "origin_address",
+              ]
+            }]
           }
         });
+        console.log(res);
         setItem(res);
       } catch (err) {
         console.error(err);
@@ -48,11 +55,12 @@ const Layout = () => {
     <Box sx={{ mt: 3, px: 3 }}>
       <Flex
         sx={{
+          mx: -2,
           width: "100%",
           flexDirection: "row-reverse"
         }}
       >
-        <Box sx={{ flexShrink: 0 }} >
+        <Box sx={{ flexShrink: 0, px: 2 }} >
           <Box sx={{
             borderRadius: 4,
             border: "1px solid white",
@@ -63,26 +71,32 @@ const Layout = () => {
           }}>
             <Box
               as="img"
-              alt={`Wajah ${item["full_name"]}`}
               sx={{
+                width: "100%",
+                height: "100%",
                 display: "block",
-                width: "100%"
+                objectFit: "cover",
               }}
-              src={item["photo"]}
+              alt={`Wajah ${item["student"]["name"]}`}
+              src={`${client.host.toString()}files/students/${item["student"]["id"]}/photo.jpg`}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
+              }}
             />
           </Box>
         </Box>
-        <Box sx={{ flexGrow: 1 }} >
+        <Box sx={{ flexGrow: 1, px: 2 }} >
           <Box>
             <h4 className={Classes.HEADING}>Ringkasan</h4>
             {item &&
               <HTMLTable striped={true}>
                 <tbody>
                   {[
-                    ["Nama", item["full_name"]],
-                    ["Alamat", item["address"]],
-                    ["Tempat Tanggal Lahir", `${item["birth_place"]}, ${moment(item["birth_date"]).format("DD MMMM YYYY")}`],
-                    ["Nomor Telephone", item["phone_number"]],
+                    ["Nama", item["student"]["name"]],
+                    ["Alamat", item["student"]["origin_address"]],
+                    ["Tempat Tanggal Lahir", `${item["student"]["birth_city"]}, ${moment(item["student"]["birth_date"]).format("DD MMMM YYYY")}`],
+                    ["Nomor Telephone", item["student"]["phone_number"]],
                   ].map((value) => (
                     <tr key={value[0]}>
                       <td>

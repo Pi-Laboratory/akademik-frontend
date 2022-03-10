@@ -1,13 +1,13 @@
 import { Button, Card, Classes, FormGroup, H2, H3, HTMLSelect, InputGroup, Menu, MenuItem, NonIdealState, Radio, RadioGroup, Spinner } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import { Popover2 } from "@blueprintjs/popover2";
-import { Box, CropImage, Divider, Flex, TakePhoto, useClient, getBase64, AspectRatio, toaster } from "components"
-import { _base64ToArrayBuffer } from "components/base64ArrayBuffer";
+import { Box, CropImage, Divider, Flex, TakePhoto, useClient, getBase64, AspectRatio, toaster } from "components";
 import { Formik } from "formik";
 import moment from "moment";
 import { useNav } from "pages/Root/hoc";
 import { useState } from "react";
 import { useStudent } from ".";
+import { decode } from "base64-arraybuffer";
 
 export const Settings = ({ base }) => {
   const client = useClient();
@@ -36,7 +36,7 @@ export const Settings = ({ base }) => {
       <Formik
         initialValues={{
           "photo": {
-            "cropped": `data:image/jpg;base64,${student["photo"]}`
+            "cropped": ""
           },
           "name": student["name"],
           "birth_city": student["birth_city"],
@@ -58,7 +58,7 @@ export const Settings = ({ base }) => {
           const result = { ...values };
           if (values["photo"].cropped) {
             result["photo"] = values["photo"].cropped.split(",")[1];
-            result["photo"] = _base64ToArrayBuffer(result["photo"]);
+            result["photo"] = decode(result["photo"]);
           } else {
             result["photo"] = undefined;
           }
@@ -88,7 +88,7 @@ export const Settings = ({ base }) => {
                 )}
                 intent={"danger"}
               >
-                <Box className={`${Classes.CARD}`} sx={{ maxWidth: 164, bg: "gray.1", p: 0, borderRadius: 4 }}>
+                <Box className={`${Classes.CARD}`} sx={{ maxWidth: 164, bg: "gray.1", p: 0, borderRadius: 4, overflow: "hidden" }}>
                   <AspectRatio ratio="3:4">
                     <Box
                       sx={{ width: "100%", height: "100%" }}
@@ -100,8 +100,19 @@ export const Settings = ({ base }) => {
                           src={values["photo"]["cropped"] || values["photo"]["value"]}
                         />}
                       {!(values["photo"] && (values["photo"]["cropped"] || values["photo"]["value"])) &&
-                        <NonIdealState
-                          title="No Photo"
+                        <Box
+                          sx={{
+                            width: "100%",
+                            height: "100%",
+                            display: "block",
+                            objectFit: "cover",
+                          }}
+                          as="img"
+                          src={`${client.host.toString()}files/students/${student["id"]}/photo.jpg`}
+                          onError={({ currentTarget }) => {
+                            currentTarget.onerror = null; // prevents looping
+                            currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
+                          }}
                         />}
                     </Box>
                     <Box sx={{

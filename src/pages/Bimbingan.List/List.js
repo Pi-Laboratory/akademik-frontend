@@ -1,5 +1,6 @@
 import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
+import { STUDENT_STATUS } from 'components/constants'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -16,6 +17,9 @@ const List = () => {
             "lecturer_id": filter["lecturer_id"] || undefined,
             "generation": filter["generation"] || undefined,
             "study_program_id": filter["study_program_id"] || undefined,
+            "nim": {
+              $ne: null
+            },
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
             $include: [{

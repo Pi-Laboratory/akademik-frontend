@@ -1,13 +1,7 @@
-import { ControlGroup, InputGroup, Button } from "@blueprintjs/core";
-import { Box, Flex, Select, useList } from "components";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-import DialogHapus from "./Dialog.Hapus";
+import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Box, Flex, Select } from "components";
 
 const Filter = () => {
-  const { selectedItem } = useList();
-  const [dialogOpen, setDialogOpen] = useState(null);
-  const history = useHistory();
   return (
     <Flex
       sx={{
@@ -33,23 +27,7 @@ const Filter = () => {
       </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Flex>
-        {selectedItem.length > 0 &&
-          <Button
-            minimal={true}
-            intent="danger"
-            text={`Delete ${selectedItem.length} selected`}
-            onClick={() => setDialogOpen("delete")}
-          />
-        }
       </Flex>
-      <DialogHapus
-        data={selectedItem}
-        isOpen={dialogOpen === "delete"}
-        onClose={() => { setDialogOpen(null) }}
-        onSubmitted={() => {
-          history.go(0);
-        }}
-      />
     </Flex>
   )
 }

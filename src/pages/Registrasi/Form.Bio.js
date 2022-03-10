@@ -160,6 +160,7 @@ export const FormBio = ({ goTo = () => { } }) => {
               id="f-birth_date"
               name="birth_date"
               value={values["birth_date"]}
+              minDate={moment().subtract(50, "year").toDate()}
               inputProps={{
                 intent: errors["birth_date"] ? "danger" : "none"
               }}

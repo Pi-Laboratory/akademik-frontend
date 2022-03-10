@@ -31,7 +31,6 @@ const StudentProvider = ({ children }) => {
               "postal_code",
               "phone_number",
               "email",
-              "photo",
               "generation",
               "registration_number",
               "registration_date",

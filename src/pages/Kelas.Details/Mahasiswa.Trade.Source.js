@@ -25,6 +25,9 @@ const MahasiswaTradeSource = () => {
       try {
         const res = await client["students"].find({
           query: {
+            "nim": {
+              $ne: null
+            },
             $include: [{
               model: "classes",
               $select: ["id", "name"],

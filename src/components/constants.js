@@ -84,6 +84,18 @@ export const PREDIKAT = {
   "I": -1
 }
 
+export const STUDENT_STATUS = {
+  "GRADUATED": "Graduated",
+  "ACTIVE": "Active",
+  "INACTIVE": "Inactive"
+}
+
+export const REGISTRATION_STATUS = {
+  "PASSED": "passed",
+  "FAILED": "failed",
+  "REGISTERED": "registered"
+}
+
 const CONSTANTS = {
   DAYS,
   PEKERJAAN,

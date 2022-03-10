@@ -1,11 +1,12 @@
-import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
+import { Checkbox, NonIdealState, Spinner, Tag } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Item } from './Item'
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, setPaging, filter, paging } = useList();
 
   useEffect(() => {
     setItems(null);
@@ -17,11 +18,31 @@ const List = () => {
       try {
         const res = await client["registrations"].find({
           query: {
+            status: filter["status"] === "null" ? undefined : filter["status"] || undefined,
             $skip: paging.skip,
-            $select: ["id", "full_name", "address", "school_name", "nisn"],
+            $select: ["id", "school_name", "nisn", "status"],
+            $include: [{
+              model: "students",
+              $select: ["id", "name"]
+            }, {
+              model: "study_programs",
+              as: "study_program_1",
+              $select: ["id", "name"],
+              $include: [{
+                model: "majors",
+                $select: ["id", "name"]
+              }]
+            }, {
+              model: "study_programs",
+              as: "study_program_2",
+              $select: ["id", "name"],
+              $include: [{
+                model: "majors",
+                $select: ["id", "name"]
+              }]
+            }]
           }
         });
-
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -52,42 +73,7 @@ const List = () => {
         </Box>
       }
       {items && items.map((item) => (
-        <ListGroup.Item key={item["id"]}>
-          <Flex>
-            <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                <Link to={`penerimaan/${item["id"]}`}>
-                  {item["full_name"]}
-                </Link>
-              </Box>
-              <Box>
-                {item["address"]}
-              </Box>
-            </Box>
-            <Box sx={{ pr: 2, width: "35%" }}>
-              <Box>
-                {item["school_name"]}
-              </Box>
-              <Box>
-                {item["nisn"]}
-              </Box>
-            </Box>
-          </Flex>
-        </ListGroup.Item>
+        <Item key={item["id"]} data={item} />
       ))}
     </>
   )

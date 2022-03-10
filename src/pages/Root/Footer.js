@@ -17,7 +17,7 @@ const Footer = () => {
         }}
       >
         <Flex>
-          <Box>© 2021 Pi Laboratory, Inc.</Box>
+          <Box>© 2022 Pi Laboratory, Inc.</Box>
           <Box sx={{ flexGrow: 1 }} />
           <Box>App ver. {version}</Box>
         </Flex>

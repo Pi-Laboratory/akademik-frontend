@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Button, MenuItem } from "@blueprintjs/core";
+import { Alignment, Button, MenuItem } from "@blueprintjs/core";
 import { Select as BPSelect } from "@blueprintjs/select";
 
 export const Select = ({
@@ -10,6 +10,7 @@ export const Select = ({
   fill,
   placeholder,
 
+  alignText = Alignment.LEFT,
   disabled,
   filterable,
   allowCreateItem,
@@ -31,7 +32,7 @@ export const Select = ({
 
   const activeItem = useMemo(() => {
     // eslint-disable-next-line eqeqeq
-    return items.find(item => item.value == value); 
+    return items.find(item => item.value == value);
   }, [value, items]);
 
   const createNewItemRenderer = (query, active) => {
@@ -73,6 +74,7 @@ export const Select = ({
 
   return (
     <BPSelect
+      disabled={disabled}
       filterable={filterable}
       items={items}
       activeItem={activeItem}
@@ -105,6 +107,7 @@ export const Select = ({
     >
       <Button
         id={id}
+        alignText={alignText}
         disabled={disabled}
         minimal={minimal}
         intent={intent}

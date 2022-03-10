@@ -116,6 +116,7 @@ export const ClientProvider = ({ children }) => {
 
   const client = useMemo(() => {
     return {
+      host,
       feathers,
       account,
       role,

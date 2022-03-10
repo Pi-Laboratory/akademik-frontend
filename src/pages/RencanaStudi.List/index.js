@@ -20,8 +20,8 @@ const List = () => {
     <ListProvider
       filter={filter}
       onFilterChange={({ generation, study_program_id }) => {
-        filterSearch.set("generation", generation);
-        filterSearch.set("study_program_id", study_program_id);
+        filterSearch.set("generation", generation || "");
+        filterSearch.set("study_program_id", study_program_id || "");
         history.replace({
           search: filterSearch.toString()
         });

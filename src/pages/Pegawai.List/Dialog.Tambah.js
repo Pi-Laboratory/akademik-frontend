@@ -37,6 +37,7 @@ const DialogTambahBaru = ({
       isOpen={isOpen}
       onClose={() => { onClose() }}
       title="Tambah Baru"
+      enforceFocus={false}
     >
       <Formik
         validationSchema={Schema}

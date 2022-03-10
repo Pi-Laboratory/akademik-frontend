@@ -17,7 +17,7 @@ export const AkunSementara = () => {
     },
     {
       "component": Detail,
-      "path": `/penerimaan/:student_id`,
+      "path": `/penerimaan/:registraion_id`,
       "hide": true,
       "exact": true
     },

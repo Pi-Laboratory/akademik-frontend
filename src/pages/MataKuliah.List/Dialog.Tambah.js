@@ -1,5 +1,6 @@
 import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup, Switch, Tag } from "@blueprintjs/core";
 import { Box, Divider, Flex, getBase64, Select, useClient } from "components";
+import { _base64ToArrayBuffer } from "components/base64ArrayBuffer";
 import { Formik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
@@ -154,13 +155,17 @@ const DialogMataKuliahBaru = ({
           "curriculum_id": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
-          values["stotal"] = STotal(values);
-          values["total_hours"] = TotalHours(values);
+          const result = { ...values };
+          result["stotal"] = STotal(values);
+          result["total_hours"] = TotalHours(values);
           if (values["syllabus_file"]) {
-            values["syllabus_file"] = values["syllabus_file"]["value"];
+            result["syllabus_file"] = values["syllabus_file"].value.split(",")[1];
+            result["syllabus_file"] = _base64ToArrayBuffer(result["syllabus_file"]);
+          } else {
+            result["syllabus_file"] = undefined;
           }
           try {
-            const res = await client["subjects"].create(values);
+            const res = await client["subjects"].create(result);
             onClose();
             onSubmitted(res);
           } catch (err) {

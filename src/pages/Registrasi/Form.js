@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { Formik } from "formik";
 import { useHistory } from "react-router-dom";
 import { Position, Toaster } from "@blueprintjs/core";
+import { decode } from "base64-arraybuffer";
 
 const Step = [
   {
@@ -56,30 +57,40 @@ export const Form = () => {
       initialValues={initialValues}
       onSubmit={async (values, { setSubmitting }) => {
         try {
+          const result = { ...values };
+          if (values["photo"].cropped) {
+            result["photo"] = values["photo"].cropped.split(",")[1];
+            result["photo"] = decode(result["photo"]);
+          } else {
+            result["photo"] = undefined;
+          }
+          
+          console.log(result, values);
           toaster.show({
             icon: "time",
             intent: "none",
             message: "Sedang menyimpan data"
           });
           const reg = await client.registrations.create({
-            "name": values["name"],
-            "origin_address": values["origin_address"],
-            "birth_city": values["birth_city"],
-            "birth_date": values["birth_date"],
-            "phone_number": values["phone_number"],
-            "nisn": values["nisn"],
-            "email": values["email"],
-            "school_name": values["school_name"],
-            "school_address": values["school_address"],
-            "photo": values["photo"]["cropped"],
-            "gender": values["gender"],
-            "study_program_1_id": values["study_program_1_id"],
-            "study_program_2_id": values["study_program_2_id"],
+            "name": result["name"],
+            "origin_address": result["origin_address"],
+            "birth_city": result["birth_city"],
+            "birth_date": result["birth_date"],
+            "phone_number": result["phone_number"],
+            "nisn": result["nisn"],
+            "email": result["email"],
+            "school_name": result["school_name"],
+            "school_address": result["school_address"],
+            "photo": result["photo"],
+            "gender": result["gender"],
+            "study_program_1_id": result["study_program_1_id"],
+            "study_program_2_id": result["study_program_2_id"],
           });
           await client.users.create({
-            username: values["username"],
-            password: values["password"],
-            "registration_id": reg["id"]
+            username: result["username"],
+            password: result["password"],
+            "registration_id": reg["id"],
+            "student_id": reg["student"]["id"]
           });
           toaster.show({
             icon: "tick",

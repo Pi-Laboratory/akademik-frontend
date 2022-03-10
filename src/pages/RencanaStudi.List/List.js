@@ -17,6 +17,9 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
+            "nim": {
+              $ne: null
+            },
             "generation": filter["generation"] || undefined,
             "study_program_id": !!filter["study_program_id"] ? filter["study_program_id"] : undefined,
             $skip: paging.skip,
@@ -27,6 +30,7 @@ const List = () => {
             }]
           }
         });
+        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,

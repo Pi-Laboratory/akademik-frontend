@@ -10,6 +10,7 @@ const List = () => {
   useEffect(() => {
     const fetch = async () => {
       setItems(null);
+
       try {
         const res = await client["lecturers"].find({
           query: {
@@ -24,6 +25,8 @@ const List = () => {
             }]
           }
         });
+        console.log("masuk");
+        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,

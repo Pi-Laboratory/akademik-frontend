@@ -32,6 +32,7 @@ import { Kelas } from "pages/Kelas";
 import { RencanaStudi } from "pages/RencanaStudi";
 import { useClient } from "components";
 import { useMemo } from "react";
+import { StudentProfile } from "pages/Student.Profile";
 
 const navigation = [
   {
@@ -207,10 +208,10 @@ const navigation = [
   },
 
   {
-    "title": "Dashboard",
-    "text": "Dashboard",
-    "component": Dashboard,
-    "path": "/",
+    "title": "Profile",
+    "text": "Profile",
+    "component": StudentProfile,
+    "path": "/profile",
     "icon": "blank",
     "exact": true,
     "permission": "Student"

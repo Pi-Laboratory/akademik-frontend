@@ -10,8 +10,8 @@ const List = () => {
   const [filter, filterSearch] = useMemo(() => {
     const url = new URLSearchParams(location["search"]);
     const filter = {
-      "generation": url.get("generation") || String(new Date().getFullYear()),
       "study_program_id": url.get("study_program_id") || "",
+      "status": url.get("status") || "",
     };
     return [filter, url];
   }, [location["search"]]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -19,9 +19,9 @@ const List = () => {
   return (
     <ListProvider
       filter={filter}
-      onFilterChange={({ generation, study_program_id }) => {
-        filterSearch.set("generation", generation);
+      onFilterChange={({ study_program_id, status }) => {
         filterSearch.set("study_program_id", study_program_id);
+        filterSearch.set("status", status);
         history.replace({
           search: filterSearch.toString()
         });
