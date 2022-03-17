@@ -17,38 +17,23 @@ const StudentProvider = ({ children }) => {
   useEffect(() => {
     const fetch = async () => {
       try {
-        const reg = client.account.registrations;
-        const res = await client["registrations"].get(reg["id"], {
+        const reg = client.account;
+        const res = await client["students"].get(reg["student_id"], {
           query: {
+            $select: [
+              "id",
+              "nim",
+              "name",
+              "gender",
+              "birth_date",
+              "birth_city",
+              "origin_address",
+              "phone_number",
+              "email",
+              "study_program"
+            ],
             $include: [{
-              model: "students",
-              $select: [
-                "id",
-                "name",
-                "gender",
-                "birth_date",
-                "birth_city",
-                "origin_address",
-                "phone_number",
-                "email",
-              ],
-            }, {
               model: "study_programs",
-              as: "study_program_1",
-              $select: [
-                "id",
-                "name",
-              ],
-              $include: [{
-                model: "majors",
-                $select: [
-                  "id",
-                  "name",
-                ],
-              }]
-            }, {
-              model: "study_programs",
-              as: "study_program_2",
               $select: [
                 "id",
                 "name",
@@ -65,7 +50,7 @@ const StudentProvider = ({ children }) => {
         });
         setData(res);
       } catch (err) {
-        console.error(err);
+        console.error(err.error);
       }
     }
     fetch();

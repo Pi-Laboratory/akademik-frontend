@@ -2,6 +2,8 @@ import { PublicForm } from "pages/Public.Form";
 import { PublicSecurity } from "pages/Public.Security";
 import { PublicDashboard } from "pages/Public.Dashboard";
 
+import StudentDashboard from "pages/Student.Dashboard";
+import { StudentProfile } from "pages/Student.Profile";
 import StudentRencanaStudi from "pages/Student.RencanaStudi";
 import StudentHasilStudi from "pages/Student.HasilStudi";
 
@@ -32,7 +34,6 @@ import { Kelas } from "pages/Kelas";
 import { RencanaStudi } from "pages/RencanaStudi";
 import { useClient } from "components";
 import { useMemo } from "react";
-import { StudentProfile } from "pages/Student.Profile";
 
 const navigation = [
   {
@@ -208,12 +209,21 @@ const navigation = [
   },
 
   {
+    "title": "Dashboard",
+    "text": "Dashboard",
+    "component": StudentDashboard,
+    "path": "/",
+    "hide": true,
+    "exact": true,
+    "icon": "blank",
+    "permission": "Student"
+  },
+  {
     "title": "Profile",
     "text": "Profile",
     "component": StudentProfile,
     "path": "/profile",
     "icon": "blank",
-    "exact": true,
     "permission": "Student"
   },
   {

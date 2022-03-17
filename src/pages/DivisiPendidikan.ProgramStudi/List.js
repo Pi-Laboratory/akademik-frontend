@@ -13,6 +13,9 @@ const List = () => {
       try {
         const res = await client["study-programs"].find({
           query: {
+            $sort: {
+              "code": 1
+            },
             $select: ["id", "name", "code"],
             $skip: paging.skip,
             $include: [{
@@ -67,7 +70,7 @@ const List = () => {
                   })
                 }} />
             </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
+            <Box sx={{ flexShrink: 0, mr: 3, width: "46px" }}>
               <Box sx={{ color: "gray.5" }}>
                 Kode
               </Box>
@@ -87,7 +90,7 @@ const List = () => {
                 </Link>
               </Box>
             </Box>
-            <Box sx={{ width: "20%", mr: 3 }}>
+            <Box sx={{ width: "25%", mr: 3 }}>
               <Box sx={{ color: "gray.5" }}>
                 Jurusan
               </Box>

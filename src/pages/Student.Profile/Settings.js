@@ -106,12 +106,12 @@ export const Settings = ({ base }) => {
               "photo": {
                 "cropped": ""
               },
-              "name": student["student"]["name"],
-              "email": student["student"]["email"],
-              "origin_address": student["student"]["origin_address"],
-              "birth_city": student["student"]["birth_city"],
-              "birth_date": student["student"]["birth_date"] && new Date(student["student"]["birth_date"]),
-              "phone_number": student["student"]["phone_number"]
+              "name": student["name"],
+              "email": student["email"],
+              "origin_address": student["origin_address"],
+              "birth_city": student["birth_city"],
+              "birth_date": student["birth_date"] && new Date(student["birth_date"]),
+              "phone_number": student["phone_number"]
             }}
             onSubmit={async (values, { setSubmitting }) => {
               try {
@@ -122,7 +122,7 @@ export const Settings = ({ base }) => {
                 } else {
                   result["photo"] = undefined;
                 }
-                await client["students"].patch(student["student"]["id"], result);
+                await client["students"].patch(student["id"], result);
                 toaster.show({
                   intent: "success",
                   message: "Berhasil disimpan"
@@ -166,7 +166,7 @@ export const Settings = ({ base }) => {
                                 objectFit: "cover",
                               }}
                               as="img"
-                              src={`${client.host.toString()}files/students/${student["student"]["id"]}/photo.jpg`}
+                              src={`${client.host.toString()}files/students/${student["id"]}/photo.jpg`}
                               onError={({ currentTarget }) => {
                                 currentTarget.onerror = null; // prevents looping
                                 currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
@@ -368,128 +368,6 @@ export const Settings = ({ base }) => {
                   <Box sx={{ mt: 3 }}>
                     <Button
                       text="Simpan information umum"
-                      type="submit"
-                      intent="primary"
-                      loading={isSubmitting}
-                    />
-                    <Button
-                      minimal={true}
-                      type="reset"
-                      text="Reset"
-                      loading={isSubmitting}
-                      onClick={() => {
-                        resetForm();
-                      }}
-                    />
-                  </Box>
-                </Box>
-              </form>
-            )}
-          </Formik>
-        </Box>
-        <Box as={H3} sx={{ mb: 3 }}>Informasi Pendaftaran</Box>
-        <Box className={Classes.CARD} sx={{ mb: 4 }}>
-          <Formik
-            validationSchema={Schema.basedSchool}
-            initialValues={{
-              "nisn": student["nisn"],
-              "school_name": student["school_name"],
-              "school_address": student["school_address"],
-              "study_program_1_id": student["study_program_1_id"],
-              "study_program_2_id": student["study_program_2_id"],
-            }}
-            onSubmit={async (values, { setSubmitting }) => {
-              try {
-                const result = { ...values };
-                await client["registrations"].patch(student["id"], result);
-                toaster.show({
-                  intent: "success",
-                  message: "Berhasil disimpan"
-                });
-              } catch (err) {
-                console.error(err);
-              }
-              setSubmitting(false);
-            }}
-          >
-            {({ setFieldValue, handleChange, handleSubmit, resetForm, values, errors, isSubmitting }) => (
-              <form onSubmit={handleSubmit}>
-                <Box>
-                  <FormGroup
-                    label="Nomor Induk Siswa Nasional"
-                    labelFor="f-nisn"
-                    helperText={errors["nisn"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      id="f-nisn"
-                      name="nisn"
-                      value={values["nisn"]}
-                      onChange={handleChange}
-                      intent={errors["nisn"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    label="Asal Sekolah"
-                    labelFor="f-school_name"
-                    helperText={errors["school_name"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      id="f-school_name"
-                      name="school_name"
-                      value={values["school_name"]}
-                      onChange={handleChange}
-                      intent={errors["school_name"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                  <FormGroup
-                    label="Alamat Sekolah"
-                    labelFor="f-school_address"
-                    helperText={errors["school_address"]}
-                    intent={"danger"}
-                  >
-                    <TextArea
-                      fill={true}
-                      growVertically={true}
-                      id="f-school_address"
-                      name="school_address"
-                      placeholder="contoh: Buha, Kec. Mapanget, Kota Manado, Sulawesi Utara, Indonesia"
-                      value={values["school_address"]}
-                      onChange={handleChange}
-                      intent={errors["school_address"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                  {[
-                    "study_program_1",
-                    "study_program_2",
-                  ].map((key, idx) => (
-                    <FormGroup
-                      key={key}
-                      label={`Program Study ${idx + 1}`}
-                      labelFor={`f-${key}_id`}
-                      helperText={errors[`${key}_id`]}
-                      intent={"danger"}
-                    >
-                      <Select
-                        id={`f-${key}_id`}
-                        name={`${key}_id`}
-                        loading={loading[key]}
-                        placeholder="Pilih"
-                        value={values[`${key}_id`]}
-                        onChange={({ value }) => {
-                          setFieldValue(`${key}_id`, value, true);
-                        }}
-                        intent={errors[`${key}_id`] ? "danger" : "none"}
-                        options={studyPrograms[key]}
-                        onOpening={() => {
-                          fetchStudyPrograms(key);
-                        }}
-                      />
-                    </FormGroup>))}
-                  <Box sx={{ mt: 3 }}>
-                    <Button
-                      text="Simpan informasi pendaftaran"
                       type="submit"
                       intent="primary"
                       loading={isSubmitting}

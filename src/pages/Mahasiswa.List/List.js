@@ -20,6 +20,9 @@ const List = () => {
             "study_program_id": filter["study_program_id"] || undefined,
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
+            $sort: {
+              "generation": -1
+            },
             $include: [{
               model: "study_programs",
               $select: ["id", "name"]

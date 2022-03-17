@@ -1,8 +1,8 @@
-import Layout from "./Layout";
+import { Redirect } from "react-router-dom";
 
 const Dashboard = () => {
   return (
-    <Layout />
+    <Redirect to="/profile" />
   )
 }
 

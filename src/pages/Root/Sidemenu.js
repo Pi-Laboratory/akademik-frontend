@@ -36,6 +36,9 @@ const Sidemenu = () => {
               } else {
                 active = location.pathname.indexOf(item.path) === 0;
               }
+              if (item.hide) {
+                return (null);
+              }
               return (
                 <MenuItem
                   key={item.path}

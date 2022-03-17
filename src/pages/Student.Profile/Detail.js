@@ -1,26 +1,10 @@
-import { Classes, FormGroup, H3, Icon, InputGroup, NonIdealState } from "@blueprintjs/core";
+import { Classes, FormGroup, H3, Icon, InputGroup, NonIdealState, TextArea } from "@blueprintjs/core";
 import { Box, Divider, Flex, useClient, getBase64, AspectRatio } from "components";
 import { useState } from "react";
 import * as Yup from "yup";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
 import moment from "moment";
-
-const Schema = Yup.object().shape({
-  "name": Yup.string().required(),
-  "address": Yup.string().required(),
-  "birth_place": Yup.string().required(),
-  "birth_date": Yup.date().required(),
-  "phone_number": Yup.string().required(),
-  "nisn": Yup.string().required(),
-  "school_name": Yup.string().required(),
-  "school_address": Yup.string().required(),
-  "photo": Yup.object().shape({
-    "value": Yup.string().required(),
-    "name": Yup.string().required(),
-    "cropped": Yup.string(),
-  }).required(),
-});
 
 export const Detail = () => {
   const client = useClient();
@@ -51,7 +35,7 @@ export const Detail = () => {
                       objectFit: "cover",
                     }}
                     as="img"
-                    src={`${client.host.toString()}files/students/${student["student"]["id"]}/photo.jpg`}
+                    src={`${client.host.toString()}files/students/${student["id"]}/photo.jpg`}
                     onError={({ currentTarget }) => {
                       currentTarget.onerror = null; // prevents looping
                       currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
@@ -67,24 +51,24 @@ export const Detail = () => {
             className={!student && Classes.SKELETON}
             sx={{ fontSize: 5, mb: 2 }}
           >
-            {student && student["student"]["name"] ? student["student"]["name"] : "Nama Pengguna"}
+            {student && student["name"] ? student["name"] : "Nama Pengguna"}
           </Box>
           <Box
             className={!student && Classes.SKELETON}
             sx={{ fontSize: 3, mb: 2, fontWeight: "bold", color: "gray.6" }}
           >
-            {student && student["student"]["email"] ? student["student"]["email"] : "email@domain.com"}
+            {student && student["nim"] ? student["nim"] : "16021103032"}
           </Box>
           <Flex sx={{ fontSize: 2, mb: 2, color: "gray.6", alignItems: "center" }}>
             <Icon icon="heart" iconSize={14} />
             <Box className={!student && Classes.SKELETON} sx={{ ml: 1 }}>
-              Lahir tanggal {student && moment(student["student"]["birth_date"]).format("DD MMMM YYYY")}
+              Lahir tanggal {student && moment(student["birth_date"]).format("DD MMMM YYYY")}
             </Box>
           </Flex>
           <Flex sx={{ fontSize: 2, color: "gray.6", alignItems: "center" }}>
             <Icon icon="home" iconSize={14} />
             <Box className={!student && Classes.SKELETON} sx={{ ml: 1 }}>
-              Tinggal di {student && student["student"]["origin_address"]}
+              Tinggal di {student && student["origin_address"]}
             </Box>
           </Flex>
         </Flex>
@@ -92,32 +76,41 @@ export const Detail = () => {
       <Box sx={{ mt: 4, mx: 3 }}>
         <Flex sx={{ mx: -2 }}>
           <Box sx={{ width: "50%", px: 2 }}>
-            <Box as={H3} sx={{ mb: 3 }}>Informasi Pendaftaran</Box>
+            <Box as={H3} sx={{ mb: 3 }}>Informasi Dasar</Box>
             {[
-              ["Nomor Induk Siswa Nasional", student && student["nisn"]],
-              ["Asal Sekolah", student && student["school_name"]],
-              ["Alamat Sekolah", student && student["school_address"]],
-            ].map((val) => (
-              <Box className={!student && Classes.SKELETON}>
-                <FormGroup
-                  label={val[0]}
-                >
-                  <InputGroup
-                    readOnly={true}
-                    value={val[1]}
-                  />
-                </FormGroup>
-              </Box>
-            ))}
+              ["Email", student && student["email"]],
+              ["Nomor Telephone", student && student["phone_number"]],
+              [
+                "Alamat", student && student["origin_address"],
+                TextArea,
+                {
+                  fill: true,
+                  growVertically: true
+                }
+              ],
+            ].map((val) => {
+              const Comp = val[2] || InputGroup;
+              const props = val[3] || {};
+              return (
+                <Box key={val[0]} className={!student && Classes.SKELETON}>
+                  <FormGroup label={val[0]}>
+                    <Comp
+                      readOnly={true}
+                      value={val[1] || ""}
+                      {...props}
+                    />
+                  </FormGroup>
+                </Box>
+              )
+            })}
           </Box>
           <Box sx={{ width: "50%", px: 2 }}>
-            <Box as={H3} sx={{ mb: 3 }}>Pilihan Program Studi</Box>
+            <Box as={H3} sx={{ mb: 3 }}>Informasi Akademik</Box>
             {[
-              ["Program Studi Pertama", student && student["study_program_1"]],
-              ["Program Studi Kedua", student && student["study_program_2"]],
+              ["Nomor Induk Mahasiswa", student && student["nim"]],
+              ["Program Studi", student && student["study_program"]["name"]],
+              ["Jurusan", student && student["study_program"]["major"]["name"]],
             ].map((val) => {
-              console.log(val[1]);
-              const { name, major } = val[1] || {};
               return (
                 <Box
                   key={val[0]}
@@ -128,7 +121,7 @@ export const Detail = () => {
                   >
                     <InputGroup
                       readOnly={true}
-                      value={`${name}, ${major && major["name"]}`}
+                      value={val[1]}
                     />
                   </FormGroup>
                 </Box>
