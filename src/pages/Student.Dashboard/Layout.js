@@ -9,7 +9,7 @@ const Layout = () => {
       <Header />
       <Divider />
       <Flex>
-        <Box sx={{ mx: 3, flexGrow: 1 }}>
+        <Box sx={{ mt: 3, mx: 3, flexGrow: 1 }}>
           <Main />
         </Box>
         <Box sx={{ flexShrink: 0, width: 230 }}>

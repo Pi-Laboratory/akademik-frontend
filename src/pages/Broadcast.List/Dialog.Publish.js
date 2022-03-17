@@ -62,7 +62,7 @@ export const DialogPublish = ({
         initialValues={{
           "title": "",
           "message": "",
-          "intent": "",
+          "intent": "none",
           "from_id": client["account"]["id"],
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
@@ -140,6 +140,7 @@ export const DialogPublish = ({
                   value={values["intent"]}
                   onChange={handleChange}
                   options={[
+                    "none",
                     "primary",
                     "success",
                     "danger",

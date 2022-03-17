@@ -222,7 +222,6 @@ const navigation = [
     "text": "Dashboard",
     "component": StudentDashboard,
     "path": "/",
-    "hide": true,
     "exact": true,
     "icon": "blank",
     "permission": "Student"
