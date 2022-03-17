@@ -1,5 +1,5 @@
 import moment from "moment";
-import { Button, Callout, Card, Classes, H6, NonIdealState } from "@blueprintjs/core";
+import { Card, Classes, H6, NonIdealState } from "@blueprintjs/core";
 import { Box, Divider, Flex, useClient } from "components";
 import { Fragment, useEffect, useState } from "react/cjs/react.development";
 
@@ -23,7 +23,7 @@ const Main = () => {
       }
     }
     fetch();
-  }, []);
+  }, [client]);
 
   return (
     <Box>

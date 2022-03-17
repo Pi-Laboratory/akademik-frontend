@@ -1,4 +1,4 @@
-import { Checkbox, Tag } from "@blueprintjs/core";
+import { Checkbox } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, useList } from "components";
 import { Link } from "react-router-dom";
 
