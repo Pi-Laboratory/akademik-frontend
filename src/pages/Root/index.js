@@ -11,6 +11,7 @@ import { LecturerBimbingan } from "pages/Lecturer.Bimbingan";
 import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
 
+import { Broadcast } from "pages/Broadcast";
 import { Bimbingan } from "pages/Bimbingan";
 import { Mahasiswa } from "pages/Mahasiswa";
 import { Kurikulum } from "pages/Kurikulum";
@@ -170,6 +171,14 @@ const navigation = [
     "text": "Users",
     "component": Users,
     "path": "/users",
+    "icon": "blank",
+    "permission": "Admin"
+  },
+  {
+    "title": "Broadcast",
+    "text": "Broadcast",
+    "component": Broadcast,
+    "path": "/broadcast",
     "icon": "blank",
     "permission": "Admin"
   },

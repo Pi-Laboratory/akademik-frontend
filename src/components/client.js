@@ -152,6 +152,7 @@ export const ClientProvider = ({ children }) => {
       get "users"() { return feathers.service("users") },
       get "registrations"() { return feathers.service("registrations") },
       get "preceptors"() { return feathers.service("preceptors") },
+      get "notifications"() { return feathers.service("notifications") },
     }
   }, [isConnected, isAuthenticated, account, role]);
 
