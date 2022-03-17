@@ -1,5 +1,5 @@
 import { useRef, useCallback, useEffect, useState } from "react";
-import { Button, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
+import { Button, Classes, Spinner } from "@blueprintjs/core";
 import { toPng } from "html-to-image";
 import { AspectRatio, Box, Flex, toaster, useClient } from "components";
 import IDCardBG from "assets/imgs/idcard_bg.png";

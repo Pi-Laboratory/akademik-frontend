@@ -1,33 +1,12 @@
-import { Classes, FormGroup, H3, Icon, InputGroup, NonIdealState } from "@blueprintjs/core";
-import { Box, Divider, Flex, useClient, getBase64, AspectRatio } from "components";
-import { useState } from "react";
-import * as Yup from "yup";
+import { Classes, FormGroup, H3, Icon, InputGroup } from "@blueprintjs/core";
+import { Box, Flex, useClient, AspectRatio } from "components";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
 import moment from "moment";
 
-const Schema = Yup.object().shape({
-  "name": Yup.string().required(),
-  "address": Yup.string().required(),
-  "birth_place": Yup.string().required(),
-  "birth_date": Yup.date().required(),
-  "phone_number": Yup.string().required(),
-  "nisn": Yup.string().required(),
-  "school_name": Yup.string().required(),
-  "school_address": Yup.string().required(),
-  "photo": Yup.object().shape({
-    "value": Yup.string().required(),
-    "name": Yup.string().required(),
-    "cropped": Yup.string(),
-  }).required(),
-});
-
 export const Detail = () => {
   const client = useClient();
   const student = useStudent();
-  const [defaultInfo, setDefaultInfo] = useState(null);
-
-  console.log(student);
 
   return (
     <>

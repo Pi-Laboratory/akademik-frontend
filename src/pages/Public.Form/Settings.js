@@ -1,11 +1,10 @@
-import { H2, H3, NonIdealState, Button, Classes, Menu, MenuItem, FormGroup, InputGroup, Spinner, TextArea } from "@blueprintjs/core";
+import { H2, H3, Button, Classes, Menu, MenuItem, FormGroup, InputGroup, Spinner, TextArea } from "@blueprintjs/core";
 import { Box, CropImage, Divider, Select, getBase64, TakePhoto, useClient, AspectRatio, toaster } from "components";
 import { Popover2 } from "@blueprintjs/popover2";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
-import { useNav } from "pages/Root/hoc";
 import { useState, useCallback } from "react";
 import { DateInput } from "@blueprintjs/datetime";
 import moment from "moment";
@@ -41,7 +40,6 @@ const Schema = {
 export const Settings = ({ base }) => {
   const client = useClient();
   const student = useStudent();
-  const navigation = useNav(base);
 
   const [studyPrograms, setStudyPrograms] = useState({
     "study_program_1": [],

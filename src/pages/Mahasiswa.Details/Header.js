@@ -1,4 +1,4 @@
-import { Button, Classes, Icon, NonIdealState } from "@blueprintjs/core";
+import { Button, Classes, Icon } from "@blueprintjs/core";
 import { AspectRatio, Box, Flex, useClient } from "components"
 import moment from "moment";
 import { useStudent } from "."

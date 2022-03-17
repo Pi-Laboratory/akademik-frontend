@@ -1,4 +1,4 @@
-import { AnchorButton, Button, Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
+import { AnchorButton, Button, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Pagination, Select, useClient, useList } from "components";
 import { Link } from "react-router-dom";
 import { forwardRef, useEffect } from "react";
@@ -13,7 +13,7 @@ const btn = forwardRef((props, ref) =>
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, paging, setPaging, filter, setFilter, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, paging, setPaging, filter, setFilter } = useList();
 
   useEffect(() => {
     const fetch = async () => {

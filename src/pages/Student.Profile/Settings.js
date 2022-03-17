@@ -1,12 +1,11 @@
-import { H2, H3, NonIdealState, Button, Classes, Menu, MenuItem, FormGroup, InputGroup, Spinner, TextArea } from "@blueprintjs/core";
-import { Box, CropImage, Divider, Select, getBase64, TakePhoto, useClient, AspectRatio, toaster } from "components";
+import { H2, H3, Button, Classes, Menu, MenuItem, FormGroup, InputGroup, Spinner, TextArea } from "@blueprintjs/core";
+import { Box, CropImage, Divider, getBase64, TakePhoto, useClient, AspectRatio, toaster } from "components";
 import { Popover2 } from "@blueprintjs/popover2";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
-import { useNav } from "pages/Root/hoc";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { DateInput } from "@blueprintjs/datetime";
 import moment from "moment";
 import { decode } from "base64-arraybuffer";
@@ -41,48 +40,12 @@ const Schema = {
 export const Settings = ({ base }) => {
   const client = useClient();
   const student = useStudent();
-  const navigation = useNav(base);
-
-  const [studyPrograms, setStudyPrograms] = useState({
-    "study_program_1": [],
-    "study_program_2": []
-  });
 
   const [photoPopover, setPhotoPopover] = useState(false);
 
   const [loading, setLoading] = useState({
-    "file": false,
-    "study_program_1": false,
-    "study_program_2": false
+    "file": false
   });
-
-  const fetchStudyPrograms = useCallback(async (key) => {
-    setLoading(l => ({ ...l, [key]: true }));
-    try {
-      const res = await client["study-programs"].find({
-        query: {
-          $select: ["id", "name"],
-          $include: [{
-            model: "majors",
-            $select: ["name"]
-          }]
-        }
-      });
-      setStudyPrograms(sp => ({
-        ...sp,
-        [key]: res.data.map(({ id, name, major }) => {
-          return {
-            label: name,
-            value: id,
-            info: major["name"]
-          }
-        })
-      }));
-    } catch (err) {
-      console.error(err);
-    }
-    setLoading(l => ({ ...l, [key]: false }));
-  }, [client]);
 
   if (student === null) {
     return (

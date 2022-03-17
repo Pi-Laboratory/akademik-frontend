@@ -1,10 +1,9 @@
-import { Spinner, Button, Classes, Dialog, H3, NonIdealState } from "@blueprintjs/core";
+import { Spinner, Button, Classes, Dialog, H3 } from "@blueprintjs/core";
 import { AspectRatio, Box, Divider, Flex, useClient } from "components";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { DialogIDCard } from "./Dialog.IDCard";
 import moment from "moment";
-import { useStudent } from ".";
 
 const Profile = () => {
   const client = useClient();

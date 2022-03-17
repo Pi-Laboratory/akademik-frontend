@@ -1,7 +1,6 @@
-import { Checkbox, NonIdealState, Spinner, Tag } from '@blueprintjs/core'
-import { Box, Flex, ListGroup, useClient, useList } from 'components'
+import { NonIdealState, Spinner } from '@blueprintjs/core'
+import { Box, useClient, useList } from 'components'
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Item } from './Item'
 
 const List = () => {

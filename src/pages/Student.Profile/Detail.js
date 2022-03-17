@@ -1,7 +1,5 @@
-import { Classes, FormGroup, H3, Icon, InputGroup, NonIdealState, TextArea } from "@blueprintjs/core";
-import { Box, Divider, Flex, useClient, getBase64, AspectRatio } from "components";
-import { useState } from "react";
-import * as Yup from "yup";
+import { Classes, FormGroup, H3, Icon, InputGroup, TextArea } from "@blueprintjs/core";
+import { Box, Flex, useClient, AspectRatio } from "components";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
 import moment from "moment";
@@ -9,9 +7,6 @@ import moment from "moment";
 export const Detail = () => {
   const client = useClient();
   const student = useStudent();
-  const [defaultInfo, setDefaultInfo] = useState(null);
-
-  console.log(student);
 
   return (
     <>

@@ -1,6 +1,5 @@
 import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
-import { STUDENT_STATUS } from 'components/constants'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
