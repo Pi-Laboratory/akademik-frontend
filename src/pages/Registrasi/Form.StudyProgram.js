@@ -1,7 +1,7 @@
 import { Button, FormGroup } from "@blueprintjs/core";
 import { Box, Flex, Select, useClient } from "components";
 import { useFormikContext } from "formik";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import * as Yup from "yup";
 
 export const Schema = Yup.object().shape({
@@ -34,6 +34,7 @@ export const FormStudyProgram = ({ goTo = () => { } }) => {
     try {
       const res = await client["study-programs"].find({
         query: {
+          $limit: 100,
           $select: ["id", "name"],
           $include: [{
             model: "majors",
@@ -56,6 +57,11 @@ export const FormStudyProgram = ({ goTo = () => { } }) => {
     }
     setLoading(l => ({ ...l, [key]: false }));
   }, [client]);
+
+  useEffect(() => {
+    fetchStudyPrograms("study_program_1");
+    fetchStudyPrograms("study_program_2");
+  }, []);
 
   const {
     setFieldValue,

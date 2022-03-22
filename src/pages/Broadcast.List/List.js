@@ -21,24 +21,32 @@ const List = () => {
           $sort: {
             id: 1
           },
+          $distinct: true,
           $include: [{
             model: "students",
-            $select: ["id", "name"],
-          }, {
-            model: "lecturers",
-            $select: ["id"],
-            $include: [{
-              model: "employees",
-              $select: ["id", "name"]
-            }],
-          }, {
-            model: "registrations",
-            $select: ["id"],
-            $include: [{
-              model: "students",
-              $select: ["id", "name"]
-            }],
-          }]
+            $select: ["id", "name", "study_program_id"],
+            $where: {
+              study_program_id: filter["study_program_id"] || undefined,
+              // name: "MIRIAM SITAMMU",
+            },
+            $required: true
+          }, 
+          // {
+          //   model: "lecturers",
+          //   $select: ["id"],
+          //   $include: [{
+          //     model: "employees",
+          //     $select: ["id", "name"]
+          //   }],
+          // }, {
+          //   model: "registrations",
+          //   $select: ["id"],
+          //   $include: [{
+          //     model: "students",
+          //     $select: ["id", "name"]
+          //   }],
+          // }
+        ]
         };
         if (filter["role"] === "lecturer") {
           query["lecturer_id"] = { $ne: null }
@@ -55,7 +63,6 @@ const List = () => {
         const res = await client["users"].find({
           query
         });
-        console.log(res);
         setItems(res.data.map((item) => {
           const res = {
             id: item["id"],

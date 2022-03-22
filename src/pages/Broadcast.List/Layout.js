@@ -1,10 +1,10 @@
 import { Box, Flex, ListGroup, useList, Pagination } from 'components'
 import List from './List'
-import { Button, ButtonGroup, Checkbox, Classes } from '@blueprintjs/core'
+import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 import { useState } from 'react'
-import DialogHapus from './Dialog.Hapus'
 import { useHistory } from 'react-router-dom'
+import { DialogPublish } from './Dialog.Publish'
 
 export const Layout = () => {
 
@@ -15,8 +15,6 @@ export const Layout = () => {
     items,
     status,
     dispatchSelectedItem,
-    filter,
-    setFilter
   } = useList();
 
   const [dialogOpen, setDialogOpen] = useState(null);
@@ -50,29 +48,22 @@ export const Layout = () => {
               </Box>
               <Flex sx={{ flexGrow: 1, alignItems: "center" }}>
                 {selectedItem.length > 0
-                  && <Box>{selectedItem.length} selected</Box>
+                  && <Box>{selectedItem.length} of {paging.total} selected</Box>
                 }
-                {/* {items !== null
-                  && (selectedItem.length === items.length)
-                  && (selectedItem.length < paging.total)
-                  && <Button
-                    minimal={true}
-                    intent="primary"
-                    text={`Select all ${paging.total} item`}
-                    onClick={() => { }}
-                  />
-                } */}
                 {selectedItem.length > 0 &&
-                  <Button
-                    minimal={true}
-                    intent="danger"
-                    text={`Delete ${selectedItem.length} selected`}
-                    onClick={() => setDialogOpen("delete")}
-                  />
-                }
-                <DialogHapus
+                  <Box sx={{ ml: 2 }}>
+                    <Button
+                      outlined={true}
+                      text={`Create Message`}
+                      intent="primary"
+                      onClick={() => {
+                        setDialogOpen("publish");
+                      }}
+                    />
+                  </Box>}
+                <DialogPublish
                   data={selectedItem}
-                  isOpen={dialogOpen === "delete"}
+                  isOpen={dialogOpen === "publish"}
                   onClose={() => { setDialogOpen(null) }}
                   onSubmitted={() => {
                     history.go(0);
@@ -80,56 +71,7 @@ export const Layout = () => {
                 />
               </Flex>
               <Box>
-                <ButtonGroup>
-                  {[{
-                    text: "Admin",
-                    value: "admin"
-                  }, {
-                    text: "Dosen",
-                    value: "lecturer"
-                  }, {
-                    text: "Student",
-                    value: "student"
-                  }, {
-                    text: "Public",
-                    value: "public"
-                  }, ].map(({ value, intent = "primary", text, ...props }) => {
-                    const isActive = value === filter.role;
-                    return (
-                      <Button
-                        {...props}
-                        outlined={true}
-                        key={text}
-                        intent={isActive ? intent : "none"}
-                        active={isActive}
-                        text={text}
-                        onClick={() => {
-                          if (isActive) return
-                          setFilter(f => ({ ...f, role: value }))
-                        }}
-                      />
-                    )
-                  })}
-                </ButtonGroup>
-              </Box>
-              <Box sx={{ ml: 2 }}>
-                {[
-                  !!filter["role"],
-                ].indexOf(true) !== -1
-                  && <Button
-                    minimal={true}
-                    intent="warning"
-                    icon="filter-remove"
-                    onClick={() => {
-                      history.replace({
-                        search: ""
-                      });
-                      setFilter(filter => ({
-                        ...filter,
-                        "role": null
-                      }))
-                    }}
-                  />}
+
               </Box>
             </Flex>
           </ListGroup.Header>

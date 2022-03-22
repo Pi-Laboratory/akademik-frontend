@@ -1,13 +1,42 @@
-import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex, Select, useList } from "components";
-import { useState } from "react";
+import { Button, ButtonGroup } from "@blueprintjs/core";
+import { Box, Flex, Select, useClient, useList } from "components";
+import { useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { DialogPublish } from "./Dialog.Publish";
 
 const Filter = () => {
-  const { selectedItem } = useList();
-  const [dialogOpen, setDialogOpen] = useState(null);
+  const client = useClient();
+
+  const { filter, setFilter } = useList();
+
   const history = useHistory();
+  const [loading, setLoading] = useState({
+    "studyPrograms": false,
+  });
+  const [studyPrograms, setStudyPrograms] = useState([]);
+
+  const fetchStudyPrograms = useCallback(async (query) => {
+    setLoading(l => ({ ...l, studyPrograms: true }));
+    try {
+      const res = (await client["study-programs"].find({
+        query: {
+          $limit: 25,
+          $select: ["id", "name"],
+          $include: [{
+            model: "majors",
+            $select: ["id", "name"]
+          }]
+        }
+      })).data.map((d) => ({
+        label: d["name"],
+        value: d["id"],
+        info: d["major"]["name"]
+      }));
+      setStudyPrograms(res);
+    } catch (err) {
+      console.error(err.message);
+    }
+    setLoading(l => ({ ...l, studyPrograms: false }));
+  }, [client]);
 
   return (
     <Flex
@@ -19,40 +48,85 @@ const Filter = () => {
         }
       }}
     >
-      <Box>
-        <ControlGroup>
-          <Select
-            label="Filter"
-            options={[
-              { label: "ID", value: 0 },
-              { label: "Nama", value: 1 },
-              { label: "NIDN", value: 2 },
-            ]}
-          />
-          <InputGroup leftIcon="search" placeholder="Filter by name" />
-        </ControlGroup>
-      </Box>
-      <Box sx={{ flexGrow: 1 }} />
       <Flex>
         <Box>
-          {selectedItem.length > 0 &&
-            <Button
-              text={`Create Message`}
-              intent="primary"
+          <ButtonGroup>
+            {[{
+              text: "Admin",
+              value: "admin"
+            }, {
+              text: "Dosen",
+              value: "lecturer"
+            }, {
+              text: "Student",
+              value: "student"
+            }, {
+              text: "Public",
+              value: "public"
+            },].map(({ value, intent = "primary", text, ...props }) => {
+              const isActive = value === filter.role;
+              return (
+                <Button
+                  {...props}
+                  key={text}
+                  intent={isActive ? intent : "none"}
+                  active={isActive}
+                  text={text}
+                  onClick={() => {
+                    if (isActive) return
+                    setFilter(f => ({ ...f, role: value }))
+                  }}
+                />
+              )
+            })}
+          </ButtonGroup>
+        </Box>
+        <Box sx={{ ml: 2 }}>
+          <Select
+            fill={true}
+            id={`f-study_program_id`}
+            name={`study_program_id`}
+            loading={loading["studyPrograms"]}
+            placeholder="Program Studi"
+            value={filter[`study_program_id`]}
+            onChange={({ value }) => {
+              setFilter(f => ({ ...f, "study_program_id": value }));
+            }}
+            onQueryChange={(value) => {
+              fetchStudyPrograms(value);
+            }}
+            options={studyPrograms}
+            onOpening={() => {
+              fetchStudyPrograms("");
+            }}
+          />
+        </Box>
+        <Box sx={{ ml: 2 }}>
+          {[
+            !!filter["role"],
+            !!filter["study_program_id"],
+          ].indexOf(true) !== -1
+            && <Button
+              minimal={true}
+              intent="warning"
+              icon="filter-remove"
               onClick={() => {
-                setDialogOpen("publish");
+                history.replace({
+                  search: ""
+                });
+                setFilter(filter => ({
+                  ...filter,
+                  "role": null,
+                  "study_program_id": null
+                }))
               }}
             />}
         </Box>
       </Flex>
-      <DialogPublish
-        data={selectedItem}
-        isOpen={dialogOpen === "publish"}
-        onClose={() => { setDialogOpen(null) }}
-        onSubmitted={() => {
-          history.go(0);
-        }}
-      />
+      <Box sx={{ flexGrow: 1 }} />
+      <Flex>
+
+      </Flex>
     </Flex>
   )
 }

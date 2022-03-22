@@ -60,20 +60,6 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box>
             <Box sx={{ mr: 3, width: "15%" }}>
               <Link to={`${item["id"]}`}>
                 <Box>
@@ -87,30 +73,6 @@ const List = () => {
               </Box>
               <Box sx={{ color: "gray.5" }}>
                 Mata Kuliah
-              </Box>
-            </Box>
-            <Box sx={{ mr: 3, width: "15%" }}>
-              <Box sx={{ color: "gray.5" }}>
-                SKS
-              </Box>
-              <Box>
-                22
-              </Box>
-            </Box>
-            <Box sx={{ mr: 3, width: "15%" }}>
-              <Box sx={{ color: "gray.5" }}>
-                IPK
-              </Box>
-              <Box>
-                3.87
-              </Box>
-            </Box>
-            <Box sx={{ mr: 3, width: "15%" }}>
-              <Box sx={{ color: "gray.5" }}>
-                Predikat
-              </Box>
-              <Box>
-                B+
               </Box>
             </Box>
           </Flex>

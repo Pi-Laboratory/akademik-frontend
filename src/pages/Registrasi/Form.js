@@ -56,6 +56,7 @@ export const Form = () => {
       validationSchema={CurrentStep.validationSchema}
       initialValues={initialValues}
       onSubmit={async (values, { setSubmitting }) => {
+        let reg = null
         try {
           const result = { ...values };
           if (values["photo"].cropped) {
@@ -71,9 +72,15 @@ export const Form = () => {
             intent: "none",
             message: "Sedang menyimpan data"
           });
-          const reg = await client.registrations.create({
+          reg = await client.registrations.create({
             "name": result["name"],
             "origin_address": result["origin_address"],
+            "province_id": result["province_id"],
+            "city_id": result["city_id"],
+            "district_id": result["district_id"],
+            "subdistrict_id": result["subdistrict_id"],
+            "neighbor_id": result["neighbor_id"] || undefined,
+            "street": result["street"],
             "birth_city": result["birth_city"],
             "birth_date": result["birth_date"],
             "phone_number": result["phone_number"],
@@ -102,6 +109,9 @@ export const Form = () => {
             search: "?from=reg"
           });
         } catch (err) {
+          if(reg !== null) {
+            await client.registrations.remove(reg["id"]);
+          }
           toaster.show({
             intent: "danger",
             message: err.message

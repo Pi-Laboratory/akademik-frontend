@@ -25,10 +25,11 @@ const List = () => {
               $select: ["id", "achievements"],
               $where: {
                 "lecturer_id": client.lecturer_id
-              }
+              },
             }]
           }
         });
+        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,

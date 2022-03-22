@@ -24,13 +24,14 @@ const Layout = () => {
             }]
           }
         });
+        console.log(res);
         setStudyDetail(res);
       } catch (err) {
         console.error(err);
       }
     }
     fetch();
-  }, [client, params["student_id"]]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [client, params["study_id"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box sx={{ mt: 3, px: 3 }}>
@@ -41,8 +42,8 @@ const Layout = () => {
             {[
               ["Semester", studyDetail["semester"]],
               ["Mata Kuliah", studyDetail["study_plans"].length],
-              ["SKS", 22],
-              ["IPK", 24],
+              // ["SKS", 22],
+              // ["IPK", 24],
             ].map((value) => (
               <tr key={value[0]}>
                 <td>
@@ -52,7 +53,9 @@ const Layout = () => {
               </tr>))}
           </tbody>
         </HTMLTable>}
-      <h4 className={Classes.HEADING}>Hasil Studi</h4>
+      <Box sx={{ mt: 4 }}>
+        <h4 className={Classes.HEADING}>Matakuliah</h4>
+      </Box>
       {studyDetail &&
         <ListGroup
           sx={{

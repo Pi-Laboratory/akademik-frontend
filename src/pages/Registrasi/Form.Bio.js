@@ -1,14 +1,20 @@
 import { Button, FileInput, FormGroup, HTMLSelect, InputGroup, TextArea } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { Box, CropImage, Divider, Flex, TakePhoto } from "components";
+import { Box, CropImage, Divider, Flex, Select, TakePhoto, useClient } from "components";
 import { useFormikContext } from "formik";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import * as Yup from "yup";
 import moment from "moment";
 
 export const Schema = Yup.object().shape({
   "name": Yup.string().required(),
-  "origin_address": Yup.string().required(),
+  "email": Yup.string().required(),
+  "province_id": Yup.number().required(),
+  "district_id": Yup.number().required(),
+  "subdistrict_id": Yup.number().required(),
+  "city_id": Yup.number().required(),
+  "neighbor_id": Yup.number(),
+  "street": Yup.string(),
   "gender": Yup.string().oneOf(["L", "P"]).required(),
   "birth_city": Yup.string().required(),
   "birth_date": Yup.date().required(),
@@ -25,7 +31,14 @@ export const Schema = Yup.object().shape({
 
 const InitialValues = {
   "name": "",
+  "email": "",
   "origin_address": "",
+  "province_id": "",
+  "district_id": "",
+  "subdistrict_id": "",
+  "city_id": "",
+  "neighbor_id": "",
+  "street": "",
   "gender": "L",
   "birth_city": "",
   "birth_date": null,
@@ -42,7 +55,7 @@ const getBase64 = file => new Promise((resolve, reject) => {
   var reader = new FileReader();
   try {
     reader.readAsDataURL(file);
-  } catch(err) {
+  } catch (err) {
     reject(err);
   }
   reader.onload = () => resolve(reader.result);
@@ -50,9 +63,23 @@ const getBase64 = file => new Promise((resolve, reject) => {
 });
 
 export const FormBio = ({ goTo = () => { } }) => {
+  const client = useClient();
 
   const [loading, setLoading] = useState({
-    "file": false
+    "file": false,
+    "province": false,
+    "city": false,
+    "district": false,
+    "subdistrict": false,
+    "neighbor": false,
+  });
+
+  const [address, setAddress] = useState({
+    "province": [],
+    "city": [],
+    "district": [],
+    "subdistrict": [],
+    "neighbor": [],
   });
 
   const {
@@ -63,6 +90,90 @@ export const FormBio = ({ goTo = () => { } }) => {
     isSubmitting,
     validateForm
   } = useFormikContext();
+
+  const fetchAddress = useCallback(async (key, query, {
+    province_id,
+    city_id,
+    district_id,
+    subdistrict_id,
+  }) => {
+    const result = {};
+    setLoading(l => ({ ...l, [key]: true }));
+    try {
+      switch (key) {
+        case "province":
+          result[key] = (await client["provinces"].find({
+            query: {
+              $limit: 100,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "city":
+          result[key] = (await client["cities"].find({
+            query: {
+              $limit: 100,
+              province_id,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "district":
+          result[key] = (await client["districts"].find({
+            query: {
+              $limit: 100,
+              city_id,
+              "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "subdistrict":
+          result[key] = (await client["subdistricts"].find({
+            query: {
+              $limit: 100,
+              district_id,
+              "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "neighbor":
+          result[key] = (await client["neighbors"].find({
+            query: {
+              $limit: 100,
+              subdistrict_id,
+              "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        default: break;
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+
+    setLoading(l => ({ ...l, [key]: false }));
+    setAddress(a => ({ ...a, ...result }));
+  }, [client]);
 
   return (
     <Box sx={{ py: 3 }}>
@@ -106,7 +217,6 @@ export const FormBio = ({ goTo = () => { } }) => {
         intent={"danger"}
       >
         <InputGroup
-          fill={true}
           id="f-email"
           name="email"
           value={values["email"]}
@@ -114,21 +224,74 @@ export const FormBio = ({ goTo = () => { } }) => {
           intent={errors["email"] ? "danger" : "none"}
         />
       </FormGroup>
+      <Flex sx={{ flexWrap: "wrap", mx: -2 }}>
+        {[{
+          "label": "Provinsi",
+          "id": "province",
+        }, {
+          "label": "Kabupaten / Kota",
+          "id": "city",
+        }, {
+          "label": "Kecamatan",
+          "id": "district",
+        }, {
+          "label": "Desa / Kelurahan",
+          "id": "subdistrict",
+        }, {
+          "label": "Jaga / Lingkungan",
+          "id": "neighbor",
+        }].map(({ id, label }) => (
+          <Box key={id} sx={{ width: "50%", px: 2 }}>
+            <FormGroup
+              key={id}
+              label={label}
+              labelFor={`f-${id}_id`}
+              helperText={errors[`${id}_id`]}
+              intent={"danger"}
+            >
+              <Select
+                fill={true}
+                id={`f-${id}_id`}
+                name={`${id}_id`}
+                loading={loading[id]}
+                placeholder="Pilih"
+                value={values[`${id}_id`]}
+                onChange={({ value }) => {
+                  setFieldValue(`${id}_id`, value, true);
+                }}
+                // onQueryChange={(value) => {
+                //   fetchAddress(id, value);
+                // }}
+                intent={errors[`${id}_id`] ? "danger" : "none"}
+                options={address[id]}
+                onOpening={() => {
+                  fetchAddress(id, "", {
+                    province_id: values["province_id"],
+                    city_id: values["city_id"],
+                    district_id: values["district_id"],
+                    subdistrict_id: values["subdistrict_id"],
+                  });
+                }}
+              />
+            </FormGroup>
+          </Box>
+        ))}
+      </Flex>
       <FormGroup
-        label="Alamat"
-        labelFor="f-origin_address"
-        helperText={errors["origin_address"]}
+        label="Jalan"
+        labelFor="f-street"
+        helperText={errors["street"]}
         intent={"danger"}
       >
         <TextArea
           fill={true}
           growVertically={true}
-          id="f-origin_address"
-          name="origin_address"
-          placeholder="contoh: Buha, Kec. Mapanget, Kota Manado, Sulawesi Utara, Indonesia"
-          value={values["origin_address"]}
+          id="f-street"
+          name="street"
+          placeholder="contoh: Jalan rambutan"
+          value={values["street"]}
           onChange={handleChange}
-          intent={errors["origin_address"] ? "danger" : "none"}
+          intent={errors["street"] ? "danger" : "none"}
         />
       </FormGroup>
       <Flex sx={{ mx: -2 }}>

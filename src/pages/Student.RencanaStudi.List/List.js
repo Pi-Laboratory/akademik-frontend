@@ -27,7 +27,6 @@ const List = () => {
             }]
           }
         });
-
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -60,41 +59,19 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box>
-            <Box sx={{ mr: 3, width: "15%" }}>
+            <Box sx={{ mr: 3, width: "50%" }}>
               <Link to={`${item["id"]}`}>
                 <Box>
                   Semester {item["semester"]}
                 </Box>
               </Link>
             </Box>
-            <Box sx={{ mr: 3, width: "15%" }}>
+            <Box sx={{ mr: 3, width: "50%" }}>
               <Box>
                 {item["study_plans"].length}
               </Box>
               <Box sx={{ color: "gray.5" }}>
                 Mata Kuliah
-              </Box>
-            </Box>
-            <Box sx={{ mr: 3, width: "15%" }}>
-              <Box sx={{ color: "gray.5" }}>
-                SKS
-              </Box>
-              <Box>
-                22
               </Box>
             </Box>
           </Flex>

@@ -1,4 +1,4 @@
-import { Classes, FormGroup, H3, Icon, InputGroup } from "@blueprintjs/core";
+import { Classes, FormGroup, H3, Icon, InputGroup, Text } from "@blueprintjs/core";
 import { Box, Flex, useClient, AspectRatio } from "components";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
@@ -7,7 +7,7 @@ import moment from "moment";
 export const Detail = () => {
   const client = useClient();
   const student = useStudent();
-
+  console.log(student);
   return (
     <>
       <Helmet>
@@ -63,7 +63,7 @@ export const Detail = () => {
           <Flex sx={{ fontSize: 2, color: "gray.6", alignItems: "center" }}>
             <Icon icon="home" iconSize={14} />
             <Box className={!student && Classes.SKELETON} sx={{ ml: 1 }}>
-              Tinggal di {student && student["student"]["origin_address"]}
+              <Text ellipsize={true}>Tinggal di {student && `${student["student"]["street"]}, ${student["student"]["neighbor"] ? `${student["student"]["neighbor"]["name"]}, ` : ""}${student["student"]["subdistrict"]["name"]}, ${student["student"]["district"]["name"]}, ${student["student"]["city"]["name"]}, ${student["student"]["province"]["name"]}`}</Text>
             </Box>
           </Flex>
         </Flex>

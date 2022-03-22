@@ -27,18 +27,18 @@ const DialogMatakuliah = ({
       const res = await client["subject-lecturers"].find({
         query: {
           $select: ["id"],
-          // $limit: 30,
+          $limit: 100,
           $include: [{
             model: "subjects",
             $select: ["id", "name", "code"],
-            $where: {
-              $or: [{
-                "name": { $iLike: `%${query}%` },
-              }, {
-                "code": { $iLike: `%${query}%` },
-              }],
-              "study_program_id": data["study_program_id"]
-            },
+            // $where: {
+            //   $or: [{
+            //     "name": { $iLike: `%${query}%` },
+            //   }, {
+            //     "code": { $iLike: `%${query}%` },
+            //   }],
+            //   "study_program_id": data["study_program_id"]
+            // },
             $include: [{
               model: "study_programs",
               $select: ["id", "name"]
@@ -46,6 +46,7 @@ const DialogMatakuliah = ({
           }]
         }
       });
+      console.log(res);
       setSubjectLecturers(res.data.map((value) => {
         return { label: value["subject"]["name"], value: value["id"], info: value["subject"]["code"] };
       }));
@@ -100,6 +101,9 @@ const DialogMatakuliah = ({
                   intent={errors["subject_lecturer_id"] ? "danger" : "none"}
                   onChange={async ({ value }) => {
                     await setFieldValue("subject_lecturer_id", value, true);
+                  }}
+                  onOpening={() => {
+                    fetchSubjectLecturer("");
                   }}
                   onCreateNew={(query) => fetchSubjectLecturer(query)}
                   options={subjectLecturers}

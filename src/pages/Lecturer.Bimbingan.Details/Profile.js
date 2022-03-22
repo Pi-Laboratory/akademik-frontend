@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import moment from "moment";
 import { Achievements } from "./Achievements";
+import { joinPropsString } from "components/helper";
 
 export const Profile = () => {
   const client = useClient();
@@ -16,6 +17,21 @@ export const Profile = () => {
         const res = await client["students"].get(params["id"], {
           query: {
             $include: [{
+              model: "provinces",
+              $select: ["id", "name"]
+            }, {
+              model: "cities",
+              $select: ["id", "name"]
+            }, {
+              model: "districts",
+              $select: ["id", "name"]
+            }, {
+              model: "subdistricts",
+              $select: ["id", "name"]
+            }, {
+              model: "neighbors",
+              $select: ["id", "name"]
+            }, {
               model: "study_programs",
               $select: ["id", "name"],
               $include: [{
@@ -60,8 +76,14 @@ export const Profile = () => {
           ["Tanggal Lahir", moment(data["birth_date"]).format("DD MMM YYYY")],
           ["Kota Tempat Lahir", data["birth_city"]],
           ["Jenis Kelamin", data["gender"]],
-          ["Alamat", data["recent_address"]],
-          ["Alamat Asal", data["origin_address"]],
+          ["Alamat", joinPropsString(data, [
+            "street",
+            "neighbor.name",
+            "subdistrict.name",
+            "district.name",
+            "city.name",
+            "province.name",
+          ], ", ")],
           ["Agama", data["religion"]],
           ["Angkatan", data["generation"]],
           ["Status Nikah", "Belum Menikah"],

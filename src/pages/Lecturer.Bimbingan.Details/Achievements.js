@@ -105,7 +105,7 @@ export const Achievements = ({ studyProgramId, preceptorId, list }) => {
         </Box>
         <Divider />
         <Box sx={{ width: "35%", mx: 2 }}>
-          {available.map((x, i) => {
+          {available && available.map((x, i) => {
             const isAchive = achievements.find((a) => a["key"] === x["key"]);
             return (
               <Flex key={x["key"]}>

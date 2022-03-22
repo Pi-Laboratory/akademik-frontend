@@ -12,7 +12,7 @@ const Student = ({ weight, data: { "study": { student }, ...item } }) => {
 
   const [score, setScore] = useState(() => {
     return {
-      "presence": item["presence_score"],
+      "presence": item["attendance_score"],
       "task": item["task_score"],
       "mid_test": item["mid_test_score"],
       "final_test": item["final_test_score"]
@@ -52,7 +52,7 @@ const Student = ({ weight, data: { "study": { student }, ...item } }) => {
         message: `Menyimpan nilai`
       });
       await client["study-results"].patch(item["id"], {
-        "presence_score": score["presence"],
+        "attendance_score": score["presence"],
         "task_score": score["task"],
         "mid_test_score": score["mid_test"],
         "final_test_score": score["final_test"]

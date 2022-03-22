@@ -1,13 +1,15 @@
 import { Button, Classes, ControlGroup, Dialog, FormGroup, HTMLSelect, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
-import { Box, Flex, useClient } from "components";
+import { Box, Flex, useClient, Select } from "components";
 import { Formik } from "formik";
 import moment from "moment";
+import { useState, useCallback } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
   "nip": Yup.string().required(),
   "name": Yup.string().required(),
+  "neighbor_id": Yup.number(),
   "front_degree": Yup.string(),
   "back_degree": Yup.string(),
   "id_number": Yup.string().required(),
@@ -24,6 +26,11 @@ const Schema = Yup.object().shape({
   "phone_number": Yup.string().required(),
   "type": Yup.string().required(),
   "status": Yup.boolean().required(),
+
+  "province_id": Yup.number().required(),
+  "district_id": Yup.number().required(),
+  "subdistrict_id": Yup.number().required(),
+  "city_id": Yup.number().required(),
 })
 
 const DialogTambahBaru = ({
@@ -32,6 +39,85 @@ const DialogTambahBaru = ({
   onSubmitted = () => { }
 }) => {
   const client = useClient();
+
+  const [loading, setLoading] = useState({
+    "file": false,
+    "province": false,
+    "city": false,
+    "district": false,
+    "subdistrict": false,
+    "neighbor": false,
+  });
+
+  const [address, setAddress] = useState({
+    "province": [],
+    "city": [],
+    "district": [],
+    "subdistrict": [],
+    "neighbor": [],
+  });
+
+  const fetchAddress = useCallback(async (key, query) => {
+    const result = {};
+    setLoading(l => ({ ...l, [key]: true }));
+    try {
+      switch (key) {
+        case "provice":
+          result[key] = (await client["provincies"].find({
+            query: {
+              $iLike: { "name": `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "district":
+          result[key] = (await client["districts"].find({
+            query: {
+              $iLike: { "name": `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "subdistrict":
+          result[key] = (await client["subdistricts"].find({
+            query: {
+              $iLike: { "name": `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "neighbor":
+          result[key] = (await client["neighbors"].find({
+            query: {
+              $iLike: { "name": `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        default: break;
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+
+    setLoading(l => ({ ...l, [key]: false }));
+    console.log(result);
+    // setAddress();
+  }, [client]);
+
+
   return (
     <Dialog
       isOpen={isOpen}
@@ -60,6 +146,12 @@ const DialogTambahBaru = ({
           "phone_number": "",
           "type": "Dosen",
           "status": "true",
+
+          "province_id": "",
+          "district_id": "",
+          "subdistrict_id": "",
+          "city_id": "",
+          "neighbor_id": "",
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -184,6 +276,54 @@ const DialogTambahBaru = ({
                   </FormGroup>
                 </Box>
               </Flex>
+              <Flex sx={{ flexWrap: "wrap", mx: -2 }}>
+                {[{
+                  "label": "Provinsi",
+                  "id": "province",
+                }, {
+                  "label": "Kabubaten / Kota",
+                  "id": "city",
+                }, {
+                  "label": "Kecamatan",
+                  "id": "district",
+                }, {
+                  "label": "Desa / Kelurahan",
+                  "id": "subdistrict",
+                }, {
+                  "label": "Jaga / Lingkungan",
+                  "id": "neighbor",
+                }].map(({ id, label }) => (
+                  <Box key={id} sx={{ width: "50%", px: 2 }}>
+                    <FormGroup
+                      key={id}
+                      label={label}
+                      labelFor={`f-${id}_id`}
+                      helperText={errors[`${id}_id`]}
+                      intent={"danger"}
+                    >
+                      <Select
+                        fill={true}
+                        id={`f-${id}_id`}
+                        name={`${id}_id`}
+                        loading={loading[id]}
+                        placeholder="Pilih"
+                        value={values[`${id}_id`]}
+                        onChange={({ value }) => {
+                          setFieldValue(`${id}_id`, value, true);
+                        }}
+                        onQueryChange={(value) => {
+                          fetchAddress(id, value);
+                        }}
+                        intent={errors[`${id}_id`] ? "danger" : "none"}
+                        options={address[id]}
+                        onOpening={() => {
+                          fetchAddress(id, "");
+                        }}
+                      />
+                    </FormGroup>
+                  </Box>
+                ))}
+              </Flex>
               <FormGroup
                 label="Tanggal Kelahiran"
                 labelFor="f-birth_date"
@@ -192,6 +332,7 @@ const DialogTambahBaru = ({
               >
                 <DateInput
                   fill={true}
+                  minDate={moment().subtract(100, "year").toDate()}
                   id="f-birth_date"
                   name="birth_date"
                   value={values["birth_date"]}

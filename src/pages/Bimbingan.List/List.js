@@ -19,6 +19,9 @@ const List = () => {
             "nim": {
               $ne: null
             },
+            $sort: {
+              generation: -1
+            },
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
             $include: [{

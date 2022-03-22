@@ -16,10 +16,6 @@ const ListProvider = ({
     skip: 0
   });
 
-  useEffect(() => {
-    onFilterChange(filter);
-  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
-
   const selectedItemReducer = useCallback((state, action) => {
     switch (action.type) {
       case "toggle":
@@ -52,7 +48,7 @@ const ListProvider = ({
         }
       default: return state;
     }
-  }, [items])
+  }, [items]);
 
   const [selectedItem, dispatchSelectedItem] = useReducer(selectedItemReducer, []);
 
@@ -74,23 +70,29 @@ const ListProvider = ({
       checked,
     }
   }, [items, selectedItem]);
+  
+  const options = {
+    items,
+    setItems,
+
+    selectedItem,
+    dispatchSelectedItem,
+
+    paging,
+    setPaging,
+
+    filter,
+    setFilter,
+
+    status
+  };
+
+  useEffect(() => {
+    onFilterChange(filter, options);
+  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <ListContext.Provider value={{
-      items,
-      setItems,
-
-      selectedItem,
-      dispatchSelectedItem,
-
-      paging,
-      setPaging,
-
-      filter,
-      setFilter,
-
-      status
-    }}>
+    <ListContext.Provider value={options}>
       {children}
     </ListContext.Provider>
   )

@@ -10,6 +10,7 @@ import StudentHasilStudi from "pages/Student.HasilStudi";
 import { LecturerBimbingan } from "pages/Lecturer.Bimbingan";
 import { LecturerJadwal } from "pages/Lecturer.Jadwal";
 import LecturerPresensiNilai from "pages/Lecturer.PresensiNilai";
+// import { LecturerBroadcast } from "pages/Lecturer.Broadcast";
 
 import { Broadcast } from "pages/Broadcast";
 import { Bimbingan } from "pages/Bimbingan";
@@ -18,7 +19,7 @@ import { Kurikulum } from "pages/Kurikulum";
 import { Jadwal } from "pages/Jadwal";
 // import Presensi from "pages/PresensiNilai"
 import Dashboard from "pages/Dashboard";
-import Settings from "pages/Settings";
+// import Settings from "pages/Settings";
 import ManajemenRuang from "pages/ManajemenRuang";
 import { AkunSementara } from "pages/AkunSementara";
 import { DivisiPendidikan } from "pages/DivisiPendidikan";
@@ -35,6 +36,8 @@ import { Kelas } from "pages/Kelas";
 import { RencanaStudi } from "pages/RencanaStudi";
 import { useClient } from "components";
 import { useMemo } from "react";
+import LecturerProfile from "pages/Lecturer.Profile";
+import LecturerDashboard from "pages/Lecturer.Dashboard";
 
 const navigation = [
   {
@@ -111,19 +114,19 @@ const navigation = [
     "permission": "Admin"
   },
   {
-    "title": "Akademik Kemahasiswaan",
-    "text": "Mahasiswa",
-    "component": Mahasiswa,
-    "path": "/mahasiswa",
-    "icon": "user",
-    "permission": "Admin"
-  },
-  {
     "title": "Rencana Studi",
     "text": "Rencana Studi",
     "component": RencanaStudi,
     "path": "/rencana-studi",
     "icon": "blank",
+    "permission": "Admin"
+  },
+  {
+    "title": "Akademik Kemahasiswaan",
+    "text": "Mahasiswa",
+    "component": Mahasiswa,
+    "path": "/mahasiswa",
+    "icon": "user",
     "permission": "Admin"
   },
   {
@@ -158,14 +161,14 @@ const navigation = [
     "icon": "blank",
     "permission": "Admin"
   },
-  {
-    "title": "Settings",
-    "text": "Settings",
-    "component": Settings,
-    "path": "/settings",
-    "icon": "cog",
-    "permission": "Admin"
-  },
+  // {
+  //   "title": "Settings",
+  //   "text": "Settings",
+  //   "component": Settings,
+  //   "path": "/settings",
+  //   "icon": "cog",
+  //   "permission": "Admin"
+  // },
   {
     "title": "Users",
     "text": "Users",
@@ -179,17 +182,25 @@ const navigation = [
     "text": "Broadcast",
     "component": Broadcast,
     "path": "/broadcast",
-    "icon": "blank",
+    "icon": "satellite",
     "permission": "Admin"
   },
 
   {
     "title": "Dashboard",
     "text": "Dashboard",
-    "component": Dashboard,
+    "component": LecturerDashboard,
     "path": "/",
     "icon": "blank",
     "exact": true,
+    "permission": "Lecturer"
+  },
+  {
+    "title": "Profile",
+    "text": "Profile",
+    "component": LecturerProfile,
+    "path": "/profile/",
+    "icon": "blank",
     "permission": "Lecturer"
   },
   {
@@ -216,6 +227,14 @@ const navigation = [
     "icon": "blank",
     "permission": "Lecturer"
   },
+  // {
+  //   "title": "Broadcast",
+  //   "text": "Broadcast",
+  //   "component": LecturerBroadcast,
+  //   "path": "/broadcast",
+  //   "icon": "satellite",
+  //   "permission": "Lecturer"
+  // },
 
   {
     "title": "Dashboard",

@@ -8,15 +8,16 @@ import List from "pages/Pegawai.List";
 const navigation = [
   {
     "component": List,
-    "path": "/pegawai",
+    "path": "/",
     "icon": "blank",
+    "hide": true,
     "exact": true,
   },
   {
     "component": Details,
-    "path": "/pegawai/:id",
+    "path": "/:id",
     "icon": "blank",
-    "exact": true,
+    "hide": true,
   },
 ]
 
@@ -24,9 +25,6 @@ const Pegawai = () => {
   const { path } = useRouteMatch();
   return (
     <Navigation base={path} navigation={navigation}>
-      <Helmet>
-        <title>Pegawai</title>
-      </Helmet>
       <Layout />
     </Navigation>
   )

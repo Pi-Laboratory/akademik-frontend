@@ -1,5 +1,5 @@
 import { Button, FormGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex, useClient } from "components";
+import { Box, Flex, useClient, toaster } from "components";
 import { Formik } from "formik";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
@@ -15,7 +15,7 @@ const Email = ({ onBack = () => { } }) => {
   const history = useHistory();
 
   const onSubmit = useCallback(async (values, { setSubmitting, setErrors }) => {
-    if (!client.__connected) return;
+    // if (!client.__connected) return;
     try {
       await client.authenticate({
         strategy: "local",
@@ -24,9 +24,10 @@ const Email = ({ onBack = () => { } }) => {
       })
       history.push("/");
     } catch (err) {
-      setErrors({
-        submit: err.message
-      });
+      toaster.show({
+        intent: "danger",
+        message: err.message
+      })
       console.error(err);
     }
     setSubmitting(false);

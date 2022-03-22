@@ -1,3 +1,5 @@
+import _get from "lodash/get";
+
 export function lookup(lookup, currentValue) {
   let value = 0;
   for (let i = 0; i < lookup.length - 2; i = i + 2) {
@@ -19,3 +21,11 @@ export function ID() {
   // after the decimal.
   return '_' + Math.random().toString(36).substr(2, 9);
 };
+
+export function joinPropsString(user, props = [], separator = ",") {
+  return props.reduce((pv, cv) => {
+    const c = _get(user, cv);
+    if (!c) return pv;
+    return [...pv, c];
+  }, []).join(separator);
+}

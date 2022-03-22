@@ -7,6 +7,7 @@ const Side = () => {
     <Box>
       <Box
         sx={{
+          mb: 4,
           [`.${DateClasses.DATEPICKER}`]: {
             bg: "transparent"
           }
@@ -16,9 +17,6 @@ const Side = () => {
           highlightCurrentDay={true}
         />
       </Box>
-      <Card>
-        Coba
-  </Card>
     </Box>
   )
 }

@@ -23,7 +23,7 @@ const List = () => {
               "id",
               "final_test_score",
               "mid_test_score",
-              "presence_score",
+              "attendance_score",
               "task_score"
             ],
             $include: [{

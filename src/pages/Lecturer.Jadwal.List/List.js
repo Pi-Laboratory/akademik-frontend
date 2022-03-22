@@ -25,8 +25,8 @@ const List = () => {
         }
         const res = await client["subject-lecturers"].find({
           query: {
-            $select: ["id", "subject_id", "lecturer_id"],
             "lecturer_id": filter["lecturer_id"],
+            $select: ["id", "subject_id", "lecturer_id"],
             $include: [querySubjects, {
               model: "lecturers",
               $select: ["id", "employee_id"],
@@ -40,6 +40,7 @@ const List = () => {
               }]
           }
         });
+        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,

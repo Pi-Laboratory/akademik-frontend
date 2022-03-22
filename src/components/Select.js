@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Alignment, Button, MenuItem } from "@blueprintjs/core";
 import { Select as BPSelect } from "@blueprintjs/select";
+import _debounce from "lodash/debounce";
 
 export const Select = ({
   id,
@@ -9,6 +10,7 @@ export const Select = ({
   label,
   fill,
   placeholder,
+  small,
 
   alignText = Alignment.LEFT,
   disabled,
@@ -17,6 +19,7 @@ export const Select = ({
   options,
   optionRenderer,
   onCreateNew = () => { },
+  onQueryChange = () => { },
   onChange,
   onClick,
   onOpening,
@@ -84,6 +87,7 @@ export const Select = ({
       createNewItemPosition="first"
       createNewItemRenderer={allowCreateItem ? createNewItemRenderer : null}
       createNewItemFromQuery={allowCreateItem ? () => null : null}
+      onQueryChange={_debounce(onQueryChange, 500)}
       inputProps={{
         onKeyDown: (e) => {
           if (e.code === "Enter") {
@@ -101,12 +105,13 @@ export const Select = ({
         onRemove: removeItem
       }}
       noResults={(
-        <MenuItem text={loading ? "Loading..." : "No Item"} />
+        <MenuItem disabled={true} text={loading ? "Loading..." : "No Item"} />
       )}
       selectedItems={value}
     >
       <Button
         id={id}
+        small={small}
         alignText={alignText}
         disabled={disabled}
         minimal={minimal}

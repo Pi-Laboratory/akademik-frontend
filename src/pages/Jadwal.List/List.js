@@ -12,7 +12,7 @@ const List = () => {
       try {
         const res = await client["subject-lecturers"].find({
           query: {
-            // $select: ["id", "day", "subject_id", "lecturer_id"],
+            $select: ["id", "subject_id", "lecturer_id"],
             $include: [{
               model: "subjects",
               $select: ["id", "name", "code", "semester"],
