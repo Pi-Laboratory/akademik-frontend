@@ -35,14 +35,21 @@ const DialogTambah = ({
   const [lecturers, setLecturers] = useState([]);
   const [students, setStudents] = useState([]);
 
-  const fetchLecturers = useCallback(async () => {
+  const fetchLecturers = useCallback(async (query) => {
     setLoading(loading => ({ ...loading, lecture: true }));
     const res = await client["lecturers"].find({
       query: {
         $select: ["id", "nidn"],
         $include: [{
           model: "employees",
-          $select: ["name", "nip"]
+          $select: ["name", "nip"],
+          $where: {
+            $or: [{
+              name: { $iLike: `%${query}%` }
+            }, {
+              nip: { $iLike: `%${query}%` }
+            }]
+          }
         }]
       }
     });
@@ -143,7 +150,8 @@ const DialogTambah = ({
                     id="f-lecturer_id"
                     name="lecturer_id"
                     value={values["lecturer_id"]}
-                    onOpening={async () => { await fetchLecturers(); }}
+                    onOpening={async () => { await fetchLecturers(""); }}
+                    onQueryChange={async (value) => { await fetchLecturers(value); }}
                     onChange={async ({ value, info }) => {
                       await setFieldValue("username", info);
                       await setFieldValue("lecturer_id", value);

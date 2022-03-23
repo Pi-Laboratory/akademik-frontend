@@ -13,6 +13,9 @@ const List = () => {
       try {
         const res = await client["employees"].find({
           query: {
+            $sort: {
+              id: -1
+            },
             $skip: paging.skip,
             $select: ["id", "name", "front_degree", "back_degree", "nip", "id_number"]
           }

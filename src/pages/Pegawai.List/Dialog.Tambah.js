@@ -49,7 +49,7 @@ const DialogTambahBaru = ({
     "neighbor": false,
   });
 
-  const [address] = useState({
+  const [address, setAddress] = useState({
     "province": [],
     "city": [],
     "district": [],
@@ -62,10 +62,23 @@ const DialogTambahBaru = ({
     setLoading(l => ({ ...l, [key]: true }));
     try {
       switch (key) {
-        case "provice":
-          result[key] = (await client["provincies"].find({
+        case "province":
+          result[key] = (await client["provinces"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "city":
+          result[key] = (await client["cities"].find({
+            query: {
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -76,7 +89,8 @@ const DialogTambahBaru = ({
         case "district":
           result[key] = (await client["districts"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -87,7 +101,8 @@ const DialogTambahBaru = ({
         case "subdistrict":
           result[key] = (await client["subdistricts"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -98,7 +113,8 @@ const DialogTambahBaru = ({
         case "neighbor":
           result[key] = (await client["neighbors"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -113,8 +129,8 @@ const DialogTambahBaru = ({
     }
 
     setLoading(l => ({ ...l, [key]: false }));
-    console.log(result);
-    // setAddress();
+    console.log(key, result);
+    setAddress(a => ({ ...a, ...result }));
   }, [client]);
 
 
@@ -147,11 +163,11 @@ const DialogTambahBaru = ({
           "type": "Dosen",
           "status": "true",
 
-          "province_id": "",
-          "district_id": "",
-          "subdistrict_id": "",
-          "city_id": "",
-          "neighbor_id": "",
+          "province_id": undefined,
+          "district_id": undefined,
+          "subdistrict_id": undefined,
+          "city_id": undefined,
+          "neighbor_id": undefined,
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -340,7 +356,7 @@ const DialogTambahBaru = ({
                   formatDate={date => moment(date).format("DD MMMM YYYY")}
                   parseDate={(str) => new Date(str)}
                   onChange={(v) => {
-                    setFieldValue("publish_date", v);
+                    setFieldValue("birth_date", v);
                   }}
                 />
               </FormGroup>
@@ -357,6 +373,21 @@ const DialogTambahBaru = ({
                   value={values["home_address"]}
                   onChange={handleChange}
                   intent={errors["home_address"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Negara"
+                labelFor="f-country"
+                helperText={errors["country"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  fill={true}
+                  id="f-country"
+                  name="country"
+                  value={values["country"]}
+                  onChange={handleChange}
+                  intent={errors["country"] ? "danger" : "none"}
                 />
               </FormGroup>
               <Flex sx={{

@@ -25,7 +25,7 @@ const Settings = ({ base }) => {
     "neighbor": false,
   });
 
-  const [address] = useState({
+  const [address, setAddress] = useState({
     "province": [],
     "city": [],
     "district": [],
@@ -38,10 +38,23 @@ const Settings = ({ base }) => {
     setLoading(l => ({ ...l, [key]: true }));
     try {
       switch (key) {
-        case "provice":
-          result[key] = (await client["provincies"].find({
+        case "province":
+          result[key] = (await client["provinces"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "city":
+          result[key] = (await client["cities"].find({
+            query: {
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -52,7 +65,8 @@ const Settings = ({ base }) => {
         case "district":
           result[key] = (await client["districts"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -63,7 +77,8 @@ const Settings = ({ base }) => {
         case "subdistrict":
           result[key] = (await client["subdistricts"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -74,7 +89,8 @@ const Settings = ({ base }) => {
         case "neighbor":
           result[key] = (await client["neighbors"].find({
             query: {
-              $iLike: { "name": `%${query}%` },
+              $limit: 100,
+              // $iLike: { "name": `%${query}%` },
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -90,7 +106,7 @@ const Settings = ({ base }) => {
 
     setLoading(l => ({ ...l, [key]: false }));
     console.log(result);
-    // setAddress();
+    setAddress(a => ({ ...a, ...result }));
   }, [client]);
 
   if (employee === null) {

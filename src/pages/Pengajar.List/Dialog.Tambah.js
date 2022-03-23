@@ -74,8 +74,6 @@ const DialogTambahBaru = ({
     fetchStudyPrograms();
   }, [fetchStudyPrograms]);
 
-  // console.log(studyPrograms);
-
   return (
     <Dialog
       enforceFocus={false}
@@ -121,6 +119,9 @@ const DialogTambahBaru = ({
                   intent={errors["employee_id"] ? "danger" : "none"}
                   onChange={async ({ value }) => {
                     await setFieldValue("employee_id", value, true);
+                  }}
+                  onQueryChange={(value) => {
+                    fetchEmployees(value);
                   }}
                   onCreateNew={(query) => fetchEmployees(query)}
                   options={employees}
