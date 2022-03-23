@@ -26,37 +26,6 @@ export const Layout = () => {
         }}>
           <ListGroup.Header>
             <Flex sx={{ alignItems: "center" }}>
-              <Box sx={{ width: 40, flexShrink: 0, }}>
-                <Checkbox
-                  disabled={paging.total === 0}
-                  checked={status.checked}
-                  indeterminate={status.indeterminate}
-                  onChange={(e) => {
-                    dispatchSelectedItem({
-                      type: "all",
-                      data: e.target.checked
-                    })
-                  }}
-                />
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                {selectedItem.length > 0
-                  && <Box>{selectedItem.length} selected</Box>
-                }
-                {items !== null
-                  && (selectedItem.length === items.length)
-                  && (selectedItem.length < paging.total)
-                  && <Button
-                    minimal={true}
-                    intent="primary"
-                    text={`Select all ${paging.total} item`}
-                    onClick={() => { }}
-                  />
-                }
-              </Box>
-              <Box sx={{ flexShrink: 0 }}>
-                
-              </Box>
             </Flex>
           </ListGroup.Header>
           <List />

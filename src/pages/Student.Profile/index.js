@@ -24,15 +24,43 @@ const StudentProvider = ({ children }) => {
               "id",
               "nim",
               "name",
+              "generation",
+              "religion",
               "gender",
               "birth_date",
               "birth_city",
               "origin_address",
               "phone_number",
               "email",
-              "study_program"
+              "study_program",
+              "street",
+              "province",
+              "city",
+              "district",
+              "subdistrict",
+              "neighbor",
+              "province_id",
+              "city_id",
+              "district_id",
+              "subdistrict_id",
+              "neighbor_id",
             ],
             $include: [{
+              model: "provinces",
+              $select: ["id", "name"]
+            }, {
+              model: "cities",
+              $select: ["id", "name"]
+            }, {
+              model: "districts",
+              $select: ["id", "name"]
+            }, {
+              model: "subdistricts",
+              $select: ["id", "name"]
+            }, {
+              model: "neighbors",
+              $select: ["id", "name"]
+            }, {
               model: "study_programs",
               $select: [
                 "id",

@@ -1,5 +1,5 @@
 import { Classes, HTMLTable } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, useClient, useList } from "components";
+import { Box, Flex, ListGroup, toaster, useClient, useList } from "components";
 import { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router";
 import DialogHapus from "./Dialog.HapusMatakuliah";
@@ -42,6 +42,10 @@ const Layout = () => {
         }, 0);
         setStudyDetail(res);
       } catch (err) {
+        toaster.show({
+          intent: "danger",
+          message: err.message
+        });
         console.error(err);
       }
     }

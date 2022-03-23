@@ -1,5 +1,6 @@
-import { Classes, FormGroup, H3, Icon, InputGroup, TextArea } from "@blueprintjs/core";
+import { Classes, FormGroup, H3, HTMLTable, Icon, InputGroup, TextArea } from "@blueprintjs/core";
 import { Box, Flex, useClient, AspectRatio } from "components";
+import { joinPropsString } from "components/helper";
 import { Helmet } from "react-helmet";
 import { useStudent } from ".";
 import moment from "moment";
@@ -63,7 +64,14 @@ export const Detail = () => {
           <Flex sx={{ fontSize: 2, color: "gray.6", alignItems: "center" }}>
             <Icon icon="home" iconSize={14} />
             <Box className={!student && Classes.SKELETON} sx={{ ml: 1 }}>
-              Tinggal di {student && student["origin_address"]}
+              Tinggal di {student && joinPropsString(student, [
+                "street",
+                "neighbor.name",
+                "subdistrict.name",
+                "district.name",
+                "city.name",
+                "province.name",
+              ], ", ")}
             </Box>
           </Flex>
         </Flex>
@@ -72,59 +80,92 @@ export const Detail = () => {
         <Flex sx={{ mx: -2 }}>
           <Box sx={{ width: "50%", px: 2 }}>
             <Box as={H3} sx={{ mb: 3 }}>Informasi Dasar</Box>
-            {[
-              ["Email", student && student["email"]],
-              ["Nomor Telephone", student && student["phone_number"]],
-              [
-                "Alamat", student && student["origin_address"],
-                TextArea,
-                {
-                  fill: true,
-                  growVertically: true
-                }
-              ],
-            ].map((val) => {
-              const Comp = val[2] || InputGroup;
-              const props = val[3] || {};
-              return (
-                <Box key={val[0]} className={!student && Classes.SKELETON}>
-                  <FormGroup label={val[0]}>
-                    <Comp
-                      readOnly={true}
-                      value={val[1] || ""}
-                      {...props}
-                    />
-                  </FormGroup>
-                </Box>
-              )
-            })}
+            <Box className={Classes.CARD} sx={{ p: 0 }}>
+              <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                <tbody>
+                  {[
+                    ["Email", student && student["email"]],
+                    ["Nomor Telephone", student && student["phone_number"]],
+                    [
+                      "Alamat", student && joinPropsString(student, [
+                        "street",
+                        "neighbor.name",
+                        "subdistrict.name",
+                        "district.name",
+                        "city.name",
+                        "province.name",
+                        "postal_code",
+                      ], ", ")
+                    ],
+                    ["Agama", student && student["religion"]],
+                  ].map((val) => {
+                    return (
+                      <tr key={val[0]}>
+                        <td>{val[0]}</td>
+                        <td>{val[1]}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </HTMLTable>
+            </Box>
           </Box>
           <Box sx={{ width: "50%", px: 2 }}>
             <Box as={H3} sx={{ mb: 3 }}>Informasi Akademik</Box>
-            {[
-              ["Nomor Induk Mahasiswa", student && student["nim"]],
-              ["Program Studi", student && student["study_program"]["name"]],
-              ["Jurusan", student && student["study_program"]["major"]["name"]],
-            ].map((val) => {
-              return (
-                <Box
-                  key={val[0]}
-                  className={!student && Classes.SKELETON}
-                >
-                  <FormGroup
-                    label={val[0]}
-                  >
-                    <InputGroup
-                      readOnly={true}
-                      value={val[1]}
-                    />
-                  </FormGroup>
-                </Box>
-              )
-            })}
+            <Box className={Classes.CARD} sx={{ p: 0 }}>
+              <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                <tbody>
+                  {[
+                    ["Nomor Induk Mahasiswa", student && student["nim"]],
+                    ["Angkatan", student && student["generation"]],
+                    ["Program Studi", student && student["study_program"]["name"]],
+                    ["Jurusan", student && student["study_program"]["major"]["name"]],
+                  ].map((val) => {
+                    return (
+                      <tr key={val[0]}>
+                        <td>{val[0]}</td>
+                        <td>{val[1]}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </HTMLTable>
+            </Box>
           </Box>
         </Flex>
-      </Box>
+        <Flex sx={{ flexWrap: "wrap", mx: -2 }}>
+          {[
+            ["father", "Ayah"],
+            ["mother", "Ibu"],
+            ["trustee", "Wali"],
+          ].map((value) => (
+            <Box sx={{ width: "50%", px: 2, my: 3 }}>
+              <Box as={H3} sx={{ mb: 3 }}>Informasi {value[1]}</Box>
+              <Box className={Classes.CARD} sx={{ p: 0 }}>
+                <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                  <tbody>
+                    {
+                      [
+                        ["Nama", student && student[`${value[0]}_name`]],
+                        ["Tanggal Lahir", student && student[`${value[0]}_birth_name`] ? moment(student[`${value[0]}_birth_name`]).format("DD MMMM YYYY") : ""],
+                        ["Pendidikan", student && student[`${value[0]}_education`]],
+                        ["Pendidikan Terakhir", student && student[`${value[0]}_recent_education`]],
+                        ["Pekerjaan", student && student[`${value[0]}_occupation`]],
+                      ].map((val) => {
+                        return (
+                          <tr key={val[0]} className={!student && Classes.SKELETON}>
+                            <td>{student ? val[0] : "Loading"}</td>
+                            <td>{student ? val[1] : "Loading"}</td>
+                          </tr>
+                        )
+                      })}
+                  </tbody>
+                </HTMLTable>
+              </Box>
+            </Box>
+          ))}
+        </Flex>
+      </Box >
     </>
   )
 }

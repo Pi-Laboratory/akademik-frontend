@@ -358,7 +358,8 @@ const DialogTambahBaru = ({
                   onChange={handleChange}
                   intent={errors["home_address"] ? "danger" : "none"}
                 />
-              </FormGroup><Flex sx={{
+              </FormGroup>
+              <Flex sx={{
                 mx: -2,
                 "> div": {
                   width: "50%",
@@ -401,21 +402,6 @@ const DialogTambahBaru = ({
                   </FormGroup>
                 </Box>
               </Flex>
-              <FormGroup
-                label="Negara Tempat Tinggal"
-                labelFor="f-country"
-                helperText={errors["country"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  fill={true}
-                  id="f-country"
-                  name="country"
-                  value={values["country"]}
-                  onChange={handleChange}
-                  intent={errors["country"] ? "danger" : "none"}
-                />
-              </FormGroup>
               <FormGroup
                 label="Jenis Kelamin"
                 labelFor="f-gender"
