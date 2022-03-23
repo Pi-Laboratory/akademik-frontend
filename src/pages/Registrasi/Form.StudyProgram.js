@@ -61,7 +61,7 @@ export const FormStudyProgram = ({ goTo = () => { } }) => {
   useEffect(() => {
     fetchStudyPrograms("study_program_1");
     fetchStudyPrograms("study_program_2");
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const {
     setFieldValue,

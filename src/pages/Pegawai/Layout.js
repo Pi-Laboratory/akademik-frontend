@@ -1,4 +1,4 @@
-import { Flex, Divider } from "components"
+import { Flex } from "components"
 import { Router } from "./Router"
 
 export const Layout = () => {

@@ -1,4 +1,4 @@
-import { Classes, FormGroup, H3, HTMLTable, Icon, InputGroup, TextArea } from "@blueprintjs/core";
+import { Classes, H3, HTMLTable, Icon } from "@blueprintjs/core";
 import { Box, Flex, useClient, AspectRatio } from "components";
 import { joinPropsString } from "components/helper";
 import { Helmet } from "react-helmet";

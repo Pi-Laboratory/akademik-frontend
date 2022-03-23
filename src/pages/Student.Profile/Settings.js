@@ -1,4 +1,4 @@
-import { H2, H3, Button, Classes, Menu, MenuItem, FormGroup, InputGroup, Spinner, TextArea, RadioGroup, Radio } from "@blueprintjs/core";
+import { H2, H3, Button, Classes, Menu, MenuItem, FormGroup, InputGroup, Spinner, RadioGroup, Radio } from "@blueprintjs/core";
 import { Box, CropImage, Divider, getBase64, TakePhoto, useClient, AspectRatio, toaster, Select, CONSTANTS, Flex } from "components";
 import { Popover2 } from "@blueprintjs/popover2";
 import * as Yup from "yup";
@@ -164,7 +164,7 @@ export const Settings = ({ base }) => {
     fetchAddress("neighbor", "", {
       subdistrict_id: student["subdistrict_id"],
     });
-  }, [student]);
+  }, [student]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (student === null) {
     return (

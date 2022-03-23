@@ -25,7 +25,7 @@ const Settings = ({ base }) => {
     "neighbor": false,
   });
 
-  const [address, setAddress] = useState({
+  const [address] = useState({
     "province": [],
     "city": [],
     "district": [],

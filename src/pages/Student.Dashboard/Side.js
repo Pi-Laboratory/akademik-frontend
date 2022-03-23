@@ -1,4 +1,3 @@
-import { Card } from "@blueprintjs/core";
 import { DatePicker, Classes as DateClasses } from "@blueprintjs/datetime";
 import { Box } from "components";
 

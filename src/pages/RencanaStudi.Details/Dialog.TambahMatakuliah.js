@@ -54,7 +54,7 @@ const DialogMatakuliah = ({
       console.error(err);
     }
     setLoading(loading => ({ ...loading, employees: false }));
-  }, [client, data]);
+  }, [client, data]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Dialog

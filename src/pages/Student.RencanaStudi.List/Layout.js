@@ -1,17 +1,14 @@
 import { Box, Flex, ListGroup, useList, Pagination } from 'components'
 import List from './List'
-import { Button, Checkbox, Classes } from '@blueprintjs/core'
+import { Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 
 export const Layout = () => {
 
   const {
-    selectedItem,
     paging,
     setPaging,
     items,
-    status,
-    dispatchSelectedItem,
   } = useList();
 
   return (

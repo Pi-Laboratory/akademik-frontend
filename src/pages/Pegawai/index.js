@@ -1,5 +1,4 @@
 import { Navigation } from "pages/Root/hoc";
-import { Helmet } from "react-helmet";
 import { useRouteMatch } from "react-router";
 import { Layout } from "./Layout";
 import Details from "pages/Pegawai.Details";
