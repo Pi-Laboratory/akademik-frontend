@@ -6,7 +6,7 @@ import { useParams, useRouteMatch } from 'react-router'
 import { Detail } from "./Detail";
 import { Settings } from './Settings';
 import { useClient } from 'components';
-import { createContext, useContext, useEffect, useState } from 'react/cjs/react.development';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const StudentContext = createContext(null);
 

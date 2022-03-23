@@ -2,7 +2,7 @@ import { Button, Classes, Dialog, FormGroup } from "@blueprintjs/core";
 import { Select, useClient } from "components";
 import { Formik } from "formik";
 import { useCallback } from "react";
-import { useState } from "react/cjs/react.development";
+import { useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({

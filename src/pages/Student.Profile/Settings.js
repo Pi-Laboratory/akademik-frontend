@@ -9,7 +9,7 @@ import { useState, useCallback } from "react";
 import { DateInput } from "@blueprintjs/datetime";
 import moment from "moment";
 import { decode } from "base64-arraybuffer";
-import { useEffect } from "react/cjs/react.development";
+import { useEffect } from "react";
 
 const Schema = {
   general: Yup.object().shape({
@@ -149,7 +149,6 @@ export const Settings = ({ base }) => {
   }, [client]);
 
   useEffect(() => {
-    console.log(student);
     if (student === null) return;
     fetchAddress("province", "");
     fetchAddress("city", "", {

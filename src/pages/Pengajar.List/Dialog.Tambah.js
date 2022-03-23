@@ -1,7 +1,7 @@
 import { Button, Checkbox, Classes, Dialog, FormGroup, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
 import { Select, useClient } from "components";
 import { Formik } from "formik";
-import { useCallback, useEffect, useState } from "react/cjs/react.development";
+import { useCallback, useEffect, useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({

@@ -3,7 +3,7 @@ import Router from './Router'
 import Header from './Header'
 import { NavLink, useLocation, useRouteMatch } from 'react-router-dom';
 import { useNav } from 'pages/Root/hoc';
-import { forwardRef } from 'react/cjs/react.development';
+import { forwardRef } from 'react';
 import { Classes } from '@blueprintjs/core';
 
 export const Layout = () => {

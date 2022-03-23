@@ -1,7 +1,7 @@
 import moment from "moment";
 import { Card, Classes, H6, NonIdealState } from "@blueprintjs/core";
 import { Box, Divider, Flex, useClient } from "components";
-import { Fragment, useEffect, useState } from "react/cjs/react.development";
+import { Fragment, useEffect, useState } from "react";
 
 const Main = () => {
   const client = useClient();
