@@ -19,9 +19,11 @@ const List = () => {
   return (
     <ListProvider
       filter={filter}
-      onFilterChange={({ generation, study_program_id }) => {
-        filterSearch.set("generation", generation || "");
-        filterSearch.set("study_program_id", study_program_id || "");
+      onFilterChange={(value) => {
+        for (let v of ["generation", "study_program_id"]) {
+          if (value[v]) filterSearch.set(v, value[v]);
+          else filterSearch.delete(v);
+        }
         history.replace({
           search: filterSearch.toString()
         });

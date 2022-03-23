@@ -19,9 +19,11 @@ const List = () => {
   return (
     <ListProvider
       filter={filter}
-      onFilterChange={({ role, study_program_id }, { dispatchSelectedItem }) => {
-        filterSearch.set("role", role || "");
-        filterSearch.set("study_program_id", study_program_id || "");
+      onFilterChange={(value, { dispatchSelectedItem }) => {
+        for (let v of ["role", "study_program_id"]) {
+          if (value[v]) filterSearch.set(v, value[v]);
+          else filterSearch.delete(v);
+        }
         history.replace({
           search: filterSearch.toString()
         });

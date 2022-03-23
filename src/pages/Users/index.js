@@ -18,8 +18,11 @@ const Users = () => {
   return (
     <ListProvider
       filter={filter}
-      onFilterChange={({ role }) => {
-        filterSearch.set("role", role);
+      onFilterChange={(value) => {
+        for (let v of ["role"]) {
+          if (value[v]) filterSearch.set(v, value[v]);
+          else filterSearch.delete(v);
+        }
         history.replace({
           search: filterSearch.toString()
         })

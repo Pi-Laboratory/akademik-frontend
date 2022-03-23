@@ -20,9 +20,11 @@ const PresensiNilaiList = () => {
   return (
     <ListProvider
       filter={filter}
-      onFilterChange={({ lecturer_id, study_program_id }) => {
-        filterSearch.set("lecturer_id", lecturer_id);
-        filterSearch.set("study_program_id", study_program_id || "");
+      onFilterChange={(value) => {
+        for (let v of ["lecturer_id", "study_program_id"]) {
+          if (value[v]) filterSearch.set(v, value[v]);
+          else filterSearch.delete(v);
+        }
         history.replace({
           search: filterSearch.toString()
         });
