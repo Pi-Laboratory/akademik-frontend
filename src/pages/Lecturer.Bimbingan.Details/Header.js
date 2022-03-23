@@ -1,9 +1,10 @@
-import { Button, Classes, Icon, NonIdealState } from "@blueprintjs/core";
-import { AspectRatio, Box, Flex } from "components"
+import { Button, Classes, Icon } from "@blueprintjs/core";
+import { AspectRatio, Box, Flex, useClient } from "components"
 import moment from "moment";
 import { useStudent } from "."
 
 export const Header = () => {
+  const client = useClient();
   const student = useStudent();
   return (
     <Flex
@@ -19,15 +20,20 @@ export const Header = () => {
           <Box
             sx={{ width: "100%", height: "100%" }}
           >
-            {student && student["photo"] &&
+            {student &&
               <Box
                 as="img"
-                sx={{ width: "100%", height: "100%", display: "block", objectFit: "cover" }}
-                src={`data:image/jpg;base64,${student["photo"]}`}
-              />}
-            {student && !student["photo"] &&
-              <NonIdealState
-                title="No Photo"
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "block",
+                  objectFit: "cover",
+                }}
+                src={`${client.host.toString()}files/students/${student["id"]}/photo.jpg`}
+                onError={({ currentTarget }) => {
+                  currentTarget.onerror = null; // prevents looping
+                  currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
+                }}
               />}
           </Box>
         </AspectRatio>

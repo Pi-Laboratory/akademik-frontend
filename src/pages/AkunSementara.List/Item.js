@@ -63,7 +63,7 @@ export const Item = ({ data: item }) => {
           pr: 2,
           width: 60
         }}>
-          {item["status"] === "registered" &&
+          {item["status"] === "registered" && item["study_program_1"] && item["study_program_2"] &&
             <Flex className="action">
               <Button
                 intent="primary"

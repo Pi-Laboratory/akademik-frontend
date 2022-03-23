@@ -1,5 +1,5 @@
 import { Button, Classes, InputGroup, NonIdealState } from "@blueprintjs/core"
-import { Box, Divider, Flex, useClient } from "components"
+import { Box, Divider, Flex, toaster, useClient } from "components"
 import { useCallback, useEffect, useState } from "react"
 
 export const Achievements = ({ studyProgramId, preceptorId, list }) => {
@@ -25,6 +25,10 @@ export const Achievements = ({ studyProgramId, preceptorId, list }) => {
     const fetch = async () => {
       try {
         const res = await client["study-programs"].get(studyProgramId);
+        toaster.show({
+          intent: "success",
+          message: "Berhasil menyimpan pencapaian"
+        })
         setAvailable(res["achievements"]);
       } catch (err) {
         console.error(err);

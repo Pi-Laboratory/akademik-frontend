@@ -17,6 +17,9 @@ const List = () => {
       try {
         const res = await client["registrations"].find({
           query: {
+            $sort: {
+              id: -1
+            },
             status: filter["status"] === "null" ? undefined : filter["status"] || undefined,
             $skip: paging.skip,
             $select: ["id", "school_name", "nisn", "status"],
