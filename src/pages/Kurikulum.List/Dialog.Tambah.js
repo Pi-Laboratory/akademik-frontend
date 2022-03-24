@@ -3,7 +3,7 @@ import { Box, Divider, Flex, Select, useClient } from "components";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import _get from "lodash/get";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { DateInput } from "@blueprintjs/datetime";
 import moment from "moment";
 
@@ -43,32 +43,41 @@ const DialogKurikulumBaru = ({
   onSubmitted = () => { }
 }) => {
   const client = useClient();
+  const [loading, setLoading] = useState({
+    studyPrograms: false
+  })
   const [studyPrograms, setStudyPrograms] = useState([]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await client["study-programs"].find({
-          query: {
-            $select: ["id", "name"],
-            $include: [{
-              model: "majors",
-              $select: ["name"]
-            }]
-          }
-        });
-        setStudyPrograms(res.data
-          .map(({ name, id, major }) => ({
-            label: name,
-            info: major.name,
-            value: id
-          })));
-      } catch (err) {
-        console.error(err);
-      }
+  const fetchStudyPrograms = useCallback(async (query) => {
+    setLoading(true);
+    try {
+      const res = await client["study-programs"].find({
+        query: {
+          "name": query ? {
+            $iLike: `%${query}%`
+          } : undefined,
+          $limit: 100,
+          $select: ["id", "name"],
+          $include: [{
+            model: "majors",
+            $select: ["id", "name"]
+          }]
+        }
+      });
+      await setStudyPrograms(res.data.map(({ id, name, major }) => ({
+        label: name,
+        value: id,
+        info: major["name"]
+      })));
+    } catch (err) {
+      console.error(err);
     }
-    fetch();
+    setLoading(false);
   }, [client]);
+
+  useEffect(() => {
+    fetchStudyPrograms("");
+  }, [client]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <Dialog
       enforceFocus={false}
@@ -117,12 +126,16 @@ const DialogKurikulumBaru = ({
                   id="f-study_program_id"
                   name="study_program_id"
                   value={values["study_program_id"]}
+                  loading={loading}
                   onChange={async ({ value, label }) => {
                     if (values["name"] === "") {
                       const Abb = label.split(" ").map((word) => word[0]).join("");
                       await setFieldValue("name", `${Abb}-${new Date().getFullYear()}`);
                     }
                     await setFieldValue("study_program_id", value);
+                  }}
+                  onQueryChange={(query) => {
+                    fetchStudyPrograms(query);
                   }}
                   intent={errors["study_program_id"] ? "danger" : "none"}
                   options={studyPrograms}

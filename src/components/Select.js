@@ -87,7 +87,7 @@ export const Select = ({
       createNewItemPosition="first"
       createNewItemRenderer={allowCreateItem ? createNewItemRenderer : null}
       createNewItemFromQuery={allowCreateItem ? () => null : null}
-      onQueryChange={_debounce(onQueryChange, 500)}
+      onQueryChange={_debounce(onQueryChange, 250)}
       inputProps={{
         onKeyDown: (e) => {
           if (e.code === "Enter") {
