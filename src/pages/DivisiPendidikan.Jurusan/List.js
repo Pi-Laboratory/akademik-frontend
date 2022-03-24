@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 const List = () => {
   const client = useClient();
   const { pathname } = useLocation();
-  const { paging, items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { paging, items, filter, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -14,6 +14,10 @@ const List = () => {
       try {
         const res = await client["majors"].find({
           query: {
+            $limit: 25,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             $select: ["id", "name", "created_at"],
             $skip: paging.skip
           }
@@ -30,7 +34,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setItems, setPaging]);
+  }, [client, paging.skip, setItems, setPaging, filter]);
 
   return (
     <>

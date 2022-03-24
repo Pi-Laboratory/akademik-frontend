@@ -13,9 +13,11 @@ const List = () => {
       try {
         const res = await client["study-programs"].find({
           query: {
-            $sort: {
-              "code": 1
-            },
+            $limit: 25,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
+            $sort: { "code": 1 },
             $select: ["id", "name", "code"],
             $skip: paging.skip,
             $include: [{

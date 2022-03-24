@@ -1,12 +1,12 @@
 import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select, useList } from "components";
+import { Box, Divider, Flex, useList } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import DialogHapusProdi from "./Dialog.Hapus";
 import DialogTambahProdi from "./Dialog.Tambah";
 
 const Filter = () => {
-  const { selectedItem } = useList();
+  const { selectedItem, filter, setFilter } = useList();
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
   return (
@@ -21,13 +21,14 @@ const Filter = () => {
     >
       <Box>
         <ControlGroup>
-          <Select
-            label="Filter"
-            options={[
-              { label: "Nama", value: "name" }
-            ]}
+          <InputGroup
+            leftIcon="search"
+            placeholder="Filter by name"
+            value={filter["name"] || ""}
+            onChange={(e) => {
+              setFilter(f => ({ ...f, name: e.target.value }));
+            }}
           />
-          <InputGroup leftIcon="search" placeholder="Filter by name" />
         </ControlGroup>
       </Box>
       <Box sx={{ flexGrow: 1 }} />
