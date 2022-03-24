@@ -1,13 +1,13 @@
-import { Button, ButtonGroup, ControlGroup, InputGroup } from "@blueprintjs/core";
+import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Flex, useList } from "components";
 import { useState } from "react";
-import { useHistory,useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import DialogTambah from "./Dialog.Tambah";
 import DialogHapus from "./Dialog.Hapus";
 
 const Filter = () => {
   const location = useLocation();
-  const { selectedItem } = useList();
+  const { selectedItem, filter, setFilter } = useList();
   const [dialogOpen, setDialogOpen] = useState(new URLSearchParams(location.search).get("d") || null);
   const history = useHistory();
   return (
@@ -22,8 +22,14 @@ const Filter = () => {
     >
       <Box sx={{ flexGrow: 1 }}>
         <ControlGroup>
-          <Button text="Filter" />
-          <InputGroup fill={true} />
+          <InputGroup
+            leftIcon="search"
+            placeholder="Filter by name"
+            value={filter["name"] || ""}
+            onChange={(e) => {
+              setFilter(f => ({ ...f, name: e.target.value }));
+            }}
+          />
         </ControlGroup>
       </Box>
       <Box>
@@ -35,12 +41,6 @@ const Filter = () => {
             onClick={() => setDialogOpen("delete")}
           />
         }
-      </Box>
-      <Box>
-        <ButtonGroup>
-          <Button text="Alumni" />
-          <Button text="Drop out" />
-        </ButtonGroup>
       </Box>
       <Box>
         <Button

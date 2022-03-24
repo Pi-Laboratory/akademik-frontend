@@ -13,15 +13,18 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
-            "nim": {
-              $ne: null
-            },
+            $limit: 25,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             "generation": filter["generation"] || undefined,
             "study_program_id": filter["study_program_id"] || undefined,
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
+            "nim": { $ne: null },
             $sort: {
-              "generation": -1
+              generation: -1,
+              name: 1
             },
             $include: [{
               model: "study_programs",
