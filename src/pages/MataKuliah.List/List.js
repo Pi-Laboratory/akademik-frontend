@@ -19,7 +19,11 @@ const List = () => {
             } : undefined,
             "study_program_id": filter["study_program_id"] || undefined,
             $select: ["id", "code", "name", "semester", "created_at"],
-            $skip: paging.skip
+            $skip: paging.skip,
+            $include: [{
+              model: "study_programs",
+              $select: ["id", "name"]
+            }]
           }
         });
         setItems(res.data);
@@ -89,23 +93,12 @@ const List = () => {
             </Box>
 
             <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                3
-              </Box>
               <Box sx={{ color: "gray.5" }}>
-                SKS
+                Program Studi
               </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
-                3
+                {item["study_program"]["name"]}
               </Box>
-              <Box sx={{ color: "gray.5" }}>
-                Jam
-              </Box>
-            </Box>
-            <Box sx={{ flexGrow: 1 }}>
-              Teori
             </Box>
 
           </Flex>

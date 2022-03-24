@@ -18,7 +18,7 @@ const Filter = () => {
           <InputGroup
             leftIcon="search"
             placeholder="Filter by name"
-            value={filter["name"]}
+            value={filter["name"] || ""}
             onChange={(e) => {
               setFilter(f => ({ ...f, name: e.target.value }));
             }}
