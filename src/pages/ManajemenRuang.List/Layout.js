@@ -1,11 +1,12 @@
-import { Checkbox, Classes } from "@blueprintjs/core";
+import { Button, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useList } from "components";
 import { Pagination } from "components/Pagination";
+import { filterField } from ".";
 import Filter from "./Filter";
 import List from "./List";
 
 const Layout = () => {
-  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
+  const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Filter />
@@ -33,34 +34,32 @@ const Layout = () => {
             <Box sx={{ flexShrink: 0 }}>
               <Select
                 minimal={true}
-                label="Pengelola"
-                options={[
-                  { label: "Politeknik Negeri Manado", value: 0 },
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Mesin", value: 1 },
-                  { label: "Teknik Sipil", value: 2 },
-                  { label: "PLN", value: 3 },
-                  { label: "Teknik LIstrik", value: 3 },
-                ]}
-              />
-
-              <Select
-                minimal={true}
                 label="Tipe Gedung"
+                value={filter["type"]}
                 options={[
-                  { label: "Lab", value: 0 },
-                  { label: "Bengkel", value: 0 },
-                  { label: "Gedung", value: 1 },
+                  { label: "Ruangan", value: "Ruangan" },
+                  { label: "Gedung", value: "Gedung" },
+                  { label: "Laboratorium", value: "Laboratorium" },
                 ]}
+                onChange={({ value }) => {
+                  setFilter(filter => ({ ...filter, "type": value }))
+                }}
               />
-              <Select
-                minimal={true}
-                label="Status Kelayakan"
-                options={[
-                  { label: "Layak", value: 0 },
-                  { label: "Tidak Layak", value: 0 },
-                ]}
-              />
+              {filterField.map(f => !!filter[f]).indexOf(true) !== -1
+                && <Button
+                  title="Clear Filter"
+                  minimal={true}
+                  intent="warning"
+                  icon="filter-remove"
+                  onClick={() => {
+                    const ff = {};
+                    filterField.forEach(f => ff[f] = undefined);
+                    setFilter(filter => ({
+                      ...filter,
+                      ...ff
+                    }));
+                  }}
+                />}
             </Box>
           </Flex>
         </ListGroup.Header>

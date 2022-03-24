@@ -5,13 +5,14 @@ import { useCallback, useEffect } from "react";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, filter, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   const fetchList = useCallback(async () => {
     setItems(null);
     try {
       const res = await client["rooms"].find({
         query: {
+          "type": filter["type"] || undefined,
           $select: ["id", "name", "capacity", "code", "type"]
         }
       });
