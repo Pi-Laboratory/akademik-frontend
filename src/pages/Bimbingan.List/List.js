@@ -13,6 +13,10 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
+            $limit: 25,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             "lecturer_id": filter["lecturer_id"] || undefined,
             "generation": filter["generation"] || undefined,
             "study_program_id": filter["study_program_id"] || undefined,
@@ -20,7 +24,8 @@ const List = () => {
               $ne: null
             },
             $sort: {
-              generation: -1
+              generation: -1,
+              name: 1
             },
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
@@ -118,7 +123,12 @@ const List = () => {
               {item["generation"]}
             </Box>
             <Box sx={{ width: "20%", flexShrink: 0 }}>
-              {item["study_program"]["name"]}
+              <Box sx={{ color: "gray.5" }}>
+                Program Studi
+              </Box>
+              <Box>
+                {item["study_program"]["name"]}
+              </Box>
             </Box>
           </Flex>
         </ListGroup.Item>
