@@ -5,6 +5,7 @@ import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 import { useHistory } from 'react-router-dom'
 import { DialogAssign } from './Dialog.Assign'
+import { filterField } from '.'
 
 export const Layout = () => {
   const client = useClient();
@@ -15,10 +16,13 @@ export const Layout = () => {
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
 
-  const fetchStudyPrograms = useCallback(async () => {
+  const fetchStudyPrograms = useCallback(async (query) => {
     try {
       const res = await client["study-programs"].find({
         query: {
+          "name": query ? {
+            $iLike: `%${query}%`
+          } : undefined,
           $limit: 100,
           $select: ["id", "name"],
           $include: [{
@@ -27,7 +31,11 @@ export const Layout = () => {
           }]
         }
       });
-      setStudyPrograms(res.data);
+      await setStudyPrograms(res.data.map(({ id, name, major }) => ({
+        label: name,
+        value: id,
+        info: major["name"]
+      })));
     } catch (err) {
       console.error(err);
     }
@@ -73,24 +81,30 @@ export const Layout = () => {
                   }}
                 />
               </Box>
-              <Box sx={{ ml: -10 }}>
+              <Flex sx={{ flexGrow: 1, alignItems: "center" }}>
                 {selectedItem.length > 0 &&
-                  <Button
-                    minimal={true}
-                    intent="primary"
-                    text={`Assign ${selectedItem.length} selected`}
-                    onClick={() => setDialogOpen("assign")}
-                  />
+                  <Box sx={{ mr: 2 }}>
+                    <Box>{selectedItem.length} of {paging.total} selected</Box>
+                  </Box>
                 }
-                <DialogAssign
-                  isOpen={dialogOpen === "assign"}
-                  data={selectedItem}
-                  onClose={() => { setDialogOpen(null) }}
-                  onSubmitted={() => {
-                    history.go(0);
-                  }}
-                />
-              </Box>
+                {selectedItem.length > 0 &&
+                  <Box>
+                    <Button
+                      outlined={true}
+                      intent="primary"
+                      text={`Assign pembimbing`}
+                      onClick={() => setDialogOpen("assign")}
+                    />
+                    <DialogAssign
+                      isOpen={dialogOpen === "assign"}
+                      data={selectedItem}
+                      onClose={() => { setDialogOpen(null) }}
+                      onSubmitted={() => {
+                        history.go(0);
+                      }}
+                    />
+                  </Box>}
+              </Flex>
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ flexShrink: 0 }}>
                 <Select
@@ -112,31 +126,28 @@ export const Layout = () => {
                   minimal={true}
                   label="Program Studi"
                   value={filter["study_program_id"]}
-                  options={studyPrograms.map((item) => {
-                    return {
-                      label: item["name"],
-                      value: item["id"],
-                      info: item["major"]["name"]
-                    }
-                  })}
+                  options={studyPrograms}
+                  onQueryChange={(query) => {
+                    fetchStudyPrograms(query);
+                  }}
+                  onOpening={async () => await fetchStudyPrograms()}
                   onChange={({ value }) => {
                     setFilter(filter => ({ ...filter, "study_program_id": value }))
                   }}
                 />
-                {[
-                  !!filter["study_program_id"],
-                  !!filter["generation"],
-                ].indexOf(true) !== -1
+                {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                   && <Button
+                    title="Clear Filter"
                     minimal={true}
                     intent="warning"
                     icon="filter-remove"
                     onClick={() => {
+                      const ff = {};
+                      filterField.forEach(f => ff[f] = undefined);
                       setFilter(filter => ({
                         ...filter,
-                        "study_program_id": null,
-                        "generation": null
-                      }))
+                        ...ff
+                      }));
                     }}
                   />}
               </Box>
