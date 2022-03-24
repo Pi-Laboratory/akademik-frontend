@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, filter, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -16,6 +16,9 @@ const List = () => {
             $sort: {
               id: -1
             },
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             $skip: paging.skip,
             $select: ["id", "name", "front_degree", "back_degree", "nip", "id_number"]
           }
@@ -32,7 +35,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setPaging, setItems]);
+  }, [client, paging.skip, filter, setPaging, setItems]);
   return (
     <>
       {items === null &&
