@@ -1,13 +1,12 @@
 import { Button, ControlGroup, Dialog, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select, useList } from "components";
+import { Box, Divider, Flex, useList } from "components";
 import { useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DialogMataKuliahBaru from "./Dialog.GenerateBatch";
 
 const Filter = () => {
-  const location = useLocation();
-  const { selectedItem } = useList();
-  const [dialogOpen, setDialogOpen] = useState(new URLSearchParams(location.search).get("d") || null);
+  const { selectedItem, filter, setFilter } = useList();
+  const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
 
   return (
@@ -22,15 +21,14 @@ const Filter = () => {
     >
       <Box>
         <ControlGroup>
-          <Select
-            label="Filter"
-            options={[
-              { label: "ID", value: 0 },
-              { label: "Nama", value: 1 },
-              { label: "NIDN", value: 2 },
-            ]}
+          <InputGroup
+            leftIcon="search"
+            placeholder="Filter by name"
+            value={filter["name"] || ""}
+            onChange={(e) => {
+              setFilter(f => ({ ...f, name: e.target.value }));
+            }}
           />
-          <InputGroup leftIcon="search" placeholder="Filter by name" />
         </ControlGroup>
       </Box>
       <Box sx={{ flexGrow: 1 }} />

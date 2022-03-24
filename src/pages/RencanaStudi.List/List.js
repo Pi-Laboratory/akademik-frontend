@@ -17,11 +17,19 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
+            $limit: 25,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
+            "generation": filter["generation"] || undefined,
+            "study_program_id": filter["study_program_id"] || undefined,
             "nim": {
               $ne: null
             },
-            "generation": filter["generation"] || undefined,
-            "study_program_id": !!filter["study_program_id"] ? filter["study_program_id"] : undefined,
+            $sort: {
+              generation: -1,
+              name: 1
+            },
             $skip: paging.skip,
             $select: ["id", "name", "nim", "student_status", "generation"],
             $include: [{

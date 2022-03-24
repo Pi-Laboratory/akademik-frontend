@@ -3,16 +3,18 @@ import { useMemo } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Layout } from "./Layout";
 
+export const filterField = ["semester", "study_program_id", "name"];
+
 const List = () => {
   const location = useLocation();
   const history = useHistory();
 
   const [filter, filterSearch] = useMemo(() => {
     const url = new URLSearchParams(location["search"]);
-    const filter = {
-      "generation": url.get("generation") || String(new Date().getFullYear()),
-      "study_program_id": url.get("study_program_id") || "",
-    };
+    const filter = {};
+    for (let f of filterField) {
+      filter[f] = url.get(f) || "";
+    }
     return [filter, url];
   }, [location["search"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -20,7 +22,7 @@ const List = () => {
     <ListProvider
       filter={filter}
       onFilterChange={(value) => {
-        for (let v of ["generation", "study_program_id"]) {
+        for (let v of filterField) {
           if (value[v]) filterSearch.set(v, value[v]);
           else filterSearch.delete(v);
         }
