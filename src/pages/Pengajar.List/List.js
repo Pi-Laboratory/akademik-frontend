@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, filter, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -14,6 +14,10 @@ const List = () => {
       try {
         const res = await client["lecturers"].find({
           query: {
+            "study_program_id": filter["study_program_id"] || undefined,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             $sort: { id: -1 },
             $skip: paging.skip,
             $select: ["id", "nidn", "certified"],
@@ -40,7 +44,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setPaging, setItems]);
+  }, [client, paging.skip, filter, setPaging, setItems]);
   return (
     <>
       {items === null &&
@@ -89,7 +93,7 @@ const List = () => {
               </Box>
             </Box>
             {item["study_program"] &&
-              <Box sx={{ width: "50%", mr: 3 }}>
+              <Box sx={{ width: "35%", mr: 3 }}>
                 <Box sx={{ color: "gray.5" }}>
                   Program Studi
                 </Box>
