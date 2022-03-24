@@ -91,7 +91,6 @@ const StudentProvider = ({ children }) => {
             }]
           }
         });
-        console.log(res);
         setData(res);
       } catch (err) {
         console.error(err);

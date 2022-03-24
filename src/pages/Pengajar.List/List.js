@@ -30,8 +30,6 @@ const List = () => {
             }]
           }
         });
-        console.log("masuk");
-        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,

@@ -35,7 +35,6 @@ export const EmployeeProvider = ({ children }) => {
             // ]
           }
         });
-        console.log(res);
         res.address = joinPropsString(res, [
           "province.name",
           "city.name",

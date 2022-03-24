@@ -148,7 +148,6 @@ const DialogTambahBaru = ({
     }
 
     setLoading(l => ({ ...l, [key]: false }));
-    console.log(key, result);
     setAddress(a => ({ ...a, ...result }));
   }, [client]);
 

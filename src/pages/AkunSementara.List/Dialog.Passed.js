@@ -19,8 +19,6 @@ export const DialogPassed = ({
       .required('Field is required')
   })), []);
 
-  console.log(data);
-
   return (
     <Dialog
       isOpen={isOpen}
@@ -35,7 +33,6 @@ export const DialogPassed = ({
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           const res = [];
-          console.log(values);
           try {
             res.push(await client["registrations"].patch(data["id"], {
               status: "passed",

@@ -11,7 +11,6 @@ export const EmployeeProvider = ({ children }) => {
   const [data, setData] = useState(null);
   useEffect(() => {
     const account = client["account"];
-    console.log(account);
     const fetch = async () => {
       try {
         const res = await client["lecturers"].get(account["lecturer_id"], {
