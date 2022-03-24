@@ -9,7 +9,6 @@ const Main = () => {
 
   useEffect(() => {
     const fetch = async () => {
-      console.log(client["account"]);
       try {
         const res = await client["notifications"].find({
           query: {

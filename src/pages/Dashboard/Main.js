@@ -1,92 +1,55 @@
 import moment from "moment";
-import { Button, Card, Classes, H6 } from "@blueprintjs/core";
-import { Box, Divider, Flex } from "components";
+import { Card, Classes, H6, NonIdealState } from "@blueprintjs/core";
+import { Box, Divider, Flex, useClient } from "components";
+import { Fragment, useEffect, useState } from "react";
 
 const Main = () => {
+  const client = useClient();
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        const res = await client["notifications"].find({
+          query: {
+            to_id: client["account"]["id"],
+            $select: ["id", "intent", "title", "message", "created_at"]
+          }
+        });
+        setItems(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    fetch();
+  }, [client]);
+
   return (
     <Box>
       <Box sx={{ mb: 3 }}>
         <Card>
           <Flex sx={{ mb: 3, alignItems: "center" }}>
-            <Box as="h4" className={`${Classes.HEADING}`} sx={{ m: 0 }}>Annoucment</Box>
+            <Box as="h4" className={`${Classes.HEADING}`} sx={{ m: 0 }}>Pengumuman</Box>
             <Box sx={{ flexGrow: 1 }} />
-            <Box>
-              <Button small={true} minimal={true} text="View All" />
-            </Box>
           </Flex>
-          <Flex sx={{ alignItems: "baseline" }}>
-            <H6>Annoucment</H6>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>{moment().calendar()}</Box>
-          </Flex>
-          <Box as="p">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </Box>
-          <Divider />
-          <Flex sx={{ alignItems: "baseline" }}>
-            <H6>Annoucment</H6>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>{moment().calendar()}</Box>
-          </Flex>
-          <Box as="p">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </Box>
-        </Card>
-      </Box>
-      <Box sx={{ mb: 3 }}>
-        <Card>
-          <Flex sx={{ mb: 3, alignItems: "center" }}>
-            <Box as="h4" className={`${Classes.HEADING}`} sx={{ m: 0 }}>Annoucment</Box>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>
-              <Button small={true} minimal={true} text="View All" />
-            </Box>
-          </Flex>
-          <Flex sx={{ alignItems: "baseline" }}>
-            <H6>Annoucment</H6>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>{moment().calendar()}</Box>
-          </Flex>
-          <Box as="p">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </Box>
-          <Divider />
-          <Flex sx={{ alignItems: "baseline" }}>
-            <H6>Annoucment</H6>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>{moment().calendar()}</Box>
-          </Flex>
-          <Box as="p">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </Box>
-        </Card>
-      </Box>
-      <Box sx={{ mb: 3 }}>
-        <Card>
-          <Flex sx={{ mb: 3, alignItems: "center" }}>
-            <Box as="h4" className={`${Classes.HEADING}`} sx={{ m: 0 }}>Annoucment</Box>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>
-              <Button small={true} minimal={true} text="View All" />
-            </Box>
-          </Flex>
-          <Flex sx={{ alignItems: "baseline" }}>
-            <H6>Annoucment</H6>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>{moment().calendar()}</Box>
-          </Flex>
-          <Box as="p">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </Box>
-          <Divider />
-          <Flex sx={{ alignItems: "baseline" }}>
-            <H6>Annoucment</H6>
-            <Box sx={{ flexGrow: 1 }} />
-            <Box>{moment().calendar()}</Box>
-          </Flex>
-          <Box as="p">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </Box>
+          {items.map(({ id, title, message, created_at }, idx) => (
+            <Fragment key={id}>
+              <Flex sx={{ alignItems: "baseline" }}>
+                <H6>{title}</H6>
+                <Box sx={{ flexGrow: 1 }} />
+                <Box sx={{ fontSize: 0 }}>{moment(created_at).calendar()}</Box>
+              </Flex>
+              <Box as="p">
+                {message}
+              </Box>
+              {idx < (items.length - 1) &&
+                <Divider />}
+            </Fragment>
+          ))}
+          {items.length === 0 &&
+            <NonIdealState
+              title="Tidak ada pengumuman"
+            />}
         </Card>
       </Box>
     </Box>
