@@ -20,25 +20,78 @@ const StudentProvider = ({ children }) => {
           query: {
             $select: [
               "id",
+              "nim",
               "name",
+              "generation",
               "religion",
               "gender",
               "birth_date",
               "birth_city",
-              "origin_address",
-              "recent_address",
-              "city",
-              "postal_code",
               "phone_number",
               "email",
               "generation",
               "registration_number",
               "registration_date",
+              "street",
               "student_status",
-              "study_program_id",
-            ]
+              "study_program",
+              
+              ...["father", "mother", "trustee"].reduce((p, c) => ([
+                ...p,
+                `${c}_name`,
+                `${c}_birth_date`,
+                `${c}_death_date`,
+                `${c}_occupation`,
+                `${c}_status`,
+                `${c}_education`,
+                `${c}_recent_education`,
+              ]), []),
+
+              "province",
+              "city",
+              "district",
+              "subdistrict",
+              "neighbor",
+              "postal_code",
+
+              "province_id",
+              "city_id",
+              "district_id",
+              "subdistrict_id",
+              "neighbor_id",
+            ],
+            $include: [{
+              model: "provinces",
+              $select: ["id", "name"]
+            }, {
+              model: "cities",
+              $select: ["id", "name"]
+            }, {
+              model: "districts",
+              $select: ["id", "name"]
+            }, {
+              model: "subdistricts",
+              $select: ["id", "name"]
+            }, {
+              model: "neighbors",
+              $select: ["id", "name"]
+            }, {
+              model: "study_programs",
+              $select: [
+                "id",
+                "name",
+              ],
+              $include: [{
+                model: "majors",
+                $select: [
+                  "id",
+                  "name",
+                ],
+              }]
+            }]
           }
         });
+        console.log(res);
         setData(res);
       } catch (err) {
         console.error(err);

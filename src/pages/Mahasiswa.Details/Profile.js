@@ -1,156 +1,104 @@
-import { Spinner, Button, Classes, Dialog, H3 } from "@blueprintjs/core";
-import { AspectRatio, Box, Divider, Flex, useClient } from "components";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { DialogIDCard } from "./Dialog.IDCard";
+import { Classes, H3, HTMLTable } from "@blueprintjs/core";
+import { Box, Flex } from "components";
+import { joinPropsString } from "components/helper";
 import moment from "moment";
+import { useStudent } from ".";
 
 const Profile = () => {
-  const client = useClient();
-  const params = useParams();
-  const [dialogOpen, setDialogOpen] = useState(null);
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await client["students"].get(params["id"], {
-          query: {
-            $include: [{
-              model: "study_programs",
-              $select: ["id", "name"],
-              $include: [{
-                model: "majors",
-                $select: ["id", "name"]
-              }]
-            }]
-          }
-        });
-        console.log(res);
-        setData(res);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetch();
-  }, [params]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (data === null) {
-    return (<Spinner />)
-  }
+  const student = useStudent();
 
   return (
     <>
-      <Flex sx={{ px: 3 }}>
-        <Box sx={{ py: 4, flexGrow: 1 }}>
-          <Box as={H3}>Informasi Umum</Box>
+      <Box sx={{ mt: 4, mx: 3 }}>
+        <Flex sx={{ mx: -2 }}>
+          <Box sx={{ width: "50%", px: 2 }}>
+            <Box as={H3} sx={{ mb: 3 }}>Informasi Dasar</Box>
+            <Box className={Classes.CARD} sx={{ p: 0 }}>
+              <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                <tbody>
+                  {[
+                    ["Email", student && student["email"]],
+                    ["Nomor Telephone", student && student["phone_number"]],
+                    [
+                      "Alamat", student && joinPropsString(student, [
+                        "street",
+                        "neighbor.name",
+                        "subdistrict.name",
+                        "district.name",
+                        "city.name",
+                        "province.name",
+                        "postal_code",
+                      ], ", ")
+                    ],
+                    ["Agama", student && student["religion"]],
+                  ].map((val) => {
+                    return (
+                      <tr key={val[0]}>
+                        <td>{val[0]}</td>
+                        <td>{val[1]}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </HTMLTable>
+            </Box>
+          </Box>
+          <Box sx={{ width: "50%", px: 2 }}>
+            <Box as={H3} sx={{ mb: 3 }}>Informasi Akademik</Box>
+            <Box className={Classes.CARD} sx={{ p: 0 }}>
+              <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                <tbody>
+                  {[
+                    ["Nomor Induk Mahasiswa", student && student["nim"]],
+                    ["Angkatan", student && student["generation"]],
+                    ["Program Studi", student && student["study_program"]["name"]],
+                    ["Jurusan", student && student["study_program"]["major"]["name"]],
+                  ].map((val) => {
+                    return (
+                      <tr key={val[0]}>
+                        <td>{val[0]}</td>
+                        <td>{val[1]}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </HTMLTable>
+            </Box>
+          </Box>
+        </Flex>
+        <Flex sx={{ flexWrap: "wrap", mx: -2 }}>
           {[
-            ["Tanggal Lahir", moment(data["birth_date"]).format("DD MMM YYYY")],
-            ["Kota Tempat Lahir", data["birth_city"]],
-            ["Jenis Kelamin", data["gender"]],
-            ["Alamat", data["recent_address"]],
-            ["Alamat Asal", data["origin_address"]],
-            ["Agama", data["religion"]],
-            ["Angkatan", data["generation"]],
-            ["Status Nikah", "Belum Menikah"],
-          ].map((item, idx) => (
-            <Flex key={idx} sx={{ mt: 3 }}>
-              <Box sx={{ width: "40%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
-                <span>{item[0]}</span>
+            ["father", "Ayah"],
+            ["mother", "Ibu"],
+            ["trustee", "Wali"],
+          ].map((value) => (
+            <Box sx={{ width: "50%", px: 2, my: 3 }}>
+              <Box as={H3} sx={{ mb: 3 }}>Informasi {value[1]}</Box>
+              <Box className={Classes.CARD} sx={{ p: 0 }}>
+                <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                  <tbody>
+                    {
+                      [
+                        ["Nama", student && student[`${value[0]}_name`]],
+                        ["Tanggal Lahir", student && student[`${value[0]}_birth_name`] ? moment(student[`${value[0]}_birth_name`]).format("DD MMMM YYYY") : ""],
+                        ["Pendidikan", student && student[`${value[0]}_education`]],
+                        ["Pendidikan Terakhir", student && student[`${value[0]}_recent_education`]],
+                        ["Pekerjaan", student && student[`${value[0]}_occupation`]],
+                      ].map((val) => {
+                        return (
+                          <tr key={val[0]} className={!student && Classes.SKELETON}>
+                            <td>{student ? val[0] : "Loading"}</td>
+                            <td>{student ? val[1] : "Loading"}</td>
+                          </tr>
+                        )
+                      })}
+                  </tbody>
+                </HTMLTable>
               </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                <span>{item[1]}</span>
-              </Box>
-            </Flex>
+            </Box>
           ))}
-          <Box sx={{ mt: 3 }}>
-            <Button
-              text="Lihat ID Card"
-              onClick={() => {
-                setDialogOpen("id-card");
-              }}
-            />
-            <Dialog
-              isOpen={dialogOpen === "id-card"}
-              onClose={() => setDialogOpen(null)}
-              title="ID Card Mahasiswa"
-            >
-              <DialogIDCard
-                data={data}
-                onClose={() => setDialogOpen(null)}
-              />
-            </Dialog>
-          </Box>
-        </Box>
-        <Divider vertical={true} />
-        <Box sx={{ pt: 4, px: 2, width: 350, flexShrink: 0 }}>
-          <Box className={`${Classes.CARD}`} sx={{ p: 2, mb: 2, width: 150 }}>
-            <AspectRatio ratio="3:4">
-              <Box sx={{ width: "100%", height: "100%" }} >
-                <Box
-                  as="img"
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "block",
-                    objectFit: "cover",
-                  }}
-                  src={`${client.host.toString()}files/students/${data["id"]}/photo.jpg`}
-                  onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.src = "https://via.placeholder.com/135x180?text=Tidak ditemukan";
-                  }}
-                />
-              </Box>
-            </AspectRatio>
-          </Box>
-          <Box sx={{ fontSize: 3, mb: 2 }}>
-            {data["name"]}
-          </Box>
-          <Box sx={{ fontWeight: "bold", color: "gray.6" }}>
-            {data["nim"]}
-          </Box>
-          {[
-            ["Telepon", data["phone_number"]],
-            ["Email", data["email"]],
-          ].map((item, idx) => (
-            <Flex key={idx} sx={{ mt: 3 }}>
-              <Box sx={{ width: "50%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
-                <span>{item[0]}</span>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                <span>{item[1]}</span>
-              </Box>
-            </Flex>
-          ))}
-        </Box>
-      </Flex>
-
-      <Flex sx={{ px: 3 }}>
-        <Box sx={{ py: 4, flexGrow: 1 }}>
-          <Box as={H3}>Informasi Ayah</Box>
-          {[
-            ["Tanggal Lahir", moment(data["birth_date"]).format("DD MMM YYYY")],
-            ["Kota Tempat Lahir", data["birth_city"]],
-            ["Jenis Kelamin", data["gender"]],
-            ["Alamat", data["recent_address"]],
-            ["Alamat Asal", data["origin_address"]],
-            ["Agama", data["religion"]],
-            ["Angkatan", data["generation"]],
-            ["Status Nikah", "Belum Menikah"],
-          ].map((item, idx) => (
-            <Flex key={idx} sx={{ mt: 3 }}>
-              <Box sx={{ width: "40%", flexShrink: 0, fontWeight: "bold", color: "gray.6" }}>
-                <span>{item[0]}</span>
-              </Box>
-              <Box sx={{ flexGrow: 1 }}>
-                <span>{item[1]}</span>
-              </Box>
-            </Flex>
-          ))}
-        </Box>
-      </Flex>
-
+        </Flex>
+      </Box>
     </>
   )
 }

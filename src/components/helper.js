@@ -29,3 +29,14 @@ export function joinPropsString(user, props = [], separator = ",") {
     return [...pv, c];
   }, []).join(separator);
 }
+
+export function abbreviedName(value) {
+  let result = value.split(" ");
+  return result.reduce(function (p, c, i) {
+    let v = c;
+    if (i > 0 && i < result.length - 1) {
+      v = `${c[0]}.`;
+    }
+    return `${p} ${v}`;
+  }, "");
+}

@@ -1,11 +1,27 @@
-import { Button, Classes, Icon } from "@blueprintjs/core";
-import { AspectRatio, Box, Flex, useClient } from "components"
+import { AnchorButton, Button, Classes, Dialog, Icon } from "@blueprintjs/core";
+import { AspectRatio, Box, Flex, useClient } from "components";
+import { DialogIDCard } from "./Dialog.IDCard";
 import moment from "moment";
+import { useMemo, useState } from "react";
 import { useStudent } from "."
+import { useLocation, useRouteMatch } from "react-router-dom";
+import { useNav } from "pages/Root/hoc";
+import { joinPropsString } from "components/helper";
 
 export const Header = () => {
   const client = useClient();
   const student = useStudent();
+  const { path } = useRouteMatch();
+  const navigation = useNav(path);
+  const [dialogOpen, setDialogOpen] = useState(null);
+
+  const location = useLocation();
+
+  const isSetting = useMemo(() => {
+    return location.pathname.indexOf("settings") !== -1;
+  }, [location]);
+
+
   return (
     <Flex
       sx={{
@@ -63,18 +79,54 @@ export const Header = () => {
               sx={{ display: "inline-block", py: "3px", mr: 1 }}
               icon="home" iconSize={14}
             />
-            Tinggal di {student && student["origin_address"]}
+            Tinggal di {
+              student && joinPropsString(student, [
+                "street",
+                "neighbor.name",
+                "subdistrict.name",
+                "district.name",
+                "city.name",
+                "province.name",
+                "postal_code",
+              ], ", ")
+            }
           </Box>
         </Flex>
 
       </Flex>
       <Box sx={{ flexGrow: 1 }} />
-      <Box sx={{ flexShrink: 0, whiteSpace: "nowrap" }}>
-        <Button
-          icon="edit"
-          text="Edit profile"
-        />
-      </Box>
-    </Flex >
+      <Flex sx={{ flexShrink: 0, whiteSpace: "nowrap" }}>
+        {!isSetting &&
+          <Box>
+            <AnchorButton
+              icon="edit"
+              text="Edit profile"
+              href="/mahasiswa/:id/settings"
+              onClick={(e) => {
+                e.preventDefault();
+                navigation.go("/mahasiswa/:id/settings");
+              }}
+            />
+          </Box>}
+        <Box sx={{ ml: 3 }}>
+          <Button
+            text="Lihat ID Card"
+            onClick={() => {
+              setDialogOpen("id-card");
+            }}
+          />
+          <Dialog
+            isOpen={dialogOpen === "id-card"}
+            onClose={() => setDialogOpen(null)}
+            title="ID Card Mahasiswa"
+          >
+            <DialogIDCard
+              data={student}
+              onClose={() => setDialogOpen(null)}
+            />
+          </Dialog>
+        </Box>
+      </Flex>
+    </Flex>
   )
 }

@@ -4,6 +4,7 @@ import { toPng } from "html-to-image";
 import { AspectRatio, Box, Flex, toaster, useClient } from "components";
 import IDCardBG from "assets/imgs/idcard_bg.png";
 import QRCode from "qrcode";
+import { abbreviedName } from "components/helper";
 
 export const DialogIDCard = ({ onClose, data }) => {
   const client = useClient();
@@ -153,11 +154,11 @@ export const DialogIDCard = ({ onClose, data }) => {
                   lineHeight: 1.25,
                 }}>
                   <Box sx={{
-                    maxWidth: "20ch",
+                    // maxWidth: "21ch",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
                     // textOverflow: "ellipsis"
-                  }}>{data["name"]}</Box>
+                  }}>{abbreviedName(data["name"])}</Box>
                   <Box sx={{ fontSize: 3, fontWeight: "bold", color: "gray.7" }}>{data["study_program"]["name"]}</Box>
                   <Box sx={{ fontSize: 3, fontWeight: "bold", color: "gray.7" }}>{data["study_program"]["major"]["name"]}</Box>
                   <Box sx={{ fontFamily: "monospace", my: 2 }}>{data["nim"]}</Box>

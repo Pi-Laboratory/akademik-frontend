@@ -34,11 +34,13 @@ const StudentProvider = ({ children }) => {
               "email",
               "study_program",
               "street",
+
               "province",
               "city",
               "district",
               "subdistrict",
               "neighbor",
+              
               "province_id",
               "city_id",
               "district_id",

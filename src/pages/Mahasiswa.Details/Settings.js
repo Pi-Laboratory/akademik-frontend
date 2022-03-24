@@ -1,11 +1,11 @@
 import { Button, Card, Classes, FormGroup, H2, H3, HTMLSelect, InputGroup, Menu, MenuItem, Radio, RadioGroup, Spinner } from "@blueprintjs/core";
 import { DateInput } from "@blueprintjs/datetime";
 import { Popover2 } from "@blueprintjs/popover2";
-import { Box, CropImage, Divider, Flex, TakePhoto, useClient, getBase64, AspectRatio, toaster } from "components";
+import { Box, CropImage, Divider, Flex, TakePhoto, useClient, getBase64, AspectRatio, toaster, Select } from "components";
 import { Formik } from "formik";
 import moment from "moment";
 import { useNav } from "pages/Root/hoc";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useStudent } from ".";
 import { decode } from "base64-arraybuffer";
 
@@ -15,10 +15,123 @@ export const Settings = ({ base }) => {
   const navigation = useNav(base);
 
   const [photoPopover, setPhotoPopover] = useState(false);
-
   const [loading, setLoading] = useState({
-    "file": false
+    "file": false,
+    "province": false,
+    "city": false,
+    "district": false,
+    "subdistrict": false,
+    "neighbor": false,
   });
+
+  const [address, setAddress] = useState({
+    "province": [],
+    "city": [],
+    "district": [],
+    "subdistrict": [],
+    "neighbor": [],
+  });
+
+  const fetchAddress = useCallback(async (key, query, {
+    province_id,
+    city_id,
+    district_id,
+    subdistrict_id,
+  } = {}) => {
+    const result = {};
+    setLoading(l => ({ ...l, [key]: true }));
+    try {
+      switch (key) {
+        case "province":
+          result[key] = (await client["provinces"].find({
+            query: {
+              $limit: 100,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "city":
+          result[key] = (await client["cities"].find({
+            query: {
+              $limit: 100,
+              province_id,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "district":
+          result[key] = (await client["districts"].find({
+            query: {
+              $limit: 100,
+              city_id,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "subdistrict":
+          result[key] = (await client["subdistricts"].find({
+            query: {
+              $limit: 100,
+              district_id,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        case "neighbor":
+          result[key] = (await client["neighbors"].find({
+            query: {
+              $limit: 100,
+              subdistrict_id,
+              // "name": { $iLike: `%${query}%` },
+              $select: ["id", "name"]
+            }
+          })).data.map((d) => ({
+            label: d["name"],
+            value: d["id"],
+          }));
+          break;
+        default: break;
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+
+    setLoading(l => ({ ...l, [key]: false }));
+    setAddress(a => ({ ...a, ...result }));
+  }, [client]);
+
+  useEffect(() => {
+    if (student === null) return;
+    fetchAddress("province", "");
+    fetchAddress("city", "", {
+      province_id: student["province_id"],
+    });
+    fetchAddress("district", "", {
+      city_id: student["city_id"],
+    });
+    fetchAddress("subdistrict", "", {
+      district_id: student["district_id"],
+    });
+    fetchAddress("neighbor", "", {
+      subdistrict_id: student["subdistrict_id"],
+    });
+  }, [student]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (student === null) {
     return (
@@ -42,9 +155,6 @@ export const Settings = ({ base }) => {
           "birth_city": student["birth_city"],
           "birth_date": moment(student["birth_date"], "YYYY-MM-DD").toDate(),
           "gender": student["gender"],
-          "recent_address": student["recent_address"],
-          "origin_address": student["origin_address"],
-          "city": student["city"],
           "postal_code": student["postal_code"],
           "phone_number": student["phone_number"],
           "email": student["email"],
@@ -53,6 +163,13 @@ export const Settings = ({ base }) => {
           "registration_date": moment(student["registration_date"], "YYYY-MM-DD").toDate(),
           "student_status": student["student_status"],
           "study_program_id": student["study_program_id"],
+
+          "street": student["street"],
+          "province_id": student["province_id"],
+          "city_id": student["city_id"],
+          "district_id": student["district_id"],
+          "subdistrict_id": student["subdistrict_id"],
+          "neighbor_id": student["neighbor_id"],
         }}
         onSubmit={async (values, { setSubmitting }) => {
           const result = { ...values };
@@ -220,6 +337,102 @@ export const Settings = ({ base }) => {
                   intent={errors["name"] ? "danger" : "none"}
                 />
               </FormGroup>
+              <FormGroup
+                label="Email"
+                labelFor="f-email"
+                helperText={errors["email"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-email"
+                  name="email"
+                  value={values["email"]}
+                  onChange={handleChange}
+                  intent={errors["email"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <Flex sx={{ flexWrap: "wrap", mx: -2 }}>
+                {[{
+                  "label": "Provinsi",
+                  "id": "province",
+                }, {
+                  "label": "Kabupaten / Kota",
+                  "id": "city",
+                }, {
+                  "label": "Kecamatan",
+                  "id": "district",
+                }, {
+                  "label": "Desa / Kelurahan",
+                  "id": "subdistrict",
+                }, {
+                  "label": "Jaga / Lingkungan",
+                  "id": "neighbor",
+                }].map(({ id, label }) => (
+                  <Box key={id} sx={{ width: "50%", px: 2 }}>
+                    <FormGroup
+                      key={id}
+                      label={label}
+                      labelFor={`f-${id}_id`}
+                      helperText={errors[`${id}_id`]}
+                      intent={"danger"}
+                    >
+                      <Select
+                        fill={true}
+                        id={`f-${id}_id`}
+                        name={`${id}_id`}
+                        loading={loading[id]}
+                        placeholder="Pilih"
+                        value={values[`${id}_id`]}
+                        onChange={({ value }) => {
+                          setFieldValue(`${id}_id`, value, true);
+                        }}
+                        // onQueryChange={(value) => {
+                        //   fetchAddress(id, value);
+                        // }}
+                        intent={errors[`${id}_id`] ? "danger" : "none"}
+                        options={address[id]}
+                        onOpening={() => {
+                          fetchAddress(id, "", {
+                            province_id: values["province_id"],
+                            city_id: values["city_id"],
+                            district_id: values["district_id"],
+                            subdistrict_id: values["subdistrict_id"],
+                          });
+                        }}
+                      />
+                    </FormGroup>
+                  </Box>
+                ))}
+              </Flex>
+              <FormGroup
+                label="Jalan"
+                labelFor="f-street"
+                helperText={errors["street"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-street"
+                  name="street"
+                  placeholder="contoh: Jalan Rambutan, No. 2, Blok. 4"
+                  value={values["street"]}
+                  onChange={handleChange}
+                  intent={errors["street"] ? "danger" : "none"}
+                />
+              </FormGroup>
+              <FormGroup
+                label="Kode Pos"
+                labelFor="f-postal_code"
+                helperText={errors["postal_code"]}
+                intent={"danger"}
+              >
+                <InputGroup
+                  id="f-postal_code"
+                  name="postal_code"
+                  value={values["postal_code"]}
+                  onChange={handleChange}
+                  intent={errors["postal_code"] ? "danger" : "none"}
+                />
+              </FormGroup>
               <Flex sx={{ mx: -3 }}>
                 <Box sx={{ px: 3, width: "50%" }}>
                   <FormGroup
@@ -230,6 +443,7 @@ export const Settings = ({ base }) => {
                   >
                     <InputGroup
                       id="f-birth_city"
+                      name="birth_city"
                       value={values["birth_city"]}
                       onChange={handleChange}
                       intent={errors["birth_city"] ? "danger" : "none"}
@@ -244,13 +458,15 @@ export const Settings = ({ base }) => {
                     intent={"danger"}
                   >
                     <DateInput
-                      fill={true}
                       id="f-birth_date"
+                      name="birth_date"
                       minDate={moment().subtract(50, "year").toDate()}
                       formatDate={date => moment(date).format("DD MMMM YYYY")}
                       parseDate={(str) => new Date(str)}
                       value={values["birth_date"]}
-                      onChange={handleChange}
+                      onChange={(v) => {
+                        setFieldValue("birth_date", v);
+                      }}
                       intent={errors["birth_date"] ? "danger" : "none"}
                     />
                   </FormGroup>
@@ -299,155 +515,17 @@ export const Settings = ({ base }) => {
                 />
               </FormGroup>
               <FormGroup
-                label="Alamat Asal"
-                labelFor="f-origin_address"
-                helperText={errors["origin_address"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-origin_address"
-                  name="origin_address"
-                  value={values["origin_address"]}
-                  onChange={handleChange}
-                  intent={errors["origin_address"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Alamat Sekarang"
-                labelFor="f-recent_address"
-                helperText={errors["recent_address"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  id="f-recent_address"
-                  name="recent_address"
-                  value={values["recent_address"]}
-                  onChange={handleChange}
-                  intent={errors["recent_address"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <Flex sx={{
-                mx: -2,
-                "> div": {
-                  width: "50%",
-                  px: 2,
-                  flexGrow: 1,
-                }
-              }}>
-                <Box>
-                  <FormGroup
-                    label="Kota"
-                    labelFor="f-city"
-                    helperText={errors["city"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      fill={true}
-                      id="f-city"
-                      name="city"
-                      value={values["city"]}
-                      onChange={handleChange}
-                      intent={errors["city"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                </Box>
-                <Box>
-                  <FormGroup
-                    label="Kode Pos"
-                    labelFor="f-postal_code"
-                    helperText={errors["postal_code"]}
-                    intent={"danger"}
-                  >
-                    <InputGroup
-                      fill={true}
-                      id="f-postal_code"
-                      name="postal_code"
-                      value={values["postal_code"]}
-                      onChange={handleChange}
-                      intent={errors["postal_code"] ? "danger" : "none"}
-                    />
-                  </FormGroup>
-                </Box>
-              </Flex>
-              <FormGroup
                 label="Nomor Handphone"
                 labelFor="f-phone_number"
                 helperText={errors["phone_number"]}
                 intent={"danger"}
               >
                 <InputGroup
-                  fill={true}
                   id="f-phone_number"
                   name="phone_number"
                   value={values["phone_number"]}
                   onChange={handleChange}
                   intent={errors["phone_number"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Email"
-                labelFor="f-email"
-                helperText={errors["email"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  fill={true}
-                  id="f-email"
-                  name="email"
-                  value={values["email"]}
-                  onChange={handleChange}
-                  intent={errors["email"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Angkatan"
-                labelFor="f-generation"
-                helperText={errors["generation"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  fill={true}
-                  id="f-generation"
-                  name="generation"
-                  value={values["generation"]}
-                  onChange={handleChange}
-                  intent={errors["generation"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Nomor Registrasi"
-                labelFor="f-registration_number"
-                helperText={errors["registration_number"]}
-                intent={"danger"}
-              >
-                <InputGroup
-                  fill={true}
-                  id="f-registration_number"
-                  name="registration_number"
-                  value={values["registration_number"]}
-                  onChange={handleChange}
-                  intent={errors["registration_number"] ? "danger" : "none"}
-                />
-              </FormGroup>
-              <FormGroup
-                label="Tanggal Registrasi"
-                labelFor="f-registration_date"
-                helperText={errors["registration_date"]}
-                intent={"danger"}
-              >
-                <DateInput
-                  fill={true}
-                  id="f-registration_date"
-                  name="registration_date"
-                  value={values["registration_date"]}
-                  inputProps={{
-                    intent: errors["registration_date"] ? "danger" : "none"
-                  }}
-                  formatDate={date => moment(date).format("DD MMMM YYYY")}
-                  parseDate={(str) => new Date(str)}
-                  onChange={(v) => {
-                    setFieldValue("registration_date", v);
-                  }}
                 />
               </FormGroup>
             </Box>
