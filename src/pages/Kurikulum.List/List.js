@@ -13,6 +13,9 @@ const List = () => {
       try {
         const res = await client["curriculums"].find({
           query: {
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             "year": filter["year"] || undefined,
             "study_program_id": filter["study_program_id"] || undefined,
             $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"],
@@ -37,7 +40,7 @@ const List = () => {
         console.error(err);
         setItems([]);
       }
-    }
+    };
     fetch();
   }, [client, setItems, setPaging, paging.skip, filter]);
 

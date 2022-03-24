@@ -5,6 +5,7 @@ import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 import DialogHapusKurikulum from "./Dialog.Hapus";
 import { useHistory } from 'react-router-dom'
+import { filterField } from '.'
 
 export const Layout = () => {
   const client = useClient();
@@ -110,20 +111,19 @@ export const Layout = () => {
                     setFilter(filter => ({ ...filter, "study_program_id": value }))
                   }}
                 />
-                {[
-                  !!filter["year"],
-                  !!filter["study_program_id"]
-                ].indexOf(true) !== -1
+                {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                   && <Button
+                    title="Clear Filter"
                     minimal={true}
                     intent="warning"
                     icon="filter-remove"
                     onClick={() => {
+                      const ff = {};
+                      filterField.forEach(f => ff[f] = undefined);
                       setFilter(filter => ({
                         ...filter,
-                        "year": null,
-                        "study_program_id": null
-                      }))
+                        ...ff
+                      }));
                     }}
                   />}
               </Box>
