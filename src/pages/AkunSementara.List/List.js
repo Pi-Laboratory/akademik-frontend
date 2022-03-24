@@ -17,15 +17,19 @@ const List = () => {
       try {
         const res = await client["registrations"].find({
           query: {
-            $sort: {
-              id: -1
-            },
-            status: filter["status"] === "null" ? undefined : filter["status"] || undefined,
+            $limit: 25,
+            "status": filter["status"] === "null" ? undefined : filter["status"] || undefined,
+            $sort: { id: -1 },
             $skip: paging.skip,
             $select: ["id", "school_name", "nisn", "status"],
             $include: [{
               model: "students",
-              $select: ["id", "name"]
+              $select: ["id", "name"],
+              $where: {
+                "name": filter["name"] ? {
+                  $iLike: `%${filter["name"]}%`
+                } : undefined,
+              }
             }, {
               model: "study_programs",
               as: "study_program_1",

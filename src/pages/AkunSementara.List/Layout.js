@@ -6,6 +6,7 @@ import { useState } from 'react'
 import DialogHapus from './Dialog.Hapus'
 import { useHistory } from 'react-router-dom'
 import { REGISTRATION_STATUS } from 'components/constants'
+import { filterField } from '.'
 
 export const Layout = () => {
 
@@ -51,21 +52,11 @@ export const Layout = () => {
               </Box>
               <Flex sx={{ flexGrow: 1, alignItems: "center" }}>
                 {selectedItem.length > 0
-                  && <Box>{selectedItem.length} selected</Box>
+                  && <Box sx={{ mr: 2 }}>{selectedItem.length} selected</Box>
                 }
-                {/* {items !== null
-                  && (selectedItem.length === items.length)
-                  && (selectedItem.length < paging.total)
-                  && <Button
-                    minimal={true}
-                    intent="primary"
-                    text={`Select all ${paging.total} item`}
-                    onClick={() => { }}
-                  />
-                } */}
                 {selectedItem.length > 0 &&
                   <Button
-                    minimal={true}
+                    outlined={true}
                     intent="danger"
                     text={`Delete ${selectedItem.length} selected`}
                     onClick={() => setDialogOpen("delete")}
@@ -117,23 +108,19 @@ export const Layout = () => {
                 </ButtonGroup>
               </Box>
               <Box sx={{ ml: 2 }}>
-                {[
-                  !!filter["study_program_id"],
-                  !!filter["status"],
-                ].indexOf(true) !== -1
+                {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                   && <Button
+                    title="Clear Filter"
                     minimal={true}
                     intent="warning"
                     icon="filter-remove"
                     onClick={() => {
-                      history.replace({
-                        search: ""
-                      });
+                      const ff = {};
+                      filterField.forEach(f => ff[f] = undefined);
                       setFilter(filter => ({
                         ...filter,
-                        "study_program_id": null,
-                        "status": null
-                      }))
+                        ...ff
+                      }));
                     }}
                   />}
               </Box>
