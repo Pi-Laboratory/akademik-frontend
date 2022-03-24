@@ -1,4 +1,4 @@
-import { Button, Checkbox, Classes, NonIdealState } from "@blueprintjs/core";
+import { Button, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Container, Flex, ListGroup, useClient, useList } from "components";
 import { Pagination } from "components/Pagination";
 import { useEffect, useState } from "react";
@@ -16,7 +16,15 @@ const List = () => {
       setItems(null);
       try {
         const query = {
-          $limit: 50,
+          $limit: 25
+          ,
+          "username": filter["username"] ? {
+            $iLike: `%${filter["username"]}%`
+          } : undefined,
+          $skip: paging.skip,
+          $sort: {
+            id: 1
+          }
         };
         if (filter["role"] === "Dosen") {
           query["lecturer_id"] = { $ne: null }
@@ -29,6 +37,7 @@ const List = () => {
           query["student_id"] = null;
           query["registration_id"] = null;
         }
+        console.log(query);
         const res = await client["users"].find({ query });
         setItems(res.data.map((item) => {
           let role = "Admin";
@@ -67,7 +76,8 @@ const List = () => {
       }
     }
     fetch();
-  }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [client, filter, paging.skip, setItems, setPaging]);
+
   return (
     <Container sx={{ px: 3 }}>
       <ListGroup
@@ -111,6 +121,11 @@ const List = () => {
             />
           </Flex>
         </ListGroup.Header>
+        {items === null &&
+          <Box sx={{ p: 2 }}>
+            <Spinner size={50} />
+          </Box>
+        }
         {items && items.length === 0 && (
           <Box sx={{ my: 3 }}>
             <NonIdealState

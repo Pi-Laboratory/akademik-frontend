@@ -21,8 +21,14 @@ const Filter = () => {
     >
       <Box sx={{ flexGrow: 1 }} >
         <ControlGroup>
-          <Button text="Filter" />
-          <InputGroup fill={true} />
+          <InputGroup
+            leftIcon="search"
+            placeholder="Filter by name"
+            value={filter["username"] || ""}
+            onChange={(e) => {
+              setFilter(f => ({ ...f, username: e.target.value }));
+            }}
+          />
         </ControlGroup>
       </Box>
       <Box>
