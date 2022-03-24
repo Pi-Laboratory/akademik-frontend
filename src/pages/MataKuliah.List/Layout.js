@@ -1,9 +1,10 @@
-import { Button, Checkbox, Classes, } from "@blueprintjs/core";
+import { Button, Checkbox, Classes, HTMLSelect, } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import Filter from "./Filter";
 import { useCallback, useState } from "react";
 import { Pagination } from "components/Pagination";
 import List from "./List";
+import { filterField } from ".";
 
 const Layout = () => {
   const client = useClient();
@@ -16,10 +17,13 @@ const Layout = () => {
     major: false
   })
 
-  const fetchStudyPrograms = useCallback(async () => {
+  const fetchStudyPrograms = useCallback(async (query) => {
     setLoading(loading => ({ ...loading, studyProgram: true }));
     const res = await client["study-programs"].find({
       query: {
+        "name": query ? {
+          $iLike: `%${query}%`
+        } : undefined,
         $limit: "100",
         $select: ["id", "name"],
         $include: [{
@@ -63,6 +67,23 @@ const Layout = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
+              <HTMLSelect
+                minimal={true}
+                value={filter["semester"] || ""}
+                onChange={(e) => {
+                  setFilter(f => ({ ...f, semester: e.target.value }));
+                }}
+                options={new Array(9).fill(0).map((_, i) => {
+                  if (i === 0) return {
+                    label: "Semester",
+                    value: ""
+                  }
+                  return {
+                    label: `${i} ${i % 2 ? "Gasal" : "Genap"}`,
+                    value: i,
+                  }
+                })}
+              />
               <Select
                 loading={loading["studyProgram"]}
                 minimal={true}
@@ -72,22 +93,25 @@ const Layout = () => {
                   "study_program_id": value
                 }))}
                 value={filter["study_program_id"]}
+                onQueryChange={(query) => {
+                  fetchStudyPrograms(query);
+                }}
                 onOpening={async () => await fetchStudyPrograms()}
                 options={studyPrograms}
               />
-              {[
-                !!filter["study_program_id"]
-              ].indexOf(true) !== -1
+              {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                 && <Button
                   title="Clear Filter"
                   minimal={true}
                   intent="warning"
                   icon="filter-remove"
                   onClick={() => {
+                    const ff = {};
+                    filterField.forEach(f => ff[f] = undefined);
                     setFilter(filter => ({
                       ...filter,
-                      "study_program_id": null
-                    }))
+                      ...ff
+                    }));
                   }}
                 />}
             </Box>

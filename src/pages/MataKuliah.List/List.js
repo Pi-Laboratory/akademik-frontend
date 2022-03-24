@@ -13,6 +13,10 @@ const List = () => {
       try {
         const res = await client["subjects"].find({
           query: {
+            "semester": filter["semester"] || undefined,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             "study_program_id": filter["study_program_id"] || undefined,
             $select: ["id", "code", "name", "semester", "created_at"],
             $skip: paging.skip
