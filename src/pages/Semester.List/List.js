@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, paging, selectedItem, dispatchSelectedItem } = useList();
+  const { filter, items, setItems, setPaging, paging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -13,6 +13,8 @@ const List = () => {
       try {
         const res = await client["semesters"].find({
           query: {
+            "year": filter["year"] || undefined,
+            "type": filter["type"] || undefined,
             $select: ["id", "year", "type", "created_at"],
             $skip: paging.skip
           }
@@ -29,7 +31,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setItems, setPaging]);
+  }, [client, paging.skip, filter, setItems, setPaging]);
 
   return (
     <>
@@ -77,15 +79,6 @@ const List = () => {
               </Box>
               <Box>
                 {item["type"]}
-              </Box>
-            </Box>
-
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box sx={{ color: "gray.5" }}>
-                Status
-              </Box>
-              <Box>
-                Aktif
               </Box>
             </Box>
           </Flex>

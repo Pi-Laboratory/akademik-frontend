@@ -1,11 +1,13 @@
-import { Checkbox, Classes } from "@blueprintjs/core";
+import { Button, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useList } from "components";
 import Filter from "./Filter";
 import List from "./List";
 import { Pagination } from "components/Pagination";
+import moment from "moment";
+import { filterField } from ".";
 
 const Layout = () => {
-  const { paging, setPaging, items, status, dispatchSelectedItem } = useList();
+  const { paging, setPaging, items, filter, setFilter, status, dispatchSelectedItem } = useList();
 
   return (
     <Box sx={{ mt: 3, px: 3 }}>
@@ -38,14 +40,18 @@ const Layout = () => {
               <Select
                 minimal={true}
                 label="Tahun"
-                options={[
-                  { label: "2020", value: 2020 },
-                  { label: "2019", value: 2019 },
-                  { label: "2018", value: 2018 },
-                  { label: "2017", value: 2017 },
-                  { label: "2016", value: 2016 },
-                  { label: "2015", value: 2015 },
-                ]}
+                value={filter["year"]}
+                options={new Array(50).fill(0).map((_, i) => {
+                  let value = `${moment().subtract(i, "year").get("year")}`;
+                  return {
+                    label: value,
+                    value
+                  }
+                })}
+                onChange={({ value }) => setFilter(filter => ({
+                  ...filter,
+                  "year": value
+                }))}
               />
             </Box>
 
@@ -53,12 +59,32 @@ const Layout = () => {
               <Select
                 minimal={true}
                 label="Periode"
+                value={filter["type"]}
                 options={[
-                  { label: "Gasal", value: 0 },
-                  { label: "Ganjil", value: 1 },
+                  { label: "Gasal", value: "Gasal" },
+                  { label: "Genap", value: "Genap" },
                 ]}
+                onChange={({ value }) => setFilter(filter => ({
+                  ...filter,
+                  "type": value
+                }))}
               />
             </Box>
+            {filterField.map(f => !!filter[f]).indexOf(true) !== -1
+              && <Button
+                title="Clear Filter"
+                minimal={true}
+                intent="warning"
+                icon="filter-remove"
+                onClick={() => {
+                  const ff = {};
+                  filterField.forEach(f => ff[f] = undefined);
+                  setFilter(filter => ({
+                    ...filter,
+                    ...ff
+                  }));
+                }}
+              />}
           </Flex>
         </ListGroup.Header>
         <List />

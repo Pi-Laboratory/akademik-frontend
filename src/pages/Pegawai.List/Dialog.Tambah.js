@@ -57,7 +57,12 @@ const DialogTambahBaru = ({
     "neighbor": [],
   });
 
-  const fetchAddress = useCallback(async (key, query) => {
+  const fetchAddress = useCallback(async (key, query, {
+    province_id,
+    city_id,
+    district_id,
+    subdistrict_id,
+  } = {}) => {
     const result = {};
     setLoading(l => ({ ...l, [key]: true }));
     try {
@@ -66,7 +71,9 @@ const DialogTambahBaru = ({
           result[key] = (await client["provinces"].find({
             query: {
               $limit: 100,
-              // $iLike: { "name": `%${query}%` },
+              "name": query ? {
+                $iLike: `%${query}%`
+              } : undefined,
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -78,7 +85,10 @@ const DialogTambahBaru = ({
           result[key] = (await client["cities"].find({
             query: {
               $limit: 100,
-              // $iLike: { "name": `%${query}%` },
+              province_id: province_id,
+              "name": query ? {
+                $iLike: `%${query}%`
+              } : undefined,
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -90,7 +100,10 @@ const DialogTambahBaru = ({
           result[key] = (await client["districts"].find({
             query: {
               $limit: 100,
-              // $iLike: { "name": `%${query}%` },
+              city_id,
+              "name": query ? {
+                $iLike: `%${query}%`
+              } : undefined,
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -102,7 +115,10 @@ const DialogTambahBaru = ({
           result[key] = (await client["subdistricts"].find({
             query: {
               $limit: 100,
-              // $iLike: { "name": `%${query}%` },
+              district_id,
+              "name": query ? {
+                $iLike: `%${query}%`
+              } : undefined,
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -114,7 +130,10 @@ const DialogTambahBaru = ({
           result[key] = (await client["neighbors"].find({
             query: {
               $limit: 100,
-              // $iLike: { "name": `%${query}%` },
+              subdistrict_id,
+              "name": query ? {
+                $iLike: `%${query}%`
+              } : undefined,
               $select: ["id", "name"]
             }
           })).data.map((d) => ({
@@ -328,12 +347,24 @@ const DialogTambahBaru = ({
                           setFieldValue(`${id}_id`, value, true);
                         }}
                         onQueryChange={(value) => {
-                          fetchAddress(id, value);
+                          fetchAddress(id, value, {
+                            province_id: values["province_id"],
+                            city_id: values["city_id"],
+                            district_id: values["district_id"],
+                            subdistrict_id: values["subdistrict_id"],
+                            neighbor_id: values["neighbor_id"],
+                          });
                         }}
                         intent={errors[`${id}_id`] ? "danger" : "none"}
                         options={address[id]}
                         onOpening={() => {
-                          fetchAddress(id, "");
+                          fetchAddress(id, "", {
+                            province_id: values["province_id"],
+                            city_id: values["city_id"],
+                            district_id: values["district_id"],
+                            subdistrict_id: values["subdistrict_id"],
+                            neighbor_id: values["neighbor_id"],
+                          });
                         }}
                       />
                     </FormGroup>

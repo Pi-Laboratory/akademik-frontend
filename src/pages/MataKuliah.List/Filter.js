@@ -1,14 +1,13 @@
 import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
 import { Box, Divider, Flex, useList } from "components";
 import { useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DialogHapusMataKuliah from "./Dialog.Hapus";
 import DialogMataKuliahBaru from "./Dialog.Tambah";
 
 const Filter = () => {
-  const location = useLocation();
   const { selectedItem, filter, setFilter } = useList();
-  const [dialogOpen, setDialogOpen] = useState(new URLSearchParams(location.search).get("d") || null);
+  const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
 
   return (

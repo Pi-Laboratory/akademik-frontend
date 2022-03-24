@@ -1,5 +1,5 @@
-import { Button, ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Divider, Flex, Select, useList } from "components";
+import { Button } from "@blueprintjs/core";
+import { Box, Divider, Flex, useList } from "components";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import DialogHapusSemester from "./Dialog.Hapus";
@@ -11,19 +11,6 @@ const Filter = () => {
   const history = useHistory();
   return (
     <Flex>
-      <Box>
-        <ControlGroup>
-          <Select
-            label="Filter"
-            options={[
-              { label: "ID", value: 0 },
-              { label: "Nama", value: 1 },
-              { label: "NIDN", value: 2 },
-            ]}
-          />
-          <InputGroup leftIcon="search" placeholder="Filter by name" />
-        </ControlGroup>
-      </Box>
       <Box sx={{ flexGrow: 1 }} />
       <Flex>
         {selectedItem.length > 0 &&
