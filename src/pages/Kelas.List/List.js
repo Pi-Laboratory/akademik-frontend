@@ -5,14 +5,19 @@ import { Link } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, filter, setPaging, selectedItem, dispatchSelectedItem } = useList();
 
   useEffect(() => {
     const fetch = async () => {
       try {
         const res = await client["classes"].find({
           query: {
-            // $select: ["id", "name"],
+            $limit: 25,
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
+            "generation": filter["generation"] || undefined,
+            "study_program_id": filter["study_program_id"] || undefined,
             $include: [{
               model: "majors",
               $select: ["name"]
@@ -37,7 +42,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging]);
+  }, [client, setItems, setPaging, filter]);
 
   return (
     <>
@@ -79,14 +84,17 @@ const List = () => {
               </Box>
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
-              <Box>
-                {item["students"].length}
-              </Box>
               <Box sx={{ color: "gray.5" }}>
                 Jumlah Mahasiswa
               </Box>
+              <Box>
+                {item["students"].length}
+              </Box>
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
+              <Box sx={{ color: "gray.5" }}>
+                Program Studi
+              </Box>
               <Box>
                 {item["study_program"]["name"]}
               </Box>

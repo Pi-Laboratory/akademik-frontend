@@ -1,11 +1,42 @@
-import { Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select, useList } from "components";
+import { Button, Checkbox, Classes } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import Filter from "./Filter";
 import List from "./List";
 import { Pagination } from "components/Pagination";
+import { useCallback, useState } from "react";
+import { filterField } from ".";
 
 const Layout = () => {
-  const { paging, setPaging, items, status, selectedItem, dispatchSelectedItem } = useList();
+  const client = useClient();
+  const { paging, setPaging, filter, setFilter, items, status, selectedItem, dispatchSelectedItem } = useList();
+
+  const [studyPrograms, setStudyPrograms] = useState([]);
+
+  const fetchStudyPrograms = useCallback(async (query) => {
+    try {
+      const res = await client["study-programs"].find({
+        query: {
+          "name": query ? {
+            $iLike: `%${query}%`
+          } : undefined,
+          $limit: 100,
+          $select: ["id", "name"],
+          $include: [{
+            model: "majors",
+            $select: ["id", "name"]
+          }]
+        }
+      });
+      await setStudyPrograms(res.data.map(({ id, name, major }) => ({
+        label: name,
+        value: id,
+        info: major["name"]
+      })));
+    } catch (err) {
+      console.error(err);
+    }
+  }, [client]);
+
   return (
     <Box sx={{ mt: 3, px: 3 }}>
       <Box sx={{ mb: 3 }}>
@@ -33,19 +64,34 @@ const Layout = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-
               <Select
                 minimal={true}
                 label="Program Studi"
-                options={[
-                  { label: "Teologi", value: 0 },
-                  { label: "Teknik Elektro", value: 0 },
-                  { label: "Teknik Arsitektur", value: 1 },
-                  { label: "Akuntansi", value: 2 },
-                  { label: "Teknik Sipil", value: 3 },
-                  { label: "Bahasa Inggris", value: 3 },
-                ]}
+                value={filter["study_program_id"]}
+                options={studyPrograms}
+                onQueryChange={(query) => {
+                  fetchStudyPrograms(query);
+                }}
+                onOpening={async () => await fetchStudyPrograms()}
+                onChange={({ value }) => {
+                  setFilter(filter => ({ ...filter, "study_program_id": value }))
+                }}
               />
+              {filterField.map(f => !!filter[f]).indexOf(true) !== -1
+                && <Button
+                  title="Clear Filter"
+                  minimal={true}
+                  intent="warning"
+                  icon="filter-remove"
+                  onClick={() => {
+                    const ff = {};
+                    filterField.forEach(f => ff[f] = undefined);
+                    setFilter(filter => ({
+                      ...filter,
+                      ...ff
+                    }));
+                  }}
+                />}
             </Box>
           </Flex>
         </ListGroup.Header>
