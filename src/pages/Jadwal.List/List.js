@@ -5,34 +5,38 @@ import Item from "./Item";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging } = useList();
+  const { filter, items, setItems, setPaging } = useList();
 
   useEffect(() => {
     const fetch = async () => {
       try {
-        const res = await client["subject-lecturers"].find({
-          query: {
-            $select: ["id", "subject_id", "lecturer_id"],
+        const query = {
+          $select: ["id", "subject_id", "lecturer_id", "mid_test_weight", "presence_weight", "task_weight", "final_test_weight"],
+          $include: [{
+            model: "subjects",
+            $select: ["id", "name", "code", "semester", "study_program_id"],
+            $where: filter["name"] ? {
+              name: {
+                $iLike: `%${filter["name"]}%`
+              }
+            } : undefined,
             $include: [{
-              model: "subjects",
-              $select: ["id", "name", "code", "semester"],
-              $include: [{
-                model: "study_programs",
-                $select: ["id", "name"]
-              }]
-            }, {
-              model: "lecturers",
-              $select: ["id", "nidn"],
-              $include: [{
-                model: "employees",
-                $select: ["id", "nip", "front_degree", "name", "back_degree",]
-              }]
-            }, {
-              model: "hours",
-              $select: ["id", "day", "start", "end"]
+              model: "study_programs",
+              $select: ["id", "name"],
             }]
-          }
-        });
+          }, {
+            model: "lecturers",
+            $select: ["id", "nidn"],
+            $include: [{
+              model: "employees",
+              $select: ["id", "nip", "front_degree", "name", "back_degree",]
+            }]
+          }, {
+            model: "hours",
+            $select: ["id", "day", "start", "end"]
+          }]
+        }
+        const res = await client["subject-lecturers"].find({ query });
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -45,7 +49,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging]);
+  }, [client, filter, setItems, setPaging]);
 
   return (
     <>
