@@ -1,37 +1,13 @@
 import { Box, Flex, ListGroup, Select, useClient, useList, Pagination } from 'components'
-import React, { useEffect, useCallback, useState } from 'react'
+import React from 'react'
 import List from './List'
-import { Button, Checkbox, Classes } from '@blueprintjs/core'
+import { Button, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
+import { FetchAndSelect } from 'components/FetchAndSelect'
 
 export const Layout = () => {
   const client = useClient();
-  const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
-
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const fetchStudyPrograms = useCallback(async () => {
-    try {
-      const res = await client["study-programs"].find({
-        query: {
-          $limit: 100,
-          $select: ["id", "name"],
-          $include: [{
-            model: "majors",
-            $select: ["id", "name"]
-          }]
-        }
-      });
-      setStudyPrograms(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }, [client]);
-
-  useEffect(() => {
-    fetchStudyPrograms();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { paging, setPaging, filter, setFilter, items } = useList();
 
   return (
     <Box>
@@ -46,30 +22,6 @@ export const Layout = () => {
         >
           <ListGroup.Header>
             <Flex sx={{ alignItems: "center" }}>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox
-                  checked={status.checked}
-                  indeterminate={status.indeterminate}
-                  onChange={(e) => {
-                    dispatchSelectedItem({
-                      type: "all",
-                      data: e.target.checked
-                    })
-                  }}
-                />
-              </Box>
-              <Box sx={{ ml: -10 }}>
-                <Button
-                  minimal={true}
-                  icon="circle"
-                  text={`${Math.round(Math.random() * 250)} Aktif`}
-                />
-                <Button
-                  minimal={true}
-                  icon="disable"
-                  text={`${Math.round(Math.random() * 250)} Cuti`}
-                />
-              </Box>
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ flexShrink: 0 }}>
                 <Select
@@ -87,19 +39,37 @@ export const Layout = () => {
                     setFilter(filter => ({ ...filter, "generation": value }))
                   }}
                 />
-                <Select
+                <FetchAndSelect
                   minimal={true}
-                  label="Program Studi"
+                  placeholder="Program Studi"
+                  service={client["study-programs"]}
+                  id="f-study_program_id"
+                  name="study_program_id"
                   value={filter["study_program_id"]}
-                  options={studyPrograms.map((item) => {
-                    return {
-                      label: item["name"],
-                      value: item["id"],
-                      info: item["major"]["name"]
-                    }
-                  })}
                   onChange={({ value }) => {
                     setFilter(filter => ({ ...filter, "study_program_id": value }))
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      "name": q ? {
+                        $iLike: `%${q}%`
+                      } : undefined,
+                      $select: ["id", "name"],
+                      $include: [{
+                        model: "majors",
+                        $select: ["id", "name"]
+                      }]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        value: `${item["id"]}`,
+                        info: item["major"]["name"]
+                      }
+                    })
                   }}
                 />
                 {[

@@ -1,11 +1,11 @@
-import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
+import { NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, setPaging, filter, paging } = useList();
 
   useEffect(() => {
     setItems(null);
@@ -13,6 +13,9 @@ const List = () => {
       try {
         const res = await client["students"].find({
           query: {
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
             "generation": filter["generation"] || undefined,
             "study_program_id": filter["study_program_id"] || undefined,
             $skip: paging.skip,
@@ -29,7 +32,6 @@ const List = () => {
             }]
           }
         });
-        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -62,19 +64,6 @@ const List = () => {
       {items && items.map((item) => (
         <ListGroup.Item key={item["id"]}>
           <Flex>
-            <Box sx={{ width: 40, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }} />
-            </Box>
             <Box sx={{ flexGrow: 1, mr: 3 }}>
               <Box>
                 <Link to={`mahasiswa/${item["id"]}/`}>
