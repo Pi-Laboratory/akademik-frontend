@@ -1,11 +1,11 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup, Tag } from "@blueprintjs/core";
 import { TimePicker } from "@blueprintjs/datetime";
-import { Box, CONSTANTS, Flex, Select, useClient } from "components";
+import { Box, CONSTANTS, Flex, ListGroup, Select, useClient } from "components";
 import { FieldArray, Formik } from "formik";
 import moment from "moment";
-import { useCallback, useState } from "react";
 import * as Yup from "yup";
 import _get from "lodash/get";
+import { FetchAndSelect } from "components/FetchAndSelect";
 
 const Schema = Yup.object().shape({
   "subject_id": Yup.number().required(),
@@ -23,6 +23,8 @@ const Schema = Yup.object().shape({
   "final_test_weight": Yup.number().required(),
   "task_weight": Yup.number().required(),
   "presence_weight": Yup.number().required(),
+
+  "curriculum_id": Yup.number().required(),
 })
 
 const DialogTambah = ({
@@ -31,57 +33,6 @@ const DialogTambah = ({
   onSubmitted = () => { }
 }) => {
   const client = useClient();
-  const [subjects, setSubjects] = useState([]);
-  const [lecturers, setLecturers] = useState([]);
-  const [loading, setLoading] = useState({
-    hours: false,
-    subjects: false,
-    lecturers: false,
-  });
-
-  const fetchSubjects = useCallback(async (query) => {
-    setLoading(loading => ({ ...loading, subjects: true }));
-    const res = await client["subjects"].find({
-      query: {
-        "name": query ? {
-          $iLike: `%${query}%`
-        } : undefined,
-        $select: ["id", "code", "name"]
-      }
-    });
-    setSubjects(res.data.map(({ id, code, name }) => ({
-      label: name,
-      value: id,
-      info: code
-    })));
-    setLoading(loading => ({ ...loading, subjects: false }));
-  }, [client]);
-
-  const fetchLecturers = useCallback(async (query) => {
-    setLoading(loading => ({ ...loading, lecturers: true }));
-    const res = await client["lecturers"].find({
-      query: {
-        $limit: 25,
-        $select: ["id"],
-        $include: [{
-          model: "employees",
-          $select: ["id", "nip", "name", "front_degree", "back_degree"],
-          $where: {
-            "name": query ? {
-              $iLike: `%${query}%`
-            } : undefined,
-          }
-        }]
-      }
-    });
-    console.log(res);
-    setLecturers(res.data.map(({ id, employee: { nip, name, front_degree, back_degree } }) => ({
-      label: `${front_degree || ""}${name}${back_degree || ""}`,
-      value: id,
-      info: nip
-    })));
-    setLoading(loading => ({ ...loading, lecturers: false }));
-  }, [client]);
 
   return (
     <Dialog
@@ -93,8 +44,8 @@ const DialogTambah = ({
       <Formik
         validationSchema={Schema}
         initialValues={{
-          "subject_id": "",
-          "lecturer_id": "",
+          "subject_id": undefined,
+          "lecturer_id": undefined,
           "hours": [{
             day: null, start: new Date(), end: new Date()
           }],
@@ -102,6 +53,10 @@ const DialogTambah = ({
           "mid_test_weight": 30,
           "task_weight": 20,
           "presence_weight": 10,
+
+          "study_program_id": undefined,
+          "curiculum_id": undefined,
+          "semester": undefined,
         }}
         onSubmit={async (values, { setErrors, setSubmitting }) => {
           try {
@@ -135,27 +90,148 @@ const DialogTambah = ({
           <form onSubmit={handleSubmit}>
             <div className={Classes.DIALOG_BODY}>
               <FormGroup
+                label="Program Studi"
+                labelFor="f-study_program_id"
+                helperText={errors["study_program_id"]}
+                intent={"danger"}
+              >
+                <FetchAndSelect
+                  service={client["study-programs"]}
+                  id="f-study_program_id"
+                  name="study_program_id"
+                  value={values["study_program_id"]}
+                  intent={errors["study_program_id"] ? "danger" : "none"}
+                  onChange={async ({ value }) => {
+                    await setFieldValue("lecturer_id", undefined);
+                    await setFieldValue("curriculum_id", undefined);
+                    await setFieldValue("subject_id", undefined);
+                    await setFieldValue("study_program_id", value);
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      "name": q ? {
+                        $iLike: `%${q}%`
+                      } : undefined,
+                      $select: ["id", "name"],
+                      $include: [{
+                        model: "majors",
+                        $select: ["id", "name"]
+                      }]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        value: `${item["id"]}`,
+                        info: item["major"]["name"]
+                      }
+                    })
+                  }}
+                />
+              </FormGroup>
+              <Flex sx={{ mx: -2 }}>
+                <Box sx={{ width: "50%", px: 2 }}>
+                  <FormGroup
+                    label="Kurikulum"
+                    labelFor="f-curriculum_id"
+                    helperText={errors["curriculum_id"]}
+                    intent={"danger"}
+                  >
+                    <FetchAndSelect
+                      service={client["curriculums"]}
+                      id="f-curriculum_id"
+                      name="curriculum_id"
+                      value={values["curriculum_id"]}
+                      disabled={!values["study_program_id"]}
+                      intent={errors["curriculum_id"] ? "danger" : "none"}
+                      onChange={async ({ value }) => {
+                        await setFieldValue("subject_id", undefined);
+                        await setFieldValue("semester", undefined);
+                        await setFieldValue("curriculum_id", value);
+                      }}
+                      onPreFetch={(q, query) => {
+                        return {
+                          ...query,
+                          "name": q ? {
+                            $iLike: `%${q}%`
+                          } : undefined,
+                          "study_program_id": values["study_program_id"],
+                          $sort: { year: -1 },
+                          $select: ["id", "name", "year"]
+                        }
+                      }}
+                      onFetched={(items) => {
+                        return items.map((item) => {
+                          return {
+                            label: item["name"],
+                            value: `${item["id"]}`,
+                            info: `${item["year"]}`
+                          }
+                        })
+                      }}
+                    />
+                  </FormGroup>
+                </Box>
+                <Box sx={{ width: "50%", px: 2 }}>
+                  <FormGroup
+                    label="Semester"
+                    labelFor="f-semester"
+                    helperText={errors["semester"]}
+                    intent={"danger"}
+                  >
+                    <Select
+                      id="f-semester"
+                      name="semester"
+                      value={values["semester"]}
+                      disabled={!values["curriculum_id"]}
+                      intent={errors["semester"] ? "danger" : "none"}
+                      options={new Array(8).fill(0).map((_, i) => ({ label: `${i + 1}`, value: `${i + 1}` }))}
+                      onChange={async ({ value }) => {
+                        await setFieldValue("subject_id", undefined);
+                        await setFieldValue("semester", value);
+                      }}
+                    />
+                  </FormGroup>
+                </Box>
+              </Flex>
+              <FormGroup
                 label="Matakuliah"
                 labelFor="f-subject_id"
                 helperText={errors["subject_id"]}
                 intent={"danger"}
               >
-                <Select
-                  loading={loading["subjects"]}
+                <FetchAndSelect
+                  service={client["subjects"]}
                   id="f-subject_id"
                   name="subject_id"
                   value={values["subject_id"]}
-                  onChange={async ({ value }) => {
-                    await setFieldValue("subject_id", value, true);
-                  }}
-                  onQueryChange={(query) => {
-                    fetchSubjects(query);
-                  }}
+                  disabled={!values["semester"]}
                   intent={errors["subject_id"] ? "danger" : "none"}
-                  onOpening={async () => {
-                    await fetchSubjects("");
+                  onChange={async ({ value }) => {
+                    await setFieldValue("subject_id", value);
                   }}
-                  options={subjects}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      "name": q ? {
+                        $iLike: `%${q}%`
+                      } : undefined,
+                      "curriculum_id": values["curriculum_id"],
+                      "semester": values["semester"],
+                      $select: ["id", "name", "code"]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        value: `${item["id"]}`,
+                        info: `${item["code"]}`
+                      }
+                    })
+                  }}
                 />
               </FormGroup>
               <FormGroup
@@ -164,31 +240,66 @@ const DialogTambah = ({
                 helperText={errors["lecturer_id"]}
                 intent={"danger"}
               >
-                <Select
-                  loading={loading["lecturers"]}
+                <FetchAndSelect
+                  service={client["lecturers"]}
                   id="f-lecturer_id"
                   name="lecturer_id"
                   value={values["lecturer_id"]}
-                  onChange={async ({ value }) => {
-                    await setFieldValue("lecturer_id", value, true);
-                  }}
-                  onQueryChange={(query) => {
-                    fetchLecturers(query);
-                  }}
+                  disabled={!values["subject_id"]}
                   intent={errors["lecturer_id"] ? "danger" : "none"}
                   onOpening={async () => {
-                    await fetchLecturers("");
+                    await setFieldValue("lecturer_id", undefined);
                   }}
-                  options={lecturers}
+                  onChange={async ({ value }) => {
+                    await setFieldValue("lecturer_id", value);
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      $select: ["id", "nidn"],
+                      $include: [{
+                        model: "employees",
+                        $select: ["id", "name", "front_degree", "back_degree"],
+                        $where: {
+                          "name": q ? {
+                            $iLike: `%${q}%`
+                          } : undefined,
+                        }
+                      }]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: `${item["employee"]["front_degree"] || ""} ${item["employee"]["name"]} ${item["employee"]["back_degree"] || ""}`,
+                        value: `${item["id"]}`,
+                        info: `${item["nidn"]}`
+                      }
+                    })
+                  }}
                 />
               </FormGroup>
-              <Box className={Classes.CARD} sx={{ mx: -2, px: 3 }}>
-                <Box as="h4" sx={{ mb: 2 }}>Waktu</Box>
-                <FieldArray
-                  name="hours"
-                  render={arr => (
-                    <Box>
-                      {values["hours"].map((v, i) => (
+              <FieldArray
+                name="hours"
+                render={arr => (
+                  <ListGroup>
+                    <ListGroup.Header>
+                      <Flex>
+                        <Box as="h4" sx={{ flexGrow: 1 }}>Waktu</Box>
+                        <Box>
+                          <Button
+                            small={true}
+                            outlined={true}
+                            text="Tambah waktu"
+                            onClick={() => arr.push({
+                              day: null, start: new Date(), end: new Date()
+                            })}
+                          />
+                        </Box>
+                      </Flex>
+                    </ListGroup.Header>
+                    {values["hours"].map((v, i) => (
+                      <ListGroup.Item>
                         <Flex
                           key={i}
                           sx={{
@@ -196,13 +307,12 @@ const DialogTambah = ({
                             "> div": { mx: 2, }
                           }}
                         >
-                          <Box>
+                          <Box sx={{ flexGrow: 1 }}>
                             <FormGroup
                               label="Hari"
                               labelFor="f-day"
                               helperText={_get(errors, `["hours"][${i}]["day"]`)}
                               intent={"danger"}
-                              inline={true}
                             >
                               <Select
                                 fill={true}
@@ -225,7 +335,6 @@ const DialogTambah = ({
                               labelFor="f-start"
                               helperText={_get(errors, `["hours"][${i}]["start"]`)}
                               intent={"danger"}
-                              inline={true}
                             >
                               <TimePicker
                                 autoFocus={false}
@@ -246,11 +355,9 @@ const DialogTambah = ({
                               labelFor="f-end"
                               helperText={_get(errors, `["hours"][${i}]["end"]`)}
                               intent={"danger"}
-                              inline={true}
                             >
                               <TimePicker
                                 fill={true}
-                                loading={loading["end"]}
                                 id="f-end"
                                 name={`hours[${i}]["end"]`}
                                 value={v["end"]}
@@ -271,19 +378,11 @@ const DialogTambah = ({
                             />
                           </Box>
                         </Flex>
-                      ))}
-                      <Button
-                        small={true}
-                        outlined={true}
-                        text="Tambah waktu"
-                        onClick={() => arr.push({
-                          day: null, start: new Date(), end: new Date()
-                        })}
-                      />
-                    </Box>
-                  )}
-                />
-              </Box>
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                )}
+              />
               <h4>Bobot nilai</h4>
               <Flex sx={{ mx: -2, flexWrap: "wrap" }}>
                 <Box sx={{ width: "50%", px: 2 }}>

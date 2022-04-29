@@ -479,7 +479,7 @@ const Settings = ({ base }) => {
                   >
                     <DateInput
                       id="f-birth_date"
-                      minDate={moment().subtract(60, "year").toDate()}
+                      minDate={moment().subtract(100, "year").toDate()}
                       formatDate={date => moment(date).format("DD MMMM YYYY")}
                       parseDate={(str) => new Date(str)}
                       value={values["birth_date"]}
