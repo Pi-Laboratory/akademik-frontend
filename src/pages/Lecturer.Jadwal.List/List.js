@@ -2,6 +2,7 @@ import { NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, CONSTANTS, Flex, ListGroup, useClient, useList } from "components";
 import { Fragment, useEffect } from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const List = () => {
   const client = useClient();
@@ -13,20 +14,21 @@ const List = () => {
         let querySubjects = {
           model: "subjects",
           $select: ["id", "name", "code", "semester", "study_program_id"],
+          $where: (filter["name"] || filter["study_program_id"]) ? {
+            "name": filter["name"] ? {
+              $iLike: `%${filter["name"]}%`
+            } : undefined,
+            "study_program_id": filter["study_program_id"] ? filter["study_program_id"] : undefined,
+          } : undefined,
           $include: [{
             model: "study_programs",
             $select: ["id", "name"],
           }],
         }
-        if (filter["study_program_id"]) {
-          querySubjects["$where"] = {
-            "study_program_id": filter["study_program_id"],
-          }
-        }
         const res = await client["subject-lecturers"].find({
           query: {
             "lecturer_id": filter["lecturer_id"],
-            $select: ["id", "subject_id", "lecturer_id"],
+            $select: ["id", "subject_id", "lecturer_id", "mid_test_weight", "presence_weight", "task_weight", "final_test_weight"],
             $include: [querySubjects, {
               model: "lecturers",
               $select: ["id", "employee_id"],
@@ -40,7 +42,6 @@ const List = () => {
               }]
           }
         });
-        console.log(res);
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -88,9 +89,9 @@ const List = () => {
               })}
             </Box>
             <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
-              <Box>
+              <Link to={`/penilaian/jadwal/${item["id"]}`}>
                 {item["subject"]["name"]}
-              </Box>
+              </Link>
               <Box sx={{ color: "gray.5" }}>
                 {item["subject"]["code"]}
               </Box>

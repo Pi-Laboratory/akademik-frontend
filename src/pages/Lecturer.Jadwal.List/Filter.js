@@ -1,26 +1,22 @@
 import { ControlGroup, InputGroup } from "@blueprintjs/core";
-import { Box, Flex, Select } from "components";
+import { Box, Flex, useList } from "components";
 
 const Filter = () => {
+  const { filter, setFilter } = useList();
   return (
     <Flex>
       <Box>
         <ControlGroup>
-          <Select
-            label="Filter"
-            options={[
-              { label: "ID", value: 0 },
-              { label: "Nama", value: 1 },
-              { label: "NIDN", value: 2 },
-            ]}
+          <InputGroup
+            leftIcon="search"
+            placeholder="Filter by subject name"
+            value={filter["name"] || ""}
+            onChange={(e) => {
+              setFilter(f => ({ ...f, name: e.target.value }));
+            }}
           />
-          <InputGroup leftIcon="search" placeholder="Filter by name" />
         </ControlGroup>
       </Box>
-      <Box sx={{ flexGrow: 1 }} />
-      <Flex>
-
-      </Flex>
     </Flex>
   )
 }
