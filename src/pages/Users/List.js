@@ -37,7 +37,6 @@ const List = () => {
           query["student_id"] = null;
           query["registration_id"] = null;
         }
-        console.log(query);
         const res = await client["users"].find({ query });
         setItems(res.data.map((item) => {
           let role = "Admin";

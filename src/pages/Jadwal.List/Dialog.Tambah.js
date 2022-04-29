@@ -299,9 +299,8 @@ const DialogTambah = ({
                       </Flex>
                     </ListGroup.Header>
                     {values["hours"].map((v, i) => (
-                      <ListGroup.Item>
+                      <ListGroup.Item key={i}>
                         <Flex
-                          key={i}
                           sx={{
                             mx: -2,
                             "> div": { mx: 2, }
