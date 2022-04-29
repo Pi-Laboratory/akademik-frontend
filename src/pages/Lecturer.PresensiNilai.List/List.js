@@ -21,7 +21,13 @@ const List = () => {
             "lecturer_id": filter["lecturer_id"],
             $include: [{
               model: "subjects",
-              $select: ["id", "name", "code", "semester"],
+              $select: ["id", "name", "code", "semester", "study_program_id"],
+              $where: (filter["name"] || filter["study_program_id"]) ? {
+                "name": filter["name"] ? {
+                  $iLike: `%${filter["name"]}%`
+                } : undefined,
+                "study_program_id": filter["study_program_id"] ? filter["study_program_id"] : undefined,
+              } : undefined,
               $include: [{
                 model: "study_programs",
                 $select: ["id", "name"],

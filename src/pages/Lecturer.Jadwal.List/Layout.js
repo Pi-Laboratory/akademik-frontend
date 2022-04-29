@@ -4,6 +4,7 @@ import Filter from "./Filter";
 import List from "./List";
 import { Pagination } from "components/Pagination";
 import { useCallback, useEffect, useState } from "react";
+import { filterField } from ".";
 
 const Layout = () => {
   const client = useClient();
@@ -71,18 +72,19 @@ const Layout = () => {
                   setFilter(filter => ({ ...filter, "study_program_id": value }))
                 }}
               />
-              {[
-                !!filter["study_program_id"],
-              ].indexOf(true) !== -1
+              {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                 && <Button
+                  title="Clear Filter"
                   minimal={true}
                   intent="warning"
                   icon="filter-remove"
                   onClick={() => {
+                    const ff = {};
+                    filterField.forEach(f => ff[f] = undefined);
                     setFilter(filter => ({
                       ...filter,
-                      "study_program_id": null
-                    }))
+                      ...ff
+                    }));
                   }}
                 />}
             </Box>

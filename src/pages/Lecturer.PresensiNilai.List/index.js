@@ -4,16 +4,20 @@ import Layout from "./Layout";
 import { useHistory, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 
+export const filterField = ["name", "study_program_id"];
+
 const PresensiNilaiList = () => {
   const location = useLocation();
   const history = useHistory();
   const { account } = useClient();
+
   const [filter, filterSearch] = useMemo(() => {
     const url = new URLSearchParams(location["search"]);
-    const filter = {
-      "lecturer_id": account["lecturer_id"],
-      "study_program_id": url.get("study_program_id")
-    };
+    const filter = {};
+    for (let f of filterField) {
+      filter[f] = url.get(f) || "";
+    }
+    filter["lecturer_id"] = account["lecturer_id"];
     return [filter, url];
   }, [location["search"], account["lecturer_id"]]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -21,7 +25,7 @@ const PresensiNilaiList = () => {
     <ListProvider
       filter={filter}
       onFilterChange={(value) => {
-        for (let v of ["lecturer_id", "study_program_id"]) {
+        for (let v of filterField) {
           if (value[v]) filterSearch.set(v, value[v]);
           else filterSearch.delete(v);
         }

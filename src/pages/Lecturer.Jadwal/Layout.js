@@ -7,7 +7,7 @@ export const Layout = () => {
   return (
     <Flex sx={{ py: 4, flexDirection: 'column', height: '100%' }}>
       <Box sx={{ px: 3 }}>
-        <Box as={H2} sx={{ mb: 3 }}>Jadwal</Box>
+        <Box as={H2} sx={{ mb: 4 }}>Jadwal</Box>
       </Box>
       <Divider sx={{ mt: 0, mb: 2 }} />
       <Router />
