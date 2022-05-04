@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Box, Flex, ListGroup, Select, Pagination, useClient, useList } from 'components'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
@@ -6,35 +6,14 @@ import Filter from './Filter'
 import DialogHapusKurikulum from "./Dialog.Hapus";
 import { useHistory } from 'react-router-dom'
 import { filterField } from '.'
+import { FetchAndSelect } from 'components/FetchAndSelect'
 
 export const Layout = () => {
   const client = useClient();
   const history = useHistory();
 
   const { selectedItem, paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
-  const [studyPrograms, setStudyPrograms] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(null);
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await client["study-programs"].find({
-          query: {
-            $limit: 100,
-            $select: ["id", "name"],
-            $include: [{
-              model: "majors",
-              $select: ["id", "name"]
-            }]
-          }
-        });
-        setStudyPrograms(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetch();
-  }, [client, filter]);
 
   return (
     <Box>
@@ -96,19 +75,37 @@ export const Layout = () => {
                     setFilter(filter => ({ ...filter, "year": value }))
                   }}
                 />
-                <Select
+                <FetchAndSelect
+                  service={client["study-programs"]}
+                  id="f-study_program_id"
+                  name="study_program_id"
                   minimal={true}
-                  label="Program Studi"
+                  placeholder="Program Studi"
                   value={filter["study_program_id"]}
-                  options={studyPrograms.map((item) => {
-                    return {
-                      label: item["name"],
-                      value: item["id"],
-                      info: item["major"]["name"]
-                    }
-                  })}
                   onChange={({ value }) => {
                     setFilter(filter => ({ ...filter, "study_program_id": value }))
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      "name": q ? {
+                        $iLike: `%${q}%`
+                      } : undefined,
+                      $select: ["id", "name"],
+                      $include: [{
+                        model: "majors",
+                        $select: ["id", "name"]
+                      }]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        value: `${item["id"]}`,
+                        info: item["major"]["name"]
+                      }
+                    })
                   }}
                 />
                 {filterField.map(f => !!filter[f]).indexOf(true) !== -1
