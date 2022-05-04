@@ -41,7 +41,7 @@ const Item = ({ data: item }) => {
       </Box>
       <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
         <Box>
-          <Link to={`/staff-dan-pengajar/${item["lecturer"]["employee"]["nip"]}`}>
+          <Link to={`/pengajar/${item["lecturer"]["id"]}`}>
             {item["lecturer"]["employee"]["name"]}
           </Link>
         </Box>
@@ -51,7 +51,7 @@ const Item = ({ data: item }) => {
       </Box>
       <Box sx={{ flexGrow: 1, mr: 3, width: `${100 / 3}%` }}>
         <Box>
-          <Link to={`/kurikulum/mata-kuliah/${item["subject"]["id"]}`}>
+          <Link to={`/mata-kuliah/${item["subject"]["id"]}`}>
             {item["subject"]["name"]}
           </Link>
         </Box>
