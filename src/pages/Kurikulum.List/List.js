@@ -1,5 +1,6 @@
 import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
+import { useDebounce } from 'components/helper'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -7,17 +8,19 @@ const List = () => {
   const client = useClient();
   const { items, setItems, paging, setPaging, filter, selectedItem, dispatchSelectedItem } = useList();
 
+  const _f = useDebounce(filter, 200);
+
   useEffect(() => {
     const fetch = async () => {
       setItems(null);
       try {
         const res = await client["curriculums"].find({
           query: {
-            "name": filter["name"] ? {
-              $iLike: `%${filter["name"]}%`
+            "name": _f["name"] ? {
+              $iLike: `%${_f["name"]}%`
             } : undefined,
-            "year": filter["year"] || undefined,
-            "study_program_id": filter["study_program_id"] || undefined,
+            "year": _f["year"] || undefined,
+            "study_program_id": _f["study_program_id"] || undefined,
             $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"],
             $skip: paging.skip,
             $include: [{
@@ -27,7 +30,8 @@ const List = () => {
                 model: "majors",
                 $select: ["id", "name"]
               }]
-            }]
+            }],
+            $distinct: true
           }
         });
         setItems(res.data);
@@ -42,7 +46,7 @@ const List = () => {
       }
     };
     fetch();
-  }, [client, setItems, setPaging, paging.skip, filter]);
+  }, [client, setItems, setPaging, paging.skip, _f]);
 
   return (
     <>

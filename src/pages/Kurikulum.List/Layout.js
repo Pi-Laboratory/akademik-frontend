@@ -72,7 +72,7 @@ export const Layout = () => {
                     })
                   })}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "year": value }))
+                    setFilter(filter => ({ ...filter, "year": value }), true)
                   }}
                 />
                 <FetchAndSelect
@@ -83,7 +83,7 @@ export const Layout = () => {
                   placeholder="Program Studi"
                   value={filter["study_program_id"]}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "study_program_id": value }))
+                    setFilter(filter => ({ ...filter, "study_program_id": value }), true)
                   }}
                   onPreFetch={(q, query) => {
                     return {
@@ -120,7 +120,7 @@ export const Layout = () => {
                       setFilter(filter => ({
                         ...filter,
                         ...ff
-                      }));
+                      }), true);
                     }}
                   />}
               </Box>
