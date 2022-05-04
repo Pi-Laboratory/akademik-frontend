@@ -1,41 +1,14 @@
 import { Button, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
+import { Box, Flex, ListGroup, useClient, useList } from "components";
 import Filter from "./Filter";
 import List from "./List";
 import { Pagination } from "components/Pagination";
-import { useCallback, useState } from "react";
 import { filterField } from ".";
+import { FetchAndSelect } from "components/FetchAndSelect";
 
 const Layout = () => {
   const client = useClient();
   const { paging, setPaging, filter, setFilter, items, status, selectedItem, dispatchSelectedItem } = useList();
-
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const fetchStudyPrograms = useCallback(async (query) => {
-    try {
-      const res = await client["study-programs"].find({
-        query: {
-          "name": query ? {
-            $iLike: `%${query}%`
-          } : undefined,
-          $limit: 100,
-          $select: ["id", "name"],
-          $include: [{
-            model: "majors",
-            $select: ["id", "name"]
-          }]
-        }
-      });
-      await setStudyPrograms(res.data.map(({ id, name, major }) => ({
-        label: name,
-        value: id,
-        info: major["name"]
-      })));
-    } catch (err) {
-      console.error(err);
-    }
-  }, [client]);
 
   return (
     <Box sx={{ mt: 3, px: 3 }}>
@@ -64,17 +37,37 @@ const Layout = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-              <Select
+              <FetchAndSelect
+                service={client["study-programs"]}
+                id="f-study_program_id"
+                name="study_program_id"
                 minimal={true}
-                label="Program Studi"
+                placeholder="Program Studi"
                 value={filter["study_program_id"]}
-                options={studyPrograms}
-                onQueryChange={(query) => {
-                  fetchStudyPrograms(query);
-                }}
-                onOpening={async () => await fetchStudyPrograms()}
                 onChange={({ value }) => {
-                  setFilter(filter => ({ ...filter, "study_program_id": value }))
+                  setFilter(filter => ({ ...filter, "study_program_id": value }), true)
+                }}
+                onPreFetch={(q, query) => {
+                  return {
+                    ...query,
+                    "name": q ? {
+                      $iLike: `%${q}%`
+                    } : undefined,
+                    $select: ["id", "name"],
+                    $include: [{
+                      model: "majors",
+                      $select: ["id", "name"]
+                    }]
+                  }
+                }}
+                onFetched={(items) => {
+                  return items.map((item) => {
+                    return {
+                      label: item["name"],
+                      value: `${item["id"]}`,
+                      info: item["major"]["name"]
+                    }
+                  })
                 }}
               />
               {filterField.map(f => !!filter[f]).indexOf(true) !== -1
