@@ -13,7 +13,7 @@ export const FetchAndSelect = ({
   const isPreFetch = useMemo(() => {
     return (initialValue !== null
       && initialValue !== undefined)
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ export const FetchAndSelect = ({
       console.error(err.message);
     }
     setLoading(() => false);
-  }, [service, onFetched, onPreFetch, props.value]);
+  }, [service, onFetched, onPreFetch]);
 
   useEffect(() => {
     console.log(isPreFetch);
@@ -48,7 +48,7 @@ export const FetchAndSelect = ({
         id: initialValue
       }
     })
-  }, [isPreFetch]);
+  }, [isPreFetch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Select
