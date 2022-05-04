@@ -25,9 +25,9 @@ const Filter = () => {
           <InputGroup
             leftIcon="search"
             placeholder="Filter by name"
-            value={filter["name"] || ""}
+            defaultValue={filter["name"] || ""}
             onChange={(e) => {
-              setFilter(f => ({ ...f, name: e.target.value }));
+              setFilter(f => ({ ...f, name: e.target.value }), true);
             }}
           />
         </ControlGroup>

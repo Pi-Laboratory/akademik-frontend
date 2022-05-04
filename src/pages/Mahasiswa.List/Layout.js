@@ -1,44 +1,23 @@
 import { Box, Flex, ListGroup, Select, useClient, useList, Pagination } from 'components'
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useMemo } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
 import { filterField } from '.'
+import { FetchAndSelect } from 'components/FetchAndSelect'
 
 export const Layout = () => {
   const client = useClient();
   const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
 
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const fetchStudyPrograms = useCallback(async (query) => {
-    try {
-      const res = await client["study-programs"].find({
-        query: {
-          "name": query ? {
-            $iLike: `%${query}%`
-          } : undefined,
-          $limit: 100,
-          $select: ["id", "name"],
-          $include: [{
-            model: "majors",
-            $select: ["id", "name"]
-          }]
-        }
-      });
-      await setStudyPrograms(res.data.map(({ id, name, major }) => ({
-        label: name,
-        value: id,
-        info: major["name"]
-      })));
-    } catch (err) {
-      console.error(err);
-    }
-  }, [client]);
-
-  useEffect(() => {
-    fetchStudyPrograms();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const years = useMemo(() => {
+    return new Array(25).fill(0).map((_, idx) => {
+      const year = String(new Date().getFullYear() - idx);
+      return ({
+        label: year,
+        value: year
+      })
+    })
   }, []);
 
   return (
@@ -72,27 +51,42 @@ export const Layout = () => {
                   minimal={true}
                   label="Angkatan"
                   value={filter["generation"]}
-                  options={Array(25).fill(0).map((_, idx) => {
-                    const year = String(new Date().getFullYear() - idx);
-                    return ({
-                      label: year,
-                      value: year
-                    })
-                  })}
+                  options={years}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "generation": value }))
+                    setFilter(filter => ({ ...filter, "generation": value }), true)
                   }}
                 />
-                <Select
+                <FetchAndSelect
+                  service={client["study-programs"]}
+                  id="f-study_program_id"
+                  name="study_program_id"
                   minimal={true}
-                  label="Program Studi"
+                  placeholder="Program Studi"
                   value={filter["study_program_id"]}
-                  options={studyPrograms}
-                  onQueryChange={(query) => {
-                    fetchStudyPrograms(query);
-                  }}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "study_program_id": value }))
+                    setFilter(filter => ({ ...filter, "study_program_id": value }), true)
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      "name": q ? {
+                        $iLike: `%${q}%`
+                      } : undefined,
+                      $select: ["id", "name"],
+                      $include: [{
+                        model: "majors",
+                        $select: ["id", "name"]
+                      }]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        value: `${item["id"]}`,
+                        info: item["major"]["name"]
+                      }
+                    })
                   }}
                 />
                 {filterField.map(f => !!filter[f]).indexOf(true) !== -1
