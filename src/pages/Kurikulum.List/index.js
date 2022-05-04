@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 import ListProvider from 'components/list'
 import { Layout } from './Layout'
 import { useHistory, useLocation } from 'react-router-dom';
+import Header from '../Kurikulum/Header';
+import { Divider } from 'components';
 
 export const filterField = ["year", "study_program_id", "name"];
 
@@ -31,6 +33,8 @@ const ListKurikulum = () => {
         });
       }}
     >
+      <Header />
+      <Divider sx={{ mt: 0, mb: `8px` }} />
       <Layout />
     </ListProvider>
   )
