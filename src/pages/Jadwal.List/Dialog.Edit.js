@@ -1,6 +1,6 @@
 import { Button, Classes, Dialog, FormGroup, InputGroup, Tag } from "@blueprintjs/core";
 import { TimePicker } from "@blueprintjs/datetime";
-import { Box, CONSTANTS, Flex, Select, useClient } from "components";
+import { Box, CONSTANTS, Flex, Select, toaster, useClient } from "components";
 import { FieldArray, Formik } from "formik";
 import moment from "moment";
 import * as Yup from "yup";
@@ -72,7 +72,7 @@ const DialogEdit = ({
             });
 
             await Promise.all(deletedHour.map(async (hourId) => {
-              return await client["hours"].delete(hourId);
+              return await client["hours"].remove(hourId);
             }));
 
             await Promise.all(createdHour.map(async hour => {
@@ -91,6 +91,11 @@ const DialogEdit = ({
                 "end": moment(hour["end"]).format("HH:mm")
               })
             }));
+
+            toaster.show({
+              intent: "success",
+              message: "Successful Edit"
+            })
 
             onClose();
             onSubmitted(res);
