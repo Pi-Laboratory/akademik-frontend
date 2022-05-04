@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import DialogTambahBaru from "./Dialog.Tambah";
 import DialogHapus from "./Dialog.Hapus";
-import { filterField } from ".";
 
 const Filter = () => {
   const { selectedItem, filter, setFilter } = useList();
@@ -17,31 +16,13 @@ const Filter = () => {
           <InputGroup
             leftIcon="search"
             placeholder="Filter by name"
-            value={filter["name"] || ""}
+            defaultValue={filter["name"] || ""}
             onChange={(e) => {
-              setFilter(f => ({ ...f, name: e.target.value }));
+              setFilter(f => ({ ...f, name: e.target.value }), true);
             }}
           />
         </ControlGroup>
       </Box>
-
-      {filterField.map(f => !!filter[f]).indexOf(true) !== -1
-        && <Box>
-          <Button
-            title="Clear Filter"
-            minimal={true}
-            intent="warning"
-            icon="filter-remove"
-            onClick={() => {
-              const ff = {};
-              filterField.forEach(f => ff[f] = undefined);
-              setFilter(filter => ({
-                ...filter,
-                ...ff
-              }));
-            }}
-          />
-        </Box>}
       <Box sx={{ flexGrow: 1 }} />
       <Flex>
         {selectedItem.length > 0 &&

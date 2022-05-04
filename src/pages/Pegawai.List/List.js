@@ -2,10 +2,13 @@ import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, useClient, useList } from "components"
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { useDebounce } from "components/helper";
 
 const List = () => {
   const client = useClient();
   const { items, setItems, filter, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
+
+  const _f = useDebounce(filter, 200);
 
   useEffect(() => {
     const fetch = async () => {
@@ -16,8 +19,8 @@ const List = () => {
             $sort: {
               id: -1
             },
-            "name": filter["name"] ? {
-              $iLike: `%${filter["name"]}%`
+            "name": _f["name"] ? {
+              $iLike: `%${_f["name"]}%`
             } : undefined,
             $skip: paging.skip,
             $select: ["id", "name", "front_degree", "back_degree", "nip", "id_number"]
@@ -35,7 +38,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, filter, setPaging, setItems]);
+  }, [client, paging.skip, _f, setPaging, setItems]);
   return (
     <>
       {items === null &&
