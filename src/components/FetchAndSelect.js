@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import { Select } from "./Select";
 
 export const FetchAndSelect = ({
@@ -6,18 +6,31 @@ export const FetchAndSelect = ({
   onPreFetch,
   onFetched,
   onOpening = async () => { },
+  initialValue,
   ...props
 }) => {
+
+  const isPreFetch = useMemo(() => {
+    return (initialValue !== null
+      && initialValue !== undefined)
+  }, []);
 
   const [loading, setLoading] = useState(false);
 
   const [items, setItems] = useState([]);
 
-  const fetchItems = useCallback(async (q) => {
+  const fetchItems = useCallback(async (q, option) => {
     setLoading(() => true);
     let query = {
       $limit: 50,
+      $distinct: true
     };
+    if (option && option.query) {
+      query = {
+        ...query,
+        ...option.query
+      }
+    }
     query = onPreFetch(q, query);
     try {
       const res = await service.find({ query });
@@ -26,7 +39,16 @@ export const FetchAndSelect = ({
       console.error(err.message);
     }
     setLoading(() => false);
-  }, [service, onFetched, onPreFetch]);
+  }, [service, onFetched, onPreFetch, props.value]);
+
+  useEffect(() => {
+    console.log(isPreFetch);
+    fetchItems("", {
+      query: {
+        id: initialValue
+      }
+    })
+  }, [isPreFetch]);
 
   return (
     <Select

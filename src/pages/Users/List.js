@@ -3,8 +3,9 @@ import { Box, Container, Flex, ListGroup, useClient, useList } from "components"
 import { useDebounce } from "components/helper";
 import { Pagination } from "components/Pagination";
 import { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DialogHapus from "./Dialog.Hapus";
+import Item from "./Item";
 
 const List = () => {
   const client = useClient();
@@ -64,7 +65,8 @@ const List = () => {
             link: {
               label: "Detail",
               url
-            }
+            },
+            user: item
           }
         }));
         setPaging({
@@ -136,48 +138,21 @@ const List = () => {
           </Box>
         )}
         {items && items.map((item) => (
-          <ListGroup.Item key={item["id"]}>
-            <Flex>
-              <Box sx={{ width: 40, flexShrink: 0 }}>
-                <Checkbox
-                  checked={selectedItem.indexOf(item["id"]) !== -1}
-                  onChange={(e) => {
-                    dispatchSelectedItem({
-                      type: "toggle",
-                      data: {
-                        name: item["id"],
-                        value: e.target.checked
-                      }
-                    })
-                  }}
-                />
-              </Box>
-              <Box sx={{ flexGrow: 1, flexShrink: 0, width: `${100 / 3}%` }}>
-                <Box>
-                  {item["username"]}
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Username
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, flexShrink: 0, width: `${100 / 3}%` }}>
-                <Box>
-                  {item["role"]}
-                </Box>
-                <Box sx={{ color: "gray.5" }}>
-                  Role
-                </Box>
-              </Box>
-              <Box sx={{ flexGrow: 1, flexShrink: 0, width: `${100 / 3}%` }}>
-                {item["link"]["url"] &&
-                  <Box>
-                    <Link to={item["link"]["url"]}>
-                      {item["link"]["label"]}
-                    </Link>
-                  </Box>
-                }
-              </Box>
-            </Flex>
+          <ListGroup.Item
+            key={item["id"]}
+            sx={{
+              [`.action`]: {
+                width: "30px",
+                opacity: "0",
+                pointerEvents: "none"
+              },
+              [`&:hover .action`]: {
+                opacity: "1",
+                pointerEvents: "unset"
+              }
+            }}
+          >
+            <Item data={item} />
           </ListGroup.Item>))}
       </ListGroup>
       <Pagination

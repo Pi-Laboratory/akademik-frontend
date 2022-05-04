@@ -62,3 +62,17 @@ export function useDebounce(value, delay) {
   );
   return debouncedValue;
 }
+
+export const checkUserRole = (user) => {
+  let role = "admin";
+  if (user["lecturer_id"] !== null) {
+    role = "lecturer";
+  }
+  if (user["student_id"] !== null) {
+    role = "student";
+  }
+  if (user["registration_id"] !== null) {
+    role = "registration";
+  }
+  return role;
+}
