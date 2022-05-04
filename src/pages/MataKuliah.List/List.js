@@ -2,10 +2,13 @@ import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, useClient, useList } from "components";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { useDebounce } from "components/helper";
 
 const List = () => {
   const client = useClient();
   const { items, setItems, paging, setPaging, filter, selectedItem, dispatchSelectedItem } = useList();
+
+  const _f = useDebounce(filter, 200);
 
   useEffect(() => {
     const fetch = async () => {
@@ -13,13 +16,16 @@ const List = () => {
       try {
         const res = await client["subjects"].find({
           query: {
-            "semester": filter["semester"] || undefined,
-            "name": filter["name"] ? {
-              $iLike: `%${filter["name"]}%`
+            "name": _f["name"] ? {
+              $iLike: `%${_f["name"]}%`
             } : undefined,
-            "study_program_id": filter["study_program_id"] || undefined,
+            "semester": _f["semester"] || undefined,
+            "study_program_id": _f["study_program_id"] || undefined,
             $select: ["id", "code", "name", "semester", "created_at"],
             $skip: paging.skip,
+            $sort: {
+              name: 1,
+            },
             $include: [{
               model: "study_programs",
               $select: ["id", "name"]
@@ -38,7 +44,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, filter, setItems, setPaging]);
+  }, [client, paging.skip, _f, setItems, setPaging]);
 
   return (
     <>
@@ -73,7 +79,7 @@ const List = () => {
               />
             </Box>
 
-            <Box sx={{ width: "15%", flexGrow: 1, mr: 3 }}>
+            <Box sx={{ width: "20%", flexGrow: 1, mr: 3 }}>
               <Box>
                 <Link to={`${item["id"]}`}>
                   {item["name"]}
@@ -92,7 +98,7 @@ const List = () => {
               </Box>
             </Box>
 
-            <Box sx={{ flexGrow: 1, mr: 3 }}>
+            <Box sx={{ width: "15%", flexGrow: 1, mr: 3 }}>
               <Box sx={{ color: "gray.5" }}>
                 Program Studi
               </Box>
@@ -100,7 +106,7 @@ const List = () => {
                 {item["study_program"]["name"]}
               </Box>
             </Box>
-
+            
           </Flex>
         </ListGroup.Item>
       ))}

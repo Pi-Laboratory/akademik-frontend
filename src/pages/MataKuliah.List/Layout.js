@@ -1,44 +1,27 @@
-import { Button, Checkbox, Classes, HTMLSelect, } from "@blueprintjs/core";
+import { Button, Checkbox, Classes } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import Filter from "./Filter";
-import { useCallback, useState } from "react";
+import { useMemo } from "react";
 import { Pagination } from "components/Pagination";
 import List from "./List";
 import { filterField } from ".";
+import { FetchAndSelect } from "components/FetchAndSelect";
 
 const Layout = () => {
   const client = useClient();
   const { paging, setPaging, filter, setFilter, items, status, dispatchSelectedItem } = useList();
 
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const [loading, setLoading] = useState({
-    studyProgram: false,
-    major: false
-  })
-
-  const fetchStudyPrograms = useCallback(async (query) => {
-    setLoading(loading => ({ ...loading, studyProgram: true }));
-    const res = await client["study-programs"].find({
-      query: {
-        "name": query ? {
-          $iLike: `%${query}%`
-        } : undefined,
-        $limit: "100",
-        $select: ["id", "name"],
-        $include: [{
-          model: "majors",
-          $select: ["name"]
-        }]
+  const semester = useMemo(() => {
+    return new Array(8).fill(0).map((_, i) => {
+      let value = i + 1;
+      let info = value % 2 ? "Gasal" : "Genap";
+      return {
+        label: `${value}`,
+        value: `${value}`,
+        info
       }
-    });
-    await setStudyPrograms(res.data.map(({ id, name, major }) => ({
-      label: name,
-      value: id,
-      info: major["name"]
-    })));
-    setLoading(loading => ({ ...loading, studyProgram: false }));
-  }, [client]);
+    })
+  }, []);
 
   return (
     <Box sx={{ mt: 3, px: 3 }}>
@@ -67,37 +50,47 @@ const Layout = () => {
             </Box>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexShrink: 0 }}>
-              <HTMLSelect
-                minimal={true}
-                value={filter["semester"] || ""}
-                onChange={(e) => {
-                  setFilter(f => ({ ...f, semester: e.target.value }));
-                }}
-                options={new Array(9).fill(0).map((_, i) => {
-                  if (i === 0) return {
-                    label: "Semester",
-                    value: ""
-                  }
-                  return {
-                    label: `${i} ${i % 2 ? "Gasal" : "Genap"}`,
-                    value: i,
-                  }
-                })}
-              />
               <Select
-                loading={loading["studyProgram"]}
                 minimal={true}
-                label="Program Studi"
-                onChange={({ value }) => setFilter(filter => ({
-                  ...filter,
-                  "study_program_id": value
-                }))}
-                value={filter["study_program_id"]}
-                onQueryChange={(query) => {
-                  fetchStudyPrograms(query);
+                placeholder="Semester"
+                value={filter["semester"] || ""}
+                onChange={({ value }) => {
+                  setFilter(f => ({ ...f, semester: value }), true);
                 }}
-                onOpening={async () => await fetchStudyPrograms()}
-                options={studyPrograms}
+                options={semester}
+              />
+              <FetchAndSelect
+                service={client["study-programs"]}
+                id="f-study_program_id"
+                name="study_program_id"
+                minimal={true}
+                placeholder="Program Studi"
+                value={filter["study_program_id"]}
+                onChange={({ value }) => {
+                  setFilter(filter => ({ ...filter, "study_program_id": value }), true)
+                }}
+                onPreFetch={(q, query) => {
+                  return {
+                    ...query,
+                    "name": q ? {
+                      $iLike: `%${q}%`
+                    } : undefined,
+                    $select: ["id", "name"],
+                    $include: [{
+                      model: "majors",
+                      $select: ["id", "name"]
+                    }]
+                  }
+                }}
+                onFetched={(items) => {
+                  return items.map((item) => {
+                    return {
+                      label: item["name"],
+                      value: `${item["id"]}`,
+                      info: item["major"]["name"]
+                    }
+                  })
+                }}
               />
               {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                 && <Button
@@ -111,7 +104,7 @@ const Layout = () => {
                     setFilter(filter => ({
                       ...filter,
                       ...ff
-                    }));
+                    }), true);
                   }}
                 />}
             </Box>
