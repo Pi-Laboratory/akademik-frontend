@@ -96,6 +96,20 @@ export const REGISTRATION_STATUS = {
   "REGISTERED": "registered"
 }
 
+export const SUBJECT_TYPE = [
+  "T",
+  "P",
+  "T/P",
+]
+
+export const SUBJECT_TRAIT = [
+  "A",
+  "B",
+  "C",
+  "D",
+  "S",
+]
+
 const CONSTANTS = {
   DAYS,
   PEKERJAAN,

@@ -2,6 +2,12 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useReducer,
 
 const ListContext = createContext();
 
+const defaultPagingValue = {
+  total: null,
+  limit: null,
+  skip: 0
+}
+
 const ListProvider = ({
   children,
   onSelectionChange = () => { },
@@ -9,12 +15,17 @@ const ListProvider = ({
   ...props
 }) => {
   const [items, setItems] = useState(null);
-  const [filter, setFilter] = useState(props.filter || null);
-  const [paging, setPaging] = useState({
-    total: null,
-    limit: null,
-    skip: 0
-  });
+  const [filter, _setFilter] = useState(props.filter || null);
+  const [paging, _setPaging] = useState(defaultPagingValue);
+
+  const setFilter = useCallback(async (f, resetPaging = false) => {
+    if (resetPaging) {
+      await _setPaging((defaultPagingValue))
+    }
+    await _setFilter(f);
+  }, [
+    // _setFilter, _setPaging
+  ]);
 
   const selectedItemReducer = useCallback((state, action) => {
     switch (action.type) {
@@ -70,7 +81,7 @@ const ListProvider = ({
       checked,
     }
   }, [items, selectedItem]);
-  
+
   const options = {
     items,
     setItems,
@@ -79,7 +90,7 @@ const ListProvider = ({
     dispatchSelectedItem,
 
     paging,
-    setPaging,
+    setPaging: _setPaging,
 
     filter,
     setFilter,

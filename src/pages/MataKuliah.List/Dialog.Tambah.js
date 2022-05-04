@@ -1,6 +1,8 @@
 import { Button, Classes, Dialog, FileInput, FormGroup, HTMLSelect, InputGroup, Switch, Tag } from "@blueprintjs/core";
 import { Box, Divider, Flex, getBase64, Select, useClient } from "components";
 import { _base64ToArrayBuffer } from "components/base64ArrayBuffer";
+import { SUBJECT_TRAIT, SUBJECT_TYPE } from "components/constants";
+import { useTranslations } from "components/useTranslate";
 import { Formik } from "formik";
 import { useCallback, useState } from "react";
 import * as Yup from "yup";
@@ -69,6 +71,7 @@ const DialogMataKuliahBaru = ({
   onClose = () => { },
   onSubmitted = () => { }
 }) => {
+  const t = useTranslations("id");
   const client = useClient();
   const [curriculums, setCurriculums] = useState([]);
   const [studyPrograms, setStudyPrograms] = useState([]);
@@ -226,11 +229,12 @@ const DialogMataKuliahBaru = ({
                       value={values["type"]}
                       onChange={handleChange}
                       intent={errors["type"] ? "danger" : "none"}
-                      options={[
-                        "Teori",
-                        "Praktek",
-                        "Teori dan Praktek",
-                      ]}
+                      options={SUBJECT_TYPE.map((v) => {
+                        return {
+                          label: t.subject.type[v],
+                          value: v,
+                        }
+                      })}
                     />
                   </FormGroup>
                 </Box>
@@ -247,13 +251,12 @@ const DialogMataKuliahBaru = ({
                       value={values["subject_trait"]}
                       onChange={handleChange}
                       intent={errors["subject_trait"] ? "danger" : "none"}
-                      options={[
-                        { label: "Wajib", value: "A", info: "A" },
-                        { label: "Pilihan", value: "B", info: "B" },
-                        { label: "Wajib Permintaan", value: "C", info: "C" },
-                        { label: "Pilihan Permintaan", value: "D", info: "D" },
-                        { label: "Tugas Akhir/ Skripsi", value: "S", info: "S" },
-                      ]}
+                      options={SUBJECT_TRAIT.map((v) => {
+                        return {
+                          label: t.subject.trait[v],
+                          value: v,
+                        }
+                      })}
                     />
                   </FormGroup>
                 </Box>

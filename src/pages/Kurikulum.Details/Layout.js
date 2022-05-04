@@ -71,11 +71,13 @@ const Layout = () => {
         }
       </Box>
       <h4 className={Classes.HEADING}>Mata Kuliah</h4>
-      <ListProvider filter={{
-        "curriculum_id": params.id,
-        "semester": null,
-        "type": null,
-      }}>
+      <ListProvider
+        filter={{
+          "curriculum_id": params.id,
+          "semester": null,
+          "type": null,
+        }}
+      >
         <MataKuliahList />
       </ListProvider>
     </Box>

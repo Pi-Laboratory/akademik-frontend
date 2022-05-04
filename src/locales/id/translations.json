@@ -1,0 +1,16 @@
+{
+  "subject": {
+    "type": {
+      "T": "Teori",
+      "P": "Praktek",
+      "T/P": "Teori dan Praktek"
+    },
+    "trait": {
+      "A": "Wajib",
+      "B": "Pilihan",
+      "C": "Wajib Permintaan",
+      "D": "Pilihan Permintaan",
+      "S": "Tugas Akhir / Skripsi"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "subject": {
+    "type": {
+      "T": "Theory",
+      "P": "Practive",
+      "T/P": "Theory and Practice"
+    },
+    "trait": {
+      "A": "Required",
+      "B": "Optional",
+      "C": "Mandority Request",
+      "D": "Request Option",
+      "S": "Final Project / Thesis"
+    }
+  }
+}
