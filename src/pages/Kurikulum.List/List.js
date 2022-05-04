@@ -21,8 +21,12 @@ const List = () => {
             } : undefined,
             "year": _f["year"] || undefined,
             "study_program_id": _f["study_program_id"] || undefined,
-            $select: ["id", "name", "ideal_study_period", "maximum_study_period", "created_at"],
+            $select: ["id", "name", "year", "ideal_study_period", "maximum_study_period", "created_at"],
             $skip: paging.skip,
+            $sort: {
+              year: -1,
+              name: 1
+            },
             $include: [{
               model: "study_programs",
               $select: ["id", "name"],
@@ -87,11 +91,11 @@ const List = () => {
               </Box>
             </Box>
             <Box sx={{ width: "25%" }}>
-              <Box>
-                24
-              </Box>
               <Box sx={{ color: "gray.5" }}>
-                Mata Kuliah
+                Tahun
+              </Box>
+              <Box>
+                {item["year"]}
               </Box>
             </Box>
             <Box sx={{ width: "25%" }}>
