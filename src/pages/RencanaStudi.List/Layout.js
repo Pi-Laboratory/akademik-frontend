@@ -1,13 +1,13 @@
 import { Box, Flex, ListGroup, Select, useClient, useList, Pagination } from 'components'
-import { useEffect, useCallback, useState } from 'react'
+import { useMemo } from 'react'
 import List from './List'
 import { Button, Checkbox, Classes } from '@blueprintjs/core'
 import Filter from './Filter'
-import { useHistory } from 'react-router-dom'
+import { FetchAndSelect } from 'components/FetchAndSelect'
+import { filterField } from "./";
 
 export const Layout = () => {
   const client = useClient();
-  const history = useHistory();
 
   const {
     selectedItem,
@@ -20,29 +20,14 @@ export const Layout = () => {
     dispatchSelectedItem,
   } = useList();
 
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const fetchStudyPrograms = useCallback(async () => {
-    try {
-      const res = await client["study-programs"].find({
-        query: {
-          $limit: 100,
-          $select: ["id", "name"],
-          $include: [{
-            model: "majors",
-            $select: ["id", "name"]
-          }]
-        }
-      });
-      setStudyPrograms(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  }, [client]);
-
-  useEffect(() => {
-    fetchStudyPrograms();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  const years = useMemo(() => {
+    return new Array(50).fill(0).map((_, idx) => {
+      const year = String(new Date().getFullYear() - idx);
+      return ({
+        label: year,
+        value: year
+      })
+    })
   }, []);
 
   return (
@@ -74,7 +59,7 @@ export const Layout = () => {
                 {selectedItem.length > 0
                   && <Box>{selectedItem.length} selected</Box>
                 }
-                {items !== null
+                {/* {items !== null
                   && (selectedItem.length === items.length)
                   && (selectedItem.length < paging.total)
                   && <Button
@@ -83,56 +68,63 @@ export const Layout = () => {
                     text={`Select all ${paging.total} item`}
                     onClick={() => { }}
                   />
-                }
+                } */}
               </Box>
               <Box sx={{ flexShrink: 0 }}>
                 <Select
                   minimal={true}
                   label="Angkatan"
                   value={filter["generation"]}
-                  options={Array(25).fill(0).map((_, idx) => {
-                    const year = String(new Date().getFullYear() - idx);
-                    return ({
-                      label: year,
-                      value: year
-                    })
-                  })}
+                  options={years}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "generation": value }))
+                    setFilter(filter => ({ ...filter, "generation": value }), true)
                   }}
                 />
-                <Select
+                <FetchAndSelect
+                  service={client["study-programs"]}
+                  id="f-study_program_id"
+                  name="study_program_id"
                   minimal={true}
-                  label="Program Studi"
+                  placeholder="Program Studi"
                   value={filter["study_program_id"]}
-                  options={studyPrograms.map((item) => {
-                    return {
-                      label: item["name"],
-                      value: item["id"],
-                      info: item["major"]["name"]
-                    }
-                  })}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "study_program_id": value }))
+                    setFilter(filter => ({ ...filter, "study_program_id": value }), true)
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      "name": q ? {
+                        $iLike: `%${q}%`
+                      } : undefined,
+                      $select: ["id", "name"],
+                      $include: [{
+                        model: "majors",
+                        $select: ["id", "name"]
+                      }]
+                    }
+                  }}
+                  onFetched={(items) => {
+                    return items.map((item) => {
+                      return {
+                        label: item["name"],
+                        value: `${item["id"]}`,
+                        info: item["major"]["name"]
+                      }
+                    })
                   }}
                 />
-                {[
-                  !!filter["study_program_id"],
-                  !!filter["generation"],
-                ].indexOf(true) !== -1
+                {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                   && <Button
                     minimal={true}
                     intent="warning"
                     icon="filter-remove"
                     onClick={() => {
-                      history.replace({
-                        search: ""
-                      });
+                      const ff = {};
+                      filterField.forEach(f => ff[f] = undefined);
                       setFilter(filter => ({
                         ...filter,
-                        "study_program_id": null,
-                        "generation": null
-                      }))
+                        ...ff
+                      }));
                     }}
                   />}
               </Box>

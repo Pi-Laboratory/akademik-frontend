@@ -1,11 +1,14 @@
 import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
+import { useDebounce } from 'components/helper'
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
   const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
+
+  const _f = useDebounce(filter, 200);
 
   useEffect(() => {
     setItems(null);
@@ -18,11 +21,11 @@ const List = () => {
         const res = await client["students"].find({
           query: {
             $limit: 25,
-            "name": filter["name"] ? {
-              $iLike: `%${filter["name"]}%`
+            "name": _f["name"] ? {
+              $iLike: `%${_f["name"]}%`
             } : undefined,
-            "generation": filter["generation"] || undefined,
-            "study_program_id": filter["study_program_id"] || undefined,
+            "generation": _f["generation"] || undefined,
+            "study_program_id": _f["study_program_id"] || undefined,
             "nim": {
               $ne: null
             },
@@ -50,7 +53,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging, paging.skip, filter]);
+  }, [client, setItems, setPaging, paging.skip, _f]);
 
   return (
     <>
