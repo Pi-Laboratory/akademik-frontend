@@ -1,5 +1,6 @@
 import { NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, ListGroup, useClient, useList } from "components";
+import { useDebounce } from "components/helper";
 import { useEffect } from "react";
 import Item from "./Item";
 
@@ -7,17 +8,20 @@ const List = () => {
   const client = useClient();
   const { filter, items, setItems, setPaging } = useList();
 
+  const _f = useDebounce(filter, 200);
+
   useEffect(() => {
     const fetch = async () => {
+      setItems(null);
       try {
         const query = {
           $select: ["id", "subject_id", "lecturer_id", "mid_test_weight", "presence_weight", "task_weight", "final_test_weight"],
           $include: [{
             model: "subjects",
             $select: ["id", "name", "code", "semester", "study_program_id"],
-            $where: filter["name"] ? {
+            $where: _f["name"] ? {
               name: {
-                $iLike: `%${filter["name"]}%`
+                $iLike: `%${_f["name"]}%`
               }
             } : undefined,
             $include: [{
@@ -49,7 +53,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, filter, setItems, setPaging]);
+  }, [client, _f, setItems, setPaging]);
 
   return (
     <>
