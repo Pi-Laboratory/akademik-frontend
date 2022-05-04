@@ -1,11 +1,14 @@
 import { Checkbox, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, useClient, useList } from "components";
+import { useDebounce } from "components/helper";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const List = () => {
   const client = useClient();
   const { items, setItems, setPaging, paging, filter, selectedItem, dispatchSelectedItem } = useList();
+
+  const _f = useDebounce(filter, 200);
 
   useEffect(() => {
     const fetch = async () => {
@@ -14,8 +17,8 @@ const List = () => {
         const res = await client["study-programs"].find({
           query: {
             $limit: 25,
-            "name": filter["name"] ? {
-              $iLike: `%${filter["name"]}%`
+            "name": _f["name"] ? {
+              $iLike: `%${_f["name"]}%`
             } : undefined,
             $sort: { "code": 1 },
             $select: ["id", "name", "code"],
@@ -24,7 +27,8 @@ const List = () => {
               model: "majors",
               $select: ["id", "name"]
             }],
-            "major_id": filter["major_id"] || undefined
+            "major_id": _f["major_id"] || undefined,
+            $distinct: true,
           }
         });
         setItems(res.data);
@@ -39,7 +43,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setItems, setPaging, filter]);
+  }, [client, paging.skip, setItems, setPaging, _f]);
 
   return (
     <>

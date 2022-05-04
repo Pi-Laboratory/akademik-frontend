@@ -1,31 +1,14 @@
 import { Button, Checkbox, Classes } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
+import { Box, Flex, ListGroup, useClient, useList } from "components";
 import Filter from "./Filter";
 import { Pagination } from "components/Pagination";
 import List from "./List";
-import { useEffect, useState } from "react";
 import { filterField } from ".";
+import { FetchAndSelect } from "components/FetchAndSelect";
 
 const Layout = () => {
   const client = useClient();
   const { paging, setPaging, items, status, filter, setFilter, dispatchSelectedItem } = useList();
-  const [majors, setMajors] = useState([]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      try {
-        const res = await client["majors"].find({
-          query: {
-            $select: ["id", "name"]
-          }
-        });
-        setMajors(res.data.map(({ id, name }) => ({ label: name, value: id })));
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    fetch();
-  }, [client]);
 
   return (
     <Box>
@@ -53,15 +36,34 @@ const Layout = () => {
               </Box>
               <Box sx={{ flexGrow: 1 }} />
               <Box sx={{ flexShrink: 0 }}>
-                <Select
-                  minimal={true}
-                  label="Jurusan"
-                  options={majors}
-                  value={filter["major_id"]}
-                  onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, "major_id": value }));
-                  }}
-                />
+              <FetchAndSelect
+                service={client["majors"]}
+                id="f-major_id"
+                name="major_id"
+                minimal={true}
+                placeholder="Jurusan"
+                value={filter["major_id"]}
+                onChange={({ value }) => {
+                  setFilter(filter => ({ ...filter, "major_id": value }), true)
+                }}
+                onPreFetch={(q, query) => {
+                  return {
+                    ...query,
+                    "name": q ? {
+                      $iLike: `%${q}%`
+                    } : undefined,
+                    $select: ["id", "name"],
+                  }
+                }}
+                onFetched={(items) => {
+                  return items.map((item) => {
+                    return {
+                      label: item["name"],
+                      value: `${item["id"]}`,
+                    }
+                  })
+                }}
+              />
                 {filterField.map(f => !!filter[f]).indexOf(true) !== -1
                   && <Button
                     title="Clear Filter"
