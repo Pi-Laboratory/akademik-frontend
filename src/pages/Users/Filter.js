@@ -24,9 +24,9 @@ const Filter = () => {
           <InputGroup
             leftIcon="search"
             placeholder="Filter by name"
-            value={filter["username"] || ""}
+            defaultValue={filter["username"] || ""}
             onChange={(e) => {
-              setFilter(f => ({ ...f, username: e.target.value }));
+              setFilter(f => ({ ...f, username: e.target.value }), true);
             }}
           />
         </ControlGroup>
@@ -46,7 +46,7 @@ const Filter = () => {
               onClick={() => {
                 setFilter(f => ({
                   ...f, role: f["role"] === role ? "" : role
-                }));
+                }), true);
               }}
             />
           ))}

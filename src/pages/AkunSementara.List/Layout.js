@@ -100,7 +100,7 @@ export const Layout = () => {
                         text={isActive && text}
                         onClick={() => {
                           if (isActive) return
-                          setFilter(f => ({ ...f, status: value }))
+                          setFilter(f => ({ ...f, status: value }), true)
                         }}
                       />
                     )
@@ -120,7 +120,7 @@ export const Layout = () => {
                       setFilter(filter => ({
                         ...filter,
                         ...ff
-                      }));
+                      }), true);
                     }}
                   />}
               </Box>

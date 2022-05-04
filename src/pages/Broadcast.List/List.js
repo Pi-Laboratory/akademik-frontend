@@ -1,11 +1,14 @@
 import { NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, useClient, useList } from 'components'
+import { useDebounce } from 'components/helper'
 import React, { useEffect } from 'react'
 import { Item } from './Item'
 
 const List = () => {
   const client = useClient();
   const { items, setItems, setPaging, filter, paging } = useList();
+
+  const _f = useDebounce(filter, 200);
 
   useEffect(() => {
     setItems(null);
@@ -26,35 +29,35 @@ const List = () => {
             model: "students",
             $select: ["id", "name", "study_program_id"],
             $where: {
-              study_program_id: filter["study_program_id"] || undefined,
+              study_program_id: _f["study_program_id"] || undefined,
               // name: "MIRIAM SITAMMU",
             },
             $required: true
-          }, 
-          // {
-          //   model: "lecturers",
-          //   $select: ["id"],
-          //   $include: [{
-          //     model: "employees",
-          //     $select: ["id", "name"]
-          //   }],
-          // }, {
-          //   model: "registrations",
-          //   $select: ["id"],
-          //   $include: [{
-          //     model: "students",
-          //     $select: ["id", "name"]
-          //   }],
-          // }
-        ]
+          },
+            // {
+            //   model: "lecturers",
+            //   $select: ["id"],
+            //   $include: [{
+            //     model: "employees",
+            //     $select: ["id", "name"]
+            //   }],
+            // }, {
+            //   model: "registrations",
+            //   $select: ["id"],
+            //   $include: [{
+            //     model: "students",
+            //     $select: ["id", "name"]
+            //   }],
+            // }
+          ]
         };
-        if (filter["role"] === "lecturer") {
+        if (_f["role"] === "lecturer") {
           query["lecturer_id"] = { $ne: null }
-        } else if (filter["role"] === "student") {
+        } else if (_f["role"] === "student") {
           query["student_id"] = { $ne: null };
-        } else if (filter["role"] === "public") {
+        } else if (_f["role"] === "public") {
           query["registration_id"] = { $ne: null };
-        } else if (filter["role"] === "admin") {
+        } else if (_f["role"] === "admin") {
           query["lecturer_id"] = null;
           query["student_id"] = null;
           query["registration_id"] = null;
@@ -99,7 +102,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, setItems, setPaging, paging.skip, filter]);
+  }, [client, setItems, setPaging, paging.skip, _f]);
 
   return (
     <>

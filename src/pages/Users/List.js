@@ -1,5 +1,6 @@
 import { Button, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Container, Flex, ListGroup, useClient, useList } from "components";
+import { useDebounce } from "components/helper";
 import { Pagination } from "components/Pagination";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -11,6 +12,8 @@ const List = () => {
   const [dialogOpen, setDialogOpen] = useState(null);
   const history = useHistory();
 
+  const _f = useDebounce(filter, 200);
+
   useEffect(() => {
     const fetch = async () => {
       setItems(null);
@@ -18,21 +21,21 @@ const List = () => {
         const query = {
           $limit: 25
           ,
-          "username": filter["username"] ? {
-            $iLike: `%${filter["username"]}%`
+          "username": _f["username"] ? {
+            $iLike: `%${_f["username"]}%`
           } : undefined,
           $skip: paging.skip,
           $sort: {
             id: 1
           }
         };
-        if (filter["role"] === "Dosen") {
+        if (_f["role"] === "Dosen") {
           query["lecturer_id"] = { $ne: null }
-        } else if (filter["role"] === "Mahasiswa") {
+        } else if (_f["role"] === "Mahasiswa") {
           query["student_id"] = { $ne: null };
-        } else if (filter["role"] === "Public") {
+        } else if (_f["role"] === "Public") {
           query["registration_id"] = { $ne: null };
-        } else if (filter["role"] !== "") {
+        } else if (_f["role"] !== "") {
           query["lecturer_id"] = null;
           query["student_id"] = null;
           query["registration_id"] = null;
@@ -75,7 +78,7 @@ const List = () => {
       }
     }
     fetch();
-  }, [client, filter, paging.skip, setItems, setPaging]);
+  }, [client, _f, paging.skip, setItems, setPaging]);
 
   return (
     <Container sx={{ px: 3 }}>

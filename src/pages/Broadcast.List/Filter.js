@@ -1,42 +1,12 @@
 import { Button, ButtonGroup } from "@blueprintjs/core";
-import { Box, Flex, Select, useClient, useList } from "components";
-import { useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { Box, Flex, useClient, useList } from "components";
+import { FetchAndSelect } from "components/FetchAndSelect";
+import { filterField } from ".";
 
 const Filter = () => {
   const client = useClient();
 
   const { filter, setFilter } = useList();
-
-  const history = useHistory();
-  const [loading, setLoading] = useState({
-    "studyPrograms": false,
-  });
-  const [studyPrograms, setStudyPrograms] = useState([]);
-
-  const fetchStudyPrograms = useCallback(async (query) => {
-    setLoading(l => ({ ...l, studyPrograms: true }));
-    try {
-      const res = (await client["study-programs"].find({
-        query: {
-          $limit: 25,
-          $select: ["id", "name"],
-          $include: [{
-            model: "majors",
-            $select: ["id", "name"]
-          }]
-        }
-      })).data.map((d) => ({
-        label: d["name"],
-        value: d["id"],
-        info: d["major"]["name"]
-      }));
-      setStudyPrograms(res);
-    } catch (err) {
-      console.error(err.message);
-    }
-    setLoading(l => ({ ...l, studyPrograms: false }));
-  }, [client]);
 
   return (
     <Flex
@@ -74,7 +44,7 @@ const Filter = () => {
                   text={text}
                   onClick={() => {
                     if (isActive) return
-                    setFilter(f => ({ ...f, role: value }))
+                    setFilter(f => ({ ...f, role: value }), true)
                   }}
                 />
               )
@@ -82,43 +52,54 @@ const Filter = () => {
           </ButtonGroup>
         </Box>
         <Box sx={{ ml: 2 }}>
-          <Select
-            fill={true}
-            id={`f-study_program_id`}
-            name={`study_program_id`}
-            loading={loading["studyPrograms"]}
+          <FetchAndSelect
+            service={client["study-programs"]}
+            id="f-study_program_id"
+            name="study_program_id"
+            minimal={true}
             placeholder="Program Studi"
-            value={filter[`study_program_id`]}
+            value={filter["study_program_id"]}
             onChange={({ value }) => {
-              setFilter(f => ({ ...f, "study_program_id": value }));
+              setFilter(filter => ({ ...filter, "study_program_id": value }), true)
             }}
-            onQueryChange={(value) => {
-              fetchStudyPrograms(value);
+            onPreFetch={(q, query) => {
+              return {
+                ...query,
+                "name": q ? {
+                  $iLike: `%${q}%`
+                } : undefined,
+                $select: ["id", "name"],
+                $include: [{
+                  model: "majors",
+                  $select: ["id", "name"]
+                }]
+              }
             }}
-            options={studyPrograms}
-            onOpening={() => {
-              fetchStudyPrograms("");
+            onFetched={(items) => {
+              return items.map((item) => {
+                return {
+                  label: item["name"],
+                  value: `${item["id"]}`,
+                  info: item["major"]["name"]
+                }
+              })
             }}
           />
         </Box>
         <Box sx={{ ml: 2 }}>
-          {[
-            !!filter["role"],
-            !!filter["study_program_id"],
-          ].indexOf(true) !== -1
+          {filterField.map(f => !!filter[f]).indexOf(true) !== -1
             && <Button
+              title="Clear Filter"
               minimal={true}
               intent="warning"
               icon="filter-remove"
               onClick={() => {
-                history.replace({
-                  search: ""
-                });
+                const ff = {};
+                filterField.forEach(f => ff[f] = undefined);
                 setFilter(filter => ({
                   ...filter,
-                  "role": null,
-                  "study_program_id": null
-                }))
+                  ...ff
+                }), true);
               }}
             />}
         </Box>
