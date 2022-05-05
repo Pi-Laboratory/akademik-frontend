@@ -1,8 +1,8 @@
 import { Button, Checkbox, Classes, Dialog, FormGroup, InputGroup, Radio, RadioGroup } from "@blueprintjs/core";
-import { Select, toaster, useClient } from "components";
+import { toaster, useClient } from "components";
 import { FetchAndSelect } from "components/FetchAndSelect";
 import { Formik } from "formik";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import * as Yup from "yup";
 import _get from "lodash/get";
 import { LECTURER_STATUS } from "components/constants";
