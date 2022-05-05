@@ -1,11 +1,12 @@
-import { Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
+import { Button, Checkbox, NonIdealState, Spinner } from '@blueprintjs/core'
 import { Box, Flex, ListGroup, useClient, useList } from 'components'
 import { useDebounce } from 'components/helper'
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const List = () => {
   const client = useClient();
+  const history = useHistory();
   const { items, setItems, setPaging, filter, paging, selectedItem, dispatchSelectedItem } = useList();
 
   const _f = useDebounce(filter, 200);
@@ -65,7 +66,19 @@ const List = () => {
         </Box>
       }
       {items && items.map((item) => (
-        <ListGroup.Item key={item["id"]}>
+        <ListGroup.Item
+          key={item["id"]}
+          sx={{
+            [`.action`]: {
+              width: "30px",
+              opacity: "0",
+              pointerEvents: "none"
+            },
+            [`&:hover .action`]: {
+              opacity: "1",
+              pointerEvents: "unset"
+            }
+          }}>
           <Flex>
             <Box sx={{ width: 40, flexShrink: 0 }}>
               <Checkbox
@@ -95,6 +108,15 @@ const List = () => {
             </Box>
             <Box sx={{ width: "20%", flexShrink: 0 }}>
               {item["study_program"]["name"]}
+            </Box>
+            <Box className="action">
+              <Button
+                minimal={true}
+                icon={"edit"}
+                onClick={() => {
+                  history.push(`mahasiswa/${item["id"]}/settings`);
+                }}
+              />
             </Box>
           </Flex>
         </ListGroup.Item>
