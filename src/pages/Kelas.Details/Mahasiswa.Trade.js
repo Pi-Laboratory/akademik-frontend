@@ -1,11 +1,14 @@
 import { Button, Classes, Position, ProgressBar, Toaster } from "@blueprintjs/core";
+import { Tooltip2 } from "@blueprintjs/popover2";
 import { Box, Flex, useClient } from "components";
+import { useInject } from "components/inject";
 import ListProvider from "components/list";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory, useParams } from "react-router";
 import TradeProvider from "./hoc";
 import MahasiswaTradeSource from "./Mahasiswa.Trade.Source";
 import MahasiswaTradeTarget from "./Mahasiswa.Trade.Target";
+import _get from "lodash/get"
 
 const TradeToaster = Toaster.create({
   position: Position.TOP
@@ -17,6 +20,9 @@ const MahasiswaTrade = () => {
   const history = useHistory();
   const [sourceList, setSourceList] = useState([]);
   const [targetList, setTargetList] = useState([]);
+
+  const inject = useInject();
+  console.log(inject);
 
   const [progress, setProgress] = useState(null);
   const tradeToasterKeyRef = useRef(null);
@@ -93,20 +99,25 @@ const MahasiswaTrade = () => {
             filter={{
               "class_id": params.id,
               "generation": null,
-              "study_program_id": null
             }}
           >
             <MahasiswaTradeTarget />
           </ListProvider>
         </Box>
-        <Flex sx={{ flexShrink: 1, alignItems: "center" }}>
-          <Box>
-            <Button
-              disabled={!(sourceList.length > 0 || targetList.length > 0)}
-              title="Menukarkan"
-              icon="exchange"
-              onClick={() => onClickExchange()}
-            />
+        <Flex sx={{ flexShrink: 1, alignItems: "flex-start" }}>
+          <Box sx={{
+            position: "sticky",
+            top: "25vh",
+            py: 3,
+          }}>
+            <Tooltip2 content={"Trade"} placement="bottom">
+              <Button
+                disabled={!(sourceList.length > 0 || targetList.length > 0)}
+                title="Menukarkan"
+                icon="exchange"
+                onClick={() => onClickExchange()}
+              />
+            </Tooltip2>
           </Box>
         </Flex>
         <Box sx={{ flexGrow: 1, width: "50%" }}>
@@ -117,7 +128,7 @@ const MahasiswaTrade = () => {
             filter={{
               "class_id": params.id,
               "generation": null,
-              "study_program_id": null
+              "study_program_id": _get(inject.state, "study_program_id")
             }}
           >
             <MahasiswaTradeSource />

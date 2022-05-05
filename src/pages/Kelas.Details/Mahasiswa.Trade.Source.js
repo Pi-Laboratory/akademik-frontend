@@ -1,9 +1,10 @@
 import { AnchorButton, Button, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import { Link, useParams } from "react-router-dom";
-import { useEffect, forwardRef } from "react";
+import { useEffect, forwardRef, useMemo } from "react";
 import { Pagination } from "components/Pagination";
 import { useTrade } from "./hoc";
+import { useDebounce } from "components/helper";
 
 const btn = forwardRef((props, ref) =>
   <AnchorButton
@@ -19,6 +20,18 @@ const MahasiswaTradeSource = () => {
   const params = useParams();
   const { items, setItems, paging, setPaging, filter, setFilter, status, selectedItem, dispatchSelectedItem } = useList();
 
+  const years = useMemo(() => {
+    return new Array(50).fill(0).map((_, idx) => {
+      const year = String(new Date().getFullYear() - idx);
+      return ({
+        label: year,
+        value: year
+      })
+    });
+  }, []);
+
+  const _f = useDebounce(filter, 200);
+
   useEffect(() => {
     const fetch = async () => {
       setItems(null);
@@ -28,14 +41,21 @@ const MahasiswaTradeSource = () => {
             "nim": {
               $ne: null
             },
+            "generation": _f["generation"] || undefined,
+            "study_program_id": _f["study_program_id"] || undefined,
             $include: [{
               model: "classes",
               $select: ["id", "name"],
             }],
+            $sort: {
+              name: 1
+            },
             $select: ["id", "name", "nim", "class_id"],
-            $skip: paging.skip
+            $skip: paging.skip,
+            $distinct: true,
           }
         });
+        console.log(res.data);
         setItems(res.data);
         setPaging({
           total: res.total,
@@ -48,7 +68,7 @@ const MahasiswaTradeSource = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setItems, setPaging, filter]);
+  }, [client, paging.skip, setItems, setPaging, _f]);
 
   return (
     <>
@@ -90,11 +110,7 @@ const MahasiswaTradeSource = () => {
                   onChange={({ value }) => {
                     setFilter(filter => ({ ...filter, generation: value }));
                   }}
-                  options={Array(10).fill(0).map((_, idx) => {
-                    const now = new Date().getFullYear();
-                    const value = String(now - idx);
-                    return ({ label: value, value: value });
-                  })}
+                  options={years}
                 />
                 {filter["generation"] !== null &&
                   <Button
@@ -168,9 +184,7 @@ const MahasiswaTradeSource = () => {
                 <Box sx={{ flexGrow: 1, mr: 3 }}>
                   <Box>
                     {item["class_id"] !== Number(params["id"])
-                      ? <Link to={`/kelas/${item["class"]["id"]}`}>
-                        {item["class"]["name"]}
-                      </Link>
+                      ? item["class"]["name"]
                       : "Kelas ini"
                     }
                   </Box>

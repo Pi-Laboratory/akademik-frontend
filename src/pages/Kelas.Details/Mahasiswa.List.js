@@ -1,11 +1,11 @@
-import { Button, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
+import { NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, Flex, ListGroup, useClient, useList } from "components";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
 const MahasiswaList = () => {
   const client = useClient();
-  const { items, setItems, paging, setPaging, filter, setFilter } = useList();
+  const { items, setItems, paging, setPaging, filter } = useList();
 
   useEffect(() => {
     const fetch = async () => {
@@ -13,9 +13,12 @@ const MahasiswaList = () => {
       try {
         const res = await client["students"].find({
           query: {
+            "class_id": filter["class_id"],
             $select: ["id", "nim", "name", "generation"],
             $skip: paging.skip,
-            "class_id": filter["class_id"]
+            $sort: {
+              name: 1
+            }
           }
         });
         setItems(res.data);
@@ -37,32 +40,6 @@ const MahasiswaList = () => {
       <ListGroup.Header>
         <Flex>
           <Box sx={{ flexGrow: "1" }} />
-          <Box>
-            <Select
-              minimal={true}
-              placeholder="Angkatan"
-              value={filter["generation"]}
-              onChange={({ value }) => {
-                setFilter(filter => ({ ...filter, semester: value }));
-              }}
-              options={[
-                { label: "Gasal", value: 0 },
-                { label: "Genap", value: 1 }
-              ]}
-            />
-            {(filter["generation"] !== null) &&
-              <Button
-                minimal={true}
-                text="Reset"
-                onClick={() => {
-                  setFilter(filter => ({
-                    ...filter,
-                    type: null,
-                    semester: null
-                  }))
-                }}
-              />}
-          </Box>
         </Flex>
       </ListGroup.Header>
       {items === null &&

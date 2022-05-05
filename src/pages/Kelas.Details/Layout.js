@@ -1,6 +1,7 @@
 import { Classes, HTMLTable } from "@blueprintjs/core";
 import { Box, useClient } from "components";
-import { useEffect, useState } from "react";
+import { useInject } from "components/inject";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import Mahasiswa from "./Mahasiswa";
@@ -8,7 +9,7 @@ import Mahasiswa from "./Mahasiswa";
 const Layout = () => {
   const client = useClient();
   const params = useParams();
-  const [item, setItem] = useState(null);
+  const inject = useInject();
 
   useEffect(() => {
     const fetch = async () => {
@@ -25,13 +26,13 @@ const Layout = () => {
             }]
           }
         });
-        setItem(res);
+        inject.setState(res);
       } catch (err) {
         console.error(err);
       }
     }
     fetch();
-  }, [client, params.id]);
+  }, [client, params.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Box sx={{
@@ -40,7 +41,7 @@ const Layout = () => {
     }}>
       <Box sx={{ mb: 4 }}>
         <h4 className={Classes.HEADING}>Ringkasan</h4>
-        {item &&
+        {inject.state &&
           <Box
             sx={{
               "> table": {
@@ -51,9 +52,9 @@ const Layout = () => {
             <HTMLTable striped={true}>
               <tbody>
                 {[
-                  ["Nama", item["name"]],
-                  ["Program Studi", <Link to={`/divisi-pendidikan/program-studi/${item["study_program"]["id"]}`}>{item["study_program"]["name"]}</Link>],
-                  ["Jurusan", <Link to={`/divisi-pendidikan/jurusan/${item["study_program"]["major"]["id"]}`}>{item["study_program"]["major"]["name"]}</Link>],
+                  ["Nama", inject.state["name"]],
+                  ["Program Studi", <Link to={`/divisi-pendidikan/program-studi/${inject.state["study_program"]["id"]}`}>{inject.state["study_program"]["name"]}</Link>],
+                  ["Jurusan", <Link to={`/divisi-pendidikan/jurusan/${inject.state["study_program"]["major"]["id"]}`}>{inject.state["study_program"]["major"]["name"]}</Link>],
                 ].map((value, idx) => (
                   <tr key={idx}>
                     <td>

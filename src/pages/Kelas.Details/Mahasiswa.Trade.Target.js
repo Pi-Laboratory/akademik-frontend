@@ -1,14 +1,27 @@
 import { Button, Checkbox, Classes, NonIdealState, Spinner } from "@blueprintjs/core";
 import { Box, Flex, ListGroup, Select, useClient, useList } from "components";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Pagination } from "components/Pagination";
 import { useTrade } from "./hoc";
+import { useDebounce } from "components/helper";
 
 const MahasiswaTradeTarget = () => {
   const client = useClient();
   const trade = useTrade();
   const { items, setItems, paging, setPaging, filter, setFilter, status, selectedItem, dispatchSelectedItem } = useList();
+
+  const years = useMemo(() => {
+    return new Array(50).fill(0).map((_, idx) => {
+      const year = String(new Date().getFullYear() - idx);
+      return ({
+        label: year,
+        value: year
+      })
+    });
+  }, []);
+
+  const _f = useDebounce(filter, 200);
 
   useEffect(() => {
     const fetch = async () => {
@@ -18,7 +31,8 @@ const MahasiswaTradeTarget = () => {
           query: {
             $select: ["id", "name", "nim"],
             $skip: paging.skip,
-            "class_id": filter["class_id"]
+            "class_id": _f["class_id"],
+            "generation": _f["generation"] || undefined
           }
         });
         setItems(res.data);
@@ -33,7 +47,7 @@ const MahasiswaTradeTarget = () => {
       }
     }
     fetch();
-  }, [client, paging.skip, setItems, setPaging, filter]);
+  }, [client, paging.skip, setItems, setPaging, _f]);
 
   return (
     <>
@@ -73,13 +87,9 @@ const MahasiswaTradeTarget = () => {
                   placeholder="Angkatan"
                   value={filter["generation"]}
                   onChange={({ value }) => {
-                    setFilter(filter => ({ ...filter, generation: value }));
+                    setFilter(filter => ({ ...filter, generation: value }), true);
                   }}
-                  options={Array(10).fill(0).map((_, idx) => {
-                    const now = new Date().getFullYear();
-                    const value = String(now - idx);
-                    return ({ label: value, value: value });
-                  })}
+                  options={years}
                 />
                 {filter["generation"] !== null &&
                   <Button

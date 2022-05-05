@@ -18,7 +18,7 @@ const Mahasiswa = () => {
           <Button
             small={true}
             minimal={true}
-            text="Trade"
+            text={isTrade ? "Cancel" : "Trade"}
             onClick={() => {
               setIsTrade(state => !state);
             }}
