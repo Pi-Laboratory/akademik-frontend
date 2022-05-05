@@ -8,11 +8,13 @@ import { useNav } from "pages/Root/hoc";
 import { useState, useCallback } from "react";
 import { decode } from "base64-arraybuffer";
 import { useEmployee } from "./hoc";
+import { useHistory } from "react-router-dom";
 
 const Settings = ({ base }) => {
   const client = useClient();
   const employee = useEmployee();
   const navigation = useNav(base);
+  const history = useHistory();
 
   const [photoPopover, setPhotoPopover] = useState(false);
 
@@ -149,6 +151,7 @@ const Settings = ({ base }) => {
         }}
         onSubmit={async (values, { setSubmitting }) => {
           const result = { ...values };
+          console.log(result);
           if (values["photo"].cropped) {
             result["photo"] = values["photo"].cropped.split(",")[1];
             result["photo"] = decode(result["photo"]);
@@ -156,11 +159,13 @@ const Settings = ({ base }) => {
             result["photo"] = undefined;
           }
           try {
-            await client["students"].patch(employee["id"], result);
+            let res = await client["employees"].patch(employee["id"], result);
             toaster.show({
               intent: "success",
               message: "Berhasil disimpan"
             });
+            employee.forceUpdate();
+            // history.go(0);
           } catch (err) {
             console.error(err);
           }
