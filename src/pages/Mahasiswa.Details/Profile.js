@@ -14,7 +14,7 @@ const Profile = () => {
           <Box sx={{ width: "50%", px: 2 }}>
             <Box as={H3} sx={{ mb: 3 }}>Informasi Dasar</Box>
             <Box className={Classes.CARD} sx={{ p: 0 }}>
-              <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+              <HTMLTable striped={true} className={!student ? Classes.SKELETON : undefined} style={{ width: "100%" }}>
                 <tbody>
                   {[
                     ["Email", student && student["email"]],
@@ -46,7 +46,7 @@ const Profile = () => {
           <Box sx={{ width: "50%", px: 2 }}>
             <Box as={H3} sx={{ mb: 3 }}>Informasi Akademik</Box>
             <Box className={Classes.CARD} sx={{ p: 0 }}>
-              <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+              <HTMLTable striped={true} className={!student ? Classes.SKELETON : undefined} style={{ width: "100%" }}>
                 <tbody>
                   {[
                     ["Nomor Induk Mahasiswa", student && student["nim"]],
@@ -72,10 +72,10 @@ const Profile = () => {
             ["mother", "Ibu"],
             ["trustee", "Wali"],
           ].map((value) => (
-            <Box sx={{ width: "50%", px: 2, my: 3 }}>
+            <Box key={value[0]} sx={{ width: "50%", px: 2, my: 3 }}>
               <Box as={H3} sx={{ mb: 3 }}>Informasi {value[1]}</Box>
               <Box className={Classes.CARD} sx={{ p: 0 }}>
-                <HTMLTable striped={true} className={!student && Classes.SKELETON} style={{ width: "100%" }}>
+                <HTMLTable striped={true} className={!student ? Classes.SKELETON : undefined} style={{ width: "100%" }}>
                   <tbody>
                     {
                       [
@@ -86,7 +86,7 @@ const Profile = () => {
                         ["Pekerjaan", student && student[`${value[0]}_occupation`]],
                       ].map((val) => {
                         return (
-                          <tr key={val[0]} className={!student && Classes.SKELETON}>
+                          <tr key={val[0]} className={!student ? Classes.SKELETON : undefined}>
                             <td>{student ? val[0] : "Loading"}</td>
                             <td>{student ? val[1] : "Loading"}</td>
                           </tr>
