@@ -3,6 +3,8 @@ import FeathersAuth from "@feathersjs/authentication-client";
 import FeathersSocketIOClient from "@feathersjs/socketio-client";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
+import { Box } from "./Grid";
+import { useDebounce } from "./helper";
 
 export const host = new URL(window.location.origin);
 host.protocol = process.env["REACT_APP_SERVER_PROTOCOL"] || "http";
@@ -29,6 +31,35 @@ const getAccountRole = (account) => {
     return "Student";
   }
   return "Admin";
+}
+
+const ClientStatus = () => {
+  const client = useClient();
+  console.log(client.__connected);
+
+  const hide = useDebounce(client.__connected, 1000);
+
+  return (
+    <Box
+      className={hide ? "hide" : undefined}
+      sx={{
+        position: "fixed",
+        top: "0%",
+        right: 0,
+        mt: 2,
+        mr: 2,
+        py: 2,
+        px: 2,
+        backgroundColor: client.__connected ? "green.3" : "red.3",
+        borderRadius: 4,
+        transition: "top 1000ms ease, background-color 250ms ease",
+        "&.hide": {
+          top: "-100%"
+        }
+      }}>
+      {client.__connected ? `Connected` : `Not Connected`}
+    </Box>
+  )
 }
 
 const populateAccount = async (account) => {
@@ -165,6 +196,7 @@ export const ClientProvider = ({ children }) => {
 
   return (
     <ClientContext.Provider value={client}>
+      <ClientStatus />
       {children}
     </ClientContext.Provider>
   )
