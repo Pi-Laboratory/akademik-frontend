@@ -42,7 +42,6 @@ export const FetchAndSelect = ({
   }, [service, onFetched, onPreFetch]);
 
   useEffect(() => {
-    console.log(isPreFetch);
     fetchItems("", {
       query: {
         id: initialValue

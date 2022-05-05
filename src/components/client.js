@@ -35,7 +35,6 @@ const getAccountRole = (account) => {
 
 const ClientStatus = () => {
   const client = useClient();
-  console.log(client.__connected);
 
   const hide = useDebounce(client.__connected, 1000);
 

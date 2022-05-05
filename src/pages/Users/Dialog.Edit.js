@@ -36,7 +36,6 @@ const DialogEdit = ({
   const client = useClient();
   const defaultValue = useMemo(() => {
     if (!isOpen) return {};
-    console.log(data);
     return ({
       id: data["id"],
       username: data["username"],

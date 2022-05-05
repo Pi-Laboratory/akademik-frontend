@@ -1,7 +1,8 @@
-import { Button, Classes, Dialog, FormGroup } from "@blueprintjs/core";
-import { ListGroup, useClient, Box, Flex, Select } from "components";
+import { Button, Classes, Dialog, FormGroup, Spinner } from "@blueprintjs/core";
+import { ListGroup, useClient, Box, Flex } from "components";
+import { FetchAndSelect } from "components/FetchAndSelect";
 import { Formik } from "formik";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as Yup from "yup";
 
 const Schema = Yup.object().shape({
@@ -15,44 +16,10 @@ export const DialogAssign = ({
   onSubmitted = () => { }
 }) => {
   const client = useClient();
-  const [items, setItems] = useState([]);
-  const [lecturers, setLecturers] = useState([]);
-  const [loading, setLoading] = useState({
-    lecturers: false
-  });
-
-  const fetchLecturers = useCallback(async (query) => {
-    let ret = [];
-    await setLoading(l => ({ ...l, lecturers: true }));
-    try {
-      const res = await client["lecturers"].find({
-        query: {
-          $select: ["id", "nidn"],
-          $include: [{
-            model: "employees",
-            $select: ["id", "name", "nip"],
-            $where: {
-              name: {
-                $iLike: `%${query}%`
-              }
-            }
-          }]
-        }
-      });
-      await setLecturers(res.data.map((x) => ({
-        label: x["employee"]["name"],
-        value: x["id"],
-        info: x["nidn"],
-      })));
-      ret = res.data;
-    } catch (err) {
-      console.error(err);
-    }
-    await setLoading(l => ({ ...l, lecturers: false }));
-    return ret;
-  }, [client]);
+  const [items, setItems] = useState(null);
 
   useEffect(() => {
+    if (!isOpen) return;
     if (data.length === 0) return;
     const fetch = async () => {
       try {
@@ -77,7 +44,7 @@ export const DialogAssign = ({
       }
     }
     fetch();
-  }, [data]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [data, isOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Dialog
@@ -116,7 +83,13 @@ export const DialogAssign = ({
                 mb: 3
               }}>
                 <ListGroup>
-                  {items.map((item) => (
+                  {items === null && (
+                    <Box sx={{ p: 2 }}>
+                      <Spinner />
+                    </Box>
+                  )}
+
+                  {items && items.map((item) => (
                     <ListGroup.Item key={item["id"]}>
                       <Flex sx={{
                         "> div": {
@@ -149,7 +122,7 @@ export const DialogAssign = ({
                         </Box>
                       </Flex>
                     </ListGroup.Item>))}
-                  {data.length > 3 &&
+                  {items && data.length > 3 &&
                     <ListGroup.Item>
                       <Flex sx={{
                         justifyContent: "center"
@@ -166,22 +139,44 @@ export const DialogAssign = ({
                 helperText={errors["lecturer_id"]}
                 intent={errors["lecturer_id"] ? "danger" : "none"}
               >
-                <Select
+                <FetchAndSelect
+                  service={client["lecturers"]}
                   id="f-lecturer_id"
                   name="lecturer_id"
-                  value={values["lecturer_id"]}
-                  loading={loading["lecturers"]}
-                  onOpening={() => {
-                    fetchLecturers("");
-                  }}
-                  onChange={({ value }) => {
-                    setFieldValue("lecturer_id", value);
-                  }}
-                  onCreateNew={(query) => {
-                    fetchLecturers(query);
-                  }}
+                  placeholder="Lecturer"
+                  value={String(values["lecturer_id"])}
                   intent={errors["lecturer_id"] ? "danger" : "none"}
-                  options={lecturers}
+                  onChange={async ({ value }) => {
+                    await setFieldValue("lecturer_id", value);
+                  }}
+                  onPreFetch={(q, query) => {
+                    return {
+                      ...query,
+                      $select: ["id", "nidn"],
+                      $include: [{
+                        model: "employees",
+                        $select: ["name", "nip"],
+                        $sort: {
+                          name: 1
+                        },
+                        $where: q ? {
+                          $or: [{
+                            name: { $iLike: `%${q}%` }
+                          }, {
+                            nip: { $iLike: `%${q}%` }
+                          }]
+                        } : undefined
+                      }]
+                    }
+                  }}
+                  onFetched={(items) =>
+                    items.map(({ id, employee }) => {
+                      return ({
+                        label: employee.name,
+                        value: id,
+                        info: employee.nip
+                      })
+                    })}
                 />
               </FormGroup>
             </div>
