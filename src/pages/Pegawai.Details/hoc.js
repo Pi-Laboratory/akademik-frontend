@@ -46,7 +46,7 @@ export const EmployeeProvider = ({ children }) => {
     } catch (err) {
       console.error(err);
     }
-  }, [params.id]);
+  }, [client, params.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const _forceUpdate = useCallback(()=> {
     return fetch();

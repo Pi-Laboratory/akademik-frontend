@@ -159,13 +159,13 @@ const Settings = ({ base }) => {
             result["photo"] = undefined;
           }
           try {
-            let res = await client["employees"].patch(employee["id"], result);
+            await client["employees"].patch(employee["id"], result);
             toaster.show({
               intent: "success",
               message: "Berhasil disimpan"
             });
-            employee.forceUpdate();
-            // history.go(0);
+            // employee.forceUpdate();
+            history.go(0);
           } catch (err) {
             console.error(err);
           }

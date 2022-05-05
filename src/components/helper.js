@@ -79,6 +79,8 @@ export const checkUserRole = (user) => {
 
 // https://stackoverflow.com/questions/46240647/react-how-to-force-a-function-component-to-render/53837442#53837442
 export function useForceUpdate(){
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue(value => value + 1); // update the state to force render
+  // integer state 
+  const [value, setValue] = useState(0); // eslint-disable-line no-unused-vars
+  // update the state to force render
+  return () => setValue(value => value + 1); 
 }
