@@ -110,6 +110,14 @@ export const SUBJECT_TRAIT = [
   "S",
 ]
 
+export const LECTURER_STATUS = [
+  "Aktif mengajar",
+  "Cuti",
+  "Keluar/Pensiun/Alm",
+  "ALMARHUM",
+  "Studi Lanjut",
+]
+
 const CONSTANTS = {
   DAYS,
   PEKERJAAN,

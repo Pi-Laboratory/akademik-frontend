@@ -6,6 +6,6 @@ const translations = {
   id
 }
 
-export const useTranslations = (language)=> {
+export const useTranslations = (language = "id")=> {
   return translations[language];
 }

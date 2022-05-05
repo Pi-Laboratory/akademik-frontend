@@ -12,5 +12,18 @@
       "D": "Pilihan Permintaan",
       "S": "Tugas Akhir / Skripsi"
     }
+  },
+  "lecturer": {
+    "status": {
+      "Aktif mengajar": "Aktif mengajar",
+      "Cuti": "Cuti",
+      "Keluar/Pensiun/Alm": "Keluar/Pensiun/Alm",
+      "ALMARHUM": "Almarhum",
+      "Studi Lanjut": "Studi Lanjut"
+    },
+    "certified": {
+      "true": "Tersertifikasi",
+      "false": "Tidak Berbersertifikat"
+    }
   }
 }

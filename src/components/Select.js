@@ -23,6 +23,7 @@ export const Select = ({
   onChange,
   onClick,
   onOpening,
+  onBlur,
   value,
   loading,
   multiple,
@@ -120,6 +121,7 @@ export const Select = ({
         text={activeItem ? activeItem.label : (label || placeholder || "Select")}
         rightIcon="caret-down"
         onClick={onClick}
+        onBlur={onBlur}
         fill={fill}
       />
     </BPSelect >

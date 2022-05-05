@@ -1,12 +1,12 @@
-import { Checkbox, Icon, NonIdealState, Spinner } from "@blueprintjs/core";
-import { Box, Flex, ListGroup, useClient, useList } from "components"
-import { Link } from "react-router-dom";
+import { NonIdealState, Spinner } from "@blueprintjs/core";
+import { Box, ListGroup, useClient, useList } from "components"
 import { useEffect } from "react";
 import { useDebounce } from "components/helper";
+import Item from "./Item";
 
 const List = () => {
   const client = useClient();
-  const { items, setItems, filter, paging, setPaging, selectedItem, dispatchSelectedItem } = useList();
+  const { items, setItems, filter, paging, setPaging } = useList();
 
   const _f = useDebounce(filter, 200);
 
@@ -19,7 +19,7 @@ const List = () => {
             "study_program_id": _f["study_program_id"] || undefined,
             $sort: { id: -1 },
             $skip: paging.skip,
-            $select: ["id", "nidn", "certified"],
+            $select: ["id", "nidn", "certified", "status"],
             $include: [{
               model: "employees",
               $select: ["name", "front_degree", "back_degree"],
@@ -63,47 +63,20 @@ const List = () => {
         </Box>
       }
       {items && items.map((item) => (
-        <ListGroup.Item key={item["id"]}>
-          <Flex>
-            <Box sx={{ width: 24, px: 0, flexShrink: 0 }}>
-              <Checkbox
-                checked={selectedItem.indexOf(item["id"]) !== -1}
-                onChange={(e) => {
-                  dispatchSelectedItem({
-                    type: "toggle",
-                    data: {
-                      name: item["id"],
-                      value: e.target.checked
-                    }
-                  })
-                }}
-              />
-            </Box>
-            <Box sx={{ flexGrow: 1, px: 2, mr: 3 }}>
-              <Flex sx={{ alignItems: "center" }}>
-                <Box sx={{ mr: 1 }}>
-                  {item["employee"] &&
-                    <Link to={`/pengajar/${item["id"]}`}>
-                      {`${item["employee"]["front_degree"] || ""} ${item["employee"]["name"]} ${item["employee"]["back_degree"] || ""}`}
-                    </Link>}
-                </Box>
-                {item["certified"] &&
-                  <Box as={Icon} sx={{ color: "green.4" }} iconSize={12} icon="endorsed" />}
-              </Flex>
-              <Box sx={{ color: "gray.5" }}>
-                {item["nidn"]}
-              </Box>
-            </Box>
-            {item["study_program"] &&
-              <Box sx={{ width: "35%", mr: 3 }}>
-                <Box sx={{ color: "gray.5" }}>
-                  Program Studi
-                </Box>
-                <Box>
-                  {item["study_program"]["name"]}
-                </Box>
-              </Box>}
-          </Flex>
+        <ListGroup.Item
+          key={item["id"]}
+          sx={{
+            [`.action`]: {
+              width: "30px",
+              opacity: "0",
+              pointerEvents: "none"
+            },
+            [`&:hover .action`]: {
+              opacity: "1",
+              pointerEvents: "unset"
+            }
+          }}>
+          <Item data={item} />
         </ListGroup.Item>
       ))}
     </>

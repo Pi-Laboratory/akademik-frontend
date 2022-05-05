@@ -71,7 +71,7 @@ const DialogMataKuliahBaru = ({
   onClose = () => { },
   onSubmitted = () => { }
 }) => {
-  const t = useTranslations("id");
+  const t = useTranslations();
   const client = useClient();
   const [curriculums, setCurriculums] = useState([]);
   const [studyPrograms, setStudyPrograms] = useState([]);

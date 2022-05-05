@@ -14,7 +14,7 @@ const btn = forwardRef((props, ref) =>
 );
 
 const List = () => {
-  const t = useTranslations("id");
+  const t = useTranslations();
   const client = useClient();
   const { items, setItems, paging, setPaging, filter, setFilter } = useList();
 

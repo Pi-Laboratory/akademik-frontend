@@ -12,5 +12,18 @@
       "D": "Request Option",
       "S": "Final Project / Thesis"
     }
+  },
+  "lecturer": {
+    "status": {
+      "Aktif mengajar": "Aktif teaching",
+      "Cuti": "Paid leave",
+      "Keluar/Pensiun/Alm": "Out/Retired/Decedent",
+      "ALMARHUM": "Late",
+      "Studi Lanjut": "Advanced Study"
+    },
+    "certified": {
+      "true": "Certified",
+      "false": "Not certified"
+    }
   }
 }
